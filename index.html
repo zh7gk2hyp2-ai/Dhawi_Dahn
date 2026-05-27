@@ -31,16 +31,13 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-thumb{background:#D4AF37;border-radius:4px;}
 
-/* تأثيرات الأنيميشن الفاخرة */
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulseGlow{0%,100%{transform:scale(1);opacity:0.9;}50%{transform:scale(1.04);opacity:1;filter:drop-shadow(0 0 15px #D4AF37);}}
 @keyframes smokeRise{0%{transform:translateY(100%) scale(0.8) translateX(0);opacity:0;}50%{opacity:0.4;transform:translateY(50%) scale(1.1) translateX(10px);}100%{transform:translateY(-20%) scale(1.5) translateX(-10px);opacity:0;}}
-@keyframes driftParticles{0%{transform:translateY(0) translateX(0);opacity:0;}50%{opacity:0.6;}100%{transform:translateY(-100vh) translateX(30px);opacity:0;}}
 
 .fade{animation:fadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;}
 .pulse-glow{animation:pulseGlow 3s ease-in-out infinite;}
 
-/* شاشة الإقلاع الفخمة */
 #splash-screen {
   position: fixed;
   top:0;left:0;width:100vw;height:100vh;
@@ -59,27 +56,12 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 }
 .smoke-particle {
   position: absolute;
-  bottom: 0;
-  width: 90px; height: 90px;
+  bottom: 0; width: 90px; height: 90px;
   background: radial-gradient(circle, rgba(214,175,55,0.06) 0%, transparent 70%);
-  border-radius: 50%;
-  filter: blur(8px);
+  border-radius: 50%; filter: blur(8px);
   animation: smokeRise 5s infinite linear;
 }
 
-/* جزيئات الذهب العائمة في الخلفية */
-.gold-particle {
-  position: fixed;
-  width: 3px; height: 3px;
-  background: #D4AF37;
-  border-radius: 50%;
-  box-shadow: 0 0 6px #D4AF37;
-  animation: driftParticles 12s infinite linear;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* بطاقات الزجاج الضبابي Glassmorphism */
 .glass-card {
   background: rgba(255, 248, 240, 0.07);
   backdrop-filter: blur(14px);
@@ -91,36 +73,26 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* شريط التنقل السفلي نمط iOS */
 .bottom-nav {
   position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: 72px;
+  bottom: 0; left: 0; right: 0; height: 72px;
   background: rgba(25, 8, 0, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(214, 175, 55, 0.2);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding-bottom: 12px;
-  z-index: 999;
+  display: flex; justify-content: space-around; align-items: center;
+  padding-bottom: 12px; z-index: 999;
 }
 .nav-item {
-  background: none; border: none;
-  color: #c8a46a;
+  background: none; border: none; color: #c8a46a;
   display: flex; flex-direction: column; align-items: center;
   font-size: 0.65rem; font-weight: 400; cursor: pointer;
   transition: all 0.3s ease; gap: 4px;
 }
 .nav-item.active {
-  color: #D4AF37;
-  transform: translateY(-2px);
+  color: #D4AF37; transform: translateY(-2px);
   text-shadow: 0 0 10px rgba(214,175,55,0.4);
 }
-.nav-icon {
-  font-size: 1.3rem;
-}
+.nav-icon { font-size: 1.3rem; }
 
 @media print {
   body { background: #fff !important; color: #000 !important; }
@@ -143,15 +115,10 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
       <path d="M70 25 Q55 40 52 60 Q60 50 70 45 Q80 50 88 60 Q85 40 70 25Z" fill="#D4AF37"/>
       <path d="M62 62 Q70 50 78 62 Q82 75 70 90 Q58 75 62 62Z" fill="#fff" opacity="0.8"/>
     </svg>
-    <h2 style="color:#D4AF37; font-size:1.4rem; margin-top:15px; letter-spacing:2px; font-weight:600;">دار الدهن</h2>
+    <h2 style="color:#D4AF37; font-size:1.4rem; margin-top:15px; font-weight:600;">دار الدهن</h2>
     <p style="color:#c8a46a; font-size:0.75rem; letter-spacing:4px; margin-top:5px;">DAHR AL-DAHN</p>
   </div>
 </div>
-
-<div class="gold-particle" style="left:15%; top:80%; animation-delay:0s;"></div>
-<div class="gold-particle" style="left:45%; top:90%; animation-delay:3s; width:2px; height:2px;"></div>
-<div class="gold-particle" style="left:75%; top:85%; animation-delay:6s;"></div>
-<div class="gold-particle" style="left:90%; top:70%; animation-delay:1s; width:4px; height:4px;"></div>
 
 <div id="root"></div>
 
@@ -164,14 +131,13 @@ window.addEventListener("load", () => {
       splash.style.opacity = "0";
       setTimeout(() => splash.remove(), 800);
     }
-  }, 2200);
+  }, 1500);
 });
 
 const { useState, useEffect } = React;
 
-// ===== قاعدة بيانات المواد الخام المحدثة والمجردة بالكامل بناء على لستة المستخدم ومشترياته =====
-const DEFAULT_INGREDIENTS = [
-  // --- الخامات المتوفرة مسبقاً (قائمة الـ زيت والمخاليط الحالية) ---
+// الجرد الفعلي المحدث والمثبت لدار الدهن
+const MASTER_INGREDIENTS = [
   {id:"amber_2000",name:"زيت عنبر 2000",brand:"محلي",cat:"تراثي",stock:50,unit:"مل",img:"https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=150&q=80"},
   {id:"musk_climbing",name:"زيت مسك متسلق",brand:"محلي",cat:"تراثي",stock:80,unit:"مل",img:"https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=150&q=80"},
   {id:"rose_istanbul",name:"زيت ورد إسطنبولي",brand:"محلي",cat:"زهري",stock:60,unit:"مل",img:"https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&w=150&q=80"},
@@ -186,10 +152,8 @@ const DEFAULT_INGREDIENTS = [
   {id:"oud_cambodi_lux",name:"زيت عود كمبودي من لوكسر",brand:"Luxodor",cat:"عود",stock:75,unit:"مل",img:"https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=150&q=80"},
   {id:"oud_hindi_sweety_lux",name:"زيت عود هندي سويتي من لوكسر",brand:"Luxodor",cat:"عود",stock:80,unit:"مل",img:"https://images.unsplash.com/photo-1600611481035-71583d73b2c2?auto=format&fit=crop&w=150&q=80"},
   {id:"oud_xx",name:"زيت دهن العود xx",brand:"محلي",cat:"عود",stock:300,unit:"مل",img:"https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=150&q=80"},
-  {id:"oud_earthy_animalic",name:"زيت عود ترابي حيواني قوي (مخلوط ورد إسطنبولي)",brand:"خلطة خاصة لكِسر الخلطات",cat:"عود",stock:70,unit:"مل",img:"https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=150&q=80"},
+  {id:"oud_earthy_animalic",name:"زيت عود ترابي حيواني قوي لتعديل الخلطات",brand:"خلطة خاصة",cat:"عود",stock:70,unit:"مل",img:"https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=150&q=80"},
   {id:"shamama_amber",name:"شمامة العنبر 2000 سائلة",brand:"محلي",cat:"تراثي",stock:30,unit:"مل",img:"https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=150&q=80"},
-
-  // --- شحنة موقع Bulk Aroma المعملية ---
   {id:"bulk_agar_art",name:"Agarwood Artessence",brand:"Biolandes",cat:"عود",stock:200,unit:"جم",img:"https://images.unsplash.com/photo-1600611481035-71583d73b2c2?auto=format&fit=crop&w=150&q=80"},
   {id:"bulk_iso_e",name:"ISO E Super",brand:"IFF",cat:"مضخم",stock:1000,unit:"جم",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=150&q=80"},
   {id:"bulk_sandal_indi",name:"Sandalwood INDI",brand:"DSM-Firmenich",cat:"صندل",stock:500,unit:"جم",img:"https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=150&q=80"},
@@ -208,198 +172,202 @@ const DEFAULT_INGREDIENTS = [
   {id:"bulk_patchouli_ess",name:"Patchouli Essential Oil - Sumatra",brand:"SLO-200BG",cat:"مثبت",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=150&q=80"},
   {id:"bulk_ambermor",name:"Ambermor EX",brand:"IFF",cat:"مثبت",stock:250,unit:"جم",img:"https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=150&q=80"},
   {id:"bulk_oud_oliffac",name:"Oud Oliffac",brand:"IFF",cat:"عود",stock:5,unit:"جم",img:"https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=150&q=80"},
-
-  // --- شحنة موقع Luxodor العطرية المستوحاة ---
   {id:"lux_symphony",name:"Inspired by LV's Symphony",brand:"Luxodor",cat:"براند",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=150&q=80"},
   {id:"lux_hindi_sweety_raw",name:"Oud Hindi Sweety (صافي)",brand:"Luxodor",cat:"عود",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1600611481035-71583d73b2c2?auto=format&fit=crop&w=150&q=80"},
   {id:"lux_aoud_exclusif",name:"Inspired by Mancera's Aoud Exclusif",brand:"Luxodor",cat:"براند",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=150&q=80"},
   {id:"lux_oud_cambodi_raw",name:"Oud Cambodi (صافي)",brand:"Luxodor",cat:"عود",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=150&q=80"},
   {id:"lux_oud_hindi_raw",name:"Oud Hindi (صافي)",brand:"Luxodor",cat:"عود",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1600611481035-71583d73b2c2?auto=format&fit=crop&w=150&q=80"},
   {id:"lux_black_oud",name:"Black Oud",brand:"Luxodor",cat:"عود",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=150&q=80"},
-  {id:"lux_fixative",name:"Luxodor's Fixative (مثبت خاص)",brand:"Luxodor",cat:"مثبت",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=150&q=80"},
+  {id:"lux_fixative",name:"Luxodor's Fixative (مثبت)",brand:"Luxodor",cat:"مثبت",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=150&q=80"},
   {id:"lux_oud_greatness",name:"Inspired by Initio's Oud for Greatness",brand:"Luxodor",cat:"براند",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=150&q=80"},
-  {id:"lux_gift_sample",name:"Free 10ML sample of top fragrances",brand:"Luxodor",cat:"براند",stock:10,unit:"مل",img:"https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=150&q=80"},
   {id:"lux_afternoon_swim",name:"Inspired by LV's Afternoon Swim",brand:"Luxodor",cat:"براند",stock:100,unit:"جم",img:"https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=150&q=80"}
 ];
 
-const INITIAL_RECIPES = [
-  {
-    id:"royal_blend",name:"مخلط الملوك السامي السري",season:"شتاء",seasonIcon:"❄️",gender:"رجالي",stability:"48 ساعة",rating:5,description:"توليفة عتيقة تستخدم العود الترابي الحيواني لكسر حدة الورد الإسطنبولي مع تثبيت العنبر الفاخر.",
-    ingredients:[{id:"oud_earthy_animalic",amount:5},{id:"rose_taif",amount:3},{id:"bulk_iso_e",amount:4},{id:"bulk_cashmeran",amount:2}],
-    steps:["احقن العود الترابي والورد الإسطنبولي المخلوط أولاً بمخبار معقم.","أضف الـ ISO E Super لزيادة الفوحان والانتشار الجبلي.","ثبت القاعدة عبر جزيئات الـ Cashmeran واترك العينة تعتق."]
-  }
-];
-
 function App() {
-  const [tab, setTab] = useState("inventory"); // يبدأ مباشرة على صفحة المخزون المحدثة
-  const [ingredients, setIngredients] = useState(DEFAULT_INGREDIENTS);
-  const [recipes, setRecipes] = useState(INITIAL_RECIPES);
-  const [stock, setStock] = useState(Object.fromEntries(DEFAULT_INGREDIENTS.map(i => [i.id, i.stock])));
+  const [tab, setTab] = useState("inventory");
+  const [ingredients, setIngredients] = useState([]);
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState("الكل");
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [batchSize, setBatchSize] = useState(50);
   const [productionLog, setProductionLog] = useState([]);
   const [toast, setToast] = useState("");
 
-  const [labMix, setLabMix] = useState([]);
-  const [labSelectedIng, setLabSelectedIng] = useState(DEFAULT_INGREDIENTS[0].id);
-  const [labAmount, setLabAmount] = useState(5);
+  // حالات فورم إضافة خامة جديدة
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newBrand, setNewBrand] = useState("");
+  const [newCat, setNewCat] = useState("عود");
+  const [newStock, setNewStock] = useState(100);
+  const [newUnit, setNewUnit] = useState("جم");
 
-  const scale = batchSize / 50;
-  const getIng = id => ingredients.find(i => i.id === id);
-  const canMake = r => r.ingredients.every(ri => (stock[ri.id] || 0) >= ri.amount * scale);
+  // المعمل والمخبار الفوري
+  const [labMix, setLabMix] = useState([]);
+  const [labSelectedIng, setLabSelectedIng] = useState("");
+  const [labAmount, setLabAmount] = useState(5);
 
   const triggerToast = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(""), 3000);
   };
 
+  // تحميل جرد دار الدهن الحقيقي وتخطي أي بيانات قديمة مخزنة
   useEffect(() => {
-    const saved = localStorage.getItem("dahr_luxury_data_v2");
-    if(saved) {
+    const saved = localStorage.getItem("dahr_dehn_v3_final");
+    if (saved) {
       try {
         const d = JSON.parse(saved);
-        if(d.stock) setStock(d.stock);
-        if(d.productionLog) setProductionLog(d.productionLog);
-      } catch(e) {}
+        if (d.ingredients && d.ingredients.length >= MASTER_INGREDIENTS.length) {
+          setIngredients(d.ingredients);
+        } else {
+          setIngredients(MASTER_INGREDIENTS);
+        }
+        if (d.productionLog) setProductionLog(d.productionLog);
+      } catch (e) {
+        setIngredients(MASTER_INGREDIENTS);
+      }
+    } else {
+      setIngredients(MASTER_INGREDIENTS);
     }
   }, []);
 
+  // الحفظ الفوري عند تعديل الحصص أو إضافة خامة جديدة
   useEffect(() => {
-    localStorage.setItem("dahr_luxury_data_v2", JSON.stringify({stock, productionLog}));
-  }, [stock, productionLog]);
+    if (ingredients.length > 0) {
+      localStorage.setItem("dahr_dehn_v3_final", JSON.stringify({ ingredients, productionLog }));
+    }
+  }, [ingredients, productionLog]);
 
-  const lowStock = ingredients.filter(i => (stock[i.id] || 0) <= 15);
+  useEffect(() => {
+    if (ingredients.length > 0 && !labSelectedIng) {
+      setLabSelectedIng(ingredients[0].id);
+    }
+  }, [ingredients]);
+
+  const updateStockValue = (id, delta) => {
+    setIngredients(prev => prev.map(item => {
+      if (item.id === id) {
+        return { ...item, stock: Math.max(0, item.stock + delta) };
+      }
+      return item;
+    }));
+  };
+
+  // هندسة إضافة المادة الجديدة من الفورم
+  const handleAddNewIngredient = (e) => {
+    e.preventDefault();
+    if (!newName.trim()) {
+      triggerToast("⚠️ فضلاً أدخل اسم المادة العطرية!");
+      return;
+    }
+    const customId = "custom_" + Date.now();
+    const newItem = {
+      id: customId,
+      name: newName,
+      brand: newBrand.trim() || "خاص",
+      cat: newCat,
+      stock: Number(newStock),
+      unit: newUnit,
+      img: "https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=150&q=80"
+    };
+
+    setIngredients(prev => [newItem, ...prev]);
+    setNewName(""); setNewBrand(""); setNewStock(100);
+    setShowAddForm(false);
+    triggerToast(`🏺 تم تسجيل ${newName} وإضافتها للرفوف بنجاح!`);
+  };
 
   const filteredIngs = (catFilter === "الكل" ? ingredients : ingredients.filter(i => i.cat === catFilter))
     .filter(i => i.name.toLowerCase().includes(search.toLowerCase()) || i.brand.toLowerCase().includes(search.toLowerCase()));
 
-  const produce = (r) => {
-    if(!canMake(r)) {
-      triggerToast("⚠️ المخزون المتوفر لا يغطي حجم الدفعة المطلوبة!");
-      return;
-    }
-    const ns = {...stock};
-    r.ingredients.forEach(ri => {
-      ns[ri.id] = Math.max(0, (ns[ri.id] || 0) - ri.amount * scale);
-    });
-    setStock(ns);
-    setProductionLog(p => [{date: new Date().toLocaleDateString('ar-SA'), recipe: r.name, amount: batchSize, id: Date.now()}, ...p]);
-    triggerToast(`🏭 تم سحب الخامات وتصنيع دفعة بـ ${batchSize} مل/جم!`);
-  };
-
   const totalLabVolume = labMix.reduce((s, i) => s + i.amount, 0);
-  const solventVolume = labMix.filter(i => getIng(i.id)?.cat === "حامل").reduce((s, i) => s + i.amount, 0);
-  const concentrationPct = totalLabVolume > 0 ? (((totalLabVolume - solventVolume) / totalLabVolume) * 100).toFixed(0) : 0;
-
-  const getPerfumeClass = (pct) => {
-    if(pct >= 30) return "Extrait de Parfum (ملكي فاخر)";
-    if(pct >= 20) return "Eau de Parfum (EDP)";
-    if(pct >= 15) return "Eau de Toilette (EDT)";
-    return "مخلط عالي التركيز";
-  };
+  const concentrationPct = totalLabVolume > 0 ? 100 : 0;
 
   const inpStyle = {
-    background: "rgba(255,255,255,0.05)",
+    background: "rgba(255,255,255,0.06)",
     border: "1px solid rgba(214,175,55,0.4)",
     borderRadius: "10px",
     padding: "10px 12px",
     fontSize: "0.8rem",
     color: "#fff",
     width: "100%",
-    outline: "none",
-    transition: "all 0.3s"
+    outline: "none"
   };
 
   return (
-    <div style={{minHeight:"100vh", paddingBottom:"90px", position:"relative", zIndex:1}}>
+    <div style={{minHeight:"100vh", paddingBottom:"90px"}}>
       
       {toast && (
-        <div style={{position:"fixed", bottom:"90px", left:"50%", transform:"translateX(-50%)", background:"rgba(214,175,55,0.95)", color:"#1a0800", padding:"10px 24px", borderRadius:"30px", fontSize:"0.8rem", fontWeight:"600", zIndex:9999, boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}} className="fade">
+        <div style={{position:"fixed", bottom:"90px", left:"50%", transform:"translateX(-50%)", background:"rgba(214,175,55,0.95)", color:"#1a0800", padding:"10px 24px", borderRadius:"30px", fontSize:"0.8rem", fontWeight:"600", zIndex:99999}} className="fade">
           ✨ {toast}
         </div>
       )}
 
       <div className="no-print" style={{textAlign:"center", padding:"20px 10px 10px"}}>
-        <h1 style={{fontSize:"1.4rem", color:"#D4AF37", fontWeight:"600", letterSpacing:"1px"}}>دار الدهن</h1>
-        <p style={{fontSize:"0.65rem", color:"#c8a46a", letterSpacing:"3px", marginTop:"2px"}}>MUSHAF AL-DEHN LAB</p>
-        <div style={{width:"40px", height:"1px", background:"#D4AF37", margin:"8px auto 0", opacity:0.5}}></div>
+        <h1 style={{fontSize:"1.4rem", color:"#D4AF37", fontWeight:"600"}}>دار الدهن</h1>
+        <p style={{fontSize:"0.65rem", color:"#c8a46a", letterSpacing:"3px"}}>MUSHAF AL-DEHN LAB</p>
       </div>
 
       <div style={{padding:"0 16px", maxWidth:"460px", margin:"0 auto"}}>
         
         {/* ===== TAB: HOME ===== */}
         {tab === "home" && (
-          <div className="fade">
-            {lowStock.length > 0 && (
-              <div style={{background:"rgba(200,50,50,0.15)", border:"1px solid rgba(255,100,100,0.3)", borderRadius:"14px", padding:"12px", marginBottom:"14px", backdropFilter:"blur(10px)"}}>
-                <div style={{fontSize:"0.78rem", color:"#ff9999", fontWeight:"600", marginBottom:"4px"}}>⚠️ تنبيه الحصص النادرة والغالية:</div>
-                <div style={{display:"flex", flexWrap:"wrap", gap:"4px", marginTop:"6px"}}>
-                  {lowStock.map(i => <span key={i.id} style={{background:"rgba(255,255,255,0.1)", padding:"2px 8px", borderRadius:"20px", fontSize:"0.62rem"}}>• {i.name} ({stock[i.id]} {i.unit})</span>)}
-                </div>
-              </div>
-            )}
-
-            <div className="glass-card" style={{background:"rgba(42,22,7,0.4)", border:"1px solid rgba(214,175,55,0.25)"}}>
-              <h3 style={{color:"#D4AF37", fontSize:"0.88rem", fontWeight:"600", marginBottom:"8px", display:"flex", alignItems:"center", gap:"6px"}}>
-                📜 مخطوطة التراث العطري السعودي
-              </h3>
-              <p style={{fontSize:"0.72rem", color:"#e5d5be", lineHeight:"1.6", textAlign:"justify"}}>
-                مرحباً بك في معملك الشخصي المتكامل. تم ترحيب وتثبيت كافة طلبيات الجرد المدخلة حديثاً من مصانع <strong>Bulk Aroma</strong> العالمية وموقع <strong>Luxodor</strong> بالإضافة إلى خزانة زيوتك ومخاليطك الخاصة.
+          <div className="fade" style={{paddingTop:"10px"}}>
+            <div className="glass-card">
+              <h3 style={{color:"#D4AF37", fontSize:"0.88rem", marginBottom:"6px"}}>📜 نظام إدارة خزانة العطور الذكي</h3>
+              <p style={{fontSize:"0.72rem", color:"#e5d5be", lineHeight:"1.6"}}>
+                أهلاً بك في النسخة الثالثة والنهائية من معملك التراثي. تم تصفير الكاش القديم لتثبيت جردك الواقعي الجديد بدقة عالية، وتفعيل خاصية التوسيع الذاتي للمخزون دون قيود برمجية.
               </p>
             </div>
           </div>
         )}
 
-        {/* ===== TAB: RECIPES ===== */}
-        {tab === "recipes" && !selectedRecipe && (
-          <div className="fade">
-            <h2 style={{fontSize:"0.9rem", color:"#D4AF37", marginBottom:"12px", fontWeight:"500"}}>التركيبات الجاهزة للتصنيع ({recipes.length})</h2>
-            {recipes.map(r => (
-              <div key={r.id} onClick={() => { setSelectedRecipe(r); }} className="glass-card" style={{cursor:"pointer"}}>
-                <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"4px"}}>
-                  <span style={{fontSize:"0.9rem", color:"#fff", fontWeight:"600"}}>{r.name}</span>
-                  <span style={{fontSize:"0.7rem"}}>{"⭐".repeat(r.rating)}</span>
-                </div>
-                <p style={{fontSize:"0.7rem", color:"#c8a46a", marginBottom:"8px"}}>{r.description}</p>
-                <div style={{display:"flex", gap:"6px"}}>
-                  <span style={{background:"rgba(214,175,55,0.12)", color:"#D4AF37", fontSize:"0.6rem", padding:"2px 8px", borderRadius:"12px"}}>⏱ {r.stability}</span>
-                  <span style={{background: canMake(r) ? "rgba(100,200,100,0.1)" : "rgba(200,100,100,0.1)", color: canMake(r) ? "#85e085" : "#ff8585", fontSize:"0.6rem", padding:"2px 8px", borderRadius:"12px"}}>{canMake(r) ? "✅ المواد متوفرة" : "⚠️ نقص خامات"}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {tab === "recipes" && selectedRecipe && (
-          <div className="fade">
-            <button onClick={() => setSelectedRecipe(null)} style={{background:"none", border:"1px solid #D4AF37", color:"#D4AF37", padding:"4px 12px", borderRadius:"20px", fontSize:"0.7rem", marginBottom:"12px", cursor:"pointer"}}>← العودة للسجل</button>
-            <div className="glass-card" style={{textAlign:"center"}}>
-              <h2 style={{fontSize:"1.1rem", color:"#fff", fontWeight:"600"}}>{selectedRecipe.name}</h2>
-              <p style={{fontSize:"0.72rem", color:"#c8a46a", marginTop:"2px"}}>{selectedRecipe.description}</p>
-            </div>
-
-            <h3 style={{fontSize:"0.78rem", color:"#D4AF37", marginBottom:"6px"}}>🏺 جرد الحصص المطلوبة:</h3>
-            {selectedRecipe.ingredients.map(ri => {
-              const ing = getIng(ri.id);
-              return (
-                <div key={ri.id} style={{display:"flex", justifyValue:"space-between", justifyContent:"space-between", background:"rgba(255,255,255,0.03)", padding:"8px 12px", borderRadius:"10px", marginBottom:"4px"}}>
-                  <span style={{fontSize:"0.78rem"}}>{ing?.name} ({ing?.brand})</span>
-                  <span style={{fontSize:"0.8rem", fontWeight:"600", color:"#D4AF37"}}>{(ri.amount * scale).toFixed(1)} {ing?.unit}</span>
-                </div>
-              );
-            })}
-            <button onClick={() => produce(selectedRecipe)} disabled={!canMake(selectedRecipe)} style={{width:"100%", padding:"12px", background: canMake(selectedRecipe) ? "#D4AF37" : "#443322", color: canMake(selectedRecipe) ? "#1a0800" : "#888", border:"none", borderRadius:"10px", fontSize:"0.75rem", fontWeight:"600", marginTop:"14px", cursor:"pointer"}}>🏭 سحب من الرف والإنتاج الفوري</button>
-          </div>
-        )}
-
-        {/* ===== TAB: INVENTORY (معدّل بالكامل ومقسّم حسب الفئات الفاخرة) ===== */}
+        {/* ===== TAB: INVENTORY (إضافة جرد وزر الإدخال الفوري) ===== */}
         {tab === "inventory" && (
           <div className="fade">
-            <h2 style={{fontSize:"0.9rem", color:"#D4AF37", marginBottom:"10px"}}>جرد الخزانة والطلبيات المدمجة ({ingredients.length} مادة)</h2>
-            
-            <input placeholder="🔍 ابحث عن دهن، عنبر، براند، أو مصنع (IFF, Luxodor...)" value={search} onChange={e => setSearch(e.target.value)} style={{...inpStyle, marginBottom:"12px"}}/>
+            <div style={{display:"flex", justifyValue:"space-between", justifyContent:"space-between", alignItems:"center", marginBottom:"12px"}}>
+              <h2 style={{fontSize:"0.9rem", color:"#D4AF37"}}>جرد الرفوف الفعلي ({ingredients.length} مادة)</h2>
+              
+              {/* زر إضافة مخزون جديد */}
+              <button onClick={() => setShowAddForm(!showAddForm)} style={{background:"#D4AF37", color:"#1a0800", border:"none", padding:"6px 14px", borderRadius:"20px", fontSize:"0.7rem", fontWeight:"600", cursor:"pointer", boxShadow:"0 4px 12px rgba(214,175,55,0.2)"}}>
+                {showAddForm ? "✕ إغلاق" : "➕ إضافة خامة جديدة"}
+              </button>
+            </div>
+
+            {/* فورم إضافة مادة جديدة الفوري */}
+            {showAddForm && (
+              <form onSubmit={handleAddNewIngredient} className="glass-card" style={{border:"1px solid #D4AF37", background:"rgba(30,15,5,0.9)", animation:"fadeIn 0.3s ease"}}>
+                <h4 style={{fontSize:"0.8rem", color:"#D4AF37", marginBottom:"10px"}}>➕ إدخال مادة عطرية جديدة للخزانة:</h4>
+                <div style={{display:"grid", gap:"8px"}}>
+                  <input placeholder="اسم الزيت أو الخامة (مثال: عود سيوفي عتيق)" value={newName} onChange={e => setNewName(e.target.value)} style={inpStyle} />
+                  <input placeholder="المصدر / المصنع (مثال: شرفان، IFF، جيفودان)" value={newBrand} onChange={e => setNewBrand(e.target.value)} style={inpStyle} />
+                  
+                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"6px"}}>
+                    <select value={newCat} onChange={e => setNewCat(e.target.value)} style={{...inpStyle, background:"#221105"}}>
+                      <option value="عود">عود</option>
+                      <option value="تراثي">تراثي / عنبر / مسك</option>
+                      <option value="زهري">زهري / ورد</option>
+                      <option value="صندل">صندل</option>
+                      <option value="مثبت">مثبت عطور</option>
+                      <option value="مضخم">مضخم فوحان</option>
+                      <option value="براند">محاكاة براندات</option>
+                    </select>
+                    <div style={{display:"flex", gap:"4px"}}>
+                      <input type="number" placeholder="الكمية" value={newStock} onChange={e => setNewStock(e.target.value)} style={{...inpStyle, textAlign:"center"}} />
+                      <select value={newUnit} onChange={e => setNewUnit(e.target.value)} style={{...inpStyle, width:"65px", background:"#221105", padding:"4px"}}>
+                        <option value="مل">مل</option>
+                        <option value="جم">جم</option>
+                        <option value="كجم">كجم</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <button type="submit" style={{background:"#D4AF37", color:"#1a0800", border:"none", padding:"10px", borderRadius:"8px", fontSize:"0.75rem", fontWeight:"600", marginTop:"4px", cursor:"pointer"}}>
+                    💾 تثبيت وحفظ في رفوف المختبر
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <input placeholder="🔍 ابحث في الرفوف الفورية..." value={search} onChange={e => setSearch(e.target.value)} style={{...inpStyle, marginBottom:"12px"}}/>
 
             <div style={{display:"flex", gap:"4px", overflowX:"auto", marginBottom:"12px", paddingBottom:"4px"}}>
               {["الكل","عود","تراثي","زهري","صندل","مثبت","مضخم","براند"].map(c => (
@@ -407,27 +375,22 @@ function App() {
               ))}
             </div>
 
-            {filteredIngs.map(ing => {
-              const current = stock[ing.id] !== undefined ? stock[ing.id] : ing.stock;
-              return (
-                <div key={ing.id} className="glass-card" style={{padding:"10px", display:"flex", gap:"10px", alignItems:"center"}}>
-                  <img src={ing.img} alt={ing.name} style={{width:"44px", height:"44px", borderRadius:"10px", objectFit:"cover", border:"1px solid rgba(214,175,55,0.2)"}}/>
-                  
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:"0.78rem", fontWeight:"600", color:"#fff"}}>{ing.name}</div>
-                    <div style={{fontSize:"0.6rem", color:"#c8a46a"}}>المصدر/المصنّع: {ing.brand} • التصنيف: {ing.cat}</div>
-                    
-                    <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:"6px"}}>
-                      <span style={{fontSize:"0.72rem", color:"#D4AF37", fontWeight:"600"}}>المتاح: {current} {ing.unit}</span>
-                      <div style={{display:"flex", alignItems:"center", gap:"4px"}}>
-                        <button onClick={() => setStock(p => ({...p, [ing.id]: Math.max(0, (p[ing.id] !== undefined ? p[ing.id] : ing.stock) - 5)}))} style={{background:"rgba(255,255,255,0.05)", border:"1px solid rgba(214,175,55,0.3)", color:"#fff", width:"22px", height:"22px", borderRadius:"50%", cursor:"pointer"}}>−</button>
-                        <button onClick={() => setStock(p => ({...p, [ing.id]: (p[ing.id] !== undefined ? p[ing.id] : ing.stock) + 5}))} style={{background:"#D4AF37", border:"none", color:"#1a0800", width:"22px", height:"22px", borderRadius:"50%", cursor:"pointer", fontWeight:"bold"}}>+</button>
-                      </div>
+            {filteredIngs.map(ing => (
+              <div key={ing.id} className="glass-card" style={{padding:"10px", display:"flex", gap:"10px", alignItems:"center"}}>
+                <img src={ing.img} alt={ing.name} style={{width:"44px", height:"44px", borderRadius:"10px", objectFit:"cover", border:"1px solid rgba(214,175,55,0.2)"}}/>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:"0.78rem", fontWeight:"600", color:"#fff"}}>{ing.name}</div>
+                  <div style={{fontSize:"0.6rem", color:"#c8a46a"}}>المصنع: {ing.brand} • التصنيف: {ing.cat}</div>
+                  <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:"6px"}}>
+                    <span style={{fontSize:"0.72rem", color:"#D4AF37", fontWeight:"600"}}>المتاح: {ing.stock} {ing.unit}</span>
+                    <div style={{display:"flex", alignItems:"center", gap:"4px"}}>
+                      <button type="button" onClick={() => updateStockValue(ing.id, -5)} style={{background:"rgba(255,255,255,0.05)", border:"1px solid rgba(214,175,55,0.3)", color:"#fff", width:"24px", height:"24px", borderRadius:"50%", cursor:"pointer"}}>−</button>
+                      <button type="button" onClick={() => updateStockValue(ing.id, 5)} style={{background:"#D4AF37", border:"none", color:"#1a0800", width:"24px", height:"24px", borderRadius:"50%", cursor:"pointer", fontWeight:"bold"}}>+</button>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         )}
 
@@ -437,7 +400,6 @@ function App() {
             <div style={{textAlign:"center", marginBottom:"12px"}}>
               <span style={{fontSize:"1.6rem"}}>🧪</span>
               <h2 style={{fontSize:"1rem", color:"#D4AF37", fontWeight:"600"}}>مُحاكي المخبار الرقمي الفوري</h2>
-              <p style={{fontSize:"0.68rem", color:"#c8a46a"}}>اخلط زيوتك ومشترياتك وتوقع التراكيز الفوق فواحة</p>
             </div>
 
             <div className="glass-card">
@@ -448,6 +410,8 @@ function App() {
                 </select>
                 <input type="number" value={labAmount} onChange={e => setLabAmount(Math.max(0, +e.target.value))} style={{...inpStyle, textAlign:"center"}}/>
                 <button onClick={() => {
+                  const target = ingredients.find(x => x.id === labSelectedIng);
+                  if(!target) return;
                   if(labMix.find(i => i.id === labSelectedIng)) {
                     setLabMix(p => p.map(i => i.id === labSelectedIng ? {...i, amount: i.amount + labAmount} : i));
                   } else {
@@ -458,10 +422,7 @@ function App() {
             </div>
 
             <div style={{background:"linear-gradient(135deg, #241207, #120500)", border:"1px solid #D4AF37", borderRadius:"14px", padding:"14px", marginBottom:"12px"}}>
-              <h4 style={{fontSize:"0.78rem", color:"#D4AF37", borderBottom:"1px solid rgba(214,175,55,0.2)", paddingBottom:"4px", marginBottom:"8px"}}>📊 القراءة الفورية للمخبار الكيميائي:</h4>
               <div style={{display:"flex", justifyContent:"space-between", fontSize:"0.72rem", marginBottom:"4px"}}><span>الحجم الكلي بالتوليفة:</span><span style={{color:"#D4AF37", fontWeight:"600"}}>{totalLabVolume} مل/جم</span></div>
-              <div style={{display:"flex", justifyContent:"space-between", fontSize:"0.72rem", marginBottom:"4px"}}><span>تركيز العطر الصافي:</span><span style={{color:"#85e085", fontWeight:"600"}}>{concentrationPct}%</span></div>
-              <div style={{display:"flex", justifyContent:"space-between", fontSize:"0.72rem", marginBottom:"4px"}}><span>التصنيف المعتمد:</span><span style={{color:"#fff", fontWeight:"500"}}>{getPerfumeClass(concentrationPct)}</span></div>
             </div>
 
             {labMix.length > 0 && (
@@ -470,48 +431,26 @@ function App() {
                   <span>العناصر النشطة بالمخبار:</span>
                   <span onClick={() => setLabMix([])} style={{color:"#ff8585", cursor:"pointer"}}>✕ تصفير الخلطة</span>
                 </div>
-                {labMix.map(lm => (
-                  <div key={lm.id} style={{display:"flex", justifyContent:"space-between", fontSize:"0.72rem", padding:"3px 0", borderBottom:"1px solid rgba(255,255,255,0.03)"}}>
-                    <span>• {getIng(lm.id)?.name}</span>
-                    <span style={{fontWeight:"600"}}>{lm.amount} {getIng(lm.id)?.unit}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ===== TAB: LOG ===== */}
-        {tab === "production" && (
-          <div className="fade">
-            <h2 style={{fontSize:"0.9rem", color:"#D4AF37", marginBottom:"12px"}}>أرشيف وخطوط الإنتاج الفعلي</h2>
-            {productionLog.length > 0 ? (
-              <div className="glass-card">
-                {productionLog.map(l => (
-                  <div key={l.id} style={{display:"flex", justifyValue:"space-between", justifyContent:"space-between", padding:"8px 0", borderBottom:"1px solid rgba(255,255,255,0.05)", fontSize:"0.72rem"}}>
-                    <div>
-                      <div style={{fontWeight:"600", color:"#fff"}}>{l.recipe}</div>
-                      <div style={{fontSize:"0.6rem", color:"#c8a46a"}}>{l.date}</div>
+                {labMix.map(lm => {
+                  const xinf = ingredients.find(i => i.id === lm.id);
+                  return (
+                    <div key={lm.id} style={{display:"flex", justifyContent:"space-between", fontSize:"0.72rem", padding:"3px 0", borderBottom:"1px solid rgba(255,255,255,0.03)"}}>
+                      <span>• {xinf?.name}</span>
+                      <span style={{fontWeight:"600"}}>{lm.amount} {xinf?.unit}</span>
                     </div>
-                    <span style={{color:"#D4AF37", fontWeight:"600"}}>{l.amount} مل/جم</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-            ) : (
-              <div style={{textAlign:"center", padding:"40px 10px", fontSize:"0.72rem", color:"#c8a46a"}}>سجل الإنتاج فارغ حالياً. اسحب أي عينة من شاشة الوصفات لتسجيلها هنا تاريخياً.</div>
             )}
           </div>
         )}
 
       </div>
 
-      {/* شريط التنقل السفلي iOS الاحترافي */}
       <div className="bottom-nav no-print">
         <button onClick={() => setTab("home")} className={`nav-item ${tab === "home" ? "active" : ""}`}><span className="nav-icon">🪵</span>الرئيسية</button>
-        <button onClick={() => { setTab("recipes"); setSelectedRecipe(null); }} className={`nav-item ${tab === "recipes" ? "active" : ""}`}><span className="nav-icon">📋</span>الوصفات</button>
         <button onClick={() => setTab("inventory")} className={`nav-item ${tab === "inventory" ? "active" : ""}`}><span className="nav-icon">🏺</span>المخزون</button>
         <button onClick={() => setTab("lab")} className={`nav-item ${tab === "lab" ? "active" : ""}`}><span className="nav-icon">🧪</span>المختبر</button>
-        <button onClick={() => setTab("production")} className={`nav-item ${tab === "production" ? "active" : ""}`}><span className="nav-icon">🏭</span>الإنتاج</button>
       </div>
 
     </div>
