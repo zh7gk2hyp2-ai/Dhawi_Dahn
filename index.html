@@ -105,16 +105,17 @@ input, select, button {
 
 <script type="text/babel">
 
-// إخفاء إجباري لشاشة الترحيب بعد ثانية ونصف لمنع التعليق نهائياً
-setTimeout(() => {
-  const splash = document.getElementById("splash-screen");
-  if(splash) {
-    splash.style.opacity = "0";
-    setTimeout(() => splash.remove(), 500);
-  }
-}, 1500);
 
-const { useState, useEffect } = React;
+// تحديث لضمان الانتقال السريع
+window.onload = () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splash-screen");
+    if(splash) {
+      splash.style.opacity = "0";
+      setTimeout(() => splash.remove(), 500);
+    }
+  }, 1000);
+};
 
 // المخزون الفعلي 
 const INITIAL_MASTER = [
