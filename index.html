@@ -6,12 +6,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="ضاوي الدهن"/>
-<meta name="theme-color" content="#3A1A05"/>
+<meta name="theme-color" content="#1a0800"/>
 <title>ضاوي الدهن — مختبر العطور التراثي</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -20,12 +20,11 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{
-  background: linear-gradient(160deg, rgba(26, 8, 0, 0.97), rgba(58, 26, 5, 0.97)), url('https://images.unsplash.com/photo-1515377905703-c4788e51af15');
-  background-size: cover;
-  background-attachment: fixed;
+  background: linear-gradient(160deg, rgba(26, 8, 0, 0.98), rgba(58, 26, 5, 0.98));
   font-family: 'Alexandria', sans-serif;
   color: #fff8f0;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 ::-webkit-scrollbar{width:4px;}
@@ -46,7 +45,7 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.5s ease;
 }
 
 .glass-card {
@@ -57,70 +56,4 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 14px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0; height: 76px;
-  background: rgba(20, 6, 0, 0.95);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(214, 175, 55, 0.3);
-  display: flex; justify-content: space-around; align-items: center;
-  padding-bottom: 14px; z-index: 9999;
-}
-.nav-item {
-  background: none; border: none; color: #c8a46a;
-  display: flex; flex-direction: column; align-items: center;
-  font-size: 0.68rem; font-weight: 400; cursor: pointer;
-  transition: all 0.3s ease; gap: 4px;
-}
-.nav-item.active {
-  color: #D4AF37; transform: translateY(-2px);
-  text-shadow: 0 0 8px rgba(214,175,55,0.4);
-}
-.nav-icon { font-size: 1.3rem; }
-</style>
-</head>
-<body>
-
-<div id="splash-screen">
-  <div class="pulse-glow" style="text-align:center;">
-    <svg width="80" height="80" viewBox="0 0 140 140" fill="none">
-      <circle cx="70" cy="70" r="65" fill="none" stroke="#D4AF37" stroke-width="2"/>
-      <path d="M70 25 Q55 40 52 60 Q60 50 70 45 Q80 50 88 60 Q85 40 70 25Z" fill="#D4AF37"/>
-    </svg>
-    <h2 style="color:#D4AF37; font-size:1.3rem; margin-top:12px; font-weight:600;">ضاوي الدهن</h2>
-    <p style="color:#c8a46a; font-size:0.7rem; letter-spacing:3px;">DHAWI DAHN</p>
-  </div>
-</div>
-
-<div id="root"></div>
-
-<script type="text/babel">
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const splash = document.getElementById("splash-screen");
-    if(splash) {
-      splash.style.opacity = "0";
-      setTimeout(() => splash.remove(), 600);
-    }
-  }, 1200);
-});
-
-const { useState, useEffect } = React;
-
-const INITIAL_MASTER = [
-  {id:"amber_2000",name:"زيت عنبر 2000",brand:"محلي",cat:"تراثي",stock:50,unit:"مل",img:"https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=150&q=80"},
-  {id:"musk_climbing",name:"زيت مسك متسلق",brand:"محلي",cat:"تراثي",stock:80,unit:"مل",img:"https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=150&q=80"},
-  {id:"rose_istanbul",name:"زيت ورد إسطنبولي",brand:"محلي",cat:"زهري",stock:60,unit:"مل",img:"https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&w=150&q=80"},
-  {id:"sandal_oil",name:"زيت صندل تراثي",brand:"محلي",cat:"صندل",stock:80,unit:"مل",img:"https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=150&q=80"},
-  {id:"vanilla_lace",name:"زيت فانيلا دانتيل",brand:"محلي",cat:"زهري",stock:70,unit:"مل",img:"https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80"},
-  {id:"oud_royal_low",name:"زيت دهن عود ملكي (دون المتوسط)",brand:"محلي",cat:"عود",stock:35,unit:"مل",img:"https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=150&q=80"},
-  {id:"musk_pomegranate",name:"زيت مسك الرمان",brand:"محلي",cat:"تراثي",stock:40,unit:"مل",img:"https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?auto=format&fit=crop&w=150&q=80"},
-  {id:"rose_taif",name:"زيت ورد طائفي نقي",brand:"محلي",cat:"زهري",stock:75,unit:"مل",img:"https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=150&q=80"},
-  {id:"patchouli_oil",name:"زيت باتشولي مركز",brand:"محلي",cat:"مثبت",stock:70,unit:"مل",img:"https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=150&q=80"},
-  {id:"amber_700",name:"زيت عنبر 700",brand:"محلي",cat:"تراثي",stock:50,unit:"مل",img:"https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=150&q=80"},
-  {id:"oud_cambodi_fawah",name:"زيت عود كمبودي فواح",brand:"محلي",cat:"عود",stock:70,unit:"مل",img:"https://images.unsplash.com/photo-1600611481035-71583d73b2c2?auto=format&fit=crop&w=150&q=80"},
-  {id:"oud_cambodi_lux",name:"زيت عود كمبودي من لوكسر",brand:"Luxodor",cat:"عود",stock:75,unit:"مل",img:"
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4
