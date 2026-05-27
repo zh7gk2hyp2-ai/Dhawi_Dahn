@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="دار الدهن"/>
+<meta name="theme-color" content="#5C2D0A"/>
+<title>دار الدهن — Dahr Al-Dahn</title>
+
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22%D8%AF%D8%A7%D8%B1%20%D8%A7%D9%84%D8%AF%D9%87%D9%86%22,%22short_name%22:%22%D8%A7%D9%84%D8%AF%D9%87%D9%86%22,%22start_url%22:%22./%22,%22display%22:%22standalone%22,%22background_color%22:%22#fdf6ec%22,%22theme_color%22:%22#5C2D0A%22}">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+  background: linear-gradient(160deg, rgba(253,246,236,0.95), rgba(245,232,208,0.95)), url('https://images.unsplash.com/photo-1515377905703-c4788e51af15');
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: Georgia, serif;
+  direction: rtl;
+}
+input,select,button,textarea{font-family:Georgia,serif;}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-thumb{background:#D4AF37;border-radius:2px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{opacity:0.6}50%{opacity:1}100%{opacity:0.6}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.fade{animation:fadeIn 0.4s ease forwards;}
+.shimmer{animation:shimmer 3s ease infinite;}
+.float{animation:float 4s ease infinite;}
+
+/* Toast Styling */
+.toast-bar {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(92, 45, 10, 0.95);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 1px solid #D4AF37;
+  font-size: 0.85rem;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Print Styling */
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  .no-print { display: none !important; }
+  div { box-shadow: none !important; border: 1px solid #ccc !important; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const {useState,useEffect,useRef}=React;
+
+// ===== DATA =====
+const DEFAULT_INGREDIENTS=[
+  {id:"cambodi_lux",name:"Oud Cambodi",brand:"Luxodor",cat:"عود",stock:100,unit:"مل",color:"#8B4513",price:12.5},
+  {id:"hindi_sweety",name:"Oud Hindi Sweety",brand:"Luxodor",cat:"عود",stock:100,unit:"مل",color:"#A0522D",price:15.0},
+  {id:"hindi_lux",name:"Oud Hindi",brand:"Luxodor",cat:"عود",stock:100,unit:"مل",color:"#6B3A2A",price:14.0},
+  {id:"black_oud",name:"Black Oud",brand:"Luxodor",cat:"عود",stock:100,unit:"مل",color:"#3a1a00",price:9.0},
+  {id:"fixative",name:"Luxodor Fixative",brand:"Luxodor",cat:"مثبت",stock:100,unit:"مل",color:"#b8860b",price:4.5},
+  {id:"greatness",name:"Oud for Greatness",brand:"Luxodor",cat:"مستوحى",stock:100,unit:"مل",color:"#7a5a30",price:8.0},
+  {id:"aoud_excl",name:"Aoud Exclusif",brand:"Luxodor",cat:"مستوحى",stock:100,unit:"مل",color:"#8a6a40",price:7.5},
+  {id:"symphony",name:"LV Symphony",brand:"Luxodor",cat:"مستوحى",stock:100,unit:"مل",color:"#6a8a5a",price:8.5},
+  {id:"afternoon",name:"LV Afternoon Swim",brand:"Luxodor",cat:"مستوحى",stock:100,unit:"مل",color:"#5a8a9a",price:8.5},
+  {id:"artessence",name:"Agarwood Artessence",brand:"Biolandes",cat:"عود",stock:200,unit:"جم",color:"#5C3317",price:22.0},
+  {id:"black_agar",name:"Black Agar Givco",brand:"Givaudan",cat:"عود",stock:50,unit:"جم",color:"#2a1000",price:18.5},
+  {id:"ambermor",name:"Ambermor EX",brand:"IFF",cat:"مثبت",stock:100,unit:"جم",color:"#DAA520",price:6.0},
+  {id:"iso_e",name:"ISO E Super",brand:"IFF",cat:"مضخم",stock:1000,unit:"جم",color:"#8B8B00",price:1.5},
+  {id:"cashmeran",name:"Cashmeran",brand:"IFF",cat:"مسك",stock:500,unit:"جم",color:"#b87333",price:3.0},
+  {id:"sandalwood",name:"Sandalwood INDI",brand:"Firmenich",cat:"صندل",stock:500,unit:"جم",color:"#c8a46a",price:11.0},
+  {id:"rose_taif",name:"ورد الطائف",brand:"شرفان",cat:"زهري",stock:100,unit:"مل",color:"#C71585",price:35.0},
+  {id:"musk_ruman",name:"مسك رمان",brand:"شرفان",cat:"مسك",stock:50,unit:"مل",color:"#DB7093",price:5.0},
+  {id:"dpg",name:"DPG ديوبي",brand:"محلي",cat:"حامل",stock:200,unit:"مل",color:"#aaa",price:0.5},
+];
+
+const INITIAL_RECIPES=[
+  {id:"royal",name:"الملكي الفاخر",nameEn:"Royal Oud",season:"شتاء",seasonIcon:"❄️",gender:"رجالي",stability:"24 ساعة",rating:5,description:"عود داكن عميق مع صندل وشمامة — ثبات استثنائي",color:"#8B4513",
+    ingredients:[{id:"artessence",amount:4},{id:"black_oud",amount:3},{id:"sandalwood",amount:3},{id:"ambermor",amount:1},{id:"fixative",amount:3},{id:"cambodi_lux",amount:3},{id:"hindi_sweety",amount:2},{id:"hindi_lux",amount:2},{id:"greatness",amount:1.5},{id:"aoud_excl",amount:1},{id:"musk_ruman",amount:1},{id:"cashmeran",amount:0.5},{id:"iso_e",amount:0.3},{id:"dpg",amount:3}],
+    steps:["أضف DPG كقاعدة أساسية للمزج والسحب.","أضف الأدهان الثقيلة: آرتيسينس، العود الهندي والكمبودي.","أضف المثبتات: الـ Fixative والـ Ambermor بالتتابع مع التحريك الفردي.","أخيراً: أضف الـ ISO E Super والمكونات الخفيفة وعتق المزيج في مكان مظلم لدورة كاملة."]},
+  {id:"summer",name:"صيف الطائف",nameEn:"Taif Summer",season:"صيف",seasonIcon:"☀️",gender:"للجنسين",stability:"10-12 ساعة",rating:4,description:"عود خفيف فواح مع ورد الطائف — مثالي للصيف",color:"#2d6a4f",
+    ingredients:[{id:"cambodi_lux",amount:6},{id:"rose_taif",amount:3},{id:"symphony",amount:2},{id:"sandalwood",amount:3},{id:"fixative",amount:2},{id:"ambermor",amount:1.5},{id:"musk_ruman",amount:2},{id:"cashmeran",amount:0.3},{id:"iso_e",amount:0.2},{id:"dpg",amount:5}],
+    steps:["أضف الـ DPG والمسك لتأسيس الوسط الفواح.","امزج قطرات ورد الطائف الصافي مع الصندل والكمبودي ببطء.","أضف مدعمات الفوحان والمثبت السائل واستمر بالتحريك الدائري.","احفظ الزجاجة محكمة الإغلاق لمدة 5 أيام قبل الاستخدام الحقيقي."]}
+];
+
+const HERITAGE_QUOTES=[
+  {ar:"العود روح الشيخ وأثره في المجلس",en:"Oud is the Sheikh's spirit in the majlis"},
+  {ar:"لا مجلس بلا عود، ولا عود بلا أصل",en:"No majlis without oud, no oud without origin"},
+  {ar:"دهن العود حكاية الأرض والشجر والنار",en:"Oud oil is the story of earth, tree, and fire"}
+];
+
+const CATS=["الكل","عود","مثبت","مسك","صندل","زهري","عنبر","سويتي","قاعدة","حامل","مضخم","خلطة","مستوحى"];
+
+// ===== LOGO SVG =====
+const Logo=({size=60,name="دار الدهن",sub="DAHR AL-DAHN"})=>(
+  <svg width={size} height={size} viewBox="0 0 140 140" fill="none">
+    <defs>
+      <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#fffbf0"/>
+        <stop offset="100%" stopColor="#f5e8d0"/>
+      </radialGradient>
+      <radialGradient id="wood" cx="50%" cy="30%" r="70%">
+        <stop offset="0%" stopColor="#a0522d"/>
+        <stop offset="100%" stopColor="#5C2D0A"/>
+      </radialGradient>
+    </defs>
+    <circle cx="70" cy="70" r="68" fill="url(#bg)" stroke="#8B4513" strokeWidth="2.5"/>
+    <circle cx="70" cy="70" r="60" fill="none" stroke="#D4AF37" strokeWidth="0.8" strokeDasharray="5 3"/>
+    <path d="M70 20 Q55 35 52 55 Q60 45 70 40 Q80 45 88 55 Q85 35 70 20Z" fill="#2d5a1b" opacity="0.7"/>
+    <path d="M62 52 L62 48 Q62 44 70 44 Q78 44 78 48 L78 52 Q82 55 82 68 Q82 82 70 85 Q58 82 58 68 Q58 55 62 52Z" fill="url(#wood)" opacity="0.9"/>
+    <ellipse cx="50" cy="68" rx="6" ry="8" fill="#D4AF37" opacity="0.7"/>
+    <ellipse cx="90" cy="68" rx="6" ry="8" fill="#D4AF37" opacity="0.7"/>
+    <path d="M70 95 L73 103 L81 103 L75 108 L77 116 L70 111 L63 116 L65 108 L59 103 L67 103Z" fill="#D4AF37" opacity="0.8"/>
+    <text x="70" y="130" textAnchor="middle" fontSize="8" fill="#8B4513" fontFamily="Georgia" letterSpacing="1">{name}</text>
+    <text x="70" y="15" textAnchor="middle" fontSize="5.5" fill="#D4AF37" fontFamily="Georgia" letterSpacing="3">{sub}</text>
+  </svg>
+);
+
+// ===== MAIN APP COMPONENT =====
+function App(){
+  const [tab,setTab]=useState("home");
+  const [ingredients,setIngredients]=useState(DEFAULT_INGREDIENTS);
+  const [recipes,setRecipes]=useState(INITIAL_RECIPES);
+  const [stock,setStock]=useState(Object.fromEntries(DEFAULT_INGREDIENTS.map(i=>[i.id,i.stock])));
+  const [selectedRecipe,setSelectedRecipe]=useState(null);
+  const [batchSize,setBatchSize]=useState(50);
+  const [currentStep,setCurrentStep]=useState(0);
+  const [catFilter,setCatFilter]=useState("الكل");
+  const [search,setSearch]=useState("");
+  const [productionLog,setProductionLog]=useState([]);
+  const [editMode,setEditMode]=useState(false);
+  const [showAddRecipe,setShowAddRecipe]=useState(false);
+  const [showAddIng,setShowAddIng]=useState(false);
+  const [logoName,setLogoName]=useState("دار الدهن");
+  const [logoSub,setLogoSub]=useState("DAHR AL-DAHN");
+  const [toast,setToast]=useState("");
+
+  // Lab States
+  const [labMix,setLabMix]=useState([]);
+  const [labSelectedIng,setLabSelectedIng]=useState(ingredients[0].id);
+  const [labAmount,setLabAmount]=useState(5);
+
+  // New recipe state
+  const [nrName,setNrName]=useState("");
+  const [nrDesc,setNrDesc]=useState("");
+  const [nrSeason,setNrSeason]=useState("صيف");
+  const [nrGender,setNrGender]=useState("للجنسين");
+  const [nrRating,setNrRating]=useState(5);
+  const [nrIngId,setNrIngId]=useState(ingredients[0].id);
+  const [nrIngAmt,setNrIngAmt]=useState(1);
+  const [nrIngs,setNrIngs]=useState([]);
+
+  // New ingredient state
+  const [niName,setNiName]=useState("");
+  const [niBrand,setNiBrand]=useState("");
+  const [niCat,setNiCat]=useState("عود");
+  const [niStock,setNiStock]=useState(50);
+  const [niUnit,setNiUnit]=useState("مل");
+  const [niColor,setNiColor]=useState("#8B4513");
+  const [niPrice,setNiPrice]=useState(10.0);
+  const [niNote,setNiNote]=useState("");
+
+  const scale=batchSize/50;
+  const getIng=id=>ingredients.find(i=>i.id===id);
+  const canMake=r=>r.ingredients.every(ri=>(stock[ri.id]||0)>=ri.amount*scale);
+
+  // Toast Function
+  const triggerToast=(msg)=>{
+    setToast(msg);
+    setTimeout(()=>setToast(""),3000);
+  };
+
+  // 1) Load LocalStorage data on initial load
+  useEffect(()=>{
+    const saved=localStorage.getItem("dahr_data");
+    if(saved){
+      try {
+        const d=JSON.parse(saved);
+        if(d.ingredients) setIngredients(d.ingredients);
+        if(d.recipes) setRecipes(d.recipes);
+        if(d.stock) setStock(d.stock);
+        if(d.productionLog) setProductionLog(d.productionLog);
+        if(d.logoName) setLogoName(d.logoName);
+        if(d.logoSub) setLogoSub(d.logoSub);
+      } catch(e) { console.error("Error loading localStorage", e); }
+    }
+  },[]);
+
+  // 1) Save to LocalStorage automatically on changes
+  useEffect(()=>{
+    const data={ingredients,recipes,stock,productionLog,logoName,logoSub};
+    localStorage.setItem("dahr_data",JSON.stringify(data));
+  },[ingredients,recipes,stock,productionLog,logoName,logoSub]);
+
+  // 3) Low Stock Monitoring
+  const lowStock=ingredients.filter(i=>(stock[i.id]||0)<=10);
+
+  // 2) Search & Category Filtration for Inventory
+  const filteredIngs=(catFilter==="الكل"?ingredients:ingredients.filter(i=>i.cat===catFilter))
+    .filter(i=>
+      i.name.toLowerCase().includes(search.toLowerCase()) ||
+      i.brand.toLowerCase().includes(search.toLowerCase())
+    );
+
+  const produce=r=>{
+    if(!canMake(r)) {
+      triggerToast("⚠️ ركود! لا يوجد مخزون كافي للمكونات");
+      return;
+    }
+    const ns={...stock};
+    r.ingredients.forEach(ri=>{ns[ri.id]=Math.max(0,(ns[ri.id]||0)-ri.amount*scale);});
+    setStock(ns);
+    setProductionLog(p=>[{date:new Date().toLocaleDateString('ar-SA'),recipe:r.name,amount:batchSize,id:Date.now()},...p]);
+    triggerToast(`🏭 تم إنتاج ${batchSize}مل من عطر ${r.name} بنجاح!`);
+  };
+
+  const addRecipe=()=>{
+    if(!nrName||nrIngs.length===0)return;
+    const icons={"صيف":"☀️","شتاء":"❄️","ربيع":"🌸","خريف":"🍂","كل المواسم":"✨"};
+    setRecipes(p=>[...p,{
+      id:"c_"+Date.now(),
+      name:nrName,
+      nameEn:nrName,
+      season:nrSeason,
+      seasonIcon:icons[nrSeason]||"✨",
+      gender:nrGender,
+      stability:"٢٤ ساعة",
+      rating:nrRating,
+      description:nrDesc||"مزيج مخبري مخصص",
+      color:"#8B4513",
+      ingredients:nrIngs,
+      steps:["أضف الزيوت والمكونات الثقيلة للمخبر","حرك بلطف واتركه يعتق ٧ أيام"]
+    }]);
+    setShowAddRecipe(false);setNrName("");setNrDesc("");setNrIngs([]);
+    triggerToast("📋 تم حفظ الوصفة الجديدة بنجاح!");
+  };
+
+  const addIngredient=()=>{
+    if(!niName||!niBrand)return;
+    const id="custom_"+Date.now();
+    const newIng={
+      id:id,
+      name:niName,
+      brand:niBrand,
+      cat:niCat,
+      stock:niStock,
+      unit:niUnit,
+      color:niColor,
+      price:niPrice,
+      note:niNote
+    };
+    setIngredients(p=>[...p,newIng]);
+    setStock(p=>({...p,[id]:niStock}));
+    setShowAddIng(false);setNiName("");setNiBrand("");setNiNote("");
+    triggerToast(`🏺 تم إضافة ${niName} إلى الرفوف`);
+  };
+
+  // Lab Calculation
+  const totalLabVolume = labMix.reduce((s,i)=>s+i.amount,0);
+  const labCost = labMix.reduce((s,i)=>{
+    const ing = getIng(i.id);
+    return s + ((ing?.price||0)*i.amount);
+  },0);
+  
+  // Concentration Calculation
+  const solventVolume = labMix.filter(i=>getIng(i.id)?.cat==="حامل").reduce((s,i)=>s+i.amount,0);
+  const concentrationPercentage = totalLabVolume > 0 ? (((totalLabVolume - solventVolume)/totalLabVolume)*100).toFixed(0) : 0;
+  
+  const getPerfumeType = (pct) => {
+    if (pct >= 30) return "Extrait de Parfum (مركز جداً)";
+    if (pct >= 20) return "Eau de Parfum (EDP)";
+    if (pct >= 15) return "Eau de Toilette (EDT)";
+    return "Eau de Cologne / خفيف";
+  };
+
+  const inp={background:"#fff8f0",border:"1.5px solid #D4AF37",borderRadius:"8px",padding:"7px 10px",fontSize:"0.82rem",color:"#3a1a00",width:"100%",outline:"none",direction:"rtl",fontFamily:"Georgia,serif"};
+  const tabs=[{id:"home",icon:"🪵",label:"الرئيسية"},{id:"recipes",icon:"📋",label:"الوصفات"},{id:"inventory",icon:"🏺",label:"المخزون"},{id:"lab",icon:"🧪",label:"المختبر"},{id:"production",icon:"🏭",label:"الإنتاج"}];
+
+  return(
+    <div style={{minHeight:"100vh",color:"#3a1a00",direction:"rtl",paddingBottom:"40px"}}>
+      
+      {/* Toast Alert */}
+      {toast && <div className="toast-bar fade">✨ {toast}</div>}
+
+      {/* Header */}
+      <div className="no-print" style={{background:"linear-gradient(180deg,#fff8f0,#fdf0dc)",borderBottom:"2px solid #D4AF37",padding:"12px 12px 8px",textAlign:"center",boxShadow:"0 2px 20px #D4AF3720",position:"sticky",top:0,zIndex:100}}>
+        <div style={{display:"flex",justifyContent:"center",marginBottom:"2px"}}>
+          <Logo size={52} name={logoName} sub={logoSub}/>
+        </div>
+        <h1 style={{fontSize:"1.3rem",color:"#8B4513",margin:"0 0 1px",letterSpacing:"0.1em"}}>{logoName}</h1>
+        <p style={{color:"#D4AF37",margin:0,fontSize:"0.6rem",letterSpacing:"0.3em"}}>{logoSub}</p>
+      </div>
+
+      {/* Tabs Navigation */}
+      <div className="no-print" style={{display:"flex",background:"#fff8f0",borderBottom:"1px solid #e8d5a3",position:"sticky",top:"98px",zIndex:99,overflowX:"auto"}}>
+        {tabs.map(t=>(
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setShowAddRecipe(false);setShowAddIng(false);}} style={{flex:"1",padding:"10px 2px",background:tab===t.id?"linear-gradient(180deg,#fdf0dc,#fae8cc)":"transparent",border:"none",color:tab===t.id?"#8B4513":"#c8a46a",fontSize:"0.65rem",cursor:"pointer",borderBottom:tab===t.id?"2.5px solid #8B4513":"2px solid transparent",display:"flex",flexDirection:"column",alignItems:"center",gap:"1px",whiteSpace:"nowrap"}}>
+            <span style={{fontSize:"1.1rem"}}>{t.icon}</span>{t.label}
+          </button>
+        ))}
+      </div>
+
+      <div style={{padding:"12px",maxWidth:"480px",margin:"0 auto"}}>
+
+        {/* ===== HOME TAB ===== */}
+        {tab==="home"&&(
+          <div className="fade">
+            {/* 3) Low Stock Notification */}
+            {lowStock.length>0&&(
+              <div className="fade" style={{background:"#fff3f3",border:"1px solid #e88",padding:"12px",borderRadius:"12px",marginBottom:"14px",boxShadow:"0 2px 10px rgba(200,0,0,0.05)"}}>
+                <div style={{color:"#c00",fontWeight:"bold",fontSize:"0.82rem",marginBottom:"6px",display:"flex",alignItems:"center",gap:"5px"}}>
+                  <span>⚠️</span> نفاد وشيك لبعض المكونات الحساسة:
+                </div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:"6px"}}>
+                  {lowStock.map(i=>(
+                    <span key={i.id} style={{fontSize:"0.68rem",background:"#ffe4e4",color:"#b00",padding:"2px 8px",borderRadius:"20px",border:"1px solid #f9c0c0"}}>
+                      • {i.name} ({stock[i.id]||0} {i.unit})
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div style={{background:"linear-gradient(135deg,#1a0800,#3a1a05)",borderRadius:"16px",padding:"20px",marginBottom:"14px",textAlign:"center",position:"relative"}}>
+              <Logo size={80} name={logoName} sub={logoSub}/>
+              <h2 style={{color:"#D4AF37",fontSize:"1.1rem",margin:"10px 0 4px"}}>{logoName}</h2>
+              <p style={{color:"#c8a46a",fontSize:"0.75rem"}}>مختبر عطور متكامل ومراقب ذكي للمخزون والتكلفة الفورية</p>
+            </div>
+
+            {/* Customization Panel */}
+            <div style={{background:"#fff8f0",border:"1.5px solid #D4AF37",borderRadius:"14px",padding:"14px",marginBottom:"14px"}}>
+              <h3 style={{color:"#8B4513",fontSize:"0.85rem",marginBottom:"10px"}}>✦ هوية الممتلكات (اللوجو)</h3>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
+                <div>
+                  <label style={{fontSize:"0.65rem",color:"#8B4513"}}>اسم المتجر/المختبر</label>
+                  <input value={logoName} onChange={e=>setLogoName(e.target.value)} style={inp}/>
+                </div>
+                <div>
+                  <label style={{fontSize:"0.65rem",color:"#8B4513"}}>الرمز الإنجليزي</label>
+                  <input value={logoSub} onChange={e=>setLogoSub(e.target.value)} style={inp}/>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Insights */}
+            <div style={{background:"#fff8f0",border:"1px solid #D4AF37",borderRadius:"14px",padding:"14px"}}>
+              <h3 style={{color:"#8B4513",fontSize:"0.85rem",marginBottom:"8px"}}>💡 حكمة التعتيق والتثبيت</h3>
+              <p style={{color:"#7a5a30",fontSize:"0.75rem",lineHeight:"1.6"}}>
+                تعتمد جودة دهن العود وثباته على التوازن بين الجزيئات الفوقية (الفوحان الفوري كورد الطائف) والقواعد التثبيتية العميقة مثل <strong>Ambermor EX</strong>. استخدم حاسبة المختبر المرفقة لضبط معايير التصنيف الرسمية بدقة متناهية.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ===== RECIPES TAB ===== */}
+        {tab==="recipes"&&!selectedRecipe&&!showAddRecipe&&(
+          <div className="fade">
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
+              <h2 style={{color:"#8B4513",fontSize:"0.95rem"}}>وصفاتك المحفوظة ({recipes.length})</h2>
+              <div style={{display:"flex",gap:"5px"}}>
+                <button onClick={()=>setEditMode(!editMode)} style={{background:editMode?"#8B4513":"#fdf0dc",border:"1px solid #8B4513",color:editMode?"#fff":"#8B4513",padding:"4px 10px",borderRadius:"20px",fontSize:"0.7rem",cursor:"pointer"}}>✏️ {editMode?"قفل":"تعديل"}</button>
+                <button onClick={()=>setShowAddRecipe(true)} style={{background:"#8B4513",border:"none",color:"#fff",padding:"4px 10px",borderRadius:"20px",fontSize:"0.7rem",cursor:"pointer"}}>+ وصفة</button>
+              </div>
+            </div>
+
+            {recipes.map(r=>{
+              // 5) Formula Cost Calculation
+              const cost = r.ingredients.reduce((s,ri)=>{
+                const ing=getIng(ri.id);
+                return s + ((ing?.price||0)*ri.amount);
+              },0);
+
+              return (
+                <div key={r.id} style={{background:"#fff8f0",border:`1.5px solid ${canMake(r)?"#D4AF37":"#e8a0a0"}`,borderRadius:"12px",padding:"12px",marginBottom:"8px"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                    <div onClick={()=>{if(!editMode){setSelectedRecipe(r);setCurrentStep(0);}}} style={{flex:1,cursor:"pointer"}}>
+                      <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px"}}>
+                        <div style={{width:"9px",height:"9px",borderRadius:"50%",background:r.color}}/>
+                        <span style={{fontSize:"0.92rem",color:"#8B4513",fontWeight:"bold"}}>{r.name}</span>
+                        <span>{r.seasonIcon}</span>
+                        {/* 6) Star Rating Presentation */}
+                        <span style={{marginRight:"auto",fontSize:"0.75rem"}}>{"⭐".repeat(r.rating||5)}</span>
+                      </div>
+                      <div style={{fontSize:"0.72rem",color:"#7a5a30",marginBottom:"6px"}}>{r.description}</div>
+                      <div style={{display:"flex",gap:"4px",flexWrap:"wrap"}}>
+                        <span style={{background:"#fdf0dc",color:"#8B4513",padding:"1px 6px",borderRadius:"20px",fontSize:"0.6rem"}}>⏱ {r.stability}</span>
+                        <span style={{background:"#fdf0dc",color:"#556B2F",padding:"1px 6px",borderRadius:"20px",fontSize:"0.6rem"}}>👤 {r.gender}</span>
+                        <span style={{background:"#eaeaea",color:"#333",padding:"1px 6px",borderRadius:"20px",fontSize:"0.6rem"}}>💰 التكلفة العيارية: {cost.toFixed(1)} ريال</span>
+                        <span style={{background:canMake(r)?"#e8f5e0":"#fde8e8",color:canMake(r)?"#3a7a00":"#a00000",padding:"1px 6px",borderRadius:"20px",fontSize:"0.6rem",fontWeight:"bold"}}>{canMake(r)?"✅ مخزون كافٍ":"⚠️ نقص خامات"}</span>
+                      </div>
+                    </div>
+                    {editMode&&<button onClick={()=>{if(window.confirm("هل تود حذف هذه التركيبة نهائياً؟"))setRecipes(p=>p.filter(x=>x.id!==r.id));}} style={{background:"#fee",border:"1px solid #e88",color:"#c00",width:"24px",height:"24px",borderRadius:"50%",cursor:"pointer",fontSize:"0.7rem",marginRight:"6px"}}>🗑</button>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Add Recipe View */}
+        {tab==="recipes"&&showAddRecipe&&(
+          <div className="fade">
+            <button onClick={()=>setShowAddRecipe(false)} style={{background:"none",border:"1px solid #D4AF37",color:"#8B4513",padding:"4px 10px",borderRadius:"20px",marginBottom:"10px",fontSize:"0.75rem",cursor:"pointer"}}>← إلغاء</button>
+            <h3 style={{color:"#8B4513",marginBottom:"10px",fontSize:"0.9rem"}}>✦ صياغة وتركيب عطر جديد</h3>
+            
+            <div style={{marginBottom:"7px"}}>
+              <label style={{fontSize:"0.68rem",color:"#8B4513"}}>اسم التوليفة العطرية *</label>
+              <input value={nrName} onChange={e=>setNrName(e.target.value)} placeholder="مثال: مخلط غالي" style={inp}/>
+            </div>
+            <div style={{marginBottom:"7px"}}>
+              <label style={{fontSize:"0.68rem",color:"#8B4513"}}>النوتات والوصف المختصر</label>
+              <input value={nrDesc} onChange={e=>setNrDesc(e.target.value)} placeholder="وصف الخصائص والروح العطرية" style={inp}/>
+            </div>
+
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"6px",marginBottom:"10px"}}>
+              <div>
+                <label style={{fontSize:"0.65rem"}}>الموسم</label>
+                <select value={nrSeason} onChange={e=>setNrSeason(e.target.value)} style={inp}>{["صيف","شتاء","ربيع","خريف"].map(s=><option key={s}>{s}</option>)}</select>
+              </div>
+              <div>
+                <label style={{fontSize:"0.65rem"}}>الفئة</label>
+                <select value={nrGender} onChange={e=>setNrGender(e.target.value)} style={inp}>{["للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select>
+              </div>
+              <div>
+                <label style={{fontSize:"0.65rem"}}>التقييم الأولي</label>
+                <select value={nrRating} onChange={e=>setNrRating(+e.target.value)} style={inp}>{[5,4,3,2,1].map(n=><option key={n} value={n}>{"⭐".repeat(n)}</option>)}</select>
+              </div>
+            </div>
+
+            {/* Ingredients Selection Area */}
+            <div style={{background:"#fff8f0",border:"1px solid #e8d5a3",borderRadius:"10px",padding:"10px",marginBottom:"10px"}}>
+              <h4 style={{color:"#8B4513",fontSize:"0.75rem",marginBottom:"6px"}}>تحديد نسب الخامات المصنعية</h4>
+              <div style={{display:"grid",gridTemplateColumns:"2.5fr 1fr auto",gap:"5px",alignItems:"center"}}>
+                <select value={nrIngId} onChange={e=>setNrIngId(e.target.value)} style={{...inp,fontSize:"0.72rem"}}>{ingredients.map(i=><option key={i.id} value={i.id}>{i.name} ({i.brand})</option>)}</select>
+                <input type="number" value={nrIngAmt} onChange={e=>setNrIngAmt(+e.target.value)} min="0.1" step="0.1" style={{...inp,textAlign:"center"}}/>
+                <button onClick={()=>{
+                  if(nrIngs.find(i=>i.id===nrIngId)){
+                    setNrIngs(p=>p.map(i=>i.id===nrIngId?{...i,amount:+(i.amount+nrIngAmt).toFixed(1)}:i));
+                  }else{
+                    setNrIngs(p=>[...p,{id:nrIngId,amount:nrIngAmt}]);
+                  }
+                }} style={{background:"#8B4513",border:"none",color:"#fff",width:"30px",height:"30px",borderRadius:"50%",cursor:"pointer",fontSize:"1.1rem"}}>+</button>
+              </div>
+
+              <div style={{marginTop:"8px"}}>
+                {nrIngs.map(ri=>{
+                  const ing=getIng(ri.id);
+                  return (
+                    <div key={ri.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 8px",background:"#fdf0dc",borderRadius:"6px",marginBottom:"3px",fontSize:"0.72rem"}}>
+                      <span>{ing?.name}</span>
+                      <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+                        <span style={{fontWeight:"bold",color:"#8B4513"}}>{ri.amount} مل/جم</span>
+                        <button onClick={()=>setNrIngs(p=>p.filter(i=>i.id!==ri.id))} style={{background:"none",border:"none",color:"#c00",cursor:"pointer"}}>✕</button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <button onClick={addRecipe} disabled={!nrName||nrIngs.length===0} style={{width:"100%",padding:"10px",background:nrName&&nrIngs.length>0?"#8B4513":"#e8d5a3",border:"none",color:"#fff",borderRadius:"8px",cursor:"pointer",fontWeight:"bold"}}>✦ تثبيت وحفظ في السجل</button>
+          </div>
+        )}
+
+        {/* Detailed Formula View */}
+        {tab==="recipes"&&selectedRecipe&&!showAddRecipe&&(
+          <div className="fade">
+            <div className="no-print" style={{display:"flex",justifyContent:"space-between",marginBottom:"10px"}}>
+              <button onClick={()=>setSelectedRecipe(null)} style={{background:"none",border:"1px solid #D4AF37",color:"#8B4513",padding:"4px 12px",borderRadius:"20px",fontSize:"0.75rem",cursor:"pointer"}}>← رجوع</button>
+              {/* 4) Exporting PDF Feature */}
+              <button onClick={()=>window.print()} style={{background:"#556B2F",color:"#fff",border:"none",padding:"4px 12px",borderRadius:"20px",fontSize:"0.75rem",cursor:"pointer",fontWeight:"bold"}}>🖨 تصدير كـ PDF</button>
+            </div>
+
+            <div style={{textAlign:"center",marginBottom:"12px",background:"#fff8f0",padding:"14px",borderRadius:"14px",border:"1px solid #D4AF37"}}>
+              <div style={{fontSize:"2rem"}}>{selectedRecipe.seasonIcon}</div>
+              <h2 style={{color:"#8B4513",fontSize:"1.1rem"}}>{selectedRecipe.name}</h2>
+              <p style={{color:"#7a5a30",fontSize:"0.75rem"}}>{selectedRecipe.description}</p>
+              <div style={{fontSize:"0.75rem",color:"#c8a46a",marginTop:"4px"}}>التقييم الحالي: {"⭐".repeat(selectedRecipe.rating||5)}</div>
+            </div>
+
+            <div className="no-print" style={{background:"#fff8f0",border:"1px solid #e8d5a3",borderRadius:"10px",padding:"10px",marginBottom:"10px"}}>
+              <div style={{color:"#8B4513",fontSize:"0.72rem",textAlign:"center",marginBottom:"6px",fontWeight:"bold"}}>حجم الدفعة المستهدفة للإنتاج المعملي</div>
+              <div style={{display:"flex",justifyContent:"center",gap:"6px"}}>
+                {[25,50,100,200].map(s=>(
+                  <button key={s} onClick={()=>setBatchSize(s)} style={{background:batchSize===s?"#8B4513":"#fdf0dc",border:`1px solid #8B4513`,color:batchSize===s?"#fff":"#8B4513",padding:"4px 10px",borderRadius:"20px",fontSize:"0.72rem",cursor:"pointer"}}>{s} مل</button>
+                ))}
+              </div>
+            </div>
+
+            <h3 style={{color:"#8B4513",fontSize:"0.8rem",marginBottom:"5px"}}>📦 نسب المواد والتكلفة المالية</h3>
+            {selectedRecipe.ingredients.map(ri=>{
+              const ing=getIng(ri.id);
+              const needed=ri.amount*scale;
+              const avail=stock[ri.id]||0;
+              const ok=avail>=needed;
+              const componentCost=((ing?.price||0)*needed);
+              
+              return (
+                <div key={ri.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 10px",marginBottom:"4px",borderRadius:"8px",background:ok?"#f4fbf0":"#fff0f0",border:`1px solid ${ok?"#b8e0a0":"#f0b0b0"}`}}>
+                  <div>
+                    <div style={{fontSize:"0.78rem",fontWeight:"500"}}>{ing?.name}</div>
+                    <div style={{fontSize:"0.6rem",color:"#888"}}>{ing?.brand} • التكلفة: {componentCost.toFixed(2)} ريال</div>
+                  </div>
+                  <div style={{textAlign:"left"}}>
+                    <div style={{fontSize:"0.78rem",fontWeight:"bold",color:"#8B4513"}}>{needed.toFixed(1)} مل/جم</div>
+                    <div style={{fontSize:"0.6rem",color:ok?"#2d6a4f":"#c00"}}>المتوفر: {avail}</div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* 5) Live Calculated Cost Summary */}
+            <div style={{background:"#linear-gradient(135deg,#fdf0dc,#fae8cc)",border:"1.5px solid #D4AF37",borderRadius:"8px",padding:"8px",textAlign:"center",color:"#8B4513",fontSize:"0.82rem",fontWeight:"bold",marginTop:"8px"}}>
+              📊 إجمالي تكلفة هذه الدفعة ({batchSize}مل) = {(selectedRecipe.ingredients.reduce((s,ri)=>s+((getIng(ri.id)?.price||0)*ri.amount*scale),0)).toFixed(2)} ريال سعودي
+            </div>
+
+            <h3 style={{color:"#8B4513",fontSize:"0.8rem",marginTop:"12px",marginBottom:"5px"}}>📝 بروتوكول الخلط التدريجي</h3>
+            {selectedRecipe.steps.map((step,i)=>(
+              <div key={i} onClick={()=>setCurrentStep(i)} style={{display:"flex",gap:"8px",padding:"8px",marginBottom:"3px",borderRadius:"6px",cursor:"pointer",background:currentStep===i?"#fdf0dc":"#fff8f0",border:`1px solid ${currentStep===i?"#D4AF37":"#e8d5a3"}`}}>
+                <div style={{minWidth:"18px",height:"18px",borderRadius:"50%",background:currentStep>=i?"#8B4513":"#ccc",color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.6rem",fontWeight:"bold"}}>{i+1}</div>
+                <span style={{fontSize:"0.74rem",color:currentStep===i?"#000":"#666"}}>{step}</span>
+              </div>
+            ))}
+
+            <div className="no-print" style={{display:"flex",gap:"6px",marginTop:"12px"}}>
+              <button onClick={()=>setCurrentStep(p=>Math.min(selectedRecipe.steps.length-1,p+1))} style={{flex:1,padding:"10px",background:"#fdf0dc",border:"1px solid #D4AF37",borderRadius:"8px",color:"#8B4513",fontSize:"0.78rem",cursor:"pointer"}}>الخطوة التالية ←</button>
+              <button onClick={()=>produce(selectedRecipe)} disabled={!canMake(selectedRecipe)} style={{flex:1,padding:"10px",background:canMake(selectedRecipe)?"#8B4513":"#ccc",border:"none",borderRadius:"8px",color:"#fff",fontSize:"0.78rem",fontWeight:"bold",cursor:"pointer"}}>🏭 تنفيذ وسحب المخزون</button>
+            </div>
+          </div>
+        )}
+
+        {/* ===== INVENTORY TAB ===== */}
+        {tab==="inventory"&&!showAddIng&&(
+          <div className="fade">
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"8px"}}>
+              <h2 style={{color:"#8B4513",fontSize:"0.95rem"}}>خزانة العطور والمواد الخام</h2>
+              <button onClick={()=>setShowAddIng(true)} style={{background:"#8B4513",border:"none",color:"#fff",padding:"4px 10px",borderRadius:"20px",fontSize:"0.7rem",cursor:"pointer"}}>+ إضافة خام</button>
+            </div>
+
+            {/* 2) Search Bar Component */}
+            <input 
+              placeholder="🔍 ابحث عن مادة، عود، شركة مصنعة..." 
+              value={search} 
+              onChange={e=>setSearch(e.target.value)} 
+              style={{...inp,marginBottom:"10px",background:"#fff",boxShadow:"0 2px 5px rgba(0,0,0,0.05)"}}
+            />
+
+            <div style={{display:"flex",gap:"4px",overflowX:"auto",marginBottom:"10px",paddingBottom:"4px"}}>
+              {CATS.map(c=>(
+                <button key={c} onClick={()=>setCatFilter(c)} style={{background:catFilter===c?"#8B4513":"#fff8f0",border:`1px solid #D4AF37`,color:catFilter===c?"#fff":"#8B4513",padding:"4px 10px",borderRadius:"20px",fontSize:"0.65rem",cursor:"pointer",whiteSpace:"nowrap"}}>{c}</button>
+              ))}
+            </div>
+
+            {filteredIngs.map(ing=>{
+              const current=stock[ing.id]||0;
+              const pct=Math.min(100,(current/100)*100);
+              return (
+                <div key={ing.id} style={{background:"#fff8f0",border:"1px solid #e8d5a3",borderRadius:"10px",padding:"8px 10px",marginBottom:"5px"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:"6px"}}>
+                      <div style={{width:"10px",height:"10px",borderRadius:"50%",background:ing.color}}/>
+                      <div>
+                        <div style={{fontSize:"0.78rem",fontWeight:"bold"}}>{ing.name}</div>
+                        <div style={{fontSize:"0.6rem",color:"#888"}}>{ing.brand} • التكلفة: {ing.price||0} ريال/{ing.unit}</div>
+                      </div>
+                    </div>
+
+                    <div style={{display:"flex",alignItems:"center",gap:"4px"}}>
+                      <button onClick={()=>setStock(p=>({...p,[ing.id]:Math.max(0,(p[ing.id]||0)-5)}))} style={{background:"#fde8e8",border:"1px solid #e8a0a0",color:"#c00",width:"22px",height:"22px",borderRadius:"50%",cursor:"pointer"}}>−</button>
+                      <input type="number" value={current} onChange={e=>setStock(p=>({...p,[ing.id]:Math.max(0,+e.target.value)}))} style={{width:"42px",textAlign:"center",background:"#fff",border:"1px solid #D4AF37",borderRadius:"4px",fontSize:"0.72rem",fontFamily:"Georgia"}}/>
+                      <span style={{fontSize:"0.6rem",color:"#666"}}>{ing.unit}</span>
+                      <button onClick={()=>setStock(p=>({...p,[ing.id]:(p[ing.id]||0)+5}))} style={{background:"#e8f5e0",border:"1px solid #a0d070",color:"#3a7a00",width:"22px",height:"22px",borderRadius:"50%",cursor:"pointer"}}>+</button>
+                    </div>
+                  </div>
+                  <div style={{background:"#e0e0e0",borderRadius:"4px",height:"4px",marginTop:"6px"}}>
+                    <div style={{height:"100%",borderRadius:"4px",width:`${pct}%`,background:pct>50?"#2d6a4f":pct>15?"#D4AF37":"#c00"}}/>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Add Ingredient View */}
+        {tab==="inventory"&&showAddIng&&(
+          <div className="fade">
+            <button onClick={()=>setShowAddIng(false)} style={{background:"none",border:"1px solid #D4AF37",color:"#8B4513",padding:"4px 10px",borderRadius:"20px",marginBottom:"10px",fontSize:"0.75rem",cursor:"pointer"}}>← رجوع</button>
+            <h3 style={{color:"#8B4513",marginBottom:"10px",fontSize:"0.9rem"}}>🏺 تسجيل جزيء / مادة عطرية جديدة</h3>
+            
+            <div style={{marginBottom:"6px"}}>
+              <label style={{fontSize:"0.65rem"}}>الاسم المعملي (مثل: Pure Musk) *</label>
+              <input value={niName} onChange={e=>setNiName(e.target.value)} style={inp}/>
+            </div>
+            <div style={{marginBottom:"6px"}}>
+              <label style={{fontSize:"0.65rem"}}>المصدر / الشركة المصنعة (مثل: Givaudan) *</label>
+              <input value={niBrand} onChange={e=>setNiBrand(e.target.value)} style={inp}/>
+            </div>
+
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px",marginBottom:"6px"}}>
+              <div>
+                <label style={{fontSize:"0.65rem"}}>التصنيف النوتي</label>
+                <select value={niCat} onChange={e=>setNiCat(e.target.value)} style={inp}>{CATS.filter(c=>c!=="الكل").map(c=><option key={c}>{c}</option>)}</select>
+              </div>
+              <div>
+                <label style={{fontSize:"0.65rem"}}>سعر الوحدة الافتراضي (ريال)</label>
+                <input type="number" value={niPrice} onChange={e=>setNiPrice(+e.target.value)} style={inp}/>
+              </div>
+            </div>
+
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px",marginBottom:"10px"}}>
+              <div>
+                <label style={{fontSize:"0.65rem"}}>المخزون المتوفر</label>
+                <input type="number" value={niStock} onChange={e=>setNiStock(+e.target.value)} style={inp}/>
+              </div>
+              <div>
+                <label style={{fontSize:"0.65rem"}}>مؤشر اللون البصري</label>
+                <input type="color" value={niColor} onChange={e=>setNiColor(e.target.value)} style={{...inp,padding:"2px",height:"35px"}}/>
+              </div>
+            </div>
+
+            {/* Correct object mapping as recommended */}
+            <button onClick={addIngredient} disabled={!niName||!niBrand} style={{width:"100%",padding:"10px",background:"#8B4513",color:"#fff",border:"none",borderRadius:"8px",fontWeight:"bold",cursor:"pointer"}}>🏺 تثبيت المادة في المستودع</button>
+          </div>
+        )}
+
+        {/* ===== 10) EXPERIMENTAL LAB TAB (مختبر التركيبات الفوري) ===== */}
+        {tab==="lab"&&(
+          <div className="fade">
+            <div style={{textAlign:"center",marginBottom:"12px"}}>
+              <span style={{fontSize:"2rem"}}>🧪</span>
+              <h2 style={{color:"#8B4513",fontSize:"1.1rem"}}>مختبر الكيمياء والتراكيز الفورية</h2>
+              <p style={{color:"#7a5a30",fontSize:"0.72rem"}}>صمّم خلطتك، قِس تركيزها المئوي واعرف تصنيفها قبل الإنتاج</p>
+            </div>
+
+            <div style={{background:"#fff8f0",border:"1.5px solid #D4AF37",borderRadius:"12px",padding:"12px",marginBottom:"12px"}}>
+              <h3 style={{color:"#8B4513",fontSize:"0.82rem",marginBottom:"6px"}}>➕ حقن مادة تجريبية في المخبار</h3>
+              <div style={{display:"grid",gridTemplateColumns:"2fr 1fr auto",gap:"5px",alignItems:"center"}}>
+                <select value={labSelectedIng} onChange={e=>setLabSelectedIng(e.target.value)} style={inp}>
+                  {ingredients.map(i=><option key={i.id} value={i.id}>{i.name} ({i.cat})</option>)}
+                </select>
+                <input type="number" value={labAmount} onChange={e=>setLabAmount(+e.target.value)} min="1" style={{...inp,textAlign:"center"}}/>
+                <button onClick={()=>{
+                  const exists = labMix.find(i=>i.id===labSelectedIng);
+                  if(exists){
+                    setLabMix(p=>p.map(i=>i.id===labSelectedIng?{...i,amount:i.amount+labAmount}:i));
+                  } else {
+                    setLabMix(p=>[...p,{id:labSelectedIng,amount:labAmount}]);
+                  }
+                }} style={{background:"#D4AF37",border:"none",color:"#000",padding:"8px 12px",borderRadius:"6px",cursor:"pointer",fontWeight:"bold"}}>+</button>
+              </div>
+            </div>
+
+            {/* Lab Analytics & Results */}
+            <div style={{background:"#1a0800",color:"#fff",borderRadius:"12px",padding:"14px",boxShadow:"0 4px 15px rgba(0,0,0,0.2)",marginBottom:"12px"}}>
+              <h3 style={{color:"#D4AF37",fontSize:"0.85rem",marginBottom:"8px",borderBottom:"1px solid #D4AF3740",paddingBottom:"4px"}}>📊 التحليل المخبري الذكي (AI Accords)</h3>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.78rem",marginBottom:"4px"}}>
+                <span>الحجم الكلي للمزيج:</span>
+                <span style={{color:"#D4AF37",fontWeight:"bold"}}>{totalLabVolume} مل</span>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.78rem",marginBottom:"4px"}}>
+                <span>نسبة تركيز الزيت العطري النقي:</span>
+                <span style={{color:"#a0d070",fontWeight:"bold"}}>{concentrationPercentage}%</span>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.78rem",marginBottom:"4px"}}>
+                <span>التصنيف المعتمد في فرنسا:</span>
+                <span style={{color:"#fff",fontWeight:"500"}}>{getPerfumeType(concentrationPercentage)}</span>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.78rem"}}>
+                <span>التكلفة التقديرية الفورية:</span>
+                <span style={{color:"#D4AF37",fontWeight:"bold"}}>{labCost.toFixed(2)} ريال</span>
+              </div>
+            </div>
+
+            {/* Active Lab Formulas */}
+            {labMix.length > 0 ? (
+              <div style={{background:"#fff8f0",border:"1px solid #e8d5a3",borderRadius:"11px",padding:"10px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:"6px"}}>
+                  <span style={{fontSize:"0.75rem",fontWeight:"bold",color:"#8B4513"}}>المكونات الحالية في الأنبوب</span>
+                  <button onClick={()=>setLabMix([])} style={{background:"none",border:"none",color:"#c00",fontSize:"0.68rem",cursor:"pointer"}}>🗑 تصفير المخبار</button>
+                </div>
+                {labMix.map(item=>{
+                  const ing = getIng(item.id);
+                  return (
+                    <div key={item.id} style={{display:"flex",justifyContent:"space-between",fontSize:"0.73rem",padding:"4px 0",borderBottom:"1px solid #f0e8d8"}}>
+                      <span>• {ing?.name} ({ing?.cat})</span>
+                      <span style={{fontWeight:"bold"}}>{item.amount} مل</span>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div style={{textAlign:"center",padding:"20px",color:"#a07040",fontSize:"0.72rem",background:"#fff8f0",borderRadius:"10px",border:"1px dashed #D4AF37"}}>
+                المخبار فارغ تماماً. قم بضخ بعض المكونات والزيوت لتبدأ المحاكاة الحية.
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ===== PRODUCTION LOG TAB ===== */}
+        {tab==="production"&&(
+          <div className="fade">
+            <h2 style={{color:"#8B4513",fontSize:"0.95rem",marginBottom:"10px"}}>سجلات العمليات خط الإنتاج الفعلي</h2>
+            
+            {productionLog.length>0?(
+              <div style={{background:"#fff8f0",border:"1px solid #e8d5a3",borderRadius:"11px",padding:"12px"}}>
+                <h3 style={{color:"#8B4513",fontSize:"0.82rem",marginBottom:"8px"}}>📊 أرشيف الدفعات المنتجة</h3>
+                {productionLog.map(log=>(
+                  <div key={log.id} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:"1px solid #f0e8d8",fontSize:"0.75rem"}}>
+                    <span>{log.recipe}</span>
+                    <div style={{textAlign:"left"}}>
+                      <span style={{color:"#8B4513",fontWeight:"bold"}}>{log.amount} مل</span>
+                      <div style={{color:"#c8a46a",fontSize:"0.6rem"}}>{log.date}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ):(
+              <div style={{textAlign:"center",color:"#c8a46a",padding:"30px",fontSize:"0.75rem"}}>
+                لم يتم تسجيل أي عمليات إنتاج حية لهذا اليوم.<br/>توجه لتبويب الوصفات واختر تركيبتك لتشغيل المصنع البشري المخصص.
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(React.createElement(App),document.getElementById('root'));
+</script>
+</body>
+</html>
