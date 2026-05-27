@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="دار الدهن"/>
+<meta name="theme-color" content="#3A1A05"/>
+<title>دار الدهن — مختبر العطور التراثي</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+  background: linear-gradient(160deg, rgba(26, 8, 0, 0.97), rgba(58, 26, 5, 0.97)), url('https://images.unsplash.com/photo-1515377905703-c4788e51af15');
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Alexandria', sans-serif;
+  color: #fff8f0;
+  overflow-x: hidden;
+}
+input,select,button,textarea{font-family:'Alexandria',sans-serif; outline: none;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:#D4AF37;border-radius:4px;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulseGlow{0%,100%{transform:scale(1);opacity:0.9;}50%{transform:scale(1.02);opacity:1;filter:drop-shadow(0 0 10px #D4AF37);}}
+
+.fade{animation:fadeIn 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;}
+.pulse-glow{animation:pulseGlow 3s ease-in-out infinite;}
+
+#splash-screen {
+  position: fixed;
+  top:0;left:0;width:100vw;height:100vh;
+  background: #120500;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease;
+}
+
+.glass-card {
+  background: rgba(45, 25, 15, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(214, 175, 55, 0.25);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0; height: 76px;
+  background: rgba(20, 6, 0, 0.95);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(214, 175, 55, 0.3);
+  display: flex; justify-content: space-around; align-items: center;
+  padding-bottom: 14px; z-index: 9999;
+}
+.nav-item {
+  background: none; border: none; color: #c8a46a;
+  display: flex; flex-direction: column; align-items: center;
+  font-size: 0.68rem; font-weight: 400; cursor: pointer;
+  transition: all 0.3s ease; gap: 4px;
+}
+.nav-item.active {
+  color: #D4AF37; transform: translateY(-2px);
+  text-shadow: 0 0 8px rgba(214,175,55,0.4);
+}
+.nav-icon { font-size: 1.3rem; }
+
+.login-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="splash-screen">
+  <div class="pulse-glow" style="text-align:center;">
+    <svg width="80" height="80" viewBox="0 0 140 140" fill="none">
+      <circle cx="70" cy="70" r="65" fill="none" stroke="#D4AF37" stroke-width="2"/>
+      <path d="M70 25 Q55 40 52 60 Q60 50 70 45 Q80 50 88 60 Q85 40 70 25Z" fill="#D4AF37"/>
+    </svg>
+    <h2 style="color:#D4AF37; font-size:1.3rem; margin-top:12px; font-weight:600;">دار الدهن</h2>
+    <p style="color:#c8a46a; font-size:0.7rem; letter-spacing:3px;">MUSHAF AL-DEHN</p>
+  </div>
+</div>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splash-screen");
+    if(splash) {
+      splash.style.opacity = "0";
+      setTimeout(() => splash.remove(), 600);
+    }
+  }, 1200);
+});
+
+const { useState, useEffect } = React;
+
+const INITIAL_MASTER = [
+  {id:"amber_2000",name:"زيت عنبر 2000",brand:"محلي",cat:"تراثي",stock:50,unit:"مل",img:"https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=150&q=80"},
+  {id:"musk_climbing",name:"زيت مسك متسلق",brand:"محلي",cat:"تراثي",stock:80,unit:"مل",img:"https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=150&q=80"},
+  {id:"rose_istanbul",name:"زيت ورد إسطنبولي",brand:"محلي",cat:"زهري",stock:60,unit:"مل",img:"https://images.
