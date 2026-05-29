@@ -69,7 +69,7 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
     <path d="M70 118 L72 124 L78 124 L73 128 L75 134 L70 130 L65 134 L67 128 L62 124 L68 124 Z" fill="#D4AF37" opacity="0.7"/>
   </svg>
   <h2 style="color:#D4AF37;font-size:2rem;margin-top:16px;font-weight:700;">ضاوي دهن العود</h2>
-  <p style="color:#c8a46a;font-size:0.8rem;letter-spacing:4px;margin-top:6px;">DHAWI OUD</p>
+  <p style="color:#c8a46a;font-size:0.8rem;letter-spacing:4px;margin-top:6px;">DHAWI OUD OIL LAB</p>
 </div></div>
 <div id="root"></div>
 <script type="text/babel">
@@ -78,6 +78,35 @@ setTimeout(()=>{const s=document.getElementById("splash");if(s){s.style.opacity=
 
 const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
+
+const PENDING_PURCHASES_VERSION="blk_lux_01";
+// costs in SAR (product + proportional shipping). Luxodor shipped free.
+const PENDING_PURCHASES=[
+  // Bulkaroma Order 1 (shipping ₹4500=198 SAR, 4005g total)
+  {id:"labdanum",qty:200,cost:61},{id:"benzoin_a",qty:200,cost:58},
+  {id:"benzoin_b",qty:1000,cost:121},{id:"benzyl",qty:50,cost:14},
+  {id:"safraleine",qty:100,cost:284},{id:"vetiver",qty:100,cost:281},
+  {id:"crimson",qty:1000,cost:372},{id:"cardamom",qty:50,cost:187},
+  {id:"cmp121",qty:100,cost:67},{id:"metal_made",qty:1000,cost:338},
+  {id:"civettone",qty:5,cost:422},{id:"sleek_oud",qty:100,cost:43},
+  {id:"oud_mayor",qty:100,cost:69,newItem:{name:"OUD MAYOR",brand:"Bulkaroma",cat:"مستوحى",unit:"جم"}},
+  // Bulkaroma Order 2 (shipping ₹18830=829 SAR, 4165g total)
+  {id:"artessence",qty:200,cost:283},{id:"iso_e",qty:1000,cost:317},
+  {id:"sandal_indi",qty:500,cost:228},{id:"oud_synth",qty:100,cost:387},
+  {id:"black_agar",qty:50,cost:237},{id:"cmp91",qty:200,cost:185},
+  {id:"cmp90",qty:100,cost:88},{id:"cmp173",qty:100,cost:71},
+  {id:"pretty_oud",qty:50,cost:140},{id:"pea",qty:1000,cost:264},
+  {id:"wild_petal",qty:100,cost:38},{id:"amber_oud",qty:25,cost:10},
+  {id:"white_oudh",qty:25,cost:10},{id:"tonquitone",qty:10,cost:27},
+  {id:"cashmeran",qty:500,cost:445},{id:"patchouli",qty:100,cost:114},
+  {id:"ambermor",qty:100,cost:360},{id:"oliffac",qty:5,cost:30},
+  // Luxodor Order (free shipping, prices in SAR)
+  {id:"lux_symphony",qty:100,cost:176},{id:"lux_hindi_sweety",qty:100,cost:300},
+  {id:"lux_exclusif",qty:100,cost:158},{id:"lux_cambodi",qty:100,cost:300},
+  {id:"lux_hindi",qty:100,cost:300},{id:"lux_black",qty:100,cost:300},
+  {id:"lux_fixative",qty:100,cost:83},{id:"lux_greatness",qty:100,cost:161},
+  {id:"lux_afternoon",qty:100,cost:98},
+];
 
 const RAW=[
   ["oud_xx","دهن العود XX","شرفان","عود",180,500,"مل"],
@@ -133,6 +162,7 @@ const RAW=[
   ["civettone","Civettone","Bulkaroma","مسك",260,5,"جم"],
   ["maracuja","OUD MARACUJA","Bulkaroma","مستوحى",420,100,"جم"],
   ["sleek_oud","SLEEK OUD","Bulkaroma","مستوحى",380,100,"جم"],
+  ["oud_mayor","OUD MAYOR","Bulkaroma","مستوحى",0,0,"جم"],
   ["jojoba","زيت جوجوبا","محلي","حامل",60,50,"مل"],
   ["dpg","DPG ديوبي","محلي","حامل",40,200,"مل"],
   ["blend1","الخلطة الأولى (95مل)","صناعتي","خلطة",0,95,"مل"],
@@ -178,6 +208,21 @@ const INITIAL_RECIPES=[
 // ─── localStorage helpers ───────────────────────────────────────
 function lsGet(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback;}catch{return fallback;}}
 function lsSet(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch{}}
+function applyPendingPurchases(inv){
+  if(lsGet("dw_pp_ver","")===PENDING_PURCHASES_VERSION)return inv;
+  const map=new Map(inv.map(i=>[i.id,{...i}]));
+  PENDING_PURCHASES.forEach(p=>{
+    if(map.has(p.id)){
+      const i=map.get(p.id);
+      const nQty=i.qty+p.qty;const nPrice=i.price+p.cost;
+      map.set(p.id,{...i,qty:nQty,price:nPrice,stock:i.stock+p.qty,unitCost:nQty>0?nPrice/nQty:0});
+    } else if(p.newItem){
+      map.set(p.id,{id:p.id,...p.newItem,price:p.cost,qty:p.qty,stock:p.qty,ship:0,unitCost:p.qty>0?p.cost/p.qty:0});
+    }
+  });
+  lsSet("dw_pp_ver",PENDING_PURCHASES_VERSION);
+  return [...map.values()];
+}
 
 const Logo=({size=52})=>(
   <svg width={size} height={size} viewBox="0 0 140 140" fill="none">
@@ -202,7 +247,7 @@ function fmtDate(iso){
 
 // ─── notes classification (Top / Middle / Base) ─────────────────
 const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','oud_xx','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','oud_xx','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','oud_mayor']);
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 const NOTE_LABEL={top:"🔝 قمة",mid:"💫 قلب",base:"🪨 قاعدة"};
 
@@ -222,7 +267,7 @@ function App(){
   const [logged,setLogged]=useState(false);
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("inventory");
-  const [inv,setInv]=useState(()=>lsGet("dw_inv",buildInv()));
+  const [inv,setInv]=useState(()=>applyPendingPurchases(lsGet("dw_inv",buildInv())));
   const [recipes,setRecipes]=useState(()=>lsGet("dw_recipes",INITIAL_RECIPES));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
@@ -252,6 +297,10 @@ function App(){
   const [customers,setCustomers]=useState(()=>lsGet("dw_customers",[]));
   const [favoriteIds,setFavoriteIds]=useState(()=>lsGet("dw_favorites",[]));
   const [catalogMode,setCatalogMode]=useState(false);
+  const [catalogSearch,setCatalogSearch]=useState("");
+  const [catalogSeason,setCatalogSeason]=useState("الكل");
+  const [catalogGender,setCatalogGender]=useState("الكل");
+  const [catalogView,setCatalogView]=useState(null);
   const [qrRecipe,setQrRecipe]=useState(null);
   const [showShopList,setShowShopList]=useState(false);
   const [showSupplierCmp,setShowSupplierCmp]=useState(false);
@@ -513,6 +562,30 @@ function App(){
   const topRecipe=Object.entries(recipeFreq).sort((a,b)=>b[1]-a[1])[0];
   const totalPurchaseSpend=purchases.reduce((s,p)=>s+p.price,0);
 
+  // ── monthly profit report ───────────────────────────────────
+  const MONTH_NAMES=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+  const monthlyReport=(()=>{
+    const m={};
+    prodLog.filter(e=>e.sold&&e.sellPrice).forEach(e=>{
+      const d=new Date(e.date);const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+      if(!m[key])m[key]={key,label:`${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()}`,revenue:0,cost:0,count:0};
+      m[key].revenue+=e.sellPrice;m[key].cost+=e.cost;m[key].count++;
+    });
+    return Object.values(m).map(x=>({...x,profit:x.revenue-x.cost})).sort((a,b)=>a.key<b.key?1:-1);
+  })();
+  const maxMonthRev=Math.max(1,...monthlyReport.map(m=>m.revenue));
+  // best perfumes by sales count and by profit
+  const perfStats=(()=>{
+    const s={};
+    prodLog.filter(e=>e.sold&&e.sellPrice).forEach(e=>{
+      if(!s[e.recipeName])s[e.recipeName]={name:e.recipeName,icon:e.recipeIcon,count:0,profit:0};
+      s[e.recipeName].count++;s[e.recipeName].profit+=(e.sellPrice-e.cost);
+    });
+    return Object.values(s);
+  })();
+  const topBySales=[...perfStats].sort((a,b)=>b.count-a.count).slice(0,3);
+  const topByProfit=[...perfStats].sort((a,b)=>b.profit-a.profit).slice(0,3);
+
   const CATS=["الكل","عود","مثبت","مسك","صندل","زهري","عنبر","سويتي","قاعدة","حامل","مضخم","خلطة","مستوحى"];
   const fInv=(catFilter==="الكل"?inv:inv.filter(i=>i.cat===catFilter)).filter(i=>i.name.toLowerCase().includes(search.toLowerCase())||i.brand.toLowerCase().includes(search.toLowerCase()));
 
@@ -564,7 +637,7 @@ function App(){
       <div style={{textAlign:"center",padding:"20px 12px 8px"}}>
         <Logo size={48}/>
         <h1 style={{fontSize:"1.5rem",color:"#D4AF37",fontWeight:"700",marginTop:"4px"}}>ضاوي دهن العود</h1>
-        <p style={{fontSize:"0.62rem",color:"#c8a46a",letterSpacing:"4px"}}>DHAWI OUD</p>
+        <p style={{fontSize:"0.62rem",color:"#c8a46a",letterSpacing:"4px"}}>DHAWI OUD OIL LAB</p>
       </div>
 
       <div style={{padding:"0 14px",maxWidth:"480px",margin:"0 auto"}}>
@@ -765,9 +838,25 @@ function App(){
               <button className="btn-ghost" style={{borderColor:"rgba(80,160,80,0.5)",color:"#80c080",marginRight:"8px",whiteSpace:"nowrap"}} onClick={()=>setSelectedRecipe(suggestedRecipe)}>ابدأ ←</button>
             </div>
           </div>}
+          {/* catalog mode — search + filters */}
+          {catalogMode&&<div style={{marginBottom:"12px"}}>
+            <input className="inp" placeholder="🔍 ابحث عن عطر..." value={catalogSearch} onChange={e=>setCatalogSearch(e.target.value)} style={{marginBottom:"8px"}}/>
+            <div style={{display:"flex",gap:"6px",flexWrap:"wrap"}}>
+              <select className="inp" value={catalogSeason} onChange={e=>setCatalogSeason(e.target.value)} style={{flex:1,background:"#1a0800",fontSize:"0.78rem"}}>{["الكل","صيف","شتاء","ربيع","خريف","مناسبات"].map(s=><option key={s}>{s}</option>)}</select>
+              <select className="inp" value={catalogGender} onChange={e=>setCatalogGender(e.target.value)} style={{flex:1,background:"#1a0800",fontSize:"0.78rem"}}>{["الكل","للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select>
+            </div>
+          </div>}
           {/* catalog mode — luxury cards, no prices */}
-          {catalogMode&&sortedRecipes.map(r=>(
-            <div key={r.id} onClick={()=>setSelectedRecipe(r)} className="glass" style={{cursor:"pointer",marginBottom:"12px",padding:"22px 16px",textAlign:"center",background:"linear-gradient(160deg,rgba(214,175,55,0.08),rgba(30,12,3,0.85))",border:"1px solid rgba(214,175,55,0.35)"}}>
+          {catalogMode&&(()=>{
+            const q=catalogSearch.trim().toLowerCase();
+            const filtered=sortedRecipes.filter(r=>
+              (catalogSeason==="الكل"||r.season===catalogSeason)&&
+              (catalogGender==="الكل"||r.gender===catalogGender)&&
+              (!q||r.name.toLowerCase().includes(q)||(r.desc||"").toLowerCase().includes(q))
+            );
+            if(!filtered.length)return <div style={{textAlign:"center",color:"#5a3a10",padding:"30px",fontSize:"0.85rem"}}>لا توجد عطور مطابقة</div>;
+            return filtered.map(r=>(
+            <div key={r.id} onClick={()=>setCatalogView(r)} className="glass" style={{cursor:"pointer",marginBottom:"12px",padding:"22px 16px",textAlign:"center",background:"linear-gradient(160deg,rgba(214,175,55,0.08),rgba(30,12,3,0.85))",border:"1px solid rgba(214,175,55,0.35)"}}>
               <div style={{fontSize:"2.6rem"}}>{r.icon}</div>
               <h3 style={{color:"#D4AF37",fontSize:"1.15rem",fontWeight:"700",margin:"6px 0"}}>{favoriteIds.includes(r.id)?"⭐ ":""}{r.name}</h3>
               <p style={{fontSize:"0.82rem",color:"#e5d5be",marginBottom:"10px",lineHeight:"1.7"}}>{r.desc}</p>
@@ -777,7 +866,8 @@ function App(){
                 <span className="tag tag-gold">⏱ {r.stability}</span>
               </div>
             </div>
-          ))}
+            ));
+          })()}
           {/* normal mode — full operational cards */}
           {!catalogMode&&sortedRecipes.map(r=>{const fav=favoriteIds.includes(r.id);return(
             <div key={r.id} className="glass" style={{cursor:"pointer",borderRight:`4px solid ${compareIds.includes(r.id)?"#80a0e0":fav?"#e8c860":canMake(r)?"#D4AF37":"#5a3a10"}`,marginBottom:"9px",padding:"14px"}}>
@@ -975,6 +1065,48 @@ function App(){
             <div style={{fontSize:"0.7rem",color:"#c8a46a",marginBottom:"4px"}}>⭐ أكثر وصفة مُنتجة</div>
             <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#D4AF37"}}>{topRecipe[0]}</div>
             <div style={{fontSize:"0.72rem",color:"#80c080"}}>{topRecipe[1]} دفعة</div>
+          </div>}
+
+          {/* ── monthly profit report ── */}
+          {monthlyReport.length>0&&<div className="glass" style={{marginBottom:"14px"}}>
+            <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"12px"}}>📈 تقرير الأرباح الشهري</h3>
+            {monthlyReport.map(m=>(
+              <div key={m.key} style={{marginBottom:"12px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.74rem",marginBottom:"4px"}}>
+                  <span style={{color:"#e5d5be",fontWeight:"600"}}>{m.label}</span>
+                  <span style={{color:"#c8a46a"}}>{m.count} دفعة</span>
+                </div>
+                <div style={{height:"22px",background:"rgba(0,0,0,0.3)",borderRadius:"6px",overflow:"hidden",position:"relative"}}>
+                  <div style={{height:"100%",width:`${(m.revenue/maxMonthRev*100).toFixed(0)}%`,background:"linear-gradient(90deg,#80c080,#5a9a20)",borderRadius:"6px",transition:"width .4s"}}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.68rem",marginTop:"3px"}}>
+                  <span style={{color:"#80c080"}}>إيراد: {m.revenue.toFixed(0)} ر</span>
+                  <span style={{color:m.profit>=0?"#80c080":"#e08080"}}>ربح صافي: {m.profit.toFixed(0)} ر</span>
+                </div>
+              </div>
+            ))}
+          </div>}
+
+          {/* ── best perfumes ── */}
+          {perfStats.length>0&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"14px"}}>
+            <div className="glass" style={{padding:"12px"}}>
+              <div style={{fontSize:"0.72rem",color:"#c8a46a",marginBottom:"8px",fontWeight:"700"}}>🔥 الأكثر مبيعاً</div>
+              {topBySales.map((p,i)=>(
+                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:i<topBySales.length-1?"1px solid rgba(255,255,255,0.05)":"none"}}>
+                  <span style={{fontSize:"0.74rem",color:"#e5d5be"}}>{p.icon} {p.name}</span>
+                  <span style={{fontSize:"0.7rem",color:"#80a0e0",fontWeight:"700"}}>{p.count}</span>
+                </div>
+              ))}
+            </div>
+            <div className="glass" style={{padding:"12px"}}>
+              <div style={{fontSize:"0.72rem",color:"#c8a46a",marginBottom:"8px",fontWeight:"700"}}>💰 الأعلى ربحاً</div>
+              {topByProfit.map((p,i)=>(
+                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:i<topByProfit.length-1?"1px solid rgba(255,255,255,0.05)":"none"}}>
+                  <span style={{fontSize:"0.74rem",color:"#e5d5be"}}>{p.icon} {p.name}</span>
+                  <span style={{fontSize:"0.7rem",color:"#80c080",fontWeight:"700"}}>{p.profit.toFixed(0)} ر</span>
+                </div>
+              ))}
+            </div>
           </div>}
 
           {lowStockItems.length>0&&<div className="glass" style={{borderRight:"4px solid #c04040",marginBottom:"14px"}}>
@@ -1177,6 +1309,40 @@ function App(){
 
       </div>
 
+      {/* ── catalog customer view (no costs / no profit margin) ── */}
+      {catalogView&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setCatalogView(null);}}>
+        <div className="modal-sheet">
+          <div style={{textAlign:"center",marginBottom:"16px"}}>
+            <div style={{fontSize:"3rem"}}>{catalogView.icon}</div>
+            <h2 style={{color:"#D4AF37",fontSize:"1.3rem",fontWeight:"700",margin:"6px 0"}}>{catalogView.name}</h2>
+            <p style={{fontSize:"0.85rem",color:"#e5d5be",lineHeight:"1.8"}}>{catalogView.desc}</p>
+          </div>
+          <div style={{display:"flex",gap:"6px",justifyContent:"center",flexWrap:"wrap",marginBottom:"16px"}}>
+            <span className="tag tag-gold">👤 {catalogView.gender}</span>
+            <span className="tag tag-gold">🗓️ {catalogView.season}</span>
+            <span className="tag tag-gold">⏱ {catalogView.stability}</span>
+          </div>
+          {(()=>{
+            const tops=[],mids=[],bases=[];
+            (catalogView.ing||[]).forEach(([id])=>{const ing=getIng(id);const nm=ing?.name||id;const t=noteTier(id);(t==="top"?tops:t==="mid"?mids:bases).push(nm);});
+            const Row=({label,arr})=>arr.length?(
+              <div style={{marginBottom:"10px"}}>
+                <div style={{color:"#D4AF37",fontSize:"0.78rem",fontWeight:"700",marginBottom:"5px"}}>{label}</div>
+                <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>{arr.map((n,i)=><span key={i} className="tag" style={{background:"rgba(255,255,255,0.06)",color:"#e5d5be",fontSize:"0.7rem"}}>{n}</span>)}</div>
+              </div>
+            ):null;
+            return <div className="glass" style={{background:"rgba(0,0,0,0.25)",padding:"14px",marginBottom:"14px"}}>
+              <h3 style={{color:"#D4AF37",fontSize:"0.9rem",fontWeight:"700",marginBottom:"10px",textAlign:"center"}}>🌸 هرم العطر</h3>
+              <Row label="🔝 المقدّمة" arr={tops}/>
+              <Row label="💫 القلب" arr={mids}/>
+              <Row label="🪨 القاعدة" arr={bases}/>
+            </div>;
+          })()}
+          <button className="btn-gold" style={{width:"100%",marginBottom:"8px"}} onClick={()=>{setQrRecipe(catalogView);}}>📲 مشاركة العطر</button>
+          <button className="btn-ghost" style={{width:"100%"}} onClick={()=>setCatalogView(null)}>إغلاق</button>
+        </div>
+      </div>}
+
       {/* ── QR share modal ── */}
       {qrRecipe&&<QRModal recipe={qrRecipe} getIng={getIng} onClose={()=>setQrRecipe(null)}/>}
 
@@ -1256,7 +1422,7 @@ function App(){
           {id:"stats",icon:"📊",label:"الإحصائيات"},
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon">{t.icon}</span>{t.label}
           </button>
         ))}
@@ -1265,26 +1431,77 @@ function App(){
   );
 }
 
+// ── shareable customer perfume link (no prices) ──────────────────
+function encodePerfume(obj){try{return encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(obj)))));}catch(e){return "";}}
+function decodePerfume(s){try{return JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(s)))));}catch(e){return null;}}
+function buildPerfumePayload(recipe,getIng){
+  const top=[],mid=[],base=[];
+  (recipe.ing||[]).forEach(([id])=>{const ing=getIng?getIng(id):null;const nm=ing?.name||id;const t=noteTier(id);(t==="top"?top:t==="mid"?mid:base).push(nm);});
+  return {n:recipe.name,i:recipe.icon,d:recipe.desc,s:recipe.season,g:recipe.gender,st:recipe.stability,top,mid,base};
+}
+function buildShareLink(recipe,getIng){
+  return location.origin+location.pathname+"#p="+encodePerfume(buildPerfumePayload(recipe,getIng));
+}
+
+// ── standalone public catalog page (opened via shared link) ──────
+function PublicView({payload}){
+  const Row=({label,arr})=>arr&&arr.length?(
+    <div style={{marginBottom:"12px"}}>
+      <div style={{color:"#D4AF37",fontSize:"0.82rem",fontWeight:"700",marginBottom:"6px"}}>{label}</div>
+      <div style={{display:"flex",gap:"6px",flexWrap:"wrap",justifyContent:"center"}}>{arr.map((n,i)=><span key={i} className="tag" style={{background:"rgba(255,255,255,0.06)",color:"#e5d5be",fontSize:"0.74rem"}}>{n}</span>)}</div>
+    </div>
+  ):null;
+  return(
+    <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"28px 18px",fontFamily:"'Alexandria',sans-serif"}}>
+      <div className="glass" style={{maxWidth:"420px",width:"100%",textAlign:"center",background:"linear-gradient(160deg,rgba(214,175,55,0.1),rgba(30,12,3,0.9))",border:"1px solid rgba(214,175,55,0.4)",padding:"28px 20px"}}>
+        <div style={{fontSize:"0.7rem",color:"#c8a46a",letterSpacing:"2px",marginBottom:"10px"}}>ضاوي دهن العود</div>
+        <div style={{fontSize:"3.4rem"}}>{payload.i}</div>
+        <h1 style={{color:"#D4AF37",fontSize:"1.5rem",fontWeight:"700",margin:"8px 0"}}>{payload.n}</h1>
+        <p style={{fontSize:"0.88rem",color:"#e5d5be",lineHeight:"1.9",marginBottom:"16px"}}>{payload.d}</p>
+        <div style={{display:"flex",gap:"6px",justifyContent:"center",flexWrap:"wrap",marginBottom:"20px"}}>
+          {payload.g&&<span className="tag tag-gold">👤 {payload.g}</span>}
+          {payload.s&&<span className="tag tag-gold">🗓️ {payload.s}</span>}
+          {payload.st&&<span className="tag tag-gold">⏱ {payload.st}</span>}
+        </div>
+        <div className="glass" style={{background:"rgba(0,0,0,0.25)",padding:"16px"}}>
+          <h3 style={{color:"#D4AF37",fontSize:"0.95rem",fontWeight:"700",marginBottom:"12px"}}>🌸 هرم العطر</h3>
+          <Row label="🔝 المقدّمة" arr={payload.top}/>
+          <Row label="💫 القلب" arr={payload.mid}/>
+          <Row label="🪨 القاعدة" arr={payload.base}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function QRModal({recipe,getIng,onClose}){
   const ref=useRef();
+  const [fallback,setFallback]=useState(false);
+  const [copied,setCopied]=useState(false);
+  const shareLink=buildShareLink(recipe,getIng);
   useEffect(()=>{
     if(!ref.current)return;
     ref.current.innerHTML="";
-    const ingTxt=recipe.ing.map(([id,a])=>{const ing=getIng(id);return `${ing?.name||id}: ${a}`;}).join(" | ");
-    const txt=`ضاوي دهن العود\n${recipe.name} ${recipe.icon}\n${recipe.desc}\n\nالمكونات: ${ingTxt}`;
-    if(window.QRCode){
-      new window.QRCode(ref.current,{text:txt,width:200,height:200,colorDark:"#1a0800",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.M});
-    }else{
-      ref.current.innerHTML='<div style="color:#e08080;font-size:0.8rem;padding:20px;">تعذّر تحميل مكتبة QR — تحقق من الاتصال</div>';
+    if(!window.QRCode){setFallback(true);return;}
+    // QR encodes the public customer link (clean view, no prices).
+    try{
+      new window.QRCode(ref.current,{text:shareLink,width:210,height:210,colorDark:"#1a0800",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.L});
+    }catch(e){
+      setFallback(true);
     }
   },[recipe]);
+  const copyLink=()=>{
+    if(navigator.clipboard)navigator.clipboard.writeText(shareLink).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);}).catch(()=>{});
+  };
   return(
     <div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")onClose();}}>
       <div className="modal-sheet" style={{textAlign:"center"}}>
-        <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>📲 مشاركة الوصفة</h3>
-        <p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{recipe.icon} {recipe.name} — امسح الرمز لعرض الوصفة</p>
-        <div ref={ref} style={{display:"inline-block",padding:"12px",background:"#fff",borderRadius:"14px"}}/>
-        <button className="btn-ghost" style={{width:"100%",marginTop:"16px"}} onClick={onClose}>إغلاق</button>
+        <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>📲 مشاركة العطر مع العميل</h3>
+        <p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{recipe.icon} {recipe.name} — يفتح صفحة فاخرة بدون أسعار</p>
+        {!fallback&&<div ref={ref} style={{display:"inline-block",padding:"12px",background:"#fff",borderRadius:"14px"}}/>}
+        {fallback&&<div style={{color:"#c8a46a",fontSize:"0.72rem",padding:"16px",background:"rgba(0,0,0,0.3)",borderRadius:"12px",wordBreak:"break-all",textAlign:"center",lineHeight:"1.8"}}>{shareLink}</div>}
+        <button className="btn-gold" style={{width:"100%",marginTop:"14px"}} onClick={copyLink}>{copied?"✅ تم النسخ":"🔗 نسخ رابط العميل"}</button>
+        <button className="btn-ghost" style={{width:"100%",marginTop:"8px"}} onClick={onClose}>إغلاق</button>
       </div>
     </div>
   );
@@ -1301,7 +1518,26 @@ function SellEntry({id,onSell}){
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+class ErrorBoundary extends React.Component{
+  constructor(p){super(p);this.state={err:null};}
+  static getDerivedStateFromError(err){return {err};}
+  render(){
+    if(this.state.err){
+      return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"30px",textAlign:"center",fontFamily:"'Alexandria',sans-serif",color:"#e5d5be"}},
+        React.createElement("div",{style:{fontSize:"2.5rem",marginBottom:"12px"}},"⚠️"),
+        React.createElement("h2",{style:{color:"#D4AF37",fontSize:"1.1rem",marginBottom:"8px"}},"حدث خطأ مؤقت"),
+        React.createElement("p",{style:{fontSize:"0.82rem",color:"#c8a46a",marginBottom:"18px",maxWidth:"320px",lineHeight:"1.8"}},"التطبيق واجه مشكلة لكن بياناتك محفوظة. اضغط لإعادة التحميل."),
+        React.createElement("button",{onClick:()=>location.reload(),style:{background:"#D4AF37",border:"none",color:"#1a0800",padding:"10px 24px",borderRadius:"12px",cursor:"pointer",fontSize:"0.9rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}},"🔄 إعادة التحميل")
+      );
+    }
+    return this.props.children;
+  }
+}
+// If opened via a shared customer link (#p=...), show the public perfume page.
+const _pm=(location.hash||"").match(/^#p=(.+)$/);
+const _payload=_pm?decodePerfume(_pm[1]):null;
+const _rootEl=_payload?React.createElement(PublicView,{payload:_payload}):React.createElement(App);
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(ErrorBoundary,null,_rootEl));
 </script>
 </body>
 </html>
