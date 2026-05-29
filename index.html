@@ -297,6 +297,7 @@ function App(){
   const [customers,setCustomers]=useState(()=>lsGet("dw_customers",[]));
   const [favoriteIds,setFavoriteIds]=useState(()=>lsGet("dw_favorites",[]));
   const [catalogMode,setCatalogMode]=useState(false);
+  const [catalogView,setCatalogView]=useState(null);
   const [qrRecipe,setQrRecipe]=useState(null);
   const [showShopList,setShowShopList]=useState(false);
   const [showSupplierCmp,setShowSupplierCmp]=useState(false);
@@ -812,7 +813,7 @@ function App(){
           </div>}
           {/* catalog mode — luxury cards, no prices */}
           {catalogMode&&sortedRecipes.map(r=>(
-            <div key={r.id} onClick={()=>setSelectedRecipe(r)} className="glass" style={{cursor:"pointer",marginBottom:"12px",padding:"22px 16px",textAlign:"center",background:"linear-gradient(160deg,rgba(214,175,55,0.08),rgba(30,12,3,0.85))",border:"1px solid rgba(214,175,55,0.35)"}}>
+            <div key={r.id} onClick={()=>setCatalogView(r)} className="glass" style={{cursor:"pointer",marginBottom:"12px",padding:"22px 16px",textAlign:"center",background:"linear-gradient(160deg,rgba(214,175,55,0.08),rgba(30,12,3,0.85))",border:"1px solid rgba(214,175,55,0.35)"}}>
               <div style={{fontSize:"2.6rem"}}>{r.icon}</div>
               <h3 style={{color:"#D4AF37",fontSize:"1.15rem",fontWeight:"700",margin:"6px 0"}}>{favoriteIds.includes(r.id)?"⭐ ":""}{r.name}</h3>
               <p style={{fontSize:"0.82rem",color:"#e5d5be",marginBottom:"10px",lineHeight:"1.7"}}>{r.desc}</p>
@@ -1222,6 +1223,40 @@ function App(){
 
       </div>
 
+      {/* ── catalog customer view (no costs / no profit margin) ── */}
+      {catalogView&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setCatalogView(null);}}>
+        <div className="modal-sheet">
+          <div style={{textAlign:"center",marginBottom:"16px"}}>
+            <div style={{fontSize:"3rem"}}>{catalogView.icon}</div>
+            <h2 style={{color:"#D4AF37",fontSize:"1.3rem",fontWeight:"700",margin:"6px 0"}}>{catalogView.name}</h2>
+            <p style={{fontSize:"0.85rem",color:"#e5d5be",lineHeight:"1.8"}}>{catalogView.desc}</p>
+          </div>
+          <div style={{display:"flex",gap:"6px",justifyContent:"center",flexWrap:"wrap",marginBottom:"16px"}}>
+            <span className="tag tag-gold">👤 {catalogView.gender}</span>
+            <span className="tag tag-gold">🗓️ {catalogView.season}</span>
+            <span className="tag tag-gold">⏱ {catalogView.stability}</span>
+          </div>
+          {(()=>{
+            const tops=[],mids=[],bases=[];
+            (catalogView.ing||[]).forEach(([id])=>{const ing=getIng(id);const nm=ing?.name||id;const t=noteTier(id);(t==="top"?tops:t==="mid"?mids:bases).push(nm);});
+            const Row=({label,arr})=>arr.length?(
+              <div style={{marginBottom:"10px"}}>
+                <div style={{color:"#D4AF37",fontSize:"0.78rem",fontWeight:"700",marginBottom:"5px"}}>{label}</div>
+                <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>{arr.map((n,i)=><span key={i} className="tag" style={{background:"rgba(255,255,255,0.06)",color:"#e5d5be",fontSize:"0.7rem"}}>{n}</span>)}</div>
+              </div>
+            ):null;
+            return <div className="glass" style={{background:"rgba(0,0,0,0.25)",padding:"14px",marginBottom:"14px"}}>
+              <h3 style={{color:"#D4AF37",fontSize:"0.9rem",fontWeight:"700",marginBottom:"10px",textAlign:"center"}}>🌸 هرم العطر</h3>
+              <Row label="🔝 المقدّمة" arr={tops}/>
+              <Row label="💫 القلب" arr={mids}/>
+              <Row label="🪨 القاعدة" arr={bases}/>
+            </div>;
+          })()}
+          <button className="btn-gold" style={{width:"100%",marginBottom:"8px"}} onClick={()=>{setQrRecipe(catalogView);}}>📲 مشاركة العطر</button>
+          <button className="btn-ghost" style={{width:"100%"}} onClick={()=>setCatalogView(null)}>إغلاق</button>
+        </div>
+      </div>}
+
       {/* ── QR share modal ── */}
       {qrRecipe&&<QRModal recipe={qrRecipe} getIng={getIng} onClose={()=>setQrRecipe(null)}/>}
 
@@ -1301,7 +1336,7 @@ function App(){
           {id:"stats",icon:"📊",label:"الإحصائيات"},
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon">{t.icon}</span>{t.label}
           </button>
         ))}
@@ -1312,24 +1347,34 @@ function App(){
 
 function QRModal({recipe,getIng,onClose}){
   const ref=useRef();
+  const [fallback,setFallback]=useState(false);
+  const ingTxt=(recipe.ing||[]).map(([id,a])=>{const ing=getIng(id);return `${ing?.name||id}: ${a}`;}).join(" | ");
+  const shareTxt=`ضاوي دهن العود\n${recipe.name} ${recipe.icon}\n${recipe.desc}\n\nالمكونات: ${ingTxt}`;
   useEffect(()=>{
     if(!ref.current)return;
     ref.current.innerHTML="";
-    const ingTxt=recipe.ing.map(([id,a])=>{const ing=getIng(id);return `${ing?.name||id}: ${a}`;}).join(" | ");
-    const txt=`ضاوي دهن العود\n${recipe.name} ${recipe.icon}\n${recipe.desc}\n\nالمكونات: ${ingTxt}`;
-    if(window.QRCode){
-      new window.QRCode(ref.current,{text:txt,width:200,height:200,colorDark:"#1a0800",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.M});
-    }else{
-      ref.current.innerHTML='<div style="color:#e08080;font-size:0.8rem;padding:20px;">تعذّر تحميل مكتبة QR — تحقق من الاتصال</div>';
+    if(!window.QRCode){setFallback(true);return;}
+    // QR data capacity is limited — long recipes overflow, so keep the QR
+    // compact (name + desc) and offer the full text via copy below.
+    const qrTxt=`ضاوي دهن العود — ${recipe.name} ${recipe.icon}\n${recipe.desc}`;
+    try{
+      new window.QRCode(ref.current,{text:qrTxt,width:200,height:200,colorDark:"#1a0800",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.L});
+    }catch(e){
+      setFallback(true);
     }
   },[recipe]);
+  const copyFull=()=>{
+    if(navigator.clipboard)navigator.clipboard.writeText(shareTxt).catch(()=>{});
+  };
   return(
     <div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")onClose();}}>
       <div className="modal-sheet" style={{textAlign:"center"}}>
         <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>📲 مشاركة الوصفة</h3>
         <p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{recipe.icon} {recipe.name} — امسح الرمز لعرض الوصفة</p>
-        <div ref={ref} style={{display:"inline-block",padding:"12px",background:"#fff",borderRadius:"14px"}}/>
-        <button className="btn-ghost" style={{width:"100%",marginTop:"16px"}} onClick={onClose}>إغلاق</button>
+        {!fallback&&<div ref={ref} style={{display:"inline-block",padding:"12px",background:"#fff",borderRadius:"14px"}}/>}
+        {fallback&&<div style={{color:"#c8a46a",fontSize:"0.78rem",padding:"16px",background:"rgba(0,0,0,0.3)",borderRadius:"12px",whiteSpace:"pre-wrap",textAlign:"right",lineHeight:"1.8"}}>{shareTxt}</div>}
+        <button className="btn-gold" style={{width:"100%",marginTop:"14px"}} onClick={copyFull}>📋 نسخ الوصفة كاملة</button>
+        <button className="btn-ghost" style={{width:"100%",marginTop:"8px"}} onClick={onClose}>إغلاق</button>
       </div>
     </div>
   );
@@ -1346,7 +1391,22 @@ function SellEntry({id,onSell}){
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+class ErrorBoundary extends React.Component{
+  constructor(p){super(p);this.state={err:null};}
+  static getDerivedStateFromError(err){return {err};}
+  render(){
+    if(this.state.err){
+      return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"30px",textAlign:"center",fontFamily:"'Alexandria',sans-serif",color:"#e5d5be"}},
+        React.createElement("div",{style:{fontSize:"2.5rem",marginBottom:"12px"}},"⚠️"),
+        React.createElement("h2",{style:{color:"#D4AF37",fontSize:"1.1rem",marginBottom:"8px"}},"حدث خطأ مؤقت"),
+        React.createElement("p",{style:{fontSize:"0.82rem",color:"#c8a46a",marginBottom:"18px",maxWidth:"320px",lineHeight:"1.8"}},"التطبيق واجه مشكلة لكن بياناتك محفوظة. اضغط لإعادة التحميل."),
+        React.createElement("button",{onClick:()=>location.reload(),style:{background:"#D4AF37",border:"none",color:"#1a0800",padding:"10px 24px",borderRadius:"12px",cursor:"pointer",fontSize:"0.9rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}},"🔄 إعادة التحميل")
+      );
+    }
+    return this.props.children;
+  }
+}
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(ErrorBoundary,null,React.createElement(App)));
 </script>
 </body>
 </html>
