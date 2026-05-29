@@ -69,7 +69,7 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
     <path d="M70 118 L72 124 L78 124 L73 128 L75 134 L70 130 L65 134 L67 128 L62 124 L68 124 Z" fill="#D4AF37" opacity="0.7"/>
   </svg>
   <h2 style="color:#D4AF37;font-size:2rem;margin-top:16px;font-weight:700;">ضاوي دهن العود</h2>
-  <p style="color:#c8a46a;font-size:0.8rem;letter-spacing:4px;margin-top:6px;">DHAWI OUD</p>
+  <p style="color:#c8a46a;font-size:0.8rem;letter-spacing:4px;margin-top:6px;">DHAWI OUD OIL LAB</p>
 </div></div>
 <div id="root"></div>
 <script type="text/babel">
@@ -79,7 +79,7 @@ setTimeout(()=>{const s=document.getElementById("splash");if(s){s.style.opacity=
 const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
-const PENDING_PURCHASES_VERSION="blk_lux_01";
+const PENDING_PURCHASES_VERSION="blk_lux_02";
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
   // Bulkaroma Order 1 (shipping ₹4500=198 SAR, 4005g total)
@@ -88,8 +88,7 @@ const PENDING_PURCHASES=[
   {id:"safraleine",qty:100,cost:284},{id:"vetiver",qty:100,cost:281},
   {id:"crimson",qty:1000,cost:372},{id:"cardamom",qty:50,cost:187},
   {id:"cmp121",qty:100,cost:67},{id:"metal_made",qty:1000,cost:338},
-  {id:"civettone",qty:5,cost:422},{id:"sleek_oud",qty:100,cost:43},
-  {id:"oud_mayor",qty:100,cost:69,newItem:{name:"OUD MAYOR",brand:"Bulkaroma",cat:"مستوحى",unit:"جم"}},
+  // sleek_oud and civettone excluded — quantities already existed in stock
   // Bulkaroma Order 2 (shipping ₹18830=829 SAR, 4165g total)
   {id:"artessence",qty:200,cost:283},{id:"iso_e",qty:1000,cost:317},
   {id:"sandal_indi",qty:500,cost:228},{id:"oud_synth",qty:100,cost:387},
@@ -162,7 +161,6 @@ const RAW=[
   ["civettone","Civettone","Bulkaroma","مسك",260,5,"جم"],
   ["maracuja","OUD MARACUJA","Bulkaroma","مستوحى",420,100,"جم"],
   ["sleek_oud","SLEEK OUD","Bulkaroma","مستوحى",380,100,"جم"],
-  ["oud_mayor","OUD MAYOR","Bulkaroma","مستوحى",0,0,"جم"],
   ["jojoba","زيت جوجوبا","محلي","حامل",60,50,"مل"],
   ["dpg","DPG ديوبي","محلي","حامل",40,200,"مل"],
   ["blend1","الخلطة الأولى (95مل)","صناعتي","خلطة",0,95,"مل"],
@@ -247,7 +245,7 @@ function fmtDate(iso){
 
 // ─── notes classification (Top / Middle / Base) ─────────────────
 const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','oud_xx','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','oud_mayor']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','oud_xx','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy']);
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 const NOTE_LABEL={top:"🔝 قمة",mid:"💫 قلب",base:"🪨 قاعدة"};
 
@@ -373,6 +371,8 @@ function App(){
   const setStock=(id,v)=>setInv(p=>p.map(i=>i.id===id?{...i,stock:Math.max(0,v)}:i));
   const setPrice=(id,v)=>setInv(p=>p.map(i=>{if(i.id!==id)return i;const ship=i.brand==="Bulkaroma"?(SHIPPING_BULK*i.qty/bulkTotalQty):0;return {...i,price:v,unitCost:i.qty>0?(v+ship)/i.qty:0};}));
   const setExpiry=(id,v)=>setInv(p=>p.map(i=>i.id===id?{...i,expiry:v}:i));
+  const setQty=(id,v)=>setInv(p=>p.map(i=>{if(i.id!==id)return i;const newQty=Math.max(0,v);const ship=i.brand==="Bulkaroma"?(SHIPPING_BULK*newQty/bulkTotalQty):0;return {...i,qty:newQty,unitCost:newQty>0?(i.price+ship)/newQty:0};}));
+  const deleteIng=(id)=>{if(!window.confirm("حذف هذا العنصر من المخزون؟"))return;setInv(p=>p.filter(i=>i.id!==id));};
   const expiryStatus=exp=>{if(!exp)return null;const d=Math.ceil((new Date(exp)-new Date())/86400000);if(d<0)return"expired";if(d<=30)return"soon";return null;};
 
   const addIng=()=>{
@@ -637,7 +637,7 @@ function App(){
       <div style={{textAlign:"center",padding:"20px 12px 8px"}}>
         <Logo size={48}/>
         <h1 style={{fontSize:"1.5rem",color:"#D4AF37",fontWeight:"700",marginTop:"4px"}}>ضاوي دهن العود</h1>
-        <p style={{fontSize:"0.62rem",color:"#c8a46a",letterSpacing:"4px"}}>DHAWI OUD</p>
+        <p style={{fontSize:"0.62rem",color:"#c8a46a",letterSpacing:"4px"}}>DHAWI OUD OIL LAB</p>
       </div>
 
       <div style={{padding:"0 14px",maxWidth:"480px",margin:"0 auto"}}>
@@ -684,10 +684,16 @@ function App(){
                   <input type="number" value={ing.price} onChange={e=>setPrice(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.8rem",padding:"4px"}}/>
                   <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>ريال / {ing.qty}{ing.unit}</span>
                 </div>
-                <div style={{display:"flex",gap:"6px",alignItems:"center"}}>
+                <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"7px"}}>
+                  <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>الكمية الأصلية:</span>
+                  <input type="number" value={ing.qty} onChange={e=>setQty(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.8rem",padding:"4px"}}/>
+                  <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>{ing.unit}</span>
+                </div>
+                <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"7px"}}>
                   <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>تاريخ الانتهاء:</span>
                   <input type="date" value={ing.expiry||""} onChange={e=>setExpiry(ing.id,e.target.value)} style={{background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.75rem",padding:"4px",colorScheme:"dark"}}/>
                 </div>
+                <button onClick={()=>deleteIng(ing.id)} style={{width:"100%",background:"rgba(200,60,60,0.15)",border:"1px solid rgba(200,60,60,0.4)",color:"#e08080",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>🗑️ حذف من المخزون</button>
               </div>}
               <div style={{display:"flex",alignItems:"center",gap:"6px"}}>
                 <div style={{flex:1,background:"rgba(255,255,255,0.06)",borderRadius:"4px",height:"4px"}}><div style={{height:"100%",borderRadius:"4px",width:`${Math.min(100,(ing.stock/Math.max(ing.qty,1))*100)}%`,background:ing.stock>ing.qty*0.5?"#5a9a20":ing.stock>ing.qty*0.2?"#D4AF37":"#c04040"}}/></div>
