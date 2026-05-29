@@ -84,7 +84,7 @@ const RAW=[
   ["amber_700","عنبر 700","شرفان","عنبر",60,50,"مل"],
   ["musk_ruman","مسك رمان","شرفان","مسك",65,50,"مل"],
   ["oud_earthy","عود ترابي حيواني","شرفان","عود",50,70,"مل"],
-  ["musk_climb","مسك متسلق","الحميدي","مسك",50,50,"مل"],
+  ["musk_climb","مسك متسلق","الحميدي","مسك",50,100,"مل"],
   ["sandal_ham","خشب الصندل","الحميدي","صندل",220,100,"مل"],
   ["vanilla","فانيلا دانتيل","الحميدي","سويتي",90,70,"مل"],
   ["shamma","شمامة العنبر 2000","الحميدي","مثبت",120,30,"جم"],
@@ -137,11 +137,13 @@ const RAW=[
 
 const bulkTotalQty=RAW.filter(r=>r[2]==="Bulkaroma").reduce((s,r)=>s+r[5],0);
 
+const STOCK_OVERRIDES={musk_climb:60};
 function buildInv(){
   return RAW.map(([id,name,brand,cat,price,qty,unit])=>{
     const ship=brand==="Bulkaroma"?(SHIPPING_BULK*qty/bulkTotalQty):0;
     const unitCost=qty>0?(price+ship)/qty:0;
-    return {id,name,brand,cat,price,qty,unit,stock:qty,ship,unitCost};
+    const stock=STOCK_OVERRIDES[id]!==undefined?STOCK_OVERRIDES[id]:qty;
+    return {id,name,brand,cat,price,qty,unit,stock,ship,unitCost};
   });
 }
 
