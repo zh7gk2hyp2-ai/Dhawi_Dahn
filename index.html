@@ -444,9 +444,9 @@ function App(){
         <h2 style={{color:"#D4AF37",fontSize:"1.5rem",fontWeight:"700",margin:"12px 0 6px"}}>ضاوي دهن العود</h2>
         <p style={{color:"#c8a46a",fontSize:"0.8rem",marginBottom:"22px"}}>أدخل رمزك الخاص</p>
         <input type="password" inputMode="numeric" placeholder="••••" value={pin} onChange={e=>setPin(e.target.value)}
-          onKeyDown={e=>{if(e.key==="Enter"){if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ",true);}}}
+          onKeyDown={e=>{if(e.key==="Enter"){if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}}
           style={{background:"rgba(0,0,0,0.5)",border:"1.5px solid rgba(214,175,55,0.5)",borderRadius:"12px",padding:"15px",color:"#fff",textAlign:"center",fontSize:"1.5rem",letterSpacing:"10px",outline:"none",width:"100%",marginBottom:"14px"}}/>
-        <button className="btn-gold" style={{width:"100%"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ",true);}}>دخول للمعمل ←</button>
+        <button className="btn-gold" style={{width:"100%"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}>دخول للمعمل ←</button>
       </div>
       {toast&&<div className="fade" style={{position:"fixed",bottom:"40px",background:toastErr?"#8B1a1a":"#D4AF37",color:toastErr?"#fff":"#1a0800",padding:"12px 24px",borderRadius:"30px",fontWeight:"700"}}>{toast}</div>}
     </div>
