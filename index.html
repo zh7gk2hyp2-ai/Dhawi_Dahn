@@ -48,6 +48,10 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 .stat-card{background:rgba(0,0,0,0.3);border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(214,175,55,0.15);}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9998;display:flex;align-items:flex-end;justify-content:center;}
 .modal-sheet{background:linear-gradient(160deg,#120600,#1a0800);border-radius:22px 22px 0 0;padding:24px 18px 36px;width:100%;max-width:480px;border-top:2px solid rgba(214,175,55,0.4);max-height:80vh;overflow-y:auto;}
+.star-btn{background:none;border:none;cursor:pointer;font-size:1.6rem;padding:2px;transition:transform 0.15s;}
+.star-btn:hover{transform:scale(1.25);}
+.suggest-card{background:linear-gradient(135deg,rgba(40,140,40,0.18),rgba(20,8,2,0.85));border:1.5px solid rgba(80,160,80,0.45);border-radius:16px;padding:16px;margin-bottom:14px;animation:fadeIn 0.4s ease forwards;}
+.expiry-row{display:flex;justify-content:space-between;align-items:center;padding:6px 2px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.78rem;}
 </style>
 </head>
 <body>
@@ -84,7 +88,7 @@ const RAW=[
   ["amber_700","عنبر 700","شرفان","عنبر",60,50,"مل"],
   ["musk_ruman","مسك رمان","شرفان","مسك",65,50,"مل"],
   ["oud_earthy","عود ترابي حيواني","شرفان","عود",50,70,"مل"],
-  ["musk_climb","مسك متسلق","الحميدي","مسك",50,50,"مل"],
+  ["musk_climb","مسك متسلق","الحميدي","مسك",50,100,"مل"],
   ["sandal_ham","خشب الصندل","الحميدي","صندل",220,100,"مل"],
   ["vanilla","فانيلا دانتيل","الحميدي","سويتي",90,70,"مل"],
   ["shamma","شمامة العنبر 2000","الحميدي","مثبت",120,30,"جم"],
@@ -137,11 +141,13 @@ const RAW=[
 
 const bulkTotalQty=RAW.filter(r=>r[2]==="Bulkaroma").reduce((s,r)=>s+r[5],0);
 
+const STOCK_OVERRIDES={musk_climb:60};
 function buildInv(){
   return RAW.map(([id,name,brand,cat,price,qty,unit])=>{
     const ship=brand==="Bulkaroma"?(SHIPPING_BULK*qty/bulkTotalQty):0;
     const unitCost=qty>0?(price+ship)/qty:0;
-    return {id,name,brand,cat,price,qty,unit,stock:qty,ship,unitCost};
+    const stock=STOCK_OVERRIDES[id]!==undefined?STOCK_OVERRIDES[id]:qty;
+    return {id,name,brand,cat,price,qty,unit,stock,ship,unitCost};
   });
 }
 
@@ -251,7 +257,22 @@ function App(){
   const [showSupplierCmp,setShowSupplierCmp]=useState(false);
   const [selectedCustomer,setSelectedCustomer]=useState(null);
   const [showAddCust,setShowAddCust]=useState(false);
-  const [ncName,setNcName]=useState("");const [ncPhone,setNcPhone]=useState("");const [ncNotes,setNcNotes]=useState("");const [ncPrefs,setNcPrefs]=useState([]);
+  const [ncName,setNcName]=useState("");const [ncPhone,setNcPhone]=useState("");const [ncNotes,setNcNotes]=useState("");const [ncPrefs,setNcPrefs]=useState([]);const [ncBirthday,setNcBirthday]=useState("");
+  const [batchCounter,setBatchCounter]=useState(()=>lsGet("dw_batchnum",1));
+  const [ratings,setRatings]=useState(()=>lsGet("dw_ratings",{}));
+  const [showRating,setShowRating]=useState(false);
+  const [ratingRecId,setRatingRecId]=useState(null);
+  const [ratingStars,setRatingStars]=useState(5);
+  const [ratingNote,setRatingNote]=useState("");
+  const [showExpiryCalendar,setShowExpiryCalendar]=useState(false);
+  const [aiKey,setAiKey]=useState(()=>lsGet("dw_aikey",""));
+  const [aiLoading,setAiLoading]=useState(false);
+  const [showAIGen,setShowAIGen]=useState(false);
+  const [aiGenResult,setAiGenResult]=useState(null);
+  const [aiGenRaw,setAiGenRaw]=useState("");
+  const [showAIAnalysis,setShowAIAnalysis]=useState(false);
+  const [aiAnalysisText,setAiAnalysisText]=useState("");
+  const [aiAnalysisRecipe,setAiAnalysisRecipe]=useState(null);
 
   // add ingredient
   const [niName,setNiName]=useState("");const [niBrand,setNiBrand]=useState("");const [niCat,setNiCat]=useState("عود");
@@ -267,6 +288,9 @@ function App(){
   useEffect(()=>lsSet("dw_purchases",purchases),[purchases]);
   useEffect(()=>lsSet("dw_customers",customers),[customers]);
   useEffect(()=>lsSet("dw_favorites",favoriteIds),[favoriteIds]);
+  useEffect(()=>lsSet("dw_batchnum",batchCounter),[batchCounter]);
+  useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
+  useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
 
   // ── low stock check ─────────────────────────────────────────
   const lowStockItems=inv.filter(i=>i.stock<i.qty*LOW_STOCK_THRESHOLD && i.qty>0);
@@ -287,8 +311,10 @@ function App(){
     setInv(p=>p.map(i=>{const ri=r.ing.find(x=>x[0]===i.id);return ri?{...i,stock:Math.max(0,+(i.stock-ri[1]*sc).toFixed(2))}:i;}));
     const aging=agingDaysOf(r.stability);
     const readyDate=new Date(Date.now()+aging*86400000).toISOString();
-    const entry={id:"p_"+Date.now(),recipeId:r.id,recipeName:r.name,recipeIcon:r.icon,batch:BATCH_NAME[batchUnit],vol,cost:+cost.toFixed(1),date:new Date().toISOString(),agingDays:aging,readyDate,sold:false,sellPrice:null,customerId:null};
+    const bNo="D-"+String(batchCounter).padStart(4,"0");
+    const entry={id:"p_"+Date.now(),batchNo:bNo,recipeId:r.id,recipeName:r.name,recipeIcon:r.icon,batch:BATCH_NAME[batchUnit],vol,cost:+cost.toFixed(1),date:new Date().toISOString(),agingDays:aging,readyDate,sold:false,sellPrice:null,customerId:null};
     setProdLog(p=>[entry,...p]);
+    setBatchCounter(p=>p+1);
     show("🏭 أُنتجت "+BATCH_NAME[batchUnit]+" من "+r.name);
   };
 
@@ -372,12 +398,86 @@ function App(){
   // ── customers ──────────────────────────────────────────────────
   const addCustomer=()=>{
     if(!ncName){show("⚠️ أدخل اسم العميل",true);return;}
-    setCustomers(p=>[{id:"cu_"+Date.now(),name:ncName,phone:ncPhone,preferredRecipes:ncPrefs,notes:ncNotes,orders:[],date:new Date().toISOString()},...p]);
-    setNcName("");setNcPhone("");setNcNotes("");setNcPrefs([]);setShowAddCust(false);show("👤 أُضيف العميل "+ncName);
+    setCustomers(p=>[{id:"cu_"+Date.now(),name:ncName,phone:ncPhone,preferredRecipes:ncPrefs,notes:ncNotes,birthday:ncBirthday,orders:[],date:new Date().toISOString()},...p]);
+    setNcName("");setNcPhone("");setNcNotes("");setNcPrefs([]);setNcBirthday("");setShowAddCust(false);show("👤 أُضيف العميل "+ncName);
   };
   const linkOrderToCustomer=(prodId,custId)=>{
     setProdLog(p=>p.map(e=>e.id===prodId?{...e,customerId:custId}:e));
     show("🔗 رُبط الطلب بالعميل");
+  };
+
+  const openRating=r=>{const rv=ratings[r.id]||{};setRatingRecId(r.id);setRatingStars(rv.stars||5);setRatingNote(rv.note||"");setShowRating(true);};
+  const saveRating=()=>{if(!ratingRecId)return;setRatings(p=>({...p,[ratingRecId]:{stars:ratingStars,note:ratingNote,date:new Date().toISOString()}}));setShowRating(false);show("⭐ تم حفظ التقييم");};
+
+  const todayDate=new Date();
+  const birthdayAlerts=customers.filter(c=>{
+    if(!c.birthday)return false;
+    const bd=new Date(c.birthday);
+    const thisYearBd=new Date(todayDate.getFullYear(),bd.getMonth(),bd.getDate());
+    const diff=Math.ceil((thisYearBd-todayDate)/86400000);
+    return diff>=0&&diff<=7;
+  });
+
+  const expiryGroups=(()=>{
+    const g={expired:[],week:[],month:[],quarter:[]};
+    inv.filter(i=>i.expiry).forEach(i=>{
+      const d=Math.ceil((new Date(i.expiry)-todayDate)/86400000);
+      if(d<0)g.expired.push({...i,d});
+      else if(d<=7)g.week.push({...i,d});
+      else if(d<=30)g.month.push({...i,d});
+      else if(d<=90)g.quarter.push({...i,d});
+    });
+    return g;
+  })();
+  const totalExpiryAlerts=expiryGroups.expired.length+expiryGroups.week.length+expiryGroups.month.length;
+
+  const suggestedRecipe=sortedRecipes.find(r=>canMake(r));
+
+  // ── Claude AI ────────────────────────────────────────────────
+  const callAI=async(prompt,maxTokens=1200)=>{
+    if(!aiKey){show("⚠️ أدخل مفتاح Claude API في تبويب التراث",true);return null;}
+    setAiLoading(true);
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",
+        headers:{"x-api-key":aiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true","content-type":"application/json"},
+        body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:maxTokens,messages:[{role:"user",content:prompt}]})
+      });
+      if(!res.ok){const e=await res.json();show("❌ "+(e.error?.message||"خطأ API"),true);return null;}
+      const data=await res.json();
+      return data.content[0]?.text||null;
+    }catch(e){show("❌ تعذّر الاتصال بـ Claude",true);return null;}
+    finally{setAiLoading(false);}
+  };
+
+  const generateAIRecipe=async()=>{
+    const avail=inv.filter(i=>i.stock>3).map(i=>`${i.name}(id:${i.id}): ${i.stock}${i.unit}`).join("\n");
+    const prompt=`أنت خبير في صناعة دهن العود العربي الفاخر. المخزون المتاح:\n${avail}\n\nأنشئ وصفة دهن عود فاخرة وأصيلة باستخدام بعض هذه المواد فقط. استخدم الـid الدقيق كما هو. الكميات بالمل لدفعة تولة (11.6مل).\n\nأرجع JSON فقط بدون أي نص قبله أو بعده:\n{"name":"اسم الوصفة","desc":"وصف قصير جذاب","season":"شتاء","gender":"رجالي","stability":"7 أيام","ing":[["id",كمية],...],"steps":["الخطوة 1","الخطوة 2",...]}\n\nاجعل الوصفة متوازنة (قمة+قلب+قاعدة) وأصيلة.`;
+    setShowAIGen(true);setAiGenResult(null);setAiGenRaw("");
+    const txt=await callAI(prompt,1200);
+    if(!txt)return;
+    setAiGenRaw(txt);
+    try{
+      const m=txt.match(/\{[\s\S]*\}/);
+      if(m){
+        const p=JSON.parse(m[0]);
+        const ic={"صيف":"☀️","شتاء":"❄️","ربيع":"🌸","خريف":"🍂","مناسبات":"👑"};
+        p.icon=ic[p.season]||"✨";p.id="ai_"+Date.now();
+        setAiGenResult(p);
+      }else{show("⚠️ لم يُرجع Claude JSON صالحاً",true);}
+    }catch(e){show("⚠️ تعذّر تحليل رد الذكاء الاصطناعي",true);}
+  };
+
+  const analyzeRecipeAI=async(r)=>{
+    const sc=recipeScale(r);
+    const ingList=r.ing.map(([id,a])=>{const ing=getIng(id);const tier=noteTier(id);return `${ing?.name||id}(${NOTE_LABEL[tier]}): ${(a*sc).toFixed(2)}مل`;}).join(" | ");
+    const topPct=Math.round(r.ing.filter(([id])=>noteTier(id)==="top").reduce((s,[,a])=>s+a,0)/r.ing.reduce((s,[,a])=>s+a,0)*100);
+    const midPct=Math.round(r.ing.filter(([id])=>noteTier(id)==="mid").reduce((s,[,a])=>s+a,0)/r.ing.reduce((s,[,a])=>s+a,0)*100);
+    const basePct=100-topPct-midPct;
+    const prompt=`أنت خبير في صناعة دهن العود العربي. حلّل هذه الوصفة:\n\nالاسم: ${r.name}\nالوصف: ${r.desc}\nالموسم: ${r.season} | الجنس: ${r.gender} | الثبات: ${r.stability}\nالمكونات: ${ingList}\nنسب النوتات: قمة ${topPct}% | قلب ${midPct}% | قاعدة ${basePct}%\n\nقدّم تحليلاً مختصراً يشمل:\n1. ✅ توازن النوتات — هل النسب مثالية؟\n2. 🎯 مدى ملاءمة الوصفة للموسم والجنس\n3. 💡 3 توصيات محددة للتحسين\n4. ⭐ تقييمك الإجمالي من 10\n\nأجب بالعربية بإيجاز ووضوح.`;
+    setAiAnalysisRecipe(r);setAiAnalysisText("جارٍ التحليل...");setShowAIAnalysis(true);
+    const txt=await callAI(prompt,800);
+    if(txt)setAiAnalysisText(txt);else setAiAnalysisText("تعذّر التحليل — تحقق من المفتاح والاتصال");
   };
 
   // ── auto shopping list (low stock grouped by supplier) ─────────
@@ -482,9 +582,10 @@ function App(){
               <button className="btn-ghost" onClick={()=>setShowAddIng(true)}>+ خامة</button>
             </div>
           </div>
-          <div style={{display:"flex",gap:"6px",marginBottom:"10px"}}>
+          <div style={{display:"flex",gap:"6px",marginBottom:"10px",flexWrap:"wrap"}}>
             <button className="btn-ghost" style={{flex:1}} onClick={()=>setShowShopList(true)}>🛒 قائمة التسوق{lowStockItems.length>0?` (${lowStockItems.length})`:""}</button>
             <button className="btn-ghost" style={{flex:1}} onClick={()=>setShowSupplierCmp(true)}>📊 مقارنة الموردين</button>
+            <button className="btn-ghost" style={{flex:1}} onClick={()=>setShowExpiryCalendar(true)}>📅 الصلاحية{totalExpiryAlerts>0?` (${totalExpiryAlerts})`:""}</button>
           </div>
           <input className="inp" placeholder="🔍 ابحث..." value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:"10px"}}/>
           <div style={{display:"flex",gap:"5px",overflowX:"auto",marginBottom:"12px",paddingBottom:"4px"}}>
@@ -613,6 +714,31 @@ function App(){
           </div>
         </div>}
 
+        {/* ── expiry calendar modal ── */}
+        {showExpiryCalendar&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowExpiryCalendar(false);}}>
+          <div className="modal-sheet">
+            <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>📅 تقويم انتهاء الصلاحية</h3>
+            {Object.values(expiryGroups).every(arr=>arr.length===0)&&<div style={{textAlign:"center",color:"#80c080",padding:"30px",fontSize:"0.85rem"}}>✅ لا توجد مواد قاربت الانتهاء</div>}
+            {expiryGroups.expired.length>0&&<div className="glass" style={{marginBottom:"10px",borderRight:"3px solid #c04040",padding:"10px 12px"}}>
+              <div style={{color:"#e08080",fontWeight:"700",fontSize:"0.82rem",marginBottom:"6px"}}>❌ منتهية الصلاحية ({expiryGroups.expired.length})</div>
+              {expiryGroups.expired.map(i=><div key={i.id} className="expiry-row"><span>{i.name}</span><span style={{color:"#e08080",fontWeight:"700"}}>منذ {Math.abs(i.d)} يوم</span></div>)}
+            </div>}
+            {expiryGroups.week.length>0&&<div className="glass" style={{marginBottom:"10px",borderRight:"3px solid #c04040",padding:"10px 12px"}}>
+              <div style={{color:"#e08080",fontWeight:"700",fontSize:"0.82rem",marginBottom:"6px"}}>⚠️ تنتهي خلال أسبوع ({expiryGroups.week.length})</div>
+              {expiryGroups.week.map(i=><div key={i.id} className="expiry-row"><span>{i.name}</span><span style={{color:"#e08080",fontWeight:"700"}}>{i.d} يوم</span></div>)}
+            </div>}
+            {expiryGroups.month.length>0&&<div className="glass" style={{marginBottom:"10px",borderRight:"3px solid #c08020",padding:"10px 12px"}}>
+              <div style={{color:"#e0a060",fontWeight:"700",fontSize:"0.82rem",marginBottom:"6px"}}>⏰ تنتهي خلال شهر ({expiryGroups.month.length})</div>
+              {expiryGroups.month.map(i=><div key={i.id} className="expiry-row"><span>{i.name}</span><span style={{color:"#e0a060",fontWeight:"700"}}>{i.d} يوم</span></div>)}
+            </div>}
+            {expiryGroups.quarter.length>0&&<div className="glass" style={{marginBottom:"10px",borderRight:"3px solid #5a9a20",padding:"10px 12px"}}>
+              <div style={{color:"#80c080",fontWeight:"700",fontSize:"0.82rem",marginBottom:"6px"}}>✅ تنتهي خلال 3 أشهر ({expiryGroups.quarter.length})</div>
+              {expiryGroups.quarter.map(i=><div key={i.id} className="expiry-row"><span>{i.name}</span><span style={{color:"#80c080"}}>{i.d} يوم</span></div>)}
+            </div>}
+            <button className="btn-ghost" style={{width:"100%",marginTop:"6px"}} onClick={()=>setShowExpiryCalendar(false)}>إغلاق</button>
+          </div>
+        </div>}
+
         {/* ══════════════ RECIPES ══════════════ */}
         {tab==="recipes"&&!selectedRecipe&&!showAddRec&&!showCompare&&!showMixer&&<div className="fade">
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
@@ -622,11 +748,23 @@ function App(){
               {!catalogMode&&<button className="btn-ghost" onClick={()=>setShowMixer(true)}>🧪 خلط</button>}
               {!catalogMode&&compareIds.length===2&&<button className="btn-ghost" onClick={()=>setShowCompare(true)}>⚖️ قارن</button>}
               {!catalogMode&&<button className="btn-ghost" onClick={()=>setShowAddRec(true)}>+ وصفة</button>}
+              {!catalogMode&&<button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:aiKey?"#80a0e0":"#5a5a7a"}} onClick={generateAIRecipe}>🤖 AI</button>}
             </div>
           </div>
           {compareIds.length>0&&<div style={{background:"rgba(80,120,200,0.12)",border:"1px solid rgba(80,120,200,0.3)",borderRadius:"10px",padding:"8px 12px",marginBottom:"10px",fontSize:"0.75rem",color:"#80a0e0"}}>
             ⚖️ اختر وصفتين للمقارنة ({compareIds.length}/2) — {compareIds.length===2?"اضغط «قارن»":"اختر وصفة ثانية"}
             <button onClick={()=>setCompareIds([])} style={{background:"none",border:"none",color:"#e08080",cursor:"pointer",marginRight:"8px",fontSize:"0.75rem"}}>✕ إلغاء</button>
+          </div>}
+          {suggestedRecipe&&!catalogMode&&<div className="suggest-card">
+            <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — المخزون يكفيها الآن</div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{flex:1}}>
+                <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#fff"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
+                <div style={{fontSize:"0.72rem",color:"#c8a46a",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
+                {ratings[suggestedRecipe.id]&&<div style={{fontSize:"0.7rem",color:"#e8c860",marginTop:"4px"}}>{"⭐".repeat(ratings[suggestedRecipe.id].stars)}{ratings[suggestedRecipe.id].note&&` — ${ratings[suggestedRecipe.id].note}`}</div>}
+              </div>
+              <button className="btn-ghost" style={{borderColor:"rgba(80,160,80,0.5)",color:"#80c080",marginRight:"8px",whiteSpace:"nowrap"}} onClick={()=>setSelectedRecipe(suggestedRecipe)}>ابدأ ←</button>
+            </div>
           </div>}
           {/* catalog mode — luxury cards, no prices */}
           {catalogMode&&sortedRecipes.map(r=>(
@@ -659,6 +797,7 @@ function App(){
                 <span className={`tag ${canMake(r)?"tag-green":"tag-red"}`}>{canMake(r)?"✅ جاهز":"⚠️ ناقص"}</span>
                 <span className="tag tag-gold" style={{marginRight:"auto"}}>💰 {recipeCost(r).toFixed(0)}ر/{BATCH_NAME[batchUnit]}</span>
               </div>
+              {ratings[r.id]&&<div style={{fontSize:"0.68rem",color:"#e8c860",marginTop:"5px"}}>{"⭐".repeat(ratings[r.id].stars)}{ratings[r.id].note&&<span style={{color:"#c8a46a"}}> — {ratings[r.id].note}</span>}</div>}
             </div>
           );})}
         </div>}
@@ -766,6 +905,8 @@ function App(){
               <button className="btn-ghost" onClick={()=>setSelectedRecipe(null)}>← رجوع</button>
               <button className="btn-ghost" onClick={()=>printRecipe(r)}>🖨️ طباعة</button>
               <button className="btn-ghost" onClick={()=>setQrRecipe(r)}>📲 مشاركة</button>
+              <button className="btn-ghost" onClick={()=>openRating(r)}>⭐ {ratings[r.id]?`${ratings[r.id].stars}/5`:"تقييم"}</button>
+              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0"}} onClick={()=>analyzeRecipeAI(r)}>🤖 تحليل</button>
               <button className="btn-ghost" style={favoriteIds.includes(r.id)?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>toggleFav(r.id)}>{favoriteIds.includes(r.id)?"★ مفضلة":"☆ مفضلة"}</button>
             </div>
             <div className="glass" style={{textAlign:"center",background:"rgba(214,175,55,0.06)",padding:"18px"}}>
@@ -860,7 +1001,7 @@ function App(){
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"4px"}}>
                 <div>
                   <span style={{fontSize:"0.85rem",fontWeight:"700"}}>{e.recipeIcon} {e.recipeName}</span>
-                  <div style={{fontSize:"0.66rem",color:"#c8a46a"}}>{fmtDate(e.date)} • {e.batch} ({e.vol} مل)</div>
+                  <div style={{fontSize:"0.66rem",color:"#c8a46a"}}>{e.batchNo&&<span style={{color:"#D4AF37",fontWeight:"700"}}>#{e.batchNo} • </span>}{fmtDate(e.date)} • {e.batch} ({e.vol} مل)</div>
                 </div>
                 <div style={{textAlign:"left"}}>
                   <div style={{fontSize:"0.78rem",color:"#D4AF37",fontWeight:"700"}}>تكلفة: {e.cost} ر</div>
@@ -900,6 +1041,7 @@ function App(){
 
         {/* ══════════════ CUSTOMERS ══════════════ */}
         {tab==="customers"&&!selectedCustomer&&!showAddCust&&<div className="fade">
+          {birthdayAlerts.length>0&&<div className="alert-pulse" style={{background:"rgba(214,175,55,0.15)",border:"1px solid rgba(214,175,55,0.5)",padding:"10px 16px",marginBottom:"12px",borderRadius:"12px",fontSize:"0.78rem",color:"#e8c860"}}>🎂 <b>عيد ميلاد هذا الأسبوع:</b> {birthdayAlerts.map(c=>c.name).join(" • ")}</div>}
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"12px"}}>
             <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700"}}>العملاء ({customers.length})</h2>
             <button className="btn-ghost" onClick={()=>setShowAddCust(true)}>+ عميل</button>
@@ -931,6 +1073,7 @@ function App(){
             <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الاسم *</label><input className="inp" value={ncName} onChange={e=>setNcName(e.target.value)}/></div>
             <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>رقم الجوال</label><input className="inp" inputMode="tel" value={ncPhone} onChange={e=>setNcPhone(e.target.value)}/></div>
             <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>ملاحظات</label><input className="inp" placeholder="تفضيلاته، مناسبات..." value={ncNotes} onChange={e=>setNcNotes(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>🎂 تاريخ الميلاد</label><input type="date" className="inp" value={ncBirthday} onChange={e=>setNcBirthday(e.target.value)} style={{colorScheme:"dark"}}/></div>
             <div className="glass" style={{padding:"12px",background:"rgba(0,0,0,0.3)"}}>
               <div style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"8px"}}>⭐ الوصفات المفضلة لديه</div>
               <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
@@ -955,6 +1098,7 @@ function App(){
               <div style={{fontSize:"2rem"}}>👤</div>
               <h2 style={{color:"#D4AF37",fontSize:"1.15rem",fontWeight:"700"}}>{c.name}</h2>
               {c.phone&&<p style={{fontSize:"0.78rem",color:"#c8a46a",marginTop:"4px"}}>📞 {c.phone}</p>}
+              {c.birthday&&<p style={{fontSize:"0.74rem",color:"#e8c860",marginTop:"4px"}}>🎂 {new Date(c.birthday).toLocaleDateString('ar-SA',{day:'numeric',month:'long'})}</p>}
               {c.notes&&<p style={{fontSize:"0.74rem",color:"#e5d5be",marginTop:"6px"}}>{c.notes}</p>}
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"14px"}}>
@@ -986,6 +1130,17 @@ function App(){
 
         {/* ══════════════ HERITAGE ══════════════ */}
         {tab==="heritage"&&<div className="fade">
+          {/* AI settings */}
+          <div className="glass" style={{background:"rgba(80,120,200,0.06)",marginBottom:"14px",borderRight:"4px solid rgba(80,120,200,0.4)"}}>
+            <h3 style={{color:"#80a0e0",fontSize:"0.88rem",fontWeight:"700",marginBottom:"8px"}}>🤖 Claude AI — إعدادات المفتاح</h3>
+            <p style={{fontSize:"0.7rem",color:"#7a5a30",marginBottom:"8px"}}>أدخل Anthropic API Key لتوليد وصفات وتحليل التوازن تلقائياً</p>
+            <div style={{display:"flex",gap:"6px"}}>
+              <input type="password" className="inp" placeholder="sk-ant-api03-..." value={aiKey} onChange={e=>setAiKey(e.target.value)} style={{flex:1,fontSize:"0.78rem"}}/>
+              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.4)",color:"#80a0e0",whiteSpace:"nowrap"}} onClick={()=>show(aiKey?"✅ المفتاح محفوظ":"⚠️ لا يوجد مفتاح بعد",!aiKey)}>{aiKey?"✓ نشط":"حفظ"}</button>
+            </div>
+            <p style={{fontSize:"0.62rem",color:"#5a3a10",marginTop:"6px"}}>⚠️ يُحفظ في متصفحك فقط — لا يُرسل لأحد سوى Anthropic عند الاستخدام</p>
+            {aiKey&&<div style={{marginTop:"8px",fontSize:"0.7rem",color:"#80a0e0"}}>✅ مفعّل — زر 🤖 AI في الوصفات جاهز</div>}
+          </div>
           {/* backup section */}
           <div className="glass" style={{background:"rgba(214,175,55,0.04)",marginBottom:"14px"}}>
             <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"10px"}}>💾 النسخ الاحتياطي</h3>
@@ -1019,6 +1174,74 @@ function App(){
       {/* ── QR share modal ── */}
       {qrRecipe&&<QRModal recipe={qrRecipe} getIng={getIng} onClose={()=>setQrRecipe(null)}/>}
 
+      {/* ── AI recipe generation modal ── */}
+      {showAIGen&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowAIGen(false);}}>
+        <div className="modal-sheet">
+          <h3 style={{color:"#80a0e0",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>🤖 وصفة بـ Claude AI</h3>
+          {aiLoading&&<div style={{textAlign:"center",padding:"30px",color:"#80a0e0"}}>
+            <div style={{fontSize:"2.5rem",animation:"pulseGlow 1.5s ease-in-out infinite"}}>🤖</div>
+            <p style={{marginTop:"12px",fontSize:"0.85rem"}}>Claude يصمّم الوصفة...</p>
+          </div>}
+          {!aiLoading&&!aiGenResult&&aiGenRaw&&<div style={{padding:"10px",background:"rgba(200,60,60,0.1)",borderRadius:"10px",fontSize:"0.72rem",color:"#e08080",marginBottom:"12px",wordBreak:"break-word"}}>⚠️ رد غير متوقع: {aiGenRaw.slice(0,300)}</div>}
+          {!aiLoading&&aiGenResult&&<div>
+            <div className="glass" style={{textAlign:"center",background:"rgba(80,120,200,0.08)",padding:"16px",marginBottom:"12px"}}>
+              <span style={{fontSize:"2rem"}}>{aiGenResult.icon}</span>
+              <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700",margin:"6px 0"}}>{aiGenResult.name}</h2>
+              <p style={{fontSize:"0.78rem",color:"#e5d5be"}}>{aiGenResult.desc}</p>
+              <div style={{display:"flex",gap:"5px",justifyContent:"center",marginTop:"8px",flexWrap:"wrap"}}>
+                <span className="tag tag-gold">🗓️ {aiGenResult.season}</span>
+                <span className="tag tag-gold">👤 {aiGenResult.gender}</span>
+                <span className="tag tag-gold">⏱ {aiGenResult.stability}</span>
+              </div>
+            </div>
+            <h4 style={{color:"#D4AF37",fontSize:"0.82rem",marginBottom:"7px"}}>المكونات</h4>
+            {(aiGenResult.ing||[]).map(([id,a],i)=>{const ing=getIng(id);return(
+              <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 10px",background:ing?"rgba(255,255,255,0.04)":"rgba(200,60,60,0.08)",borderRadius:"8px",marginBottom:"3px"}}>
+                <span style={{fontSize:"0.78rem",color:ing?"#fff":"#e08080"}}>{ing?ing.name:id} {!ing&&<span style={{fontSize:"0.65rem"}}>⚠️ غير موجود</span>}</span>
+                <span style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.78rem"}}>{a} مل</span>
+              </div>
+            );})}
+            <button className="btn-gold" style={{width:"100%",marginTop:"14px"}} onClick={()=>{
+              setRecipes(p=>[...p,{...aiGenResult,steps:aiGenResult.steps||["امزج من الأثقل للأخف","اتركه 7 أيام"]}]);
+              setShowAIGen(false);show("✅ أُضيفت الوصفة من Claude AI");
+            }}>💾 أضف الوصفة للمعمل</button>
+          </div>}
+          <button className="btn-ghost" style={{width:"100%",marginTop:"8px"}} onClick={()=>setShowAIGen(false)}>إغلاق</button>
+        </div>
+      </div>}
+
+      {/* ── AI analysis modal ── */}
+      {showAIAnalysis&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowAIAnalysis(false);}}>
+        <div className="modal-sheet">
+          <h3 style={{color:"#80a0e0",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>🤖 تحليل Claude AI</h3>
+          {aiAnalysisRecipe&&<p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{aiAnalysisRecipe.icon} {aiAnalysisRecipe.name}</p>}
+          {aiLoading&&<div style={{textAlign:"center",padding:"30px",color:"#80a0e0"}}>
+            <div style={{fontSize:"2.5rem",animation:"pulseGlow 1.5s ease-in-out infinite"}}>🤖</div>
+            <p style={{marginTop:"12px",fontSize:"0.85rem"}}>Claude يحلّل الوصفة...</p>
+          </div>}
+          {!aiLoading&&<div style={{background:"rgba(0,0,0,0.3)",borderRadius:"12px",padding:"14px",fontSize:"0.8rem",lineHeight:"1.9",color:"#e5d5be",whiteSpace:"pre-wrap"}}>{aiAnalysisText}</div>}
+          <button className="btn-ghost" style={{width:"100%",marginTop:"14px"}} onClick={()=>setShowAIAnalysis(false)}>إغلاق</button>
+        </div>
+      </div>}
+
+      {showRating&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowRating(false);}}>
+        <div className="modal-sheet" style={{textAlign:"center"}}>
+          <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>⭐ تقييم الوصفة</h3>
+          <p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{recipes.find(r=>r.id===ratingRecId)?.name}</p>
+          <div style={{display:"flex",justifyContent:"center",gap:"2px",marginBottom:"16px"}}>
+            {[1,2,3,4,5].map(s=>(
+              <button key={s} className="star-btn" onClick={()=>setRatingStars(s)}
+                style={{color:s<=ratingStars?"#D4AF37":"rgba(214,175,55,0.25)",filter:s<=ratingStars?"drop-shadow(0 0 5px #D4AF37)":"none"}}>★</button>
+            ))}
+          </div>
+          <textarea className="inp" placeholder="ملاحظات التذوق: رائحة الفتح، القلب، العقبة..." value={ratingNote} onChange={e=>setRatingNote(e.target.value)} rows={3} style={{textAlign:"right",resize:"none",marginBottom:"12px"}}/>
+          <div style={{display:"flex",gap:"8px"}}>
+            <button className="btn-gold" style={{flex:1}} onClick={saveRating}>💾 حفظ التقييم</button>
+            <button className="btn-ghost" onClick={()=>setShowRating(false)}>إلغاء</button>
+          </div>
+        </div>
+      </div>}
+
       <div className="bottom-nav">
         {[
           {id:"inventory",icon:"🏺",label:"المخزون"},
@@ -1027,7 +1250,7 @@ function App(){
           {id:"stats",icon:"📊",label:"الإحصائيات"},
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon">{t.icon}</span>{t.label}
           </button>
         ))}
