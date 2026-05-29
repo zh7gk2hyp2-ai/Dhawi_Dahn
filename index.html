@@ -265,6 +265,14 @@ function App(){
   const [ratingStars,setRatingStars]=useState(5);
   const [ratingNote,setRatingNote]=useState("");
   const [showExpiryCalendar,setShowExpiryCalendar]=useState(false);
+  const [aiKey,setAiKey]=useState(()=>lsGet("dw_aikey",""));
+  const [aiLoading,setAiLoading]=useState(false);
+  const [showAIGen,setShowAIGen]=useState(false);
+  const [aiGenResult,setAiGenResult]=useState(null);
+  const [aiGenRaw,setAiGenRaw]=useState("");
+  const [showAIAnalysis,setShowAIAnalysis]=useState(false);
+  const [aiAnalysisText,setAiAnalysisText]=useState("");
+  const [aiAnalysisRecipe,setAiAnalysisRecipe]=useState(null);
 
   // add ingredient
   const [niName,setNiName]=useState("");const [niBrand,setNiBrand]=useState("");const [niCat,setNiCat]=useState("عود");
@@ -282,6 +290,7 @@ function App(){
   useEffect(()=>lsSet("dw_favorites",favoriteIds),[favoriteIds]);
   useEffect(()=>lsSet("dw_batchnum",batchCounter),[batchCounter]);
   useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
+  useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
 
   // ── low stock check ─────────────────────────────────────────
   const lowStockItems=inv.filter(i=>i.stock<i.qty*LOW_STOCK_THRESHOLD && i.qty>0);
@@ -423,6 +432,53 @@ function App(){
   const totalExpiryAlerts=expiryGroups.expired.length+expiryGroups.week.length+expiryGroups.month.length;
 
   const suggestedRecipe=sortedRecipes.find(r=>canMake(r));
+
+  // ── Claude AI ────────────────────────────────────────────────
+  const callAI=async(prompt,maxTokens=1200)=>{
+    if(!aiKey){show("⚠️ أدخل مفتاح Claude API في تبويب التراث",true);return null;}
+    setAiLoading(true);
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",
+        headers:{"x-api-key":aiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true","content-type":"application/json"},
+        body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:maxTokens,messages:[{role:"user",content:prompt}]})
+      });
+      if(!res.ok){const e=await res.json();show("❌ "+(e.error?.message||"خطأ API"),true);return null;}
+      const data=await res.json();
+      return data.content[0]?.text||null;
+    }catch(e){show("❌ تعذّر الاتصال بـ Claude",true);return null;}
+    finally{setAiLoading(false);}
+  };
+
+  const generateAIRecipe=async()=>{
+    const avail=inv.filter(i=>i.stock>3).map(i=>`${i.name}(id:${i.id}): ${i.stock}${i.unit}`).join("\n");
+    const prompt=`أنت خبير في صناعة دهن العود العربي الفاخر. المخزون المتاح:\n${avail}\n\nأنشئ وصفة دهن عود فاخرة وأصيلة باستخدام بعض هذه المواد فقط. استخدم الـid الدقيق كما هو. الكميات بالمل لدفعة تولة (11.6مل).\n\nأرجع JSON فقط بدون أي نص قبله أو بعده:\n{"name":"اسم الوصفة","desc":"وصف قصير جذاب","season":"شتاء","gender":"رجالي","stability":"7 أيام","ing":[["id",كمية],...],"steps":["الخطوة 1","الخطوة 2",...]}\n\nاجعل الوصفة متوازنة (قمة+قلب+قاعدة) وأصيلة.`;
+    setShowAIGen(true);setAiGenResult(null);setAiGenRaw("");
+    const txt=await callAI(prompt,1200);
+    if(!txt)return;
+    setAiGenRaw(txt);
+    try{
+      const m=txt.match(/\{[\s\S]*\}/);
+      if(m){
+        const p=JSON.parse(m[0]);
+        const ic={"صيف":"☀️","شتاء":"❄️","ربيع":"🌸","خريف":"🍂","مناسبات":"👑"};
+        p.icon=ic[p.season]||"✨";p.id="ai_"+Date.now();
+        setAiGenResult(p);
+      }else{show("⚠️ لم يُرجع Claude JSON صالحاً",true);}
+    }catch(e){show("⚠️ تعذّر تحليل رد الذكاء الاصطناعي",true);}
+  };
+
+  const analyzeRecipeAI=async(r)=>{
+    const sc=recipeScale(r);
+    const ingList=r.ing.map(([id,a])=>{const ing=getIng(id);const tier=noteTier(id);return `${ing?.name||id}(${NOTE_LABEL[tier]}): ${(a*sc).toFixed(2)}مل`;}).join(" | ");
+    const topPct=Math.round(r.ing.filter(([id])=>noteTier(id)==="top").reduce((s,[,a])=>s+a,0)/r.ing.reduce((s,[,a])=>s+a,0)*100);
+    const midPct=Math.round(r.ing.filter(([id])=>noteTier(id)==="mid").reduce((s,[,a])=>s+a,0)/r.ing.reduce((s,[,a])=>s+a,0)*100);
+    const basePct=100-topPct-midPct;
+    const prompt=`أنت خبير في صناعة دهن العود العربي. حلّل هذه الوصفة:\n\nالاسم: ${r.name}\nالوصف: ${r.desc}\nالموسم: ${r.season} | الجنس: ${r.gender} | الثبات: ${r.stability}\nالمكونات: ${ingList}\nنسب النوتات: قمة ${topPct}% | قلب ${midPct}% | قاعدة ${basePct}%\n\nقدّم تحليلاً مختصراً يشمل:\n1. ✅ توازن النوتات — هل النسب مثالية؟\n2. 🎯 مدى ملاءمة الوصفة للموسم والجنس\n3. 💡 3 توصيات محددة للتحسين\n4. ⭐ تقييمك الإجمالي من 10\n\nأجب بالعربية بإيجاز ووضوح.`;
+    setAiAnalysisRecipe(r);setAiAnalysisText("جارٍ التحليل...");setShowAIAnalysis(true);
+    const txt=await callAI(prompt,800);
+    if(txt)setAiAnalysisText(txt);else setAiAnalysisText("تعذّر التحليل — تحقق من المفتاح والاتصال");
+  };
 
   // ── auto shopping list (low stock grouped by supplier) ─────────
   const shopBySupplier=lowStockItems.reduce((acc,i)=>{
@@ -692,6 +748,7 @@ function App(){
               {!catalogMode&&<button className="btn-ghost" onClick={()=>setShowMixer(true)}>🧪 خلط</button>}
               {!catalogMode&&compareIds.length===2&&<button className="btn-ghost" onClick={()=>setShowCompare(true)}>⚖️ قارن</button>}
               {!catalogMode&&<button className="btn-ghost" onClick={()=>setShowAddRec(true)}>+ وصفة</button>}
+              {!catalogMode&&<button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:aiKey?"#80a0e0":"#5a5a7a"}} onClick={generateAIRecipe}>🤖 AI</button>}
             </div>
           </div>
           {compareIds.length>0&&<div style={{background:"rgba(80,120,200,0.12)",border:"1px solid rgba(80,120,200,0.3)",borderRadius:"10px",padding:"8px 12px",marginBottom:"10px",fontSize:"0.75rem",color:"#80a0e0"}}>
@@ -849,6 +906,7 @@ function App(){
               <button className="btn-ghost" onClick={()=>printRecipe(r)}>🖨️ طباعة</button>
               <button className="btn-ghost" onClick={()=>setQrRecipe(r)}>📲 مشاركة</button>
               <button className="btn-ghost" onClick={()=>openRating(r)}>⭐ {ratings[r.id]?`${ratings[r.id].stars}/5`:"تقييم"}</button>
+              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0"}} onClick={()=>analyzeRecipeAI(r)}>🤖 تحليل</button>
               <button className="btn-ghost" style={favoriteIds.includes(r.id)?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>toggleFav(r.id)}>{favoriteIds.includes(r.id)?"★ مفضلة":"☆ مفضلة"}</button>
             </div>
             <div className="glass" style={{textAlign:"center",background:"rgba(214,175,55,0.06)",padding:"18px"}}>
@@ -1072,6 +1130,17 @@ function App(){
 
         {/* ══════════════ HERITAGE ══════════════ */}
         {tab==="heritage"&&<div className="fade">
+          {/* AI settings */}
+          <div className="glass" style={{background:"rgba(80,120,200,0.06)",marginBottom:"14px",borderRight:"4px solid rgba(80,120,200,0.4)"}}>
+            <h3 style={{color:"#80a0e0",fontSize:"0.88rem",fontWeight:"700",marginBottom:"8px"}}>🤖 Claude AI — إعدادات المفتاح</h3>
+            <p style={{fontSize:"0.7rem",color:"#7a5a30",marginBottom:"8px"}}>أدخل Anthropic API Key لتوليد وصفات وتحليل التوازن تلقائياً</p>
+            <div style={{display:"flex",gap:"6px"}}>
+              <input type="password" className="inp" placeholder="sk-ant-api03-..." value={aiKey} onChange={e=>setAiKey(e.target.value)} style={{flex:1,fontSize:"0.78rem"}}/>
+              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.4)",color:"#80a0e0",whiteSpace:"nowrap"}} onClick={()=>show(aiKey?"✅ المفتاح محفوظ":"⚠️ لا يوجد مفتاح بعد",!aiKey)}>{aiKey?"✓ نشط":"حفظ"}</button>
+            </div>
+            <p style={{fontSize:"0.62rem",color:"#5a3a10",marginTop:"6px"}}>⚠️ يُحفظ في متصفحك فقط — لا يُرسل لأحد سوى Anthropic عند الاستخدام</p>
+            {aiKey&&<div style={{marginTop:"8px",fontSize:"0.7rem",color:"#80a0e0"}}>✅ مفعّل — زر 🤖 AI في الوصفات جاهز</div>}
+          </div>
           {/* backup section */}
           <div className="glass" style={{background:"rgba(214,175,55,0.04)",marginBottom:"14px"}}>
             <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"10px"}}>💾 النسخ الاحتياطي</h3>
@@ -1105,6 +1174,56 @@ function App(){
       {/* ── QR share modal ── */}
       {qrRecipe&&<QRModal recipe={qrRecipe} getIng={getIng} onClose={()=>setQrRecipe(null)}/>}
 
+      {/* ── AI recipe generation modal ── */}
+      {showAIGen&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowAIGen(false);}}>
+        <div className="modal-sheet">
+          <h3 style={{color:"#80a0e0",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>🤖 وصفة بـ Claude AI</h3>
+          {aiLoading&&<div style={{textAlign:"center",padding:"30px",color:"#80a0e0"}}>
+            <div style={{fontSize:"2.5rem",animation:"pulseGlow 1.5s ease-in-out infinite"}}>🤖</div>
+            <p style={{marginTop:"12px",fontSize:"0.85rem"}}>Claude يصمّم الوصفة...</p>
+          </div>}
+          {!aiLoading&&!aiGenResult&&aiGenRaw&&<div style={{padding:"10px",background:"rgba(200,60,60,0.1)",borderRadius:"10px",fontSize:"0.72rem",color:"#e08080",marginBottom:"12px",wordBreak:"break-word"}}>⚠️ رد غير متوقع: {aiGenRaw.slice(0,300)}</div>}
+          {!aiLoading&&aiGenResult&&<div>
+            <div className="glass" style={{textAlign:"center",background:"rgba(80,120,200,0.08)",padding:"16px",marginBottom:"12px"}}>
+              <span style={{fontSize:"2rem"}}>{aiGenResult.icon}</span>
+              <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700",margin:"6px 0"}}>{aiGenResult.name}</h2>
+              <p style={{fontSize:"0.78rem",color:"#e5d5be"}}>{aiGenResult.desc}</p>
+              <div style={{display:"flex",gap:"5px",justifyContent:"center",marginTop:"8px",flexWrap:"wrap"}}>
+                <span className="tag tag-gold">🗓️ {aiGenResult.season}</span>
+                <span className="tag tag-gold">👤 {aiGenResult.gender}</span>
+                <span className="tag tag-gold">⏱ {aiGenResult.stability}</span>
+              </div>
+            </div>
+            <h4 style={{color:"#D4AF37",fontSize:"0.82rem",marginBottom:"7px"}}>المكونات</h4>
+            {(aiGenResult.ing||[]).map(([id,a],i)=>{const ing=getIng(id);return(
+              <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 10px",background:ing?"rgba(255,255,255,0.04)":"rgba(200,60,60,0.08)",borderRadius:"8px",marginBottom:"3px"}}>
+                <span style={{fontSize:"0.78rem",color:ing?"#fff":"#e08080"}}>{ing?ing.name:id} {!ing&&<span style={{fontSize:"0.65rem"}}>⚠️ غير موجود</span>}</span>
+                <span style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.78rem"}}>{a} مل</span>
+              </div>
+            );})}
+            <button className="btn-gold" style={{width:"100%",marginTop:"14px"}} onClick={()=>{
+              setRecipes(p=>[...p,{...aiGenResult,steps:aiGenResult.steps||["امزج من الأثقل للأخف","اتركه 7 أيام"]}]);
+              setShowAIGen(false);show("✅ أُضيفت الوصفة من Claude AI");
+            }}>💾 أضف الوصفة للمعمل</button>
+          </div>}
+          <button className="btn-ghost" style={{width:"100%",marginTop:"8px"}} onClick={()=>setShowAIGen(false)}>إغلاق</button>
+        </div>
+      </div>}
+
+      {/* ── AI analysis modal ── */}
+      {showAIAnalysis&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowAIAnalysis(false);}}>
+        <div className="modal-sheet">
+          <h3 style={{color:"#80a0e0",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>🤖 تحليل Claude AI</h3>
+          {aiAnalysisRecipe&&<p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{aiAnalysisRecipe.icon} {aiAnalysisRecipe.name}</p>}
+          {aiLoading&&<div style={{textAlign:"center",padding:"30px",color:"#80a0e0"}}>
+            <div style={{fontSize:"2.5rem",animation:"pulseGlow 1.5s ease-in-out infinite"}}>🤖</div>
+            <p style={{marginTop:"12px",fontSize:"0.85rem"}}>Claude يحلّل الوصفة...</p>
+          </div>}
+          {!aiLoading&&<div style={{background:"rgba(0,0,0,0.3)",borderRadius:"12px",padding:"14px",fontSize:"0.8rem",lineHeight:"1.9",color:"#e5d5be",whiteSpace:"pre-wrap"}}>{aiAnalysisText}</div>}
+          <button className="btn-ghost" style={{width:"100%",marginTop:"14px"}} onClick={()=>setShowAIAnalysis(false)}>إغلاق</button>
+        </div>
+      </div>}
+
       {showRating&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowRating(false);}}>
         <div className="modal-sheet" style={{textAlign:"center"}}>
           <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>⭐ تقييم الوصفة</h3>
@@ -1131,7 +1250,7 @@ function App(){
           {id:"stats",icon:"📊",label:"الإحصائيات"},
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon">{t.icon}</span>{t.label}
           </button>
         ))}
