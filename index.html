@@ -1131,14 +1131,21 @@ function App(){
         {tab==="heritage"&&<div className="fade">
           {/* AI settings */}
           <div className="glass" style={{background:"rgba(80,120,200,0.06)",marginBottom:"14px",borderRight:"4px solid rgba(80,120,200,0.4)"}}>
-            <h3 style={{color:"#80a0e0",fontSize:"0.88rem",fontWeight:"700",marginBottom:"8px"}}>🤖 Claude AI — إعدادات المفتاح</h3>
-            <p style={{fontSize:"0.7rem",color:"#7a5a30",marginBottom:"8px"}}>أدخل Anthropic API Key لتوليد وصفات وتحليل التوازن تلقائياً</p>
-            <div style={{display:"flex",gap:"6px"}}>
-              <input type="password" className="inp" placeholder="sk-ant-api03-..." value={aiKey} onChange={e=>setAiKey(e.target.value)} style={{flex:1,fontSize:"0.78rem"}}/>
-              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.4)",color:"#80a0e0",whiteSpace:"nowrap"}} onClick={()=>show(aiKey?"✅ المفتاح محفوظ":"⚠️ لا يوجد مفتاح بعد",!aiKey)}>{aiKey?"✓ نشط":"حفظ"}</button>
-            </div>
-            <p style={{fontSize:"0.62rem",color:"#5a3a10",marginTop:"6px"}}>⚠️ يُحفظ في متصفحك فقط — لا يُرسل لأحد سوى Anthropic عند الاستخدام</p>
-            {aiKey&&<div style={{marginTop:"8px",fontSize:"0.7rem",color:"#80a0e0"}}>✅ مفعّل — زر 🤖 AI في الوصفات جاهز</div>}
+            <h3 style={{color:"#80a0e0",fontSize:"0.88rem",fontWeight:"700",marginBottom:"8px"}}>🤖 Claude AI</h3>
+            {aiKey
+              ? <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div style={{fontSize:"0.8rem",color:"#80c080"}}>✅ مفعّل — زر 🤖 AI جاهز في الوصفات</div>
+                  <button className="btn-danger" style={{fontSize:"0.72rem",padding:"5px 12px"}} onClick={()=>{setAiKey("");show("🗑️ تم حذف المفتاح");}}>حذف</button>
+                </div>
+              : <>
+                  <p style={{fontSize:"0.7rem",color:"#7a5a30",marginBottom:"8px"}}>أدخل Anthropic API Key لتوليد وصفات وتحليل التوازن</p>
+                  <div style={{display:"flex",gap:"6px"}}>
+                    <input type="password" className="inp" placeholder="sk-ant-api03-..." value={aiKey} onChange={e=>setAiKey(e.target.value)} style={{flex:1,fontSize:"0.78rem"}}/>
+                    <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.4)",color:"#80a0e0",whiteSpace:"nowrap"}} onClick={()=>show(aiKey?"✅ المفتاح محفوظ":"⚠️ أدخل المفتاح أولاً",!aiKey)}>حفظ</button>
+                  </div>
+                  <p style={{fontSize:"0.62rem",color:"#5a3a10",marginTop:"6px"}}>⚠️ يُحفظ في متصفحك فقط</p>
+                </>
+            }
           </div>
           {/* backup section */}
           <div className="glass" style={{background:"rgba(214,175,55,0.04)",marginBottom:"14px"}}>
