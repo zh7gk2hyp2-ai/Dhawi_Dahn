@@ -89,7 +89,6 @@ const PENDING_PURCHASES=[
   {id:"crimson",qty:1000,cost:372},{id:"cardamom",qty:50,cost:187},
   {id:"cmp121",qty:100,cost:67},{id:"metal_made",qty:1000,cost:338},
   {id:"civettone",qty:5,cost:422},{id:"sleek_oud",qty:100,cost:43},
-  {id:"oud_mayor",qty:100,cost:69,newItem:{name:"OUD MAYOR",brand:"Bulkaroma",cat:"مستوحى",unit:"جم"}},
   // Bulkaroma Order 2 (shipping ₹18830=829 SAR, 4165g total)
   {id:"artessence",qty:200,cost:283},{id:"iso_e",qty:1000,cost:317},
   {id:"sandal_indi",qty:500,cost:228},{id:"oud_synth",qty:100,cost:387},
@@ -162,7 +161,6 @@ const RAW=[
   ["civettone","Civettone","Bulkaroma","مسك",260,5,"جم"],
   ["maracuja","OUD MARACUJA","Bulkaroma","مستوحى",420,100,"جم"],
   ["sleek_oud","SLEEK OUD","Bulkaroma","مستوحى",380,100,"جم"],
-  ["oud_mayor","OUD MAYOR","Bulkaroma","مستوحى",0,0,"جم"],
   ["jojoba","زيت جوجوبا","محلي","حامل",60,50,"مل"],
   ["dpg","DPG ديوبي","محلي","حامل",40,200,"مل"],
   ["blend1","الخلطة الأولى (95مل)","صناعتي","خلطة",0,95,"مل"],
@@ -247,7 +245,7 @@ function fmtDate(iso){
 
 // ─── notes classification (Top / Middle / Base) ─────────────────
 const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','oud_xx','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','oud_mayor']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','oud_xx','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy']);
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 const NOTE_LABEL={top:"🔝 قمة",mid:"💫 قلب",base:"🪨 قاعدة"};
 
