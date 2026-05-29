@@ -431,8 +431,6 @@ function App(){
   })();
   const totalExpiryAlerts=expiryGroups.expired.length+expiryGroups.week.length+expiryGroups.month.length;
 
-  const suggestedRecipe=sortedRecipes.find(r=>canMake(r));
-
   // ── Claude AI ────────────────────────────────────────────────
   const callAI=async(prompt,maxTokens=1200)=>{
     if(!aiKey){show("⚠️ أدخل مفتاح Claude API في تبويب التراث",true);return null;}
@@ -532,6 +530,7 @@ function App(){
     const fa=favoriteIds.includes(a.id)?1:0,fb=favoriteIds.includes(b.id)?1:0;
     return fb-fa;
   });
+  const suggestedRecipe=sortedRecipes.find(r=>canMake(r));
 
   // ── mixer cost ───────────────────────────────────────────────
   const mixTotal=mixItems.reduce((s,i)=>s+i.amount,0);
