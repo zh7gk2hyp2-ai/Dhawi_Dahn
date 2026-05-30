@@ -288,6 +288,10 @@ function App(){
   const [showPurchaseForm,setShowPurchaseForm]=useState(false);
   const [readyFilter,setReadyFilter]=useState(false);
   const [batchNote,setBatchNote]=useState("");
+  const [showDilution,setShowDilution]=useState(false);
+  const [dilConc,setDilConc]=useState(10);
+  const [dilPct,setDilPct]=useState(20);
+  const [dilCarrier,setDilCarrier]=useState("");
   const [puIngId,setPuIngId]=useState(RAW[0][0]);
   const [puQty,setPuQty]=useState(100);
   const [puPrice,setPuPrice]=useState(0);
@@ -606,7 +610,10 @@ function App(){
     const fa=favoriteIds.includes(a.id)?1:0,fb=favoriteIds.includes(b.id)?1:0;
     return fb-fa;
   });
-  const suggestedRecipe=sortedRecipes.find(r=>canMake(r));
+  const _m=new Date().getMonth();
+  const currentSeason=_m>=5&&_m<=7?"صيف":_m>=2&&_m<=4?"ربيع":_m>=8&&_m<=10?"خريف":"شتاء";
+  const _ready=sortedRecipes.filter(r=>canMake(r));
+  const suggestedRecipe=_ready.find(r=>r.season===currentSeason)||_ready.find(r=>r.season==="للجنسين")||_ready[0];
 
   // ── mixer cost ───────────────────────────────────────────────
   const mixTotal=mixItems.reduce((s,i)=>s+i.amount,0);
@@ -661,6 +668,7 @@ function App(){
             <button className="btn-ghost" style={{flex:1}} onClick={()=>setShowShopList(true)}>🛒 قائمة التسوق{lowStockItems.length>0?` (${lowStockItems.length})`:""}</button>
             <button className="btn-ghost" style={{flex:1}} onClick={()=>setShowSupplierCmp(true)}>📊 مقارنة الموردين</button>
             <button className="btn-ghost" style={{flex:1}} onClick={()=>setShowExpiryCalendar(true)}>📅 الصلاحية{totalExpiryAlerts>0?` (${totalExpiryAlerts})`:""}</button>
+            <button className="btn-ghost" style={{flex:1}} onClick={()=>setShowDilution(true)}>⚗️ تخفيف</button>
           </div>
           <input className="inp" placeholder="🔍 ابحث..." value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:"10px"}}/>
           <div style={{display:"flex",gap:"5px",overflowX:"auto",marginBottom:"12px",paddingBottom:"4px"}}>
@@ -840,7 +848,7 @@ function App(){
             {readyFilter?"✅ عرض الجاهزة فقط — اضغط للكل":"🔍 عرض الجاهزة فقط"}
           </button>}
           {suggestedRecipe&&!catalogMode&&<div className="suggest-card">
-            <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — المخزون يكفيها الآن</div>
+            <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{flex:1}}>
                 <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#fff"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
@@ -1152,6 +1160,24 @@ function App(){
           </div>}
 
           {/* production log */}
+          {/* ── aging queue ── */}
+          {(()=>{const aging=prodLog.filter(e=>!e.sold&&e.readyDate&&daysLeft(e.readyDate)>0).sort((a,b)=>daysLeft(a.readyDate)-daysLeft(b.readyDate));if(!aging.length)return null;return(
+            <div className="glass" style={{marginBottom:"14px"}}>
+              <h3 style={{color:"#e0a060",fontSize:"0.88rem",fontWeight:"700",marginBottom:"10px"}}>⏳ قيد التعتيق ({aging.length})</h3>
+              {aging.map(e=>{const dl=daysLeft(e.readyDate);const pct=Math.max(0,Math.min(100,100-(dl/e.agingDays*100)));return(
+                <div key={e.id} style={{marginBottom:"10px"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.75rem",marginBottom:"3px"}}>
+                    <span style={{fontWeight:"700"}}>{e.recipeIcon} {e.recipeName}</span>
+                    <span style={{color:"#e0a060",fontWeight:"700"}}>{dl} يوم متبقي</span>
+                  </div>
+                  <div style={{height:"8px",background:"rgba(255,255,255,0.06)",borderRadius:"4px",overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,#c08020,#D4AF37)",borderRadius:"4px",transition:"width .4s"}}/>
+                  </div>
+                  <div style={{fontSize:"0.62rem",color:"#c8a46a",marginTop:"2px"}}>#{e.batchNo} • {e.batch} • جاهز {fmtDate(e.readyDate)}</div>
+                </div>
+              );})}
+            </div>
+          );})()}
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"8px"}}>
             <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700"}}>🏭 سجل الإنتاج</h3>
           </div>
@@ -1178,6 +1204,7 @@ function App(){
               </div>
               {!e.sold&&<SellEntry id={e.id} onSell={markSold}/>}
               {e.sold&&<span className="tag tag-green">✅ مباع</span>}
+              <button onClick={()=>{const w=window.open('','_blank','width=380,height=260');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:320px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي دهن العود</div><div style="text-align:center;font-size:22px;margin:4px 0">${e.recipeIcon}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${e.recipeName}</div><hr style="border-color:#D4AF37;opacity:0.3"/><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${e.batchNo}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${e.vol} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${e.note}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
               {!e.customerId&&customers.length>0&&<select value="" onChange={ev=>{if(ev.target.value)linkOrderToCustomer(e.id,ev.target.value);}} style={{marginTop:"6px",background:"rgba(0,0,0,0.4)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"8px",color:"#c8a46a",fontSize:"0.72rem",padding:"4px 8px",fontFamily:"'Alexandria',sans-serif",width:"100%"}}><option value="">🔗 اربط بعميل...</option>{customers.map(c=><option key={c.id} value={c.id} style={{background:"#1a0800"}}>{c.name}</option>)}</select>}
             </div>
           );})}
@@ -1354,6 +1381,52 @@ function App(){
 
       </div>
 
+      {/* ── dilution calculator ── */}
+      {showDilution&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowDilution(false);}}>
+        <div className="modal-sheet">
+          <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"16px"}}>⚗️ حاسبة التخفيف</h3>
+          <div style={{display:"grid",gap:"12px",marginBottom:"16px"}}>
+            <div><label style={{fontSize:"0.72rem",color:"#c8a46a",display:"block",marginBottom:"4px"}}>كمية المركّز (مل)</label>
+              <input type="number" className="inp" value={dilConc} onChange={e=>setDilConc(+e.target.value)} min="1"/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#c8a46a",display:"block",marginBottom:"4px"}}>نسبة التركيز المطلوبة (%)</label>
+              <div style={{display:"flex",gap:"6px",flexWrap:"wrap"}}>
+                {[5,10,15,20,25,30].map(p=>(
+                  <button key={p} onClick={()=>setDilPct(p)} style={{padding:"6px 12px",background:dilPct===p?"#D4AF37":"rgba(255,255,255,0.06)",border:`1px solid ${dilPct===p?"#D4AF37":"rgba(214,175,55,0.3)"}`,color:dilPct===p?"#1a0800":"#D4AF37",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{p}%</button>
+                ))}
+                <input type="number" className="inp" value={dilPct} onChange={e=>setDilPct(+e.target.value)} min="1" max="100" style={{width:"60px",textAlign:"center"}}/>
+              </div>
+            </div>
+          </div>
+          {(()=>{
+            const totalVol=dilPct>0?+(dilConc/(dilPct/100)).toFixed(1):0;
+            const carrier=+(totalVol-dilConc).toFixed(1);
+            const carrierName=dilCarrier||"الزيت الحامل";
+            return <div className="glass" style={{background:"linear-gradient(135deg,rgba(214,175,55,0.12),rgba(30,12,3,0.8))",padding:"16px",textAlign:"center",marginBottom:"12px"}}>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px"}}>
+                <div style={{background:"rgba(0,0,0,0.3)",borderRadius:"10px",padding:"10px"}}>
+                  <div style={{fontSize:"0.62rem",color:"#c8a46a"}}>مركّز</div>
+                  <div style={{fontSize:"1.2rem",fontWeight:"700",color:"#D4AF37"}}>{dilConc} مل</div>
+                </div>
+                <div style={{background:"rgba(0,0,0,0.3)",borderRadius:"10px",padding:"10px"}}>
+                  <div style={{fontSize:"0.62rem",color:"#c8a46a"}}>{carrierName}</div>
+                  <div style={{fontSize:"1.2rem",fontWeight:"700",color:"#80c080"}}>{carrier} مل</div>
+                </div>
+                <div style={{background:"rgba(0,0,0,0.3)",borderRadius:"10px",padding:"10px"}}>
+                  <div style={{fontSize:"0.62rem",color:"#c8a46a"}}>الناتج</div>
+                  <div style={{fontSize:"1.2rem",fontWeight:"700",color:"#80a0e0"}}>{totalVol} مل</div>
+                </div>
+              </div>
+              <div style={{marginTop:"10px",fontSize:"0.72rem",color:"#c8a46a"}}>{dilConc} مل مركّز + {carrier} مل {carrierName} = {totalVol} مل بتركيز {dilPct}%</div>
+            </div>;
+          })()}
+          <select className="inp" value={dilCarrier} onChange={e=>setDilCarrier(e.target.value)} style={{background:"#1a0800",marginBottom:"12px"}}>
+            <option value="">اختر الحامل...</option>
+            {inv.filter(i=>i.cat==="حامل").map(i=><option key={i.id} value={i.name}>{i.name} ({i.stock} {i.unit})</option>)}
+          </select>
+          <button className="btn-ghost" style={{width:"100%"}} onClick={()=>setShowDilution(false)}>إغلاق</button>
+        </div>
+      </div>}
+
       {/* ── catalog customer view (no costs / no profit margin) ── */}
       {catalogView&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setCatalogView(null);}}>
         <div className="modal-sheet">
@@ -1383,7 +1456,10 @@ function App(){
               <Row label="🪨 القاعدة" arr={bases}/>
             </div>;
           })()}
-          <button className="btn-gold" style={{width:"100%",marginBottom:"8px"}} onClick={()=>{setQrRecipe(catalogView);}}>📲 مشاركة العطر</button>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"8px"}}>
+            <button className="btn-gold" onClick={()=>{setQrRecipe(catalogView);}}>📲 QR مشاركة</button>
+            <button onClick={()=>{const lnk=buildShareLink(catalogView,getIng);window.open(`https://wa.me/?text=${encodeURIComponent(catalogView.icon+" "+catalogView.name+"\n"+catalogView.desc+"\n\n"+lnk)}`,'_blank');}} style={{background:"rgba(37,211,102,0.18)",border:"1px solid rgba(37,211,102,0.5)",color:"#25d366",borderRadius:"12px",padding:"10px",cursor:"pointer",fontSize:"0.82rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>💚 واتساب</button>
+          </div>
           <button className="btn-ghost" style={{width:"100%"}} onClick={()=>setCatalogView(null)}>إغلاق</button>
         </div>
       </div>}
@@ -1467,7 +1543,7 @@ function App(){
           {id:"stats",icon:"📊",label:"الإحصائيات"},
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon">{t.icon}</span>{t.label}
           </button>
         ))}
