@@ -80,6 +80,17 @@ const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_02";
+const PENDING_RECIPES_VERSION="rec_01";
+const PENDING_RECIPES=[
+  {id:"pure_gold",name:"دهن عود بيور جولد",icon:"✨",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",
+   desc:"زهري خشبي مسكي — زعفران وعود تايلاندي وأكيغالاوود",
+   ing:[["safraleine",1.5],["wild_petal",1.5],["pea",1.5],["iso_e",0.3],["lux_cambodi",4],["lux_hindi",3],["black_agar",1],["cmp91",1.5],["artessence",4],["sandal_indi",3],["patchouli",1.5],["cashmeran",0.5],["musk_climb",1],["labdanum",1.5],["lux_fixative",2],["dpg",3]],
+   steps:["أذب Labdanum في DPG بحمام مائي 60°","أضف Artessence + Oud Cambodi + Oud Hindi + Black Agar","أضف Safraleine + CMP91","أضف Sandalwood + Fixative","أضف ISO E + Wild Petal + PEA","أخيراً: Cashmeran + مسك متسلق","اتركه 7 أيام على الأقل"]},
+  {id:"black_eyes_w",name:"مخلط العيون السود النسائي",icon:"🖤",season:"صيف",gender:"نسائي",stability:"14 ساعة",
+   desc:"زهري حمضي — برتقال أحمر وزهور بيضاء وكراميل",
+   ing:[["pea",3],["wild_petal",2],["rose_taif",3],["lux_symphony",2],["lux_afternoon",2],["cmp121",2],["patchouli",1.5],["benzoin_a",1.5],["vanilla",2],["musk_ruman",1.5],["cashmeran",0.4],["tonquitone",0.5],["ambermor",1],["lux_fixative",2],["dpg",4],["jojoba",3]],
+   steps:["DPG + Jojoba كأساس","أضف PEA + Wild Petal + Rose Taif","أضف Symphony + Afternoon + CMP121","أذب Benzoin بحمام مائي خفيف ثم أضفه","أضف Vanilla + Patchouli","أضف Fixative + Ambermor","أخيراً: مسك رمان + Cashmeran + Tonquitone","اتركه 5–7 أيام"]}
+];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
   // Bulkaroma Order 1 (shipping ₹4500=198 SAR, 4005g total)
@@ -221,6 +232,44 @@ function applyPendingPurchases(inv){
   lsSet("dw_pp_ver",PENDING_PURCHASES_VERSION);
   return [...map.values()];
 }
+const STOCK_FIX_VERSION="stk_fix_01";
+// Corrects doubled Bulkaroma quantities — RAW baseline was old used-up stock;
+// only the PENDING order quantities are physically present.
+const STOCK_FIX=[
+  {id:"labdanum",qty:200,cost:61},{id:"benzoin_a",qty:200,cost:58},
+  {id:"benzoin_b",qty:1000,cost:121},{id:"benzyl",qty:50,cost:14},
+  {id:"safraleine",qty:100,cost:284},{id:"vetiver",qty:100,cost:281},
+  {id:"crimson",qty:1000,cost:372},{id:"cardamom",qty:50,cost:187},
+  {id:"cmp121",qty:100,cost:67},{id:"metal_made",qty:1000,cost:338},
+  {id:"artessence",qty:200,cost:283},{id:"iso_e",qty:1000,cost:317},
+  {id:"sandal_indi",qty:500,cost:228},{id:"oud_synth",qty:100,cost:387},
+  {id:"black_agar",qty:50,cost:237},{id:"cmp91",qty:200,cost:185},
+  {id:"cmp90",qty:100,cost:88},{id:"cmp173",qty:100,cost:71},
+  {id:"pretty_oud",qty:50,cost:140},{id:"pea",qty:1000,cost:264},
+  {id:"wild_petal",qty:100,cost:38},{id:"amber_oud",qty:25,cost:10},
+  {id:"white_oudh",qty:25,cost:10},{id:"tonquitone",qty:10,cost:27},
+  {id:"cashmeran",qty:500,cost:445},{id:"patchouli",qty:100,cost:114},
+  {id:"ambermor",qty:100,cost:360},{id:"oliffac",qty:5,cost:30},
+];
+function applyStockFix(inv){
+  if(lsGet("dw_sf_ver","")===STOCK_FIX_VERSION)return inv;
+  const map=new Map(inv.map(i=>[i.id,{...i}]));
+  STOCK_FIX.forEach(f=>{
+    if(map.has(f.id)){
+      const i=map.get(f.id);
+      map.set(f.id,{...i,qty:f.qty,stock:f.qty,price:f.cost,unitCost:f.qty>0?f.cost/f.qty:0});
+    }
+  });
+  lsSet("dw_sf_ver",STOCK_FIX_VERSION);
+  return [...map.values()];
+}
+function applyPendingRecipes(recipes){
+  if(lsGet("dw_pr_ver","")===PENDING_RECIPES_VERSION)return recipes;
+  const existingIds=new Set(recipes.map(r=>r.id));
+  const newRecs=PENDING_RECIPES.filter(r=>!existingIds.has(r.id));
+  lsSet("dw_pr_ver",PENDING_RECIPES_VERSION);
+  return [...recipes,...newRecs];
+}
 
 const Logo=({size=52})=>(
   <svg width={size} height={size} viewBox="0 0 140 140" fill="none">
@@ -265,8 +314,8 @@ function App(){
   const [logged,setLogged]=useState(false);
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("recipes");
-  const [inv,setInv]=useState(()=>applyPendingPurchases(lsGet("dw_inv",buildInv())));
-  const [recipes,setRecipes]=useState(()=>lsGet("dw_recipes",INITIAL_RECIPES));
+  const [inv,setInv]=useState(()=>applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))));
+  const [recipes,setRecipes]=useState(()=>applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES)));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
   const [search,setSearch]=useState("");
