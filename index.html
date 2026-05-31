@@ -80,12 +80,12 @@ const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_02";
-const PENDING_RECIPES_VERSION="rec_01";
+const PENDING_RECIPES_VERSION="rec_02";
 const PENDING_RECIPES=[
-  {id:"pure_gold",name:"دهن عود بيور جولد",icon:"✨",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",
-   desc:"زهري خشبي مسكي — زعفران وعود تايلاندي وأكيغالاوود",
-   ing:[["safraleine",1.5],["wild_petal",1.5],["pea",1.5],["iso_e",0.3],["lux_cambodi",4],["lux_hindi",3],["black_agar",1],["cmp91",1.5],["artessence",4],["sandal_indi",3],["patchouli",1.5],["cashmeran",0.5],["musk_climb",1],["labdanum",1.5],["lux_fixative",2],["dpg",3]],
-   steps:["أذب Labdanum في DPG بحمام مائي 60°","أضف Artessence + Oud Cambodi + Oud Hindi + Black Agar","أضف Safraleine + CMP91","أضف Sandalwood + Fixative","أضف ISO E + Wild Petal + PEA","أخيراً: Cashmeran + مسك متسلق","اتركه 7 أيام على الأقل"]},
+  {id:"pure_gold",name:"دهن عود بيور جولد",icon:"✨",season:"مناسبات",gender:"للجنسين",stability:"3 أسابيع",
+   desc:"زهري خشبي مسكي — زعفران وعود تايلاندي وأكيغالاوود | ~52 ريال/50مل",
+   ing:[["safraleine",0.5],["wild_petal",2.5],["pea",2],["lux_cambodi",5],["lux_hindi",4],["pretty_oud",2],["benzoin_a",1.5],["artessence",4],["musk_climb",3],["sandal_indi",5],["patchouli",2],["labdanum",2],["ambermor",1.5],["lux_fixative",2],["cashmeran",0.5],["iso_e",0.4],["dpg",4]],
+   steps:["سخّن Labdanum + Benzoin A + Ambermor على 60° مع تحريك 18-20 دقيقة ← برّد لـ 40°","أضف Oud Cambodi + Oud Hindi + Artessence + Pretty Oud بارداً","أضف Sandalwood + Patchouli + مسك متسلق","أضف Wild Petal + PEA","أضف Safraleine","أخيراً: Cashmeran + ISO E + DPG","عتّق 3 أسابيع"]},
   {id:"black_eyes_w",name:"مخلط العيون السود النسائي",icon:"🖤",season:"صيف",gender:"نسائي",stability:"14 ساعة",
    desc:"زهري حمضي — برتقال أحمر وزهور بيضاء وكراميل",
    ing:[["pea",3],["wild_petal",2],["rose_taif",3],["lux_symphony",2],["lux_afternoon",2],["cmp121",2],["patchouli",1.5],["benzoin_a",1.5],["vanilla",2],["musk_ruman",1.5],["cashmeran",0.4],["tonquitone",0.5],["ambermor",1],["lux_fixative",2],["dpg",4],["jojoba",3]],
@@ -265,10 +265,10 @@ function applyStockFix(inv){
 }
 function applyPendingRecipes(recipes){
   if(lsGet("dw_pr_ver","")===PENDING_RECIPES_VERSION)return recipes;
-  const existingIds=new Set(recipes.map(r=>r.id));
-  const newRecs=PENDING_RECIPES.filter(r=>!existingIds.has(r.id));
+  const map=new Map(recipes.map(r=>[r.id,r]));
+  PENDING_RECIPES.forEach(r=>map.set(r.id,r));
   lsSet("dw_pr_ver",PENDING_RECIPES_VERSION);
-  return [...recipes,...newRecs];
+  return [...map.values()];
 }
 
 const Logo=({size=52})=>(
