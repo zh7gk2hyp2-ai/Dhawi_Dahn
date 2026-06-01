@@ -265,6 +265,70 @@ function applyStockFix(inv){
   lsSet("dw_sf_ver",STOCK_FIX_VERSION);
   return [...map.values()];
 }
+const NAME_FIX_VERSION="nm_fix_01";
+const NAME_FIX={
+  "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
+  "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
+  "rose_taif":"Rose Taif (ورد الطائف)",
+  "rose_istanbul":"Rose Istanbul (ورد إسطنبولي)",
+  "amber_2000":"Amber 2000 (عنبر 2000)",
+  "amber_700":"Amber 700 (عنبر 700)",
+  "musk_ruman":"Musk Ruman (مسك رمان)",
+  "oud_earthy":"Oud Earthy Animalic (عود ترابي حيواني)",
+  "musk_climb":"Musk Climb (مسك متسلق)",
+  "sandal_ham":"Sandalwood Local (خشب الصندل)",
+  "vanilla":"Vanilla Dentelle (فانيلا دانتيل)",
+  "shamma":"Shamma Amber Paste (شمامة العنبر)",
+  "oud_royal":"Royal Oud (دهن عود ملكي)",
+  "lux_cambodi":"Oud Cambodi (عود كمبودي)",
+  "lux_hindi_sweety":"Oud Hindi Sweety (عود هندي سويتي)",
+  "lux_hindi":"Oud Hindi (عود هندي)",
+  "lux_black":"Black Oud (عود أسود)",
+  "lux_fixative":"Luxodor Fixative (مثبت لوكسودور)",
+  "lux_greatness":"Oud for Greatness (عود فور غريتنيس)",
+  "lux_exclusif":"Aoud Exclusif (عود إكسكلوسيف)",
+  "lux_symphony":"LV Symphony (LV سيمفوني)",
+  "lux_afternoon":"LV Afternoon Swim (LV أفترنون)",
+  "artessence":"Agarwood Artessence (عود آرتيسانس)",
+  "iso_e":"ISO E Super (آيسو إي سوبر)",
+  "sandal_indi":"Sandalwood INDI (صندل هندي)",
+  "oud_synth":"Oud Synth (عود صناعي)",
+  "black_agar":"Black Agar Givco (عود أسود جيفكو)",
+  "cmp91":"CMP 91 Oud Patchouli (عود+باتشولي)",
+  "cmp90":"CMP 90 Oud Spice (عود+توابل)",
+  "cmp173":"CMP 173 Independent (مستقل)",
+  "pretty_oud":"Pretty Oud (عود ناعم)",
+  "pea":"Phenyl Ethyl Alcohol (كحول فينيل إيثيل)",
+  "wild_petal":"Wild Petal 236A (بتلات برية)",
+  "amber_oud":"Amber Oud K1204 (عنبر عود)",
+  "white_oudh":"White Oudh C1237 (عود أبيض)",
+  "tonquitone":"Tonquitone (تونكيتون)",
+  "cashmeran":"Cashmeran (كشميران)",
+  "patchouli":"Patchouli Sumatra (باتشولي سومطرة)",
+  "ambermor":"Ambermor EX (أمبيرمور إكس)",
+  "oliffac":"Oud Oliffac (عود أوليفاك)",
+  "labdanum":"Labdanum Absolute (لاذان مطلق)",
+  "benzoin_a":"Benzoin Absolute A (راتنج الجاوي A)",
+  "benzoin_b":"Resinoid Benzoin B (راتنج الجاوي B)",
+  "benzyl":"Benzyl Benzoate (بنزيل بنزوات)",
+  "safraleine":"Safraleine (سافرالين — زعفران جيفودان)",
+  "vetiver":"Vetiver EO (فيتيفير — نجيل هندي)",
+  "crimson":"Crimson Fair (كريمسون فير)",
+  "cardamom":"Cardamom EO (هيل — زيت طبيعي)",
+  "cmp121":"CMP 121 Contemporary (معاصر)",
+  "metal_made":"Metal Made (ميتال ميد)",
+  "civettone":"Civettone ⚠️ (سيفيتون — جيفودان)",
+  "maracuja":"Oud Maracuja (عود ماراكويا — باشن فروت)",
+  "sleek_oud":"Sleek Oud (سليك عود)",
+  "jojoba":"Jojoba Oil (زيت جوجوبا)",
+  "dpg":"DPG Dipropylene Glycol (ديوبي)",
+};
+function applyNameFix(inv){
+  if(lsGet("dw_nm_ver","")===NAME_FIX_VERSION)return inv;
+  const fixed=inv.map(i=>NAME_FIX[i.id]?{...i,name:NAME_FIX[i.id]}:i);
+  lsSet("dw_nm_ver",NAME_FIX_VERSION);
+  return fixed;
+}
 function applyPendingRecipes(recipes){
   if(lsGet("dw_pr_ver","")===PENDING_RECIPES_VERSION)return recipes;
   const map=new Map(recipes.map(r=>[r.id,r]));
@@ -316,7 +380,7 @@ function App(){
   const [logged,setLogged]=useState(false);
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("recipes");
-  const [inv,setInv]=useState(()=>applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))));
+  const [inv,setInv]=useState(()=>applyNameFix(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv())))));
   const [recipes,setRecipes]=useState(()=>applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES)));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
