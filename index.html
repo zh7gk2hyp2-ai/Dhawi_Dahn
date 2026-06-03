@@ -453,6 +453,7 @@ function App(){
   const [catalogView,setCatalogView]=useState(null);
   const [qrRecipe,setQrRecipe]=useState(null);
   const [showShopList,setShowShopList]=useState(false);
+  const [shopCart,setShopCart]=useState(()=>lsGet("dw_shopcart",[]));
   const [showSupplierCmp,setShowSupplierCmp]=useState(false);
   const [selectedCustomer,setSelectedCustomer]=useState(null);
   const [showAddCust,setShowAddCust]=useState(false);
@@ -490,6 +491,7 @@ function App(){
   useEffect(()=>lsSet("dw_batchnum",batchCounter),[batchCounter]);
   useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
   useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
+  useEffect(()=>lsSet("dw_shopcart",shopCart),[shopCart]);
 
   // ── low stock check ─────────────────────────────────────────
   const lowStockItems=inv.filter(i=>i.stock<i.qty*LOW_STOCK_THRESHOLD && i.qty>0);
@@ -1016,7 +1018,27 @@ function App(){
               <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700"}}>🛒 قائمة التسوق الذكية</h3>
               {lowStockItems.length>0&&<button className="btn-ghost" onClick={copyShopList}>📋 نسخ القائمة</button>}
             </div>
-            {lowStockItems.length===0&&<div style={{textAlign:"center",color:"#80c080",padding:"30px",fontSize:"0.85rem"}}>✅ المخزون ممتاز — لا حاجة للشراء</div>}
+            {shopCart.length===0&&lowStockItems.length===0&&<div style={{textAlign:"center",color:"#80c080",padding:"30px",fontSize:"0.85rem"}}>✅ المخزون ممتاز — لا حاجة للشراء</div>}
+            {shopCart.length>0&&(
+              <div className="glass" style={{padding:"12px",marginBottom:"10px",background:"rgba(200,60,60,0.06)",border:"1px solid rgba(200,60,60,0.3)"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"8px"}}>
+                  <div style={{color:"#e08080",fontWeight:"700",fontSize:"0.85rem"}}>📝 ناقص من الوصفات ({shopCart.length})</div>
+                  <button onClick={()=>setShopCart([])} style={{background:"rgba(200,60,60,0.2)",border:"1px solid rgba(200,60,60,0.4)",color:"#e08080",borderRadius:"6px",padding:"2px 8px",cursor:"pointer",fontSize:"0.68rem"}}>مسح الكل</button>
+                </div>
+                {shopCart.map(item=>(
+                  <div key={item.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:"1px solid rgba(255,255,255,0.05)"}}>
+                    <div>
+                      <div style={{fontSize:"0.78rem",fontWeight:"600"}}>{item.name}</div>
+                      <div style={{fontSize:"0.62rem",color:"#7a5a30"}}>من: {item.fromRecipe} • {item.brand}</div>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+                      <span style={{fontSize:"0.78rem",color:"#D4AF37",fontWeight:"700"}}>{item.need} {item.unit}</span>
+                      <button onClick={()=>setShopCart(prev=>prev.filter(x=>x.id!==item.id))} style={{background:"none",border:"none",color:"#7a4040",cursor:"pointer",fontSize:"0.85rem",padding:"0"}}>✕</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
             {Object.entries(shopBySupplier).map(([brand,items])=>(
               <div key={brand} className="glass" style={{padding:"12px",marginBottom:"10px",background:"rgba(214,175,55,0.05)"}}>
                 <div style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.85rem",marginBottom:"8px"}}>🏷️ {brand}</div>
@@ -1322,7 +1344,11 @@ function App(){
                 <div style={{fontSize:"0.72rem",color:"#e08080",fontWeight:"700",marginBottom:"6px"}}>⚠️ مكونات ناقصة ({missing.length})</div>
                 {missing.slice(0,3).map(([id,a])=>{const ing=getIng(id);const need=(a*sc2).toFixed(2);const have=ing?ing.stock:0;return <div key={id} style={{fontSize:"0.7rem",color:"#c8a46a",marginBottom:"2px"}}>• {ing?.name||id}: متوفر {have} / يحتاج {need} {ing?.unit||""}</div>;})}
                 {missing.length>3&&<div style={{fontSize:"0.68rem",color:"#c8a46a"}}>+ {missing.length-3} أخرى</div>}
-                <button onClick={()=>{if(navigator.clipboard)navigator.clipboard.writeText("ناقص لـ "+r.name+":\n"+missingTxt).then(()=>{});}} style={{marginTop:"7px",width:"100%",background:"rgba(200,60,60,0.15)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.72rem",fontWeight:"600"}}>📋 نسخ الناقص للتسوق</button>
+                <button onClick={()=>{
+                  const newItems=missing.map(([id,a])=>{const ing=getIng(id);const need=(a*sc2).toFixed(2);return{id,name:ing?.name||id,need:parseFloat(need),unit:ing?.unit||"",brand:ing?.brand||"غير محدد",fromRecipe:r.name};});
+                  setShopCart(prev=>{const existIds=new Set(prev.map(x=>x.id));const toAdd=newItems.filter(x=>!existIds.has(x.id));if(toAdd.length===0){show("⚠️ الناقص موجود بالفعل في قائمة التسوق",true);return prev;}show("🛒 أُضيف للتسوق: "+toAdd.map(x=>x.name).join("، "));return[...prev,...toAdd];});
+                  goTab("inventory");setShowShopList(true);
+                }} style={{marginTop:"7px",width:"100%",background:"rgba(200,60,60,0.15)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.72rem",fontWeight:"600"}}>🛒 أضف الناقص لقائمة التسوق</button>
               </div>;
             })()}
             {canMake(r)&&<textarea className="inp" placeholder="📝 ملاحظة للدفعة (اختياري)..." value={batchNote} onChange={e=>setBatchNote(e.target.value)} rows={2} style={{marginTop:"12px",resize:"none",fontSize:"0.78rem"}}/>}
