@@ -454,6 +454,9 @@ function App(){
   const [qrRecipe,setQrRecipe]=useState(null);
   const [showShopList,setShowShopList]=useState(false);
   const [shopCart,setShopCart]=useState(()=>lsGet("dw_shopcart",[]));
+  const [buyingCartItem,setBuyingCartItem]=useState(null);
+  const [buyQty,setBuyQty]=useState(0);
+  const [buyPrice,setBuyPrice]=useState(0);
   const [showSupplierCmp,setShowSupplierCmp]=useState(false);
   const [selectedCustomer,setSelectedCustomer]=useState(null);
   const [showAddCust,setShowAddCust]=useState(false);
@@ -558,6 +561,22 @@ function App(){
     }));
     setPuQty(100);setPuPrice(0);setPuNote("");setShowPurchaseForm(false);
     show("📦 سُجّل شراء "+ing.name);
+  };
+
+  const confirmCartPurchase=()=>{
+    if(!buyingCartItem||buyQty<=0)return;
+    const entry={id:"pu_"+Date.now(),ingId:buyingCartItem.id,ingName:buyingCartItem.name,brand:buyingCartItem.brand,qty:buyQty,unit:buyingCartItem.unit,price:buyPrice,note:"من قائمة التسوق — وصفة "+buyingCartItem.fromRecipe,date:new Date().toISOString()};
+    setPurchases(p=>[entry,...p]);
+    setInv(prev=>prev.map(i=>{
+      if(i.id!==buyingCartItem.id)return i;
+      const newQty=i.qty+buyQty;
+      const newPrice=i.price+buyPrice;
+      const ship=i.brand==="Bulkaroma"?(SHIPPING_BULK*newQty/bulkTotalQty):0;
+      return {...i,qty:newQty,price:newPrice,stock:i.stock+buyQty,unitCost:newQty>0?(newPrice+ship)/newQty:0};
+    }));
+    setShopCart(prev=>prev.filter(x=>x.id!==buyingCartItem.id));
+    show("✅ تم شراء "+buyingCartItem.name+" وتحديث المخزون");
+    setBuyingCartItem(null);setBuyQty(0);setBuyPrice(0);
   };
 
   // ── export data ──────────────────────────────────────────────
@@ -1026,15 +1045,37 @@ function App(){
                   <button onClick={()=>setShopCart([])} style={{background:"rgba(200,60,60,0.2)",border:"1px solid rgba(200,60,60,0.4)",color:"#e08080",borderRadius:"6px",padding:"2px 8px",cursor:"pointer",fontSize:"0.68rem"}}>مسح الكل</button>
                 </div>
                 {shopCart.map(item=>(
-                  <div key={item.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:"1px solid rgba(255,255,255,0.05)"}}>
-                    <div>
-                      <div style={{fontSize:"0.78rem",fontWeight:"600"}}>{item.name}</div>
-                      <div style={{fontSize:"0.62rem",color:"#7a5a30"}}>من: {item.fromRecipe} • {item.brand}</div>
+                  <div key={item.id} style={{borderBottom:"1px solid rgba(255,255,255,0.05)",paddingBottom:"6px",marginBottom:"4px"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0"}}>
+                      <div>
+                        <div style={{fontSize:"0.78rem",fontWeight:"600"}}>{item.name}</div>
+                        <div style={{fontSize:"0.62rem",color:"#7a5a30"}}>من: {item.fromRecipe} • {item.brand}</div>
+                      </div>
+                      <div style={{display:"flex",alignItems:"center",gap:"6px"}}>
+                        <span style={{fontSize:"0.78rem",color:"#D4AF37",fontWeight:"700"}}>{item.need} {item.unit}</span>
+                        <button onClick={()=>{setBuyingCartItem(item);setBuyQty(item.need);setBuyPrice(0);}} style={{background:"rgba(80,160,80,0.2)",border:"1px solid rgba(80,160,80,0.4)",color:"#80c080",borderRadius:"6px",padding:"3px 8px",cursor:"pointer",fontSize:"0.7rem",fontWeight:"700"}}>✓ شريت</button>
+                        <button onClick={()=>{setShopCart(prev=>prev.filter(x=>x.id!==item.id));if(buyingCartItem?.id===item.id)setBuyingCartItem(null);}} style={{background:"none",border:"none",color:"#7a4040",cursor:"pointer",fontSize:"0.85rem",padding:"0"}}>✕</button>
+                      </div>
                     </div>
-                    <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
-                      <span style={{fontSize:"0.78rem",color:"#D4AF37",fontWeight:"700"}}>{item.need} {item.unit}</span>
-                      <button onClick={()=>setShopCart(prev=>prev.filter(x=>x.id!==item.id))} style={{background:"none",border:"none",color:"#7a4040",cursor:"pointer",fontSize:"0.85rem",padding:"0"}}>✕</button>
-                    </div>
+                    {buyingCartItem?.id===item.id&&(
+                      <div style={{background:"rgba(80,160,80,0.08)",border:"1px solid rgba(80,160,80,0.3)",borderRadius:"8px",padding:"8px",marginTop:"4px"}}>
+                        <div style={{fontSize:"0.7rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>📦 تسجيل الشراء</div>
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px",marginBottom:"6px"}}>
+                          <div>
+                            <div style={{fontSize:"0.62rem",color:"#c8a46a",marginBottom:"2px"}}>الكمية ({item.unit})</div>
+                            <input type="number" className="inp" value={buyQty} onChange={e=>setBuyQty(+e.target.value)} step="0.1" style={{textAlign:"center",fontSize:"0.82rem",padding:"5px"}}/>
+                          </div>
+                          <div>
+                            <div style={{fontSize:"0.62rem",color:"#c8a46a",marginBottom:"2px"}}>السعر (ريال)</div>
+                            <input type="number" className="inp" value={buyPrice} onChange={e=>setBuyPrice(+e.target.value)} step="1" placeholder="0" style={{textAlign:"center",fontSize:"0.82rem",padding:"5px"}}/>
+                          </div>
+                        </div>
+                        <div style={{display:"flex",gap:"6px"}}>
+                          <button onClick={confirmCartPurchase} style={{flex:1,background:"rgba(80,160,80,0.25)",border:"1px solid rgba(80,160,80,0.5)",color:"#80c080",borderRadius:"7px",padding:"6px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"700"}}>💾 حفظ وتحديث المخزون</button>
+                          <button onClick={()=>setBuyingCartItem(null)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"#7a6a50",borderRadius:"7px",padding:"6px 10px",cursor:"pointer",fontSize:"0.75rem"}}>إلغاء</button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
