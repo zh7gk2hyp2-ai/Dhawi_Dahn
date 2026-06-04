@@ -460,6 +460,7 @@ function App(){
   const [catalogSeason,setCatalogSeason]=useState("الكل");
   const [catalogGender,setCatalogGender]=useState("الكل");
   const [catalogView,setCatalogView]=useState(null);
+  const [recipePrices,setRecipePrices]=useState(()=>lsGet("dw_rprices",{}));
   const [qrRecipe,setQrRecipe]=useState(null);
   const [showShopList,setShowShopList]=useState(false);
   const [shopCart,setShopCart]=useState(()=>lsGet("dw_shopcart",[]));
@@ -500,6 +501,7 @@ function App(){
   useEffect(()=>lsSet("dw_purchases",purchases),[purchases]);
   useEffect(()=>lsSet("dw_customers",customers),[customers]);
   useEffect(()=>lsSet("dw_favorites",favoriteIds),[favoriteIds]);
+  useEffect(()=>lsSet("dw_rprices",recipePrices),[recipePrices]);
   useEffect(()=>lsSet("dw_batchnum",batchCounter),[batchCounter]);
   useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
   useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
@@ -901,6 +903,21 @@ function App(){
               {lowStockItems.length>4&&<div style={{fontSize:"0.68rem",color:"#7a4040",marginTop:"4px"}}>+ {lowStockItems.length-4} أخرى</div>}
             </div>}
 
+            {/* ── expiry alert ── */}
+            {totalExpiryAlerts>0&&<div className="glass" style={{border:"1px solid rgba(200,60,60,0.4)",background:"rgba(80,20,20,0.2)",marginBottom:"12px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"7px"}}>
+                <h3 style={{color:"#e08080",fontSize:"0.85rem",fontWeight:"700"}}>📅 صلاحية قاربت الانتهاء ({totalExpiryAlerts})</h3>
+                <button className="btn-ghost" style={{fontSize:"0.68rem",borderColor:"rgba(200,60,60,0.4)",color:"#e08080"}} onClick={()=>{goTab("inventory");setShowExpiryCalendar(true);}}>تفاصيل</button>
+              </div>
+              {[...expiryGroups.expired,...expiryGroups.week].slice(0,3).map(i=>(
+                <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+                  <span style={{fontSize:"0.75rem",color:"#e5d5be"}}>{i.name.split('(')[0].trim()}</span>
+                  <span style={{fontSize:"0.72rem",color:"#e08080",fontWeight:"600"}}>{i.d<0?`منذ ${Math.abs(i.d)} يوم`:`${i.d} يوم متبقٍ`}</span>
+                </div>
+              ))}
+              {totalExpiryAlerts>3&&<div style={{fontSize:"0.68rem",color:"#7a4040",marginTop:"4px"}}>+ {totalExpiryAlerts-3} أخرى</div>}
+            </div>}
+
             {/* ── suggested recipe ── */}
             {suggestedRecipe&&<div className="suggest-card" style={{marginBottom:"12px"}}>
               <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
@@ -1225,6 +1242,7 @@ function App(){
               <div style={{display:"flex",gap:"6px",justifyContent:"center",flexWrap:"wrap"}}>
                 <span className="tag tag-gold">👤 {r.gender}</span>
                 <span className="tag tag-gold">⏱ {r.stability}</span>
+                {recipePrices[r.id]>0&&<span className="tag" style={{background:"rgba(80,200,80,0.2)",color:"#80c080",border:"1px solid rgba(80,200,80,0.4)"}}>💰 {recipePrices[r.id]} ريال</span>}
               </div>
             </div>
             ));
@@ -1548,7 +1566,7 @@ function App(){
               </div>
               {!e.sold&&<SellEntry id={e.id} onSell={markSold}/>}
               {e.sold&&<span className="tag tag-green">✅ مباع</span>}
-              <button onClick={()=>{const w=window.open('','_blank','width=380,height=260');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:320px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي دهن العود</div><div style="text-align:center;font-size:22px;margin:4px 0">${e.recipeIcon}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${e.recipeName}</div><hr style="border-color:#D4AF37;opacity:0.3"/><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${e.batchNo}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${e.vol} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${e.note}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
+              <button onClick={()=>{const custName=e.customerId?customers.find(c=>c.id===e.customerId)?.name:"";const w=window.open('','_blank','width=400,height=320');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:340px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي دهن العود</div><div style="text-align:center;font-size:22px;margin:4px 0">${e.recipeIcon}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${e.recipeName}</div><hr style="border-color:#D4AF37;opacity:0.3"/>${custName?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">العميل</span><span style="color:#80c0ff;font-weight:700">${custName}</span></div>`:""}<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${e.batchNo}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${e.vol} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.sold&&e.sellPrice?`<div style="display:flex;justify-content:space-between;font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid rgba(214,175,55,0.3)"><span style="color:#c8a46a">سعر البيع</span><span style="color:#80c080;font-weight:700">${e.sellPrice} ريال</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${e.note}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
               {!e.customerId&&customers.length>0&&<select value="" onChange={ev=>{if(ev.target.value)linkOrderToCustomer(e.id,ev.target.value);}} style={{marginTop:"6px",background:"rgba(0,0,0,0.4)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"8px",color:"#c8a46a",fontSize:"0.72rem",padding:"4px 8px",fontFamily:"'Alexandria',sans-serif",width:"100%"}}><option value="">🔗 اربط بعميل...</option>{customers.map(c=><option key={c.id} value={c.id} style={{background:"#1a0800"}}>{c.name}</option>)}</select>}
             </div>
           );})}
@@ -1800,9 +1818,14 @@ function App(){
               <Row label="🪨 القاعدة" arr={bases}/>
             </div>;
           })()}
+          <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"12px",background:"rgba(0,0,0,0.25)",borderRadius:"10px",padding:"10px"}}>
+            <span style={{fontSize:"0.78rem",color:"#c8a46a",whiteSpace:"nowrap"}}>💰 سعر البيع:</span>
+            <input type="number" placeholder="0" value={recipePrices[catalogView.id]||""} onChange={e=>{const v=+e.target.value;setRecipePrices(p=>v>0?{...p,[catalogView.id]:v}:(({[catalogView.id]:_,...rest})=>rest)(p));}} style={{flex:1,background:"rgba(0,0,0,0.4)",border:"1px solid rgba(214,175,55,0.4)",borderRadius:"8px",color:"#fff",fontSize:"0.9rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif",textAlign:"center"}}/>
+            <span style={{fontSize:"0.8rem",color:"#c8a46a"}}>ريال</span>
+          </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"8px"}}>
             <button className="btn-gold" onClick={()=>{setQrRecipe(catalogView);}}>📲 QR مشاركة</button>
-            <button onClick={()=>{const lnk=buildShareLink(catalogView,getIng);window.open(`https://wa.me/?text=${encodeURIComponent(catalogView.icon+" "+catalogView.name+"\n"+catalogView.desc+"\n\n"+lnk)}`,'_blank');}} style={{background:"rgba(37,211,102,0.18)",border:"1px solid rgba(37,211,102,0.5)",color:"#25d366",borderRadius:"12px",padding:"10px",cursor:"pointer",fontSize:"0.82rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>💚 واتساب</button>
+            <button onClick={()=>{const lnk=buildShareLink(catalogView,getIng);const priceStr=recipePrices[catalogView.id]>0?`\n💰 السعر: ${recipePrices[catalogView.id]} ريال`:"";window.open(`https://wa.me/?text=${encodeURIComponent(catalogView.icon+" "+catalogView.name+"\n"+catalogView.desc+priceStr+"\n\n"+lnk)}`,'_blank');}} style={{background:"rgba(37,211,102,0.18)",border:"1px solid rgba(37,211,102,0.5)",color:"#25d366",borderRadius:"12px",padding:"10px",cursor:"pointer",fontSize:"0.82rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>💚 واتساب</button>
           </div>
           <button className="btn-ghost" style={{width:"100%"}} onClick={()=>setCatalogView(null)}>إغلاق</button>
         </div>
