@@ -486,6 +486,13 @@ function App(){
   const [showAIAnalysis,setShowAIAnalysis]=useState(false);
   const [aiAnalysisText,setAiAnalysisText]=useState("");
   const [aiAnalysisRecipe,setAiAnalysisRecipe]=useState(null);
+  const [invSort,setInvSort]=useState("default");
+  const [editRecipe,setEditRecipe]=useState(null);
+  const [editRecName,setEditRecName]=useState("");
+  const [editRecDesc,setEditRecDesc]=useState("");
+  const [editRecSeason,setEditRecSeason]=useState("صيف");
+  const [editRecGender,setEditRecGender]=useState("للجنسين");
+  const [editRecStab,setEditRecStab]=useState("");
 
   // add ingredient
   const [niName,setNiName]=useState("");const [niBrand,setNiBrand]=useState("");const [niCat,setNiCat]=useState("عود");
@@ -543,6 +550,15 @@ function App(){
   };
 
   const markSold=(id,price)=>setProdLog(p=>p.map(e=>e.id===id?{...e,sold:true,sellPrice:price}:e));
+  const deleteProdEntry=id=>{
+    const entry=prodLog.find(e=>e.id===id);
+    if(!entry||entry.sold){show("⚠️ لا يمكن حذف دفعة مباعة",true);return;}
+    if(!window.confirm("حذف الدفعة واسترداد المخزون؟"))return;
+    const r=recipes.find(rc=>rc.id===entry.recipeId);
+    if(r){const bVol=recipeBaseVol(r);const sc=entry.vol/bVol;setInv(p=>p.map(i=>{const ri=r.ing.find(x=>x[0]===i.id);return ri?{...i,stock:+(i.stock+ri[1]*sc).toFixed(2)}:i;}));}
+    setProdLog(p=>p.filter(e=>e.id!==id));
+    show("🗑️ حُذفت الدفعة واسترُدَّ المخزون");
+  };
 
   const updateStock=(id,d)=>setInv(p=>p.map(i=>i.id===id?{...i,stock:Math.max(0,+(i.stock+d).toFixed(1))}:i));
   const setStock=(id,v)=>setInv(p=>p.map(i=>i.id===id?{...i,stock:Math.max(0,v)}:i));
@@ -644,6 +660,10 @@ function App(){
 
   // ── favorites ──────────────────────────────────────────────────
   const toggleFav=id=>setFavoriteIds(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
+  const deleteRecipe=id=>{if(!window.confirm("حذف هذه الوصفة نهائياً؟ لا يمكن التراجع"))return;setRecipes(p=>p.filter(r=>r.id!==id));setSelectedRecipe(null);show("🗑️ حُذفت الوصفة");};
+  const openEditRecipe=r=>{setEditRecName(r.name);setEditRecDesc(r.desc||"");setEditRecSeason(r.season||"صيف");setEditRecGender(r.gender||"للجنسين");setEditRecStab(r.stability||"");setEditRecipe(r);};
+  const saveEditRecipe=()=>{if(!editRecipe)return;const ic={"صيف":"☀️","شتاء":"❄️","ربيع":"🌸","خريف":"🍂","مناسبات":"👑"};const upd={name:editRecName,desc:editRecDesc,season:editRecSeason,gender:editRecGender,stability:editRecStab,icon:ic[editRecSeason]||editRecipe.icon};setRecipes(p=>p.map(r=>r.id!==editRecipe.id?r:{...r,...upd}));setSelectedRecipe(prev=>prev&&prev.id===editRecipe.id?{...prev,...upd}:prev);setEditRecipe(null);show("✅ تم تعديل الوصفة");};
+  const deleteCustomer=id=>{if(!window.confirm("حذف هذا العميل نهائياً؟"))return;setCustomers(p=>p.filter(c=>c.id!==id));setSelectedCustomer(null);show("🗑️ حُذف العميل");};
 
   // ── customers ──────────────────────────────────────────────────
   const addCustomer=()=>{
@@ -788,7 +808,8 @@ function App(){
   const topByProfit=[...perfStats].sort((a,b)=>b.profit-a.profit).slice(0,3);
 
   const CATS=["الكل","عود","مثبت","مسك","صندل","زهري","عنبر","سويتي","قاعدة","حامل","مضخم","خلطة","مستوحى"];
-  const fInv=(catFilter==="الكل"?inv:inv.filter(i=>i.cat===catFilter)).filter(i=>i.name.toLowerCase().includes(search.toLowerCase())||i.brand.toLowerCase().includes(search.toLowerCase()));
+  const fInvBase=(catFilter==="الكل"?inv:inv.filter(i=>i.cat===catFilter)).filter(i=>i.name.toLowerCase().includes(search.toLowerCase())||i.brand.toLowerCase().includes(search.toLowerCase()));
+  const fInv=invSort==="stock_asc"?[...fInvBase].sort((a,b)=>a.stock-b.stock):invSort==="stock_desc"?[...fInvBase].sort((a,b)=>b.stock-a.stock):invSort==="brand"?[...fInvBase].sort((a,b)=>a.brand.localeCompare(b.brand)):invSort==="name"?[...fInvBase].sort((a,b)=>a.name.localeCompare(b.name)):fInvBase;
 
   // ── compare ─────────────────────────────────────────────────
   const toggleCompare=id=>{
@@ -983,8 +1004,14 @@ function App(){
             <button className="btn-ghost" style={{flex:1}} onClick={()=>setShowDilution(true)}>⚗️ تخفيف</button>
           </div>
           <input className="inp" placeholder="🔍 ابحث..." value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:"10px"}}/>
-          <div style={{display:"flex",gap:"5px",overflowX:"auto",marginBottom:"12px",paddingBottom:"4px"}}>
+          <div style={{display:"flex",gap:"5px",overflowX:"auto",marginBottom:"6px",paddingBottom:"4px"}}>
             {CATS.map(c=>(<button key={c} onClick={()=>setCatFilter(c)} style={{background:catFilter===c?"#D4AF37":"rgba(255,255,255,0.06)",border:"1px solid rgba(214,175,55,0.4)",color:catFilter===c?"#1a0800":"#D4AF37",padding:"5px 13px",borderRadius:"20px",fontSize:"0.72rem",fontWeight:"600",cursor:"pointer",whiteSpace:"nowrap"}}>{c}</button>))}
+          </div>
+          <div style={{display:"flex",gap:"5px",overflowX:"auto",marginBottom:"12px",paddingBottom:"4px",alignItems:"center"}}>
+            <span style={{fontSize:"0.62rem",color:"#7a5a30",whiteSpace:"nowrap"}}>ترتيب:</span>
+            {[["default","الافتراضي"],["stock_asc","⬆️ مخزون"],["stock_desc","⬇️ مخزون"],["brand","المورّد"],["name","الاسم"]].map(([val,lbl])=>(
+              <button key={val} onClick={()=>setInvSort(val)} style={{background:invSort===val?"rgba(214,175,55,0.25)":"rgba(255,255,255,0.04)",border:`1px solid ${invSort===val?"rgba(214,175,55,0.7)":"rgba(214,175,55,0.2)"}`,color:invSort===val?"#D4AF37":"#7a5a30",padding:"4px 10px",borderRadius:"20px",fontSize:"0.64rem",fontWeight:"600",cursor:"pointer",whiteSpace:"nowrap"}}>{lbl}</button>
+            ))}
           </div>
           {fInv.map(ing=>{
             const isLow=ing.stock<ing.qty*LOW_STOCK_THRESHOLD&&ing.qty>0;
@@ -1385,13 +1412,17 @@ function App(){
           const r=selectedRecipe;const sc=recipeScale(r);const cost=recipeCost(r);const vol=BATCH[batchUnit];
           const mlCost=cost/vol;const sellMl=mlCost*profitMult;
           return <div className="fade">
-            <div style={{display:"flex",gap:"6px",marginBottom:"6px"}}>
+            <div style={{display:"flex",gap:"6px",marginBottom:"4px"}}>
               <button className="btn-ghost" onClick={()=>setSelectedRecipe(null)}>← رجوع</button>
               <button className="btn-ghost" onClick={()=>printRecipe(r)}>🖨️</button>
               <button className="btn-ghost" onClick={()=>setQrRecipe(r)}>📲</button>
               <button className="btn-ghost" onClick={()=>openRating(r)}>⭐ {ratings[r.id]?`${ratings[r.id].stars}/5`:"تقييم"}</button>
               <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0"}} onClick={()=>analyzeRecipeAI(r)}>🤖</button>
               <button className="btn-ghost" style={favoriteIds.includes(r.id)?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>toggleFav(r.id)}>{favoriteIds.includes(r.id)?"★":"☆"} مفضلة</button>
+            </div>
+            <div style={{display:"flex",gap:"6px",marginBottom:"8px"}}>
+              <button className="btn-ghost" style={{flex:1,fontSize:"0.78rem"}} onClick={()=>openEditRecipe(r)}>✏️ تعديل</button>
+              <button className="btn-danger" style={{flex:1,fontSize:"0.78rem"}} onClick={()=>deleteRecipe(r.id)}>🗑️ حذف الوصفة</button>
             </div>
             <div className="glass" style={{textAlign:"center",background:"rgba(214,175,55,0.06)",padding:"18px"}}>
               <span style={{fontSize:"1.8rem"}}>{r.icon}</span>
@@ -1583,6 +1614,7 @@ function App(){
               {e.sold&&<span className="tag tag-green">✅ مباع</span>}
               <button onClick={()=>{const custName=e.customerId?customers.find(c=>c.id===e.customerId)?.name:"";const w=window.open('','_blank','width=400,height=320');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:340px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي دهن العود</div><div style="text-align:center;font-size:22px;margin:4px 0">${e.recipeIcon}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${e.recipeName}</div><hr style="border-color:#D4AF37;opacity:0.3"/>${custName?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">العميل</span><span style="color:#80c0ff;font-weight:700">${custName}</span></div>`:""}<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${e.batchNo}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${e.vol} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.sold&&e.sellPrice?`<div style="display:flex;justify-content:space-between;font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid rgba(214,175,55,0.3)"><span style="color:#c8a46a">سعر البيع</span><span style="color:#80c080;font-weight:700">${e.sellPrice} ريال</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${e.note}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
               {!e.customerId&&customers.length>0&&<select value="" onChange={ev=>{if(ev.target.value)linkOrderToCustomer(e.id,ev.target.value);}} style={{marginTop:"6px",background:"rgba(0,0,0,0.4)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"8px",color:"#c8a46a",fontSize:"0.72rem",padding:"4px 8px",fontFamily:"'Alexandria',sans-serif",width:"100%"}}><option value="">🔗 اربط بعميل...</option>{customers.map(c=><option key={c.id} value={c.id} style={{background:"#1a0800"}}>{c.name}</option>)}</select>}
+              {!e.sold&&<button onClick={()=>deleteProdEntry(e.id)} style={{marginTop:"5px",background:"rgba(200,60,60,0.1)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🗑️ حذف الدفعة</button>}
             </div>
           );})}
 
@@ -1630,16 +1662,20 @@ function App(){
           {customers.map(c=>{
             const orders=prodLog.filter(e=>e.customerId===c.id);
             return(
-            <div key={c.id} onClick={()=>setSelectedCustomer(c)} className="glass" style={{cursor:"pointer",padding:"13px",marginBottom:"8px",borderRight:"4px solid #80a0e0"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div key={c.id} className="glass" style={{padding:"13px",marginBottom:"8px",borderRight:"4px solid #80a0e0"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}} onClick={()=>setSelectedCustomer(c)}>
                 <div>
-                  <div style={{fontSize:"0.92rem",fontWeight:"700",color:"#fff"}}>👤 {c.name}</div>
+                  <div style={{fontSize:"0.92rem",fontWeight:"700",color:"#fff",cursor:"pointer"}}>👤 {c.name}</div>
                   {c.phone&&<div style={{fontSize:"0.68rem",color:"#c8a46a"}}>📞 {c.phone}</div>}
                 </div>
                 <div style={{textAlign:"left"}}>
                   <span className="tag tag-blue">{orders.length} طلب</span>
                   {c.preferredRecipes&&c.preferredRecipes.length>0&&<div style={{fontSize:"0.62rem",color:"#e8c860",marginTop:"3px"}}>⭐ {c.preferredRecipes.length} مفضلة</div>}
                 </div>
+              </div>
+              <div style={{display:"flex",gap:"6px",marginTop:"8px"}}>
+                {c.phone&&<a href={`https://wa.me/${c.phone.replace(/^0/,"966").replace(/[^0-9]/g,"")}`} target="_blank" onClick={e=>e.stopPropagation()} style={{flex:1,display:"block",textAlign:"center",background:"rgba(37,211,102,0.15)",border:"1px solid rgba(37,211,102,0.4)",color:"#25d366",borderRadius:"8px",padding:"4px",fontSize:"0.7rem",fontWeight:"700",textDecoration:"none",fontFamily:"'Alexandria',sans-serif"}}>💬 واتساب</a>}
+                <button onClick={e=>{e.stopPropagation();deleteCustomer(c.id);}} style={{flex:1,background:"rgba(200,60,60,0.1)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"4px",cursor:"pointer",fontSize:"0.7rem",fontWeight:"600"}}>🗑️ حذف</button>
               </div>
             </div>
           );})}
@@ -1673,7 +1709,11 @@ function App(){
           const spent=orders.filter(o=>o.sold&&o.sellPrice).reduce((s,o)=>s+o.sellPrice,0);
           const prefRecipes=(c.preferredRecipes||[]).map(id=>recipes.find(r=>r.id===id)).filter(Boolean);
           return <div className="fade">
-            <button className="btn-ghost" onClick={()=>setSelectedCustomer(null)} style={{marginBottom:"12px"}}>← رجوع</button>
+            <div style={{display:"flex",gap:"6px",marginBottom:"12px"}}>
+              <button className="btn-ghost" style={{flex:1}} onClick={()=>setSelectedCustomer(null)}>← رجوع</button>
+              {c.phone&&<a href={`https://wa.me/${c.phone.replace(/^0/,"966").replace(/[^0-9]/g,"")}`} target="_blank" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(37,211,102,0.15)",border:"1px solid rgba(37,211,102,0.4)",color:"#25d366",borderRadius:"20px",padding:"7px 14px",fontSize:"0.8rem",fontWeight:"700",textDecoration:"none",fontFamily:"'Alexandria',sans-serif",gap:"4px"}}>💬 واتساب</a>}
+              <button className="btn-danger" style={{flex:1}} onClick={()=>deleteCustomer(c.id)}>🗑️ حذف</button>
+            </div>
             <div className="glass" style={{textAlign:"center",background:"rgba(128,160,224,0.08)",padding:"18px"}}>
               <div style={{fontSize:"2rem"}}>👤</div>
               <h2 style={{color:"#D4AF37",fontSize:"1.15rem",fontWeight:"700"}}>{c.name}</h2>
@@ -1917,6 +1957,23 @@ function App(){
         </div>
       </div>}
 
+      {editRecipe&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setEditRecipe(null);}}>
+        <div className="modal-sheet">
+          <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>✏️ تعديل: {editRecipe.name}</h3>
+          <div style={{display:"grid",gap:"9px"}}>
+            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>اسم الوصفة *</label><input className="inp" value={editRecName} onChange={e=>setEditRecName(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الوصف</label><input className="inp" value={editRecDesc} onChange={e=>setEditRecDesc(e.target.value)}/></div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
+              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الموسم</label><select className="inp" value={editRecSeason} onChange={e=>setEditRecSeason(e.target.value)} style={{background:"#1a0800"}}>{["صيف","شتاء","ربيع","خريف","مناسبات"].map(s=><option key={s}>{s}</option>)}</select></div>
+              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الجنس</label><select className="inp" value={editRecGender} onChange={e=>setEditRecGender(e.target.value)} style={{background:"#1a0800"}}>{["للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select></div>
+            </div>
+            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الثبات (مثال: 24 ساعة)</label><input className="inp" value={editRecStab} onChange={e=>setEditRecStab(e.target.value)}/></div>
+            <button className="btn-gold" onClick={saveEditRecipe}>💾 حفظ التعديلات</button>
+            <button className="btn-ghost" onClick={()=>setEditRecipe(null)}>إلغاء</button>
+          </div>
+        </div>
+      </div>}
+
       <div className="bottom-nav">
         {[
           {id:"home",icon:"🏠",label:"الرئيسية"},
@@ -1926,7 +1983,7 @@ function App(){
           {id:"stats",icon:"📊",label:"إحصائيات"},
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon">{t.icon}</span>{t.label}
           </button>
         ))}
