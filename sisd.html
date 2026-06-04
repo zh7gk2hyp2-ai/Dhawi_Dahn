@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="عهدة سيسد">
+<meta name="theme-color" content="#0f172a">
+<title>إدارة عهدة مشروع تأهيل سيسد</title>
+<style>
+:root{
+  --navy:#0f172a;--navy2:#1e293b;--navy3:#334155;
+  --gold:#f59e0b;--gold2:#fbbf24;
+  --white:#fff;--light:#f8fafc;--border:#e2e8f0;
+  --muted:#94a3b8;--text:#1e293b;--sub:#64748b;
+  --g-ok:#22c55e;--g-warn:#f59e0b;--g-hi:#f97316;--g-err:#ef4444;
+  --radius:14px;--radius-sm:10px;
+  --tab-h:62px;
+  font-family:system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--light);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;}
+button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit;}
+input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;top:calc(env(safe-area-inset-top)+12px);right:12px;left:12px;
+  max-width:400px;margin:0 auto;z-index:999;
+  padding:12px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;
+  transform:translateY(-80px);opacity:0;transition:all .3s ease;pointer-events:none;text-align:center;
+}
+#toast.show{transform:translateY(0);opacity:1;}
+#toast.ok{background:#15803d;color:#fff;}
+#toast.err{background:#dc2626;color:#fff;}
+#toast.info{background:var(--navy);color:#fff;}
+
+/* ── MODAL ── */
+#modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;
+  align-items:flex-end;justify-content:center;
+}
+#modal-overlay.open{display:flex;}
+#modal-box{
+  background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;
+  padding:24px 20px calc(20px + env(safe-area-inset-bottom));text-align:center;
+}
+#modal-box h3{font-size:16px;font-weight:700;margin-bottom:6px;}
+#modal-box p{font-size:13px;color:var(--sub);margin-bottom:20px;}
+.modal-btns{display:flex;gap:10px;}
+.modal-btns button{flex:1;padding:13px;border-radius:var(--radius-sm);font-weight:700;font-size:14px;}
+.btn-danger{background:#dc2626;color:#fff;}
+.btn-cancel{background:var(--light);color:var(--text);}
+
+/* ── NAME MODAL ── */
+#name-modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;
+  align-items:flex-end;justify-content:center;
+}
+#name-modal-overlay.open{display:flex;}
+#name-modal-box{
+  background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;
+  padding:24px 20px calc(20px + env(safe-area-inset-bottom));
+}
+#name-modal-box h3{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--navy);}
+#name-modal-box p{font-size:12px;color:var(--sub);margin-bottom:16px;}
+#name-inp{
+  width:100%;padding:12px 14px;border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);font-size:15px;margin-bottom:14px;
+  font-family:inherit;outline:none;
+}
+#name-inp:focus{border-color:var(--navy);}
+.name-modal-btns{display:flex;gap:10px;}
+.name-modal-btns button{flex:1;padding:13px;border-radius:var(--radius-sm);font-weight:700;font-size:14px;}
+.btn-save{background:var(--navy);color:#fff;}
+
+/* ── HEADER ── */
+#header{
+  background:var(--navy);color:#fff;
+  padding:calc(env(safe-area-inset-top)+16px) 16px 16px;
+}
+.h-label{font-size:11px;color:var(--muted);margin-bottom:2px;}
+.h-title{font-size:17px;font-weight:800;letter-spacing:.3px;margin-bottom:14px;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.stat-box{background:rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;}
+.stat-box .s-lbl{font-size:10px;color:var(--muted);margin-bottom:4px;}
+.stat-box .s-val{font-size:13px;font-weight:700;line-height:1.2;}
+.stat-box .s-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+.bar-wrap{margin-top:2px;}
+.bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:5px;}
+.bar-track{height:10px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;transition:width .5s ease;}
+.fill-ok{background:var(--g-ok);}
+.fill-warn{background:var(--g-warn);}
+.fill-hi{background:var(--g-hi);}
+.fill-err{background:var(--g-err);}
+
+/* ── ALERTS ── */
+#alerts{padding:0;}
+.alert{
+  display:flex;gap:8px;align-items:flex-start;
+  padding:9px 12px;border-radius:var(--radius-sm);
+  margin-bottom:6px;font-size:11.5px;font-weight:500;border-width:1px;border-style:solid;
+}
+.alert-warn{background:#fefce8;border-color:#fde68a;color:#92400e;}
+.alert-hi{background:#fff7ed;border-color:#fed7aa;color:#9a3412;}
+.alert-err{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
+
+/* ── TABS ── */
+#tab-bar{
+  position:fixed;bottom:0;right:0;left:0;z-index:50;
+  background:#fff;border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  padding-bottom:env(safe-area-inset-bottom);
+  box-shadow:0 -4px 20px rgba(0,0,0,.06);
+}
+.tab-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:8px 4px;gap:2px;font-size:10px;font-weight:500;color:var(--muted);
+  border-bottom:2px solid transparent;transition:all .15s;
+}
+.tab-btn .tab-icon{font-size:18px;line-height:1;}
+.tab-btn.active{color:var(--navy);border-color:var(--navy);}
+
+/* ── CONTENT ── */
+#content{
+  padding:10px 12px calc(var(--tab-h) + env(safe-area-inset-bottom) + 12px);
+}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* ── SECTION LABEL ── */
+.section-label{
+  font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;margin:14px 0 8px;padding:0 2px;
+}
+
+/* ── OVERVIEW CARD ── */
+.overview-card{
+  background:var(--navy2);color:#fff;border-radius:var(--radius);
+  padding:16px;margin-bottom:14px;
+}
+.ov-title{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.ov-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.ov-phase{
+  background:rgba(255,255,255,.08);border-radius:8px;
+  padding:8px 4px;text-align:center;cursor:pointer;
+  transition:all .15s;
+}
+.ov-phase:active{opacity:.8;}
+.ov-phase .ov-num{font-size:11px;font-weight:700;margin-bottom:4px;}
+.ov-phase .ov-bar-w{height:40px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;}
+.ov-phase .ov-bar-f{width:100%;border-radius:4px;transition:height .5s;}
+.ov-phase .ov-pct{font-size:9px;color:var(--muted);margin-top:4px;}
+.ov-phase.ov-active{background:rgba(255,255,255,.16);outline:2px solid rgba(255,255,255,.3);}
+
+/* ── CUSTODIAN CARDS ── */
+.cust-card{
+  background:#fff;border-radius:var(--radius);
+  border:1.5px solid var(--border);margin-bottom:12px;
+  overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.cust-head{padding:14px;}
+.cust-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.cust-badge{
+  width:40px;height:40px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;
+}
+.cust-info{flex:1;min-width:0;}
+.cust-phase{font-size:10px;font-weight:600;letter-spacing:.5px;margin-bottom:2px;}
+.cust-name{font-size:15px;font-weight:800;color:var(--text);line-height:1.2;}
+.cust-scope{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.4;}
+.cust-edit-btn{
+  font-size:11px;padding:4px 10px;border-radius:99px;
+  border:1px solid var(--border);color:var(--sub);
+  white-space:nowrap;flex-shrink:0;
+}
+.cust-amounts{display:flex;justify-content:space-between;margin-bottom:10px;font-size:12px;}
+.cust-amounts .ca-item{text-align:center;}
+.cust-amounts .ca-lbl{color:var(--muted);margin-bottom:2px;}
+.cust-amounts .ca-val{font-weight:700;font-size:14px;}
+.cust-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-bottom:8px;}
+.cust-bar-fill{height:100%;border-radius:99px;transition:width .5s;}
+.cust-foot{display:flex;justify-content:space-between;align-items:center;}
+.cust-pct{font-size:11px;color:var(--sub);}
+.cust-exp-btn{font-size:11px;color:var(--navy);text-decoration:underline;font-weight:600;}
+.cust-warn-badge{
+  font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;
+}
+
+/* Expanded expenses */
+.cust-txns{border-top:1px solid var(--border);}
+.cust-txn{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid var(--light);
+}
+.cust-txn:last-child{border-bottom:none;}
+.cust-txn-info{flex:1;min-width:0;}
+.cust-txn-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cust-txn-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.cust-txn-right{text-align:left;flex-shrink:0;}
+.cust-txn-amt{font-size:14px;font-weight:700;}
+.cust-txn-del{font-size:10px;color:#ef4444;display:block;margin-top:2px;text-align:left;}
+.cust-empty{padding:14px;font-size:12px;color:var(--muted);text-align:center;}
+
+/* ── ADD FORM ── */
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.card-body{padding:16px;}
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:6px;}
+.form-label span{color:#dc2626;}
+.form-input{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);font-size:14px;background:#fff;transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--navy);}
+textarea.form-input{resize:none;line-height:1.5;}
+
+/* Custodian selector */
+.cust-sel-grid{display:flex;flex-direction:column;gap:8px;}
+.cust-sel-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);
+  background:#fff;transition:all .15s;text-align:right;
+}
+.cust-sel-btn.sel{border-width:2px;}
+.cust-sel-dot{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;}
+.cust-sel-info{flex:1;min-width:0;}
+.cust-sel-name{font-size:13px;font-weight:700;color:var(--text);}
+.cust-sel-scope{font-size:10px;color:var(--sub);}
+.cust-sel-left{font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+
+/* Category selector */
+.cat-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.cat-chip{
+  font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px;
+  border:1.5px solid var(--border);background:var(--light);color:var(--sub);
+  transition:all .15s;
+}
+.cat-chip.sel{border-color:var(--navy);background:var(--navy);color:#fff;}
+
+/* Item chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.chip{
+  font-size:11px;padding:5px 10px;border-radius:99px;
+  border:1px solid var(--border);background:var(--light);color:var(--sub);
+  transition:all .15s;
+}
+.chip.sel{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* Amount hint */
+.amt-hint{font-size:11px;margin-top:5px;font-weight:500;}
+.amt-err{color:#dc2626;}
+.amt-hi{color:#ea580c;}
+.amt-warn{color:#ca8a04;}
+
+.submit-btn{
+  width:100%;padding:15px;background:var(--navy);color:#fff;
+  border-radius:var(--radius-sm);font-size:15px;font-weight:800;
+  transition:opacity .15s;letter-spacing:.3px;
+}
+.submit-btn:active{opacity:.85;}
+
+/* ── HISTORY ── */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.filter-chip{
+  font-size:11px;font-weight:600;padding:5px 12px;border-radius:99px;
+  border:1.5px solid var(--border);background:#fff;color:var(--sub);transition:all .15s;
+}
+.filter-chip.sel{border-color:var(--navy);background:var(--navy);color:#fff;}
+
+.summary-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:10px;}
+.summary-title{font-size:13px;font-weight:700;margin-bottom:10px;}
+.summary-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--light);}
+.summary-row:last-child{border-bottom:none;}
+.summary-row .sr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.summary-row .sr-name{font-size:12px;color:var(--sub);flex:1;margin-right:8px;}
+.summary-row .sr-bar{flex:1;height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin:0 10px;}
+.summary-row .sr-bar-fill{height:100%;border-radius:99px;}
+.summary-row .sr-amt{font-size:12px;font-weight:700;white-space:nowrap;}
+.summary-total{display:flex;justify-content:space-between;padding-top:10px;margin-top:6px;border-top:1.5px solid var(--border);}
+.summary-total span{font-size:13px;font-weight:800;}
+
+.exp-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:8px;padding:12px 14px;}
+.exp-top{display:flex;align-items:flex-start;gap:10px;}
+.exp-info{flex:1;min-width:0;}
+.exp-name{font-size:14px;font-weight:700;line-height:1.3;}
+.exp-badges{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.exp-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;}
+.exp-meta{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.8;}
+.exp-right{text-align:left;flex-shrink:0;}
+.exp-amt{font-size:16px;font-weight:800;}
+.exp-sar{font-size:10px;color:var(--muted);}
+.exp-del{font-size:11px;color:#ef4444;margin-top:8px;display:block;text-align:left;}
+
+.empty-state{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:48px 20px;text-align:center;}
+.empty-icon{font-size:48px;margin-bottom:10px;}
+.empty-text{font-size:14px;color:var(--sub);}
+.empty-hint{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* ── CHECKLIST ── */
+.ck-intro{background:var(--navy);color:#fff;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;font-size:12px;line-height:1.7;}
+.ck-intro strong{display:block;margin-bottom:3px;font-size:13px;}
+.ck-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.ck-card{background:#fff;border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.ck-head{padding:12px 14px;border-bottom:1px solid var(--border);}
+.ck-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.ck-cat-name{font-size:13px;font-weight:700;}
+.ck-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;}
+.ck-bar{height:5px;background:var(--border);border-radius:99px;overflow:hidden;}
+.ck-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
+.ck-pct{font-size:10px;color:var(--muted);margin-top:4px;}
+.ck-item{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;
+  border-bottom:1px solid var(--light);cursor:pointer;transition:background .1s;
+}
+.ck-item:last-child{border-bottom:none;}
+.ck-item:active{background:var(--light);}
+.ck-check{
+  width:22px;height:22px;border-radius:6px;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;
+}
+.ck-check.done{background:var(--g-ok);border-color:var(--g-ok);}
+.ck-check.done::after{content:'✓';color:#fff;font-size:12px;font-weight:900;}
+.ck-text{font-size:13px;color:var(--text);transition:all .2s;flex:1;}
+.ck-item.done-item .ck-text{color:var(--muted);text-decoration:line-through;}
+.ck-done-badge{font-size:10px;color:var(--g-ok);font-weight:600;white-space:nowrap;}
+
+.tips-card{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:14px;margin-top:4px;}
+.tips-title{font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px;}
+.tip-row{font-size:11px;color:#78350f;padding:4px 0;line-height:1.5;display:flex;gap:8px;}
+.tip-n{flex-shrink:0;font-weight:700;}
+
+/* ── PHASE LABEL ── */
+.phase-header{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-bottom:1px solid var(--border);
+}
+.phase-dot{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.phase-name{font-size:13px;font-weight:700;flex:1;}
+.phase-scope{font-size:10px;color:var(--sub);}
+.phase-prog{font-size:11px;font-weight:600;white-space:nowrap;}
+
+/* ── GAP NOTE ── */
+.gap-note{
+  background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);
+  padding:10px 12px;font-size:11.5px;color:#92400e;margin-bottom:10px;line-height:1.6;
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- Delete modal -->
+<div id="modal-overlay">
+  <div id="modal-box">
+    <h3>حذف هذا السجل؟</h3>
+    <p>لا يمكن التراجع عن هذا الإجراء</p>
+    <div class="modal-btns">
+      <button class="btn-danger" onclick="confirmDelete()">حذف</button>
+      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit custodian name modal -->
+<div id="name-modal-overlay">
+  <div id="name-modal-box">
+    <h3 id="name-modal-title">تعيين اسم العهداء</h3>
+    <p id="name-modal-sub">أدخل اسم الموظف المسؤول عن هذه العهدة</p>
+    <input id="name-inp" class="form-input" type="text" placeholder="اسم الموظف…" maxlength="40">
+    <div class="name-modal-btns">
+      <button class="btn-save" onclick="saveName()">حفظ الاسم</button>
+      <button class="btn-cancel" onclick="closeNameModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div id="header"></div>
+<div id="alerts"></div>
+<div id="content">
+  <div id="tab-dash" class="tab-pane active"></div>
+  <div id="tab-add"  class="tab-pane"></div>
+  <div id="tab-hist" class="tab-pane"></div>
+  <div id="tab-ck"   class="tab-pane"></div>
+</div>
+
+<div id="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('dash')" id="tbtn-dash">
+    <span class="tab-icon">📊</span><span>العهدات</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('add')" id="tbtn-add">
+    <span class="tab-icon">➕</span><span>إضافة</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('hist')" id="tbtn-hist">
+    <span class="tab-icon">🧾</span><span>السجل</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('ck')" id="tbtn-ck">
+    <span class="tab-icon">✅</span><span>خطة العمل</span>
+  </button>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────
+const CUSTODY_AMOUNT = 200000;
+const TOTAL_BUDGET   = 1000000;
+
+const CUSTODIANS = [
+  {
+    id:'c1', phaseNum:1, phase:'المرحلة الأولى',
+    scope:'منطقة موظفين (A) + رؤوس الأنظمة',
+    output:'كتلة A جاهزة + منظومة السلامة حيّة',
+    custody:200000, color:'#3b82f6', bg:'#eff6ff', tc:'#1d4ed8',
+    emoji:'🏗️',
+    cats:{
+      arch:['أعمال الهدم والإزالة كتلة A','المباني والقواطيع (بلوك)','اللياسة الداخلية','أسقف مستعارة جبس','أسقف مستعارة ألمنيوم (حمامات)','أرضيات بورسلان','سيراميك أرضيات حمامات','سيراميك حوائط حمامات','دهانات حوائط وأسقف','أبواب خشبية مكاتب','أبواب HPL دورات المياه','قواطيع HPL دورات المياه','عزل مائي حمامات','فتحات صيانة أسقف','معابر رخام عتبات'],
+      mech:['رشاشات إطفاء — رؤوس النظام الرئيسية','مجاري هواء تكييف رئيسية','مجاري طرد هواء رئيسية','مراحيض غربية كتلة A','أحواض غسيل معلقة كتلة A','سخانات كهربائية كتلة A','مراوح تهوية كتلة A'],
+      elec:['لوحة إنذار حريق — رئيسية','حساسات دخان معنونة','حساسات حرارة معنونة','كاسرات زجاجية معنونة','جرسات حريق معنونة','تعديل لوحة كهربائية رئيسية','إنارة LED وظيفية كتلة A','إنارة طوارئ وEXIT كتلة A','مخارج كهرباء ومفاتيح كتلة A','علب أرضية طاقة+داتا كتلة A','تمديد مواسير كابلات HDMI'],
+    }
+  },
+  {
+    id:'c2', phaseNum:2, phase:'المرحلة الثانية',
+    scope:'منطقة موظفين (B)',
+    output:'كتلة B جاهزة للاستخدام',
+    custody:200000, color:'#8b5cf6', bg:'#f5f3ff', tc:'#6d28d9',
+    emoji:'🏢',
+    cats:{
+      arch:['أعمال الهدم والإزالة كتلة B','المباني والقواطيع كتلة B','اللياسة الداخلية كتلة B','أسقف مستعارة جبس كتلة B','أسقف مستعارة ألمنيوم كتلة B','أرضيات بورسلان كتلة B','سيراميك حمامات كتلة B','دهانات حوائط كتلة B','أبواب خشبية كتلة B','أبواب HPL كتلة B','قواطيع HPL كتلة B','عزل مائي كتلة B','فتحات صيانة أسقف كتلة B'],
+      mech:['تمديد رشاشات إطفاء كتلة B','تمديد مجاري تكييف كتلة B','تمديد طرد هواء كتلة B','مراحيض غربية كتلة B','أحواض غسيل معلقة كتلة B','سخانات كهربائية كتلة B','مراوح تهوية كتلة B'],
+      elec:['تمديد إنذار حريق كتلة B','إنارة LED وظيفية كتلة B','إنارة طوارئ وEXIT كتلة B','مخارج كهرباء ومفاتيح كتلة B','علب أرضية طاقة+داتا كتلة B','مخارج WiFi وداتا كتلة B'],
+    }
+  },
+  {
+    id:'c3', phaseNum:3, phase:'المرحلة الثالثة',
+    scope:'المناطق المشتركة + الاستقبال + المصلى',
+    output:'الواجهة الداخلية العامة جاهزة',
+    custody:200000, color:'#14b8a6', bg:'#f0fdfa', tc:'#0f766e',
+    emoji:'🚪',
+    cats:{
+      arch:['أرضيات بورسلان ممرات واستقبال','سجاد المصلى','دهانات ممرات وعامة','أسقف مستعارة جبس ممرات','أبواب زجاجية ضلفة واحدة — استقبال','أبواب زجاجية ضلفتين — استقبال رئيسي','ستائر يدوية رول','معابر رخام عتبات مشتركة','قواطيع جبسية ممرات'],
+      mech:['تمديد رشاشات مناطق مشتركة','تمديد مجاري تكييف مناطق مشتركة','مراحيض دورات مياه مشتركة','أحواض غسيل دورات مياه مشتركة','سخانات كهربائية مناطق مشتركة'],
+      elec:['إنارة استقبال وممرات','إنارة طوارئ وEXIT ممرات','مخارج كهرباء ومفاتيح مناطق مشتركة','مخارج WiFi وداتا مناطق مشتركة','شاشة عرض عامة استقبال'],
+    }
+  },
+  {
+    id:'c4', phaseNum:4, phase:'المرحلة الرابعة',
+    scope:'الجناح التنفيذي — الرئيس والوكلاء والمدراء',
+    output:'مكاتب القيادة جاهزة بمستوى راقٍ',
+    custody:200000, color:'#f59e0b', bg:'#fffbeb', tc:'#b45309',
+    emoji:'🏛️',
+    cats:{
+      arch:['هدم وإزالة جناح تنفيذي','قواطيع جبسية عازلة جناح تنفيذي','قواطيع زجاجية سيكوريت تنفيذي','أسقف مستعارة جبس جناح تنفيذي','أرضيات بورسلان جناح تنفيذي','دهانات حوائط راقية جناح تنفيذي','أبواب خشبية تنفيذية','دواليب مطبخ خدمي','عزل مائي حمامات تنفيذية','سيراميك حمامات تنفيذية','مرايا دورات المياه','فتحات صيانة أسقف جناح'],
+      mech:['مراحيض وكبائن جناح تنفيذي','أحواض كاونتر رخام جناح تنفيذي','سخانات كهربائية جناح تنفيذي','مراوح تهوية جناح تنفيذي','تمديد رشاشات الجناح التنفيذي','تمديد تكييف وطرد الجناح التنفيذي'],
+      elec:['إنارة تنفيذية راقية LED','تراكات إنارة مغناطيسية جناح','مخارج كهرباء ومفاتيح جناح','علب أرضية طاقة+داتا جناح','ستائر كهربائية قاعة الاجتماعات الجناحية'],
+      dec:['تكسيات جزئية ديكورية (محدودة)','ستائر يدوية مكاتب تنفيذية'],
+    }
+  },
+  {
+    id:'c5', phaseNum:5, phase:'المرحلة الخامسة',
+    scope:'استقبال الزوار + قاعة الاجتماعات + اللمسات الأخيرة',
+    output:'اكتمال التأهيل والتسليم النهائي',
+    custody:200000, color:'#f43f5e', bg:'#fff1f2', tc:'#be123c',
+    emoji:'🎯',
+    cats:{
+      arch:['تشطيبات قاعة الاجتماعات','تشطيبات استقبال الزوار','مرايا دورات المياه المتبقية','أسقف مستعارة قاعة الاجتماعات','أرضيات وسيراميك متبقية'],
+      mech:['مجموعة أحواض كاونتر رخام','حوض غسيل ستانلس مطابخ','تمديدات ميكانيكية متبقية'],
+      elec:['مخارج HDMI بالجدران','شاشة قاعة الاجتماعات (49")','إنارة قاعة الاجتماعات','إنارة سبوت تكميلية متبقية','تمديدات كهربائية متبقية'],
+      dec:['لوحات إرشادية Signage (20 لوحة)','ستائر يدوية متبقية'],
+      final:['فحص وتشغيل منظومة الإنذار','فحص وتشغيل التكييف','معاينة ومراجعة الجودة الشاملة','إزالة الحماية والتغليف','أعمال تنظيف عامة نهائية','توثيق بالصور قبل وبعد','محضر استلام نهائي موقّع','تسليم الوثائق والضمانات'],
+    }
+  }
+];
+
+const CATS = [
+  {id:'arch', name:'أعمال معمارية',    icon:'🏗️'},
+  {id:'mech', name:'أعمال ميكانيكية', icon:'🔧'},
+  {id:'elec', name:'أعمال كهربائية',  icon:'⚡'},
+  {id:'dec',  name:'ديكورات',          icon:'🎨'},
+  {id:'final',name:'تسليم نهائي',      icon:'✅'},
+  {id:'other',name:'أخرى',             icon:'📌'},
+];
+
+const THRESH = [
+  {p:100, cls:'err', lbl:'تجاوز العهدة!'},
+  {p:90,  cls:'hi',  lbl:'قريب جداً من الحد'},
+  {p:75,  cls:'warn',lbl:'تجاوز 75%'}
+];
+
+// ── STATE ─────────────────────────────────────────
+let expenses  = JSON.parse(localStorage.getItem('sisd-exp')   || '[]');
+let checklist = JSON.parse(localStorage.getItem('sisd-ck')    || '{}');
+let custNames = JSON.parse(localStorage.getItem('sisd-names') || '{}');
+let expanded  = {};
+let delTarget = null;
+let nameTarget= null;
+let curTab    = 'dash';
+let histFilter= 'all';
+let ckFilter  = 'all';
+let formState = { custId:'c1', catId:'arch', item:'', selItem:'' };
+
+function save()    { localStorage.setItem('sisd-exp',   JSON.stringify(expenses));  }
+function saveCk()  { localStorage.setItem('sisd-ck',    JSON.stringify(checklist)); }
+function saveNames(){ localStorage.setItem('sisd-names',JSON.stringify(custNames)); }
+
+// ── UTILS ─────────────────────────────────────────
+const fmt  = n => n.toLocaleString('ar-SA');
+const fmtN = n => n.toLocaleString('en-US');
+const pct  = (s,b) => b===0 ? 0 : Math.min(100, Math.round(s/b*100));
+const getToday = () => new Date().toISOString().split('T')[0];
+const custById = id => CUSTODIANS.find(c=>c.id===id);
+const catById  = id => CATS.find(c=>c.id===id);
+const custSpent= id => expenses.filter(e=>e.custId===id).reduce((s,e)=>s+e.amount,0);
+const totalSpent = () => expenses.reduce((s,e)=>s+e.amount,0);
+const barCls = p => p>=100?'fill-err':p>=90?'fill-hi':p>=75?'fill-warn':'fill-ok';
+const warnInfo = p => THRESH.find(t=>p>=t.p) || null;
+const custName = id => custNames[id] || custById(id)?.phase || id;
+
+function showToast(msg, type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show '+type;
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>{t.className='';}, 2800);
+}
+
+function escHtml(s){
+  if(!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── TAB SWITCH ────────────────────────────────────
+function switchTab(id){
+  document.querySelectorAll('.tab-pane').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.getElementById('tbtn-'+id).classList.add('active');
+  curTab = id;
+  if(id==='add')  renderAdd();
+  if(id==='hist') renderHist();
+  if(id==='ck')   renderCk();
+}
+
+// ── RENDER HEADER ─────────────────────────────────
+function renderHeader(){
+  const spent = totalSpent();
+  const left  = TOTAL_BUDGET - spent;
+  const p     = pct(spent, TOTAL_BUDGET);
+  const bc    = barCls(p);
+  const phasesActive = CUSTODIANS.filter(c=>custSpent(c.id)>0).length;
+  document.getElementById('header').innerHTML = `
+    <div class="h-label">مركز البحوث والاستشارات — مشروع تأهيل مقر سيسد</div>
+    <div class="h-title">إدارة العهدات الخمس</div>
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="s-lbl">إجمالي العهدات</div>
+        <div class="s-val" style="color:var(--gold2)">${fmtN(TOTAL_BUDGET)}</div>
+        <div class="s-sub">5 عهدات × 200,000</div>
+      </div>
+      <div class="stat-box">
+        <div class="s-lbl">إجمالي مصروف</div>
+        <div class="s-val" style="color:#86efac">${fmtN(spent)}</div>
+        <div class="s-sub">${p}% من الإجمالي</div>
+      </div>
+      <div class="stat-box">
+        <div class="s-lbl">المراحل النشطة</div>
+        <div class="s-val" style="color:var(--gold2)">${phasesActive} / 5</div>
+        <div class="s-sub">مرحلة</div>
+      </div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-labels"><span>التقدم الكلي للمشروع</span><span>${fmtN(Math.max(0,left))} ر.س متبقٍ</span></div>
+      <div class="bar-track"><div class="bar-fill ${bc}" style="width:${Math.min(100,p)}%"></div></div>
+    </div>`;
+}
+
+// ── RENDER ALERTS ─────────────────────────────────
+function renderAlerts(){
+  let html = '';
+  CUSTODIANS.forEach(c=>{
+    const s=custSpent(c.id); const p=pct(s,c.custody); const w=warnInfo(p);
+    if(w){
+      const icon = p>=100?'🚨':p>=90?'⚠️':'🔔';
+      html += `<div class="alert alert-${w.cls}">
+        <span>${icon}</span>
+        <span><strong>${custName(c.id)} (${c.phase}):</strong> ${w.lbl} — ${fmtN(s)} من ${fmtN(c.custody)} ر.س (${p}%)</span>
+      </div>`;
+    }
+  });
+  const alerts = document.getElementById('alerts');
+  if(html){
+    alerts.innerHTML = `<div style="padding:8px 12px 4px">${html}</div>`;
+  } else {
+    alerts.innerHTML = '';
+  }
+}
+
+// ── RENDER DASHBOARD ──────────────────────────────
+function renderDash(){
+  const totalS = totalSpent();
+
+  // Overview bars
+  let ovBars = CUSTODIANS.map(c=>{
+    const s=custSpent(c.id); const p=pct(s,c.custody);
+    return `<div class="ov-phase" onclick="switchTab('add');setTimeout(()=>{selCust('${c.id}')},50)">
+      <div class="ov-num" style="color:${c.color}">${c.phaseNum}</div>
+      <div class="ov-bar-w">
+        <div class="ov-bar-f" style="height:${p}%;background:${c.color};min-height:${p>0?'4px':'0'}"></div>
+      </div>
+      <div class="ov-pct">${p}%</div>
+    </div>`;
+  }).join('');
+
+  let html = `
+    <div class="gap-note">
+      📌 <strong>خطة التنفيذ:</strong> المشروع يُنجز على 5 مراحل متتابعة — كل مرحلة عهدة مستقلة بقيمة 200,000 ريال. أُنجز منطقة كاملة في كل عهدة قبل الانتقال للتالية.
+    </div>
+    <div class="overview-card">
+      <div class="ov-title">نظرة عامة — نسبة الإنجاز لكل مرحلة</div>
+      <div class="ov-grid">${ovBars}</div>
+    </div>`;
+
+  // Custodian cards
+  CUSTODIANS.forEach(c=>{
+    const s=custSpent(c.id); const p=pct(s,c.custody); const left=c.custody-s;
+    const w=warnInfo(p); const exps=expenses.filter(e=>e.custId===c.id);
+    const isOpen=!!expanded[c.id]; const name=custName(c.id);
+
+    let warnBadge = w
+      ? `<span class="cust-warn-badge" style="background:${p>=100?'#fee2e2':p>=90?'#ffedd5':'#fef9c3'};color:${p>=100?'#991b1b':p>=90?'#9a3412':'#854d0e'}">${p>=100?'🚨':p>=90?'⚠️':'🔔'} ${w.lbl}</span>`
+      : '';
+
+    html += `<div class="cust-card" style="border-color:${p>=100?'#fca5a5':p>=90?'#fed7aa':p>=75?'#fde68a':c.color+'33'}">
+      <div class="cust-head">
+        <div class="cust-top">
+          <div class="cust-badge" style="background:${c.bg};color:${c.tc}">${c.phaseNum}</div>
+          <div class="cust-info">
+            <div class="cust-phase" style="color:${c.tc}">${c.phase}</div>
+            <div class="cust-name">${escHtml(name)}</div>
+            <div class="cust-scope">${c.scope}</div>
+          </div>
+          <button class="cust-edit-btn" onclick="openNameModal('${c.id}')">✏️ تعيين</button>
+        </div>
+        ${warnBadge ? `<div style="margin-bottom:10px">${warnBadge}</div>` : ''}
+        <div class="cust-amounts">
+          <div class="ca-item">
+            <div class="ca-lbl">العهدة</div>
+            <div class="ca-val" style="color:var(--gold)">${fmtN(c.custody)}</div>
+          </div>
+          <div class="ca-item">
+            <div class="ca-lbl">مصروف</div>
+            <div class="ca-val" style="color:${c.color}">${fmtN(s)}</div>
+          </div>
+          <div class="ca-item">
+            <div class="ca-lbl">${left<0?'تجاوز':'متبقٍ'}</div>
+            <div class="ca-val" style="color:${left<0?'#dc2626':'#15803d'}">${fmtN(Math.abs(left))}</div>
+          </div>
+        </div>
+        <div class="cust-bar">
+          <div class="cust-bar-fill ${barCls(p)}" style="width:${Math.min(100,p)}%;background:${p>=100?'#ef4444':p>=90?'#f97316':p>=75?'#f59e0b':c.color}"></div>
+        </div>
+        <div class="cust-foot">
+          <span class="cust-pct">${p}% من العهدة · ${exps.length} سجل</span>
+          <button class="cust-exp-btn" onclick="toggleExpand('${c.id}')">${isOpen?'إخفاء التفاصيل':'عرض التفاصيل'}</button>
+        </div>
+      </div>
+      ${isOpen ? `<div class="cust-txns">
+        ${exps.length===0
+          ? `<div class="cust-empty">لا يوجد صرف مسجّل لهذه المرحلة</div>`
+          : exps.map(e=>{
+              const cat=catById(e.catId);
+              return `<div class="cust-txn">
+                <div class="cust-txn-info">
+                  <div class="cust-txn-name">${escHtml(e.item)}</div>
+                  <div class="cust-txn-sub">${cat?cat.icon+' '+cat.name:''} · ${escHtml(e.supplier)} · ${e.date}</div>
+                </div>
+                <div class="cust-txn-right">
+                  <div class="cust-txn-amt" style="color:${c.color}">${fmtN(e.amount)}</div>
+                  <button class="cust-txn-del" onclick="openDel('${e.id}')">🗑️ حذف</button>
+                </div>
+              </div>`;
+            }).join('')
+        }
+      </div>` : ''}
+    </div>`;
+  });
+
+  document.getElementById('tab-dash').innerHTML = html;
+}
+
+function toggleExpand(id){ expanded[id]=!expanded[id]; renderDash(); }
+
+// ── RENDER ADD FORM ───────────────────────────────
+function renderAdd(){
+  // Custodian selector
+  let custBtnsHtml = CUSTODIANS.map(c=>{
+    const s=custSpent(c.id); const p=pct(s,c.custody); const left=c.custody-s;
+    const isSel=formState.custId===c.id;
+    const name=custName(c.id);
+    return `<button type="button" class="cust-sel-btn ${isSel?'sel':''}"
+      style="${isSel?`border-color:${c.color};background:${c.bg}`:''}"
+      onclick="selCust('${c.id}')">
+      <div class="cust-sel-dot" style="background:${c.bg};color:${c.tc}">${c.phaseNum}</div>
+      <div class="cust-sel-info">
+        <div class="cust-sel-name" style="${isSel?`color:${c.tc}`:''}">
+          ${escHtml(name)} <span style="font-weight:400;color:var(--muted);font-size:11px">/ ${c.phase}</span>
+        </div>
+        <div class="cust-sel-scope">${c.scope}</div>
+      </div>
+      <span class="cust-sel-left" style="${p>=90?'background:#fee2e2;color:#991b1b':p>=75?'background:#fef9c3;color:#854d0e':`background:${c.bg};color:${c.tc}`}">
+        ${fmtN(left)} ر.س
+      </span>
+    </button>`;
+  }).join('');
+
+  // Category selector
+  const cust = custById(formState.custId);
+  const availCats = CATS.filter(cat => cust.cats[cat.id]);
+  let catChipsHtml = availCats.map(cat=>`
+    <span class="cat-chip ${formState.catId===cat.id?'sel':''}" onclick="selCat('${cat.id}')">
+      ${cat.icon} ${cat.name}
+    </span>`).join('');
+  if(!availCats.find(c=>c.id===formState.catId)) formState.catId = availCats[0]?.id||'arch';
+
+  // Item chips
+  const items = cust.cats[formState.catId] || [];
+  let chipsHtml = items.map(it=>
+    `<span class="chip ${formState.selItem===it?'sel':''}" onclick="selChip('${escHtml(it)}')">${escHtml(it)}</span>`
+  ).join('');
+
+  document.getElementById('tab-add').innerHTML = `
+    <div class="card"><div class="card-body">
+      <div style="font-size:16px;font-weight:800;margin-bottom:16px">تسجيل دفعة / صرف جديد</div>
+
+      <div class="form-group">
+        <label class="form-label">المرحلة / العهداء <span>*</span></label>
+        <div class="cust-sel-grid">${custBtnsHtml}</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">تصنيف العمل <span>*</span></label>
+        <div class="cat-chips">${catChipsHtml}</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">البند / العمل <span>*</span></label>
+        <div class="chips" id="chips-wrap">${chipsHtml}</div>
+        <input class="form-input" id="inp-item"
+          placeholder="أو اكتب اسم البند يدوياً…"
+          value="${escHtml(formState.item)}"
+          oninput="formState.item=this.value;formState.selItem=''">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">المورد / المقاول <span>*</span></label>
+        <input class="form-input" id="inp-sup" placeholder="اسم الشركة أو الفرد">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">المبلغ (ريال) <span>*</span></label>
+        <input class="form-input" type="number" id="inp-amt"
+          placeholder="0" min="0" oninput="checkAmtWarn()">
+        <div class="amt-hint" id="amt-hint"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">التاريخ <span>*</span></label>
+        <input class="form-input" type="date" id="inp-date" value="${getToday()}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">رقم الفاتورة / المرجع</label>
+        <input class="form-input" id="inp-ref" placeholder="اختياري — مثال: INV-2025-001">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ملاحظات</label>
+        <textarea class="form-input" id="inp-notes" rows="2"
+          placeholder="اختياري — مثال: دفعة أولى 50% من إجمالي العقد"></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submitExpense()">✅ تسجيل الصرف</button>
+    </div></div>`;
+}
+
+function selCust(id){ formState.custId=id; formState.selItem=''; formState.item=''; renderAdd(); }
+function selCat(id) { formState.catId=id;  formState.selItem=''; formState.item=''; renderAdd(); }
+function selChip(it){
+  formState.selItem=it; formState.item=it; renderAdd();
+  const inp=document.getElementById('inp-item');
+  if(inp) inp.value=it;
+}
+
+function checkAmtWarn(){
+  const amt=parseFloat(document.getElementById('inp-amt').value)||0;
+  const hint=document.getElementById('amt-hint');
+  if(!amt||!hint){if(hint)hint.textContent='';return;}
+  const c=custById(formState.custId);
+  const after=pct(custSpent(c.id)+amt, c.custody);
+  if(after>100){ hint.className='amt-hint amt-err'; hint.textContent='🚨 سيتجاوز عهدة هذه المرحلة!';}
+  else if(after>90){ hint.className='amt-hint amt-hi'; hint.textContent=`⚠️ سيصل إلى ${after}% من العهدة`;}
+  else if(after>75){ hint.className='amt-hint amt-warn'; hint.textContent=`🔔 سيصل إلى ${after}% من العهدة`;}
+  else{ hint.textContent=''; }
+}
+
+function submitExpense(){
+  const item=(document.getElementById('inp-item').value||formState.item).trim();
+  const sup  = document.getElementById('inp-sup').value.trim();
+  const amt  = parseFloat(document.getElementById('inp-amt').value);
+  const date = document.getElementById('inp-date').value;
+  const ref  = document.getElementById('inp-ref').value.trim();
+  const notes= document.getElementById('inp-notes').value.trim();
+  if(!item){ showToast('أدخل اسم البند أو العمل','err'); return; }
+  if(!sup)  { showToast('أدخل اسم المورد','err'); return; }
+  if(!amt||amt<=0){ showToast('أدخل مبلغاً صحيحاً','err'); return; }
+  expenses.unshift({
+    id:Date.now().toString(),
+    custId:formState.custId,
+    catId:formState.catId,
+    item, supplier:sup, amount:amt, date, ref, notes
+  });
+  save(); renderAll(); showToast('✅ تم تسجيل الصرف بنجاح');
+  formState.item=''; formState.selItem='';
+  setTimeout(()=>switchTab('dash'), 1800);
+}
+
+// ── RENDER HISTORY ────────────────────────────────
+function renderHist(){
+  const filterAll = histFilter==='all';
+  const filteredExp = filterAll ? expenses : expenses.filter(e=>e.custId===histFilter);
+  const spent = filteredExp.reduce((s,e)=>s+e.amount,0);
+
+  // Filter chips
+  let filterHtml = `<span class="filter-chip ${filterAll?'sel':''}" onclick="setHistFilter('all')">الكل</span>`;
+  CUSTODIANS.forEach(c=>{
+    const isSel = histFilter===c.id;
+    filterHtml+=`<span class="filter-chip ${isSel?'sel':''}"
+      style="${isSel?`border-color:${c.color};background:${c.color};color:#fff`:''}"
+      onclick="setHistFilter('${c.id}')">م${c.phaseNum}</span>`;
+  });
+
+  // Summary
+  let sumHtml = '';
+  const showCusts = filterAll ? CUSTODIANS : CUSTODIANS.filter(c=>c.id===histFilter);
+  showCusts.forEach(c=>{
+    const s=custSpent(c.id); if(s===0&&filterAll) return;
+    const p=pct(s,c.custody);
+    sumHtml+=`<div class="summary-row">
+      <div class="sr-dot" style="background:${c.color}"></div>
+      <span class="sr-name">${custName(c.id)} (م${c.phaseNum})</span>
+      <div class="sr-bar"><div class="sr-bar-fill" style="width:${p}%;background:${c.color}"></div></div>
+      <span class="sr-amt">${fmtN(s)} ر.س</span>
+    </div>`;
+  });
+
+  let html = `<div class="filter-bar">${filterHtml}</div>`;
+
+  if(spent>0){
+    html+=`<div class="summary-card">
+      <div class="summary-title">ملخص المصروفات</div>
+      ${sumHtml}
+      <div class="summary-total"><span>الإجمالي</span><span>${fmtN(spent)} ر.س</span></div>
+    </div>`;
+  }
+
+  if(filteredExp.length===0){
+    html+=`<div class="empty-state">
+      <div class="empty-icon">🧾</div>
+      <div class="empty-text">لا توجد مصروفات${filterAll?'':' لهذه المرحلة'}</div>
+      <div class="empty-hint">اضغط "إضافة" لتسجيل أول دفعة</div>
+    </div>`;
+  } else {
+    html+=filteredExp.map(e=>{
+      const c=custById(e.custId)||{color:'#64748b',bg:'#f1f5f9',tc:'#475569',phaseNum:'?'};
+      const cat=catById(e.catId);
+      return `<div class="exp-card">
+        <div class="exp-top">
+          <div class="exp-info">
+            <div class="exp-name">${escHtml(e.item)}</div>
+            <div class="exp-badges">
+              <span class="exp-badge" style="background:${c.bg};color:${c.tc}">م${c.phaseNum} — ${custName(c.id)}</span>
+              ${cat?`<span class="exp-badge" style="background:var(--light);color:var(--sub)">${cat.icon} ${cat.name}</span>`:''}
+            </div>
+            <div class="exp-meta">
+              👤 ${escHtml(e.supplier)}${e.ref?`<br>🧾 ${escHtml(e.ref)}`:''}${e.notes?`<br>📝 ${escHtml(e.notes)}`:''}
+              <br>📅 ${e.date}
+            </div>
+          </div>
+          <div class="exp-right">
+            <div class="exp-amt" style="color:${c.color}">${fmtN(e.amount)}</div>
+            <div class="exp-sar">ر.س</div>
+            <button class="exp-del" onclick="openDel('${e.id}')">🗑️ حذف</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('tab-hist').innerHTML = html;
+}
+
+function setHistFilter(f){ histFilter=f; renderHist(); }
+
+// ── RENDER CHECKLIST ──────────────────────────────
+function renderCk(){
+  const filterAll = ckFilter==='all';
+
+  let filterHtml = `<span class="filter-chip ${filterAll?'sel':''}" onclick="setCkFilter('all')">الكل</span>`;
+  CUSTODIANS.forEach(c=>{
+    const isSel=ckFilter===c.id;
+    filterHtml+=`<span class="filter-chip ${isSel?'sel':''}"
+      style="${isSel?`border-color:${c.color};background:${c.color};color:#fff`:''}"
+      onclick="setCkFilter('${c.id}')">م${c.phaseNum}</span>`;
+  });
+
+  let html=`
+    <div class="ck-intro">
+      <strong>📋 خطة بنود التنفيذ — المراحل الخمس</strong>
+      اضغط على كل بند عند اكتمال تنفيذه وتسليمه من المورد. نتابع الإنجاز لكل مرحلة بشكل مستقل.
+    </div>
+    <div class="ck-filter">${filterHtml}</div>`;
+
+  const showCusts = filterAll ? CUSTODIANS : CUSTODIANS.filter(c=>c.id===ckFilter);
+
+  showCusts.forEach(c=>{
+    const allItems = Object.entries(c.cats).flatMap(([catId, items])=>
+      items.map(it=>({catId, item:it}))
+    );
+    const done = allItems.filter(({catId,item})=>checklist[`${c.id}::${catId}::${item}`]).length;
+    const total = allItems.length;
+    const p = total>0?Math.round(done/total*100):0;
+
+    html+=`<div class="ck-card">
+      <div class="phase-header" style="background:${c.bg}">
+        <div class="phase-dot" style="background:${c.color};color:#fff">${c.phaseNum}</div>
+        <div>
+          <div class="phase-name" style="color:${c.tc}">${c.phase} — ${custName(c.id)}</div>
+          <div class="phase-scope">${c.scope}</div>
+        </div>
+        <div class="phase-prog" style="color:${c.tc}">${done}/${total}</div>
+      </div>
+      <div class="ck-head">
+        <div class="ck-bar"><div class="ck-bar-fill" style="width:${p}%;background:${p===100?'var(--g-ok)':c.color}"></div></div>
+        <div class="ck-pct">${p}% مكتمل</div>
+      </div>`;
+
+    // Group by category
+    Object.entries(c.cats).forEach(([catId, items])=>{
+      const cat=catById(catId);
+      if(!items||items.length===0) return;
+      const catDone=items.filter(it=>checklist[`${c.id}::${catId}::${it}`]).length;
+      html+=`<div style="background:var(--light);padding:8px 14px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--sub)">
+        ${cat?cat.icon+' '+cat.name:'أعمال'} (${catDone}/${items.length})
+      </div>`;
+      items.forEach(it=>{
+        const key=`${c.id}::${catId}::${it}`; const chk=!!checklist[key];
+        html+=`<div class="ck-item ${chk?'done-item':''}" onclick="toggleCk('${c.id}','${catId}','${escHtml(it)}')">
+          <div class="ck-check ${chk?'done':''}"></div>
+          <span class="ck-text">${escHtml(it)}</span>
+          ${chk?`<span class="ck-done-badge">✓ مكتمل</span>`:''}
+        </div>`;
+      });
+    });
+
+    html+=`</div>`;
+  });
+
+  html+=`<div class="tips-card">
+    <div class="tips-title">💡 تذكيرات إدارة العهدة</div>
+    ${[
+      'لا تدفع أكثر من 50% مقدماً لأي مورد — الباقي عند التسليم',
+      'احتفظ بفاتورة + محضر استلام لكل دفعة قبل إغلاق العهدة',
+      'افحص الجودة بشكل مستقل قبل الدفعة الأخيرة',
+      'وثّق كل صرف برقم مرجعي واضح',
+      'أغلق كل عهدة وسوّها قبل فتح العهدة التالية',
+      'التقسيم يجب أن يوثَّق كمراحل تنفيذية فعلية مع الإدارة المالية',
+    ].map((t,i)=>`<div class="tip-row"><span class="tip-n">${'①②③④⑤⑥'[i]}</span><span>${t}</span></div>`).join('')}
+  </div>`;
+
+  document.getElementById('tab-ck').innerHTML = html;
+}
+
+function setCkFilter(f){ ckFilter=f; renderCk(); }
+
+function toggleCk(custId, catId, item){
+  const k=`${custId}::${catId}::${item}`;
+  checklist[k]=!checklist[k]; saveCk(); renderCk();
+}
+
+// ── DELETE ────────────────────────────────────────
+function openDel(id){ delTarget=id; document.getElementById('modal-overlay').classList.add('open'); }
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); delTarget=null; }
+function confirmDelete(){
+  if(!delTarget) return;
+  expenses=expenses.filter(e=>e.id!==delTarget);
+  save(); closeModal(); renderAll(); showToast('🗑️ تم حذف السجل');
+}
+
+// ── NAME MODAL ────────────────────────────────────
+function openNameModal(custId){
+  nameTarget=custId;
+  const c=custById(custId);
+  document.getElementById('name-modal-title').textContent=`تعيين اسم عهداء ${c.phase}`;
+  document.getElementById('name-modal-sub').textContent=`${c.scope}`;
+  const inp=document.getElementById('name-inp');
+  inp.value = custNames[custId]||'';
+  inp.placeholder=`مثال: محمد العمري — ${c.phase}`;
+  document.getElementById('name-modal-overlay').classList.add('open');
+  setTimeout(()=>inp.focus(),200);
+}
+function closeNameModal(){ document.getElementById('name-modal-overlay').classList.remove('open'); nameTarget=null; }
+function saveName(){
+  if(!nameTarget) return;
+  const v=document.getElementById('name-inp').value.trim();
+  if(v) custNames[nameTarget]=v; else delete custNames[nameTarget];
+  saveNames(); closeNameModal(); renderAll();
+  showToast('✅ تم حفظ اسم العهداء');
+}
+document.getElementById('name-inp').addEventListener('keydown',e=>{if(e.key==='Enter')saveName();});
+
+// ── RENDER ALL ────────────────────────────────────
+function renderAll(){
+  renderHeader(); renderAlerts(); renderDash();
+  if(curTab==='hist') renderHist();
+  if(curTab==='ck')   renderCk();
+}
+
+// ── INIT ──────────────────────────────────────────
+renderAll();
+renderAdd();
+</script>
+</body>
+</html>
