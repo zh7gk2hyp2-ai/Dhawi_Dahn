@@ -1168,10 +1168,11 @@ async function initFirebase(){
     await loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js');
     if(!window.firebase)throw new Error('تعذّر تحميل Firebase SDK');
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
-    fbDb=firebase.firestore();
-    fbDb.enablePersistence().catch(()=>{});
+    if(!fbDb){
+      fbDb=firebase.firestore();
+      listenCloud();
+    }
     await loadFromCloud();
-    listenCloud();
     fbSyncing=false; fbSyncOk=true; updateSyncBadge();
   }catch(e){
     fbSyncing=false; fbSyncOk=false;
