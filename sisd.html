@@ -1170,6 +1170,7 @@ async function initFirebase(){
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
     if(!fbDb){
       fbDb=firebase.firestore();
+      fbDb.settings({experimentalForceLongPolling:true,merge:true});
       listenCloud();
     }
     await loadFromCloud();
