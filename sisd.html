@@ -405,82 +405,125 @@ textarea.form-input{resize:none;line-height:1.5;}
 
 <script>
 // ── DATA ──────────────────────────────────────────
-const CUSTODY_AMOUNT = 200000;
-const TOTAL_BUDGET   = 1000000;
+const TOTAL_BUDGET = 680000;
 
 const CUSTODIANS = [
   {
-    id:'c1', phaseNum:1, phase:'المرحلة الأولى',
-    scope:'منطقة موظفين (A) + رؤوس الأنظمة',
-    output:'كتلة A جاهزة + منظومة السلامة حيّة',
-    custody:200000, color:'#3b82f6', bg:'#eff6ff', tc:'#1d4ed8',
-    emoji:'🏗️',
+    id:'c1', phaseNum:1,
+    phase:'الصيانة العامة للمبنى',
+    scope:'أعمال الهدم واللياسة والدهانات والعزل والأسقف',
+    custody:150000, color:'#3b82f6', bg:'#eff6ff', tc:'#1d4ed8',
     cats:{
-      arch:['أعمال الهدم والإزالة كتلة A','المباني والقواطيع (بلوك)','اللياسة الداخلية','أسقف مستعارة جبس','أسقف مستعارة ألمنيوم (حمامات)','أرضيات بورسلان','سيراميك أرضيات حمامات','سيراميك حوائط حمامات','دهانات حوائط وأسقف','أبواب خشبية مكاتب','أبواب HPL دورات المياه','قواطيع HPL دورات المياه','عزل مائي حمامات','فتحات صيانة أسقف','معابر رخام عتبات'],
-      mech:['رشاشات إطفاء — رؤوس النظام الرئيسية','مجاري هواء تكييف رئيسية','مجاري طرد هواء رئيسية','مراحيض غربية كتلة A','أحواض غسيل معلقة كتلة A','سخانات كهربائية كتلة A','مراوح تهوية كتلة A'],
-      elec:['لوحة إنذار حريق — رئيسية','حساسات دخان معنونة','حساسات حرارة معنونة','كاسرات زجاجية معنونة','جرسات حريق معنونة','تعديل لوحة كهربائية رئيسية','إنارة LED وظيفية كتلة A','إنارة طوارئ وEXIT كتلة A','مخارج كهرباء ومفاتيح كتلة A','علب أرضية طاقة+داتا كتلة A','تمديد مواسير كابلات HDMI'],
+      items:[
+        'أعمال الهدم والإزالة والمباني',
+        'أعمال اللياسة الداخلية',
+        'أعمال الدهانات الداخلية',
+        'أعمال الدهانات الخارجية',
+        'أعمال العزل المائي (حمامات ومطابخ)',
+        'الأسقف المستعارة (جبس)',
+        'الأسقف المستعارة (ألمنيوم)',
+        'أعمال ترقيع وإصلاح الجدران',
+        'أعمال الحماية والتغليف',
+        'نقل ورفع المخلفات والأنقاض',
+      ]
     }
   },
   {
-    id:'c2', phaseNum:2, phase:'المرحلة الثانية',
-    scope:'منطقة موظفين (B)',
-    output:'كتلة B جاهزة للاستخدام',
+    id:'c2', phaseNum:2,
+    phase:'صيانة وتطوير التجهيزات',
+    scope:'الأبواب والزجاج والسيراميك والأرضيات والديكور',
     custody:200000, color:'#8b5cf6', bg:'#f5f3ff', tc:'#6d28d9',
-    emoji:'🏢',
     cats:{
-      arch:['أعمال الهدم والإزالة كتلة B','المباني والقواطيع كتلة B','اللياسة الداخلية كتلة B','أسقف مستعارة جبس كتلة B','أسقف مستعارة ألمنيوم كتلة B','أرضيات بورسلان كتلة B','سيراميك حمامات كتلة B','دهانات حوائط كتلة B','أبواب خشبية كتلة B','أبواب HPL كتلة B','قواطيع HPL كتلة B','عزل مائي كتلة B','فتحات صيانة أسقف كتلة B'],
-      mech:['تمديد رشاشات إطفاء كتلة B','تمديد مجاري تكييف كتلة B','تمديد طرد هواء كتلة B','مراحيض غربية كتلة B','أحواض غسيل معلقة كتلة B','سخانات كهربائية كتلة B','مراوح تهوية كتلة B'],
-      elec:['تمديد إنذار حريق كتلة B','إنارة LED وظيفية كتلة B','إنارة طوارئ وEXIT كتلة B','مخارج كهرباء ومفاتيح كتلة B','علب أرضية طاقة+داتا كتلة B','مخارج WiFi وداتا كتلة B'],
+      items:[
+        'أعمال الأبواب الخشبية للمكاتب',
+        'أعمال أبواب وقواطيع HPL للحمامات',
+        'الأعمال الزجاجية (قواطيع وأبواب سيكوريت)',
+        'أعمال دواليب المطبخ الخدمي',
+        'أعمال السيراميك (أرضيات وحوائط)',
+        'أعمال البورسلان (أرضيات المكاتب والممرات)',
+        'أعمال السجاد والموكيت (المصلى وغيره)',
+        'أعمال الأرضيات المرتفعة (غرف السيرفر)',
+        'أعمال الستائر اليدوية والكهربائية',
+        'الديكورات الخشبية والتكسيات',
+        'ورق الجدران (Wallpaper)',
+        'أعمال اللوحات الإرشادية (Signage)',
+        'مرايا دورات المياه',
+        'نعلات ووزرات ديكورية',
+        'معابر رخام العتبات',
+      ]
     }
   },
   {
-    id:'c3', phaseNum:3, phase:'المرحلة الثالثة',
-    scope:'المناطق المشتركة + الاستقبال + المصلى',
-    output:'الواجهة الداخلية العامة جاهزة',
-    custody:200000, color:'#14b8a6', bg:'#f0fdfa', tc:'#0f766e',
-    emoji:'🚪',
+    id:'c3', phaseNum:3,
+    phase:'الأعمال الصحية',
+    scope:'دورات المياه وغرف الخدمات المشتركة وملحقاتها',
+    custody:100000, color:'#14b8a6', bg:'#f0fdfa', tc:'#0f766e',
     cats:{
-      arch:['أرضيات بورسلان ممرات واستقبال','سجاد المصلى','دهانات ممرات وعامة','أسقف مستعارة جبس ممرات','أبواب زجاجية ضلفة واحدة — استقبال','أبواب زجاجية ضلفتين — استقبال رئيسي','ستائر يدوية رول','معابر رخام عتبات مشتركة','قواطيع جبسية ممرات'],
-      mech:['تمديد رشاشات مناطق مشتركة','تمديد مجاري تكييف مناطق مشتركة','مراحيض دورات مياه مشتركة','أحواض غسيل دورات مياه مشتركة','سخانات كهربائية مناطق مشتركة'],
-      elec:['إنارة استقبال وممرات','إنارة طوارئ وEXIT ممرات','مخارج كهرباء ومفاتيح مناطق مشتركة','مخارج WiFi وداتا مناطق مشتركة','شاشة عرض عامة استقبال'],
+      items:[
+        'توريد وتركيب مراحيض غربية',
+        'أحواض غسيل معلقة',
+        'مجموعات أحواض كاونتر رخام',
+        'أحواض غسيل ستانلس للمطابخ',
+        'سخانات مياه كهربائية',
+        'مراوح تهوية دورات المياه',
+        'رشاشات إطفاء حريق (نظام كامل)',
+        'مجاري هواء التكييف (duct)',
+        'مجاري طرد الهواء',
+        'أعمال العزل والسباكة الداخلية',
+        'إصلاح وصيانة شبكة الصرف الصحي',
+        'إصلاح وصيانة شبكة المياه الباردة والساخنة',
+      ]
     }
   },
   {
-    id:'c4', phaseNum:4, phase:'المرحلة الرابعة',
-    scope:'الجناح التنفيذي — الرئيس والوكلاء والمدراء',
-    output:'مكاتب القيادة جاهزة بمستوى راقٍ',
+    id:'c4', phaseNum:4,
+    phase:'الأعمال الكهربائية وملحقاتها',
+    scope:'الإنارة والإنذار والتوصيلات والشبكات',
     custody:200000, color:'#f59e0b', bg:'#fffbeb', tc:'#b45309',
-    emoji:'🏛️',
     cats:{
-      arch:['هدم وإزالة جناح تنفيذي','قواطيع جبسية عازلة جناح تنفيذي','قواطيع زجاجية سيكوريت تنفيذي','أسقف مستعارة جبس جناح تنفيذي','أرضيات بورسلان جناح تنفيذي','دهانات حوائط راقية جناح تنفيذي','أبواب خشبية تنفيذية','دواليب مطبخ خدمي','عزل مائي حمامات تنفيذية','سيراميك حمامات تنفيذية','مرايا دورات المياه','فتحات صيانة أسقف جناح'],
-      mech:['مراحيض وكبائن جناح تنفيذي','أحواض كاونتر رخام جناح تنفيذي','سخانات كهربائية جناح تنفيذي','مراوح تهوية جناح تنفيذي','تمديد رشاشات الجناح التنفيذي','تمديد تكييف وطرد الجناح التنفيذي'],
-      elec:['إنارة تنفيذية راقية LED','تراكات إنارة مغناطيسية جناح','مخارج كهرباء ومفاتيح جناح','علب أرضية طاقة+داتا جناح','ستائر كهربائية قاعة الاجتماعات الجناحية'],
-      dec:['تكسيات جزئية ديكورية (محدودة)','ستائر يدوية مكاتب تنفيذية'],
+      items:[
+        'نظام إنذار الحريق الكامل (لوحة + حساسات + جرسات)',
+        'حساسات دخان معنونة',
+        'حساسات حرارة معنونة',
+        'كاسرات زجاجية معنونة',
+        'كشافات EXIT وإنارة طوارئ',
+        'منظومة الإنارة الوظيفية (LED)',
+        'إنارة ديكورية وتراكات مغناطيسية',
+        'علب أرضية (طاقة + داتا)',
+        'مخارج كهرباء ومفاتيح إنارة',
+        'مخارج WiFi وداتا ومخارج HDMI',
+        'كابينة التوزيع الكهربائية (تعديل/تطوير)',
+        'شبكة البيانات والفايبر',
+        'نظام التحكم بالدخول (Access Control)',
+        'تمديد مواسير وكابلات كهربائية',
+        'شاشات عرض وشاشة قاعة الاجتماعات',
+        'ستائر كهربائية قاعة الاجتماعات',
+      ]
     }
   },
   {
-    id:'c5', phaseNum:5, phase:'المرحلة الخامسة',
-    scope:'استقبال الزوار + قاعة الاجتماعات + اللمسات الأخيرة',
-    output:'اكتمال التأهيل والتسليم النهائي',
-    custody:200000, color:'#f43f5e', bg:'#fff1f2', tc:'#be123c',
-    emoji:'🎯',
+    id:'c5', phaseNum:5,
+    phase:'الكاميرات وأنظمة المراقبة',
+    scope:'كاميرات IP وجهاز التسجيل وشاشة المراقبة',
+    custody:30000, color:'#f43f5e', bg:'#fff1f2', tc:'#be123c',
     cats:{
-      arch:['تشطيبات قاعة الاجتماعات','تشطيبات استقبال الزوار','مرايا دورات المياه المتبقية','أسقف مستعارة قاعة الاجتماعات','أرضيات وسيراميك متبقية'],
-      mech:['مجموعة أحواض كاونتر رخام','حوض غسيل ستانلس مطابخ','تمديدات ميكانيكية متبقية'],
-      elec:['مخارج HDMI بالجدران','شاشة قاعة الاجتماعات (49")','إنارة قاعة الاجتماعات','إنارة سبوت تكميلية متبقية','تمديدات كهربائية متبقية'],
-      dec:['لوحات إرشادية Signage (20 لوحة)','ستائر يدوية متبقية'],
-      final:['فحص وتشغيل منظومة الإنذار','فحص وتشغيل التكييف','معاينة ومراجعة الجودة الشاملة','إزالة الحماية والتغليف','أعمال تنظيف عامة نهائية','توثيق بالصور قبل وبعد','محضر استلام نهائي موقّع','تسليم الوثائق والضمانات'],
+      items:[
+        'كاميرات IP (8 ميغابيكسل — Hikvision)',
+        'جهاز تسجيل NVR (32 قناة)',
+        'شاشة المراقبة (49 بوصة)',
+        'الكابلات والتمديدات (UTP Cat6)',
+        'أقواس وحوامل الكاميرات',
+        'صندوق توزيع الطاقة PoE',
+        'برمجة وضبط النظام',
+        'اختبار وتسليم منظومة المراقبة',
+      ]
     }
   }
 ];
 
 const CATS = [
-  {id:'arch', name:'أعمال معمارية',    icon:'🏗️'},
-  {id:'mech', name:'أعمال ميكانيكية', icon:'🔧'},
-  {id:'elec', name:'أعمال كهربائية',  icon:'⚡'},
-  {id:'dec',  name:'ديكورات',          icon:'🎨'},
-  {id:'final',name:'تسليم نهائي',      icon:'✅'},
-  {id:'other',name:'أخرى',             icon:'📌'},
+  {id:'items', name:'بنود العمل', icon:'📋'},
+  {id:'other', name:'أخرى',       icon:'📌'},
 ];
 
 const THRESH = [
@@ -499,7 +542,7 @@ let nameTarget= null;
 let curTab    = 'dash';
 let histFilter= 'all';
 let ckFilter  = 'all';
-let formState = { custId:'c1', catId:'arch', item:'', selItem:'' };
+let formState = { custId:'c1', catId:'items', item:'', selItem:'' };
 
 function save()    { localStorage.setItem('sisd-exp',   JSON.stringify(expenses));  }
 function saveCk()  { localStorage.setItem('sisd-ck',    JSON.stringify(checklist)); }
@@ -556,7 +599,7 @@ function renderHeader(){
       <div class="stat-box">
         <div class="s-lbl">إجمالي العهدات</div>
         <div class="s-val" style="color:var(--gold2)">${fmtN(TOTAL_BUDGET)}</div>
-        <div class="s-sub">5 عهدات × 200,000</div>
+        <div class="s-sub">680 ألف ريال</div>
       </div>
       <div class="stat-box">
         <div class="s-lbl">إجمالي مصروف</div>
@@ -614,7 +657,7 @@ function renderDash(){
 
   let html = `
     <div class="gap-note">
-      📌 <strong>خطة التنفيذ:</strong> المشروع يُنجز على 5 مراحل متتابعة — كل مرحلة عهدة مستقلة بقيمة 200,000 ريال. أُنجز منطقة كاملة في كل عهدة قبل الانتقال للتالية.
+      📌 <strong>مشروع تأهيل مقر سيسد بالحرم الجامعي:</strong> إجمالي العهدة 680,000 ريال موزّعة على 5 تخصصات — كل شخص مسؤول عن تخصصه وعهدته مستقلة.
     </div>
     <div class="overview-card">
       <div class="ov-title">نظرة عامة — نسبة الإنجاز لكل مرحلة</div>
@@ -714,17 +757,9 @@ function renderAdd(){
     </button>`;
   }).join('');
 
-  // Category selector
+  // Item chips from custodian's items list
   const cust = custById(formState.custId);
-  const availCats = CATS.filter(cat => cust.cats[cat.id]);
-  let catChipsHtml = availCats.map(cat=>`
-    <span class="cat-chip ${formState.catId===cat.id?'sel':''}" onclick="selCat('${cat.id}')">
-      ${cat.icon} ${cat.name}
-    </span>`).join('');
-  if(!availCats.find(c=>c.id===formState.catId)) formState.catId = availCats[0]?.id||'arch';
-
-  // Item chips
-  const items = cust.cats[formState.catId] || [];
+  const items = cust.cats.items || [];
   let chipsHtml = items.map(it=>
     `<span class="chip ${formState.selItem===it?'sel':''}" onclick="selChip('${escHtml(it)}')">${escHtml(it)}</span>`
   ).join('');
@@ -734,13 +769,8 @@ function renderAdd(){
       <div style="font-size:16px;font-weight:800;margin-bottom:16px">تسجيل دفعة / صرف جديد</div>
 
       <div class="form-group">
-        <label class="form-label">المرحلة / العهداء <span>*</span></label>
+        <label class="form-label">التخصص / العهداء <span>*</span></label>
         <div class="cust-sel-grid">${custBtnsHtml}</div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">تصنيف العمل <span>*</span></label>
-        <div class="cat-chips">${catChipsHtml}</div>
       </div>
 
       <div class="form-group">
@@ -784,8 +814,7 @@ function renderAdd(){
     </div></div>`;
 }
 
-function selCust(id){ formState.custId=id; formState.selItem=''; formState.item=''; renderAdd(); }
-function selCat(id) { formState.catId=id;  formState.selItem=''; formState.item=''; renderAdd(); }
+function selCust(id){ formState.custId=id; formState.catId='items'; formState.selItem=''; formState.item=''; renderAdd(); }
 function selChip(it){
   formState.selItem=it; formState.item=it; renderAdd();
   const inp=document.getElementById('inp-item');
@@ -923,12 +952,10 @@ function renderCk(){
   const showCusts = filterAll ? CUSTODIANS : CUSTODIANS.filter(c=>c.id===ckFilter);
 
   showCusts.forEach(c=>{
-    const allItems = Object.entries(c.cats).flatMap(([catId, items])=>
-      items.map(it=>({catId, item:it}))
-    );
-    const done = allItems.filter(({catId,item})=>checklist[`${c.id}::${catId}::${item}`]).length;
-    const total = allItems.length;
-    const p = total>0?Math.round(done/total*100):0;
+    const items = c.cats.items || [];
+    const done  = items.filter(it=>checklist[`${c.id}::${it}`]).length;
+    const total = items.length;
+    const p     = total>0?Math.round(done/total*100):0;
 
     html+=`<div class="ck-card">
       <div class="phase-header" style="background:${c.bg}">
@@ -944,22 +971,13 @@ function renderCk(){
         <div class="ck-pct">${p}% مكتمل</div>
       </div>`;
 
-    // Group by category
-    Object.entries(c.cats).forEach(([catId, items])=>{
-      const cat=catById(catId);
-      if(!items||items.length===0) return;
-      const catDone=items.filter(it=>checklist[`${c.id}::${catId}::${it}`]).length;
-      html+=`<div style="background:var(--light);padding:8px 14px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--sub)">
-        ${cat?cat.icon+' '+cat.name:'أعمال'} (${catDone}/${items.length})
+    items.forEach(it=>{
+      const key=`${c.id}::${it}`; const chk=!!checklist[key];
+      html+=`<div class="ck-item ${chk?'done-item':''}" onclick="toggleCk('${c.id}','${escHtml(it)}')">
+        <div class="ck-check ${chk?'done':''}"></div>
+        <span class="ck-text">${escHtml(it)}</span>
+        ${chk?`<span class="ck-done-badge">✓ مكتمل</span>`:''}
       </div>`;
-      items.forEach(it=>{
-        const key=`${c.id}::${catId}::${it}`; const chk=!!checklist[key];
-        html+=`<div class="ck-item ${chk?'done-item':''}" onclick="toggleCk('${c.id}','${catId}','${escHtml(it)}')">
-          <div class="ck-check ${chk?'done':''}"></div>
-          <span class="ck-text">${escHtml(it)}</span>
-          ${chk?`<span class="ck-done-badge">✓ مكتمل</span>`:''}
-        </div>`;
-      });
     });
 
     html+=`</div>`;
@@ -982,8 +1000,8 @@ function renderCk(){
 
 function setCkFilter(f){ ckFilter=f; renderCk(); }
 
-function toggleCk(custId, catId, item){
-  const k=`${custId}::${catId}::${item}`;
+function toggleCk(custId, item){
+  const k=`${custId}::${item}`;
   checklist[k]=!checklist[k]; saveCk(); renderCk();
 }
 
