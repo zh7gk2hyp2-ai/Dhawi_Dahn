@@ -16,8 +16,7 @@
   --white:#fff;--light:#f8fafc;--border:#e2e8f0;
   --muted:#94a3b8;--text:#1e293b;--sub:#64748b;
   --g-ok:#22c55e;--g-warn:#f59e0b;--g-hi:#f97316;--g-err:#ef4444;
-  --radius:14px;--radius-sm:10px;
-  --tab-h:62px;
+  --radius:14px;--radius-sm:10px;--tab-h:62px;
   font-family:system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -25,71 +24,47 @@ body{background:var(--light);color:var(--text);min-height:100vh;min-height:100dv
 button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit;}
 input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 
-/* ── TOAST ── */
-#toast{
-  position:fixed;top:calc(env(safe-area-inset-top)+12px);right:12px;left:12px;
-  max-width:400px;margin:0 auto;z-index:999;
-  padding:12px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;
-  transform:translateY(-80px);opacity:0;transition:all .3s ease;pointer-events:none;text-align:center;
-}
+/* TOAST */
+#toast{position:fixed;top:calc(env(safe-area-inset-top)+12px);right:12px;left:12px;max-width:400px;margin:0 auto;z-index:999;padding:12px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;transform:translateY(-80px);opacity:0;transition:all .3s ease;pointer-events:none;text-align:center;}
 #toast.show{transform:translateY(0);opacity:1;}
 #toast.ok{background:#15803d;color:#fff;}
 #toast.err{background:#dc2626;color:#fff;}
 #toast.info{background:var(--navy);color:#fff;}
 
-/* ── MODAL ── */
-#modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;
-  align-items:flex-end;justify-content:center;
-}
-#modal-overlay.open{display:flex;}
-#modal-box{
-  background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;
-  padding:24px 20px calc(20px + env(safe-area-inset-bottom));text-align:center;
-}
-#modal-box h3{font-size:16px;font-weight:700;margin-bottom:6px;}
-#modal-box p{font-size:13px;color:var(--sub);margin-bottom:20px;}
+/* MODAL base */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;align-items:flex-end;justify-content:center;}
+.modal-ov.open{display:flex;}
+.modal-box{background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:24px 20px calc(20px + env(safe-area-inset-bottom));}
+.modal-box h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--navy);}
+.modal-box p{font-size:12px;color:var(--sub);margin-bottom:16px;}
 .modal-btns{display:flex;gap:10px;}
 .modal-btns button{flex:1;padding:13px;border-radius:var(--radius-sm);font-weight:700;font-size:14px;}
 .btn-danger{background:#dc2626;color:#fff;}
+.btn-navy{background:var(--navy);color:#fff;}
 .btn-cancel{background:var(--light);color:var(--text);}
 
-/* ── NAME MODAL ── */
-#name-modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;
-  align-items:flex-end;justify-content:center;
-}
-#name-modal-overlay.open{display:flex;}
-#name-modal-box{
-  background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;
-  padding:24px 20px calc(20px + env(safe-area-inset-bottom));
-}
-#name-modal-box h3{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--navy);}
-#name-modal-box p{font-size:12px;color:var(--sub);margin-bottom:16px;}
-#name-inp{
-  width:100%;padding:12px 14px;border:1.5px solid var(--border);
-  border-radius:var(--radius-sm);font-size:15px;margin-bottom:14px;
-  font-family:inherit;outline:none;
-}
-#name-inp:focus{border-color:var(--navy);}
-.name-modal-btns{display:flex;gap:10px;}
-.name-modal-btns button{flex:1;padding:13px;border-radius:var(--radius-sm);font-weight:700;font-size:14px;}
-.btn-save{background:var(--navy);color:#fff;}
+/* modal form */
+.m-inp{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;margin-bottom:10px;font-family:inherit;}
+.m-inp:focus{border-color:var(--navy);outline:none;}
+.m-lbl{font-size:11px;font-weight:600;color:var(--sub);margin-bottom:4px;display:block;}
 
-/* ── HEADER ── */
-#header{
-  background:var(--navy);color:#fff;
-  padding:calc(env(safe-area-inset-top)+16px) 16px 16px;
-}
-.h-label{font-size:11px;color:var(--muted);margin-bottom:2px;}
-.h-title{font-size:17px;font-weight:800;letter-spacing:.3px;margin-bottom:14px;}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+/* Share modal */
+#share-box{max-height:80vh;display:flex;flex-direction:column;}
+#share-text{flex:1;min-height:180px;max-height:300px;overflow-y:auto;background:var(--light);border-radius:var(--radius-sm);padding:12px;font-size:12px;line-height:1.8;direction:rtl;white-space:pre-wrap;border:1px solid var(--border);font-family:inherit;}
+
+/* HEADER */
+#header{background:var(--navy);color:#fff;padding:calc(env(safe-area-inset-top)+14px) 16px 14px;}
+.h-label{font-size:10px;color:var(--muted);margin-bottom:1px;}
+.h-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.h-title{font-size:16px;font-weight:800;letter-spacing:.3px;}
+.h-share-btn{background:rgba(255,255,255,.12);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:5px;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
 .stat-box{background:rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;}
-.stat-box .s-lbl{font-size:10px;color:var(--muted);margin-bottom:4px;}
-.stat-box .s-val{font-size:13px;font-weight:700;line-height:1.2;}
-.stat-box .s-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+.stat-box .s-lbl{font-size:10px;color:var(--muted);margin-bottom:3px;}
+.stat-box .s-val{font-size:13px;font-weight:700;}
+.stat-box .s-sub{font-size:9px;color:var(--muted);margin-top:2px;}
 .bar-wrap{margin-top:2px;}
-.bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:5px;}
+.bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;}
 .bar-track{height:10px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:99px;transition:width .5s ease;}
 .fill-ok{background:var(--g-ok);}
@@ -97,158 +72,134 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 .fill-hi{background:var(--g-hi);}
 .fill-err{background:var(--g-err);}
 
-/* ── ALERTS ── */
+/* ALERTS */
 #alerts{padding:0;}
-.alert{
-  display:flex;gap:8px;align-items:flex-start;
-  padding:9px 12px;border-radius:var(--radius-sm);
-  margin-bottom:6px;font-size:11.5px;font-weight:500;border-width:1px;border-style:solid;
-}
+.alert{display:flex;gap:8px;align-items:flex-start;padding:9px 12px;border-radius:var(--radius-sm);margin-bottom:6px;font-size:11.5px;font-weight:500;border-width:1px;border-style:solid;}
 .alert-warn{background:#fefce8;border-color:#fde68a;color:#92400e;}
 .alert-hi{background:#fff7ed;border-color:#fed7aa;color:#9a3412;}
 .alert-err{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
 
-/* ── TABS ── */
-#tab-bar{
-  position:fixed;bottom:0;right:0;left:0;z-index:50;
-  background:#fff;border-top:1px solid var(--border);
-  display:grid;grid-template-columns:repeat(4,1fr);
-  padding-bottom:env(safe-area-inset-bottom);
-  box-shadow:0 -4px 20px rgba(0,0,0,.06);
-}
-.tab-btn{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:8px 4px;gap:2px;font-size:10px;font-weight:500;color:var(--muted);
-  border-bottom:2px solid transparent;transition:all .15s;
-}
-.tab-btn .tab-icon{font-size:18px;line-height:1;}
+/* TABS */
+#tab-bar{position:fixed;bottom:0;right:0;left:0;z-index:50;background:#fff;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 20px rgba(0,0,0,.06);}
+.tab-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 2px;gap:1px;font-size:9px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn .tab-icon{font-size:16px;line-height:1;}
 .tab-btn.active{color:var(--navy);border-color:var(--navy);}
 
-/* ── CONTENT ── */
-#content{
-  padding:10px 12px calc(var(--tab-h) + env(safe-area-inset-bottom) + 12px);
-}
+/* SETTINGS */
+.cfg-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:16px;margin-bottom:10px;}
+.cfg-card-danger{border-color:#fecaca;}
+.cfg-title{font-size:14px;font-weight:800;margin-bottom:4px;}
+.cfg-sub{font-size:12px;color:var(--sub);margin-bottom:12px;line-height:1.5;}
+.cfg-url{font-size:11px;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:8px 12px;word-break:break-all;color:var(--sub);margin-bottom:4px;}
+.cfg-btn{display:inline-flex;align-items:center;gap:5px;padding:9px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;font-family:inherit;text-decoration:none;}
+.cfg-btn-wa{background:#dcfce7;border-color:#86efac;color:#15803d;}
+.cfg-btn-danger{background:#fee2e2;border-color:#fca5a5;color:#dc2626;margin-top:4px;}
+.cfg-steps{background:var(--light);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;}
+.cfg-step{font-size:11px;color:var(--sub);padding:3px 0;line-height:1.6;}
+.cfg-link{color:var(--navy);font-weight:600;}
+.fb-ok-badge{display:inline-block;background:#f0fdf4;border:1px solid #86efac;color:#15803d;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:700;margin-bottom:10px;}
+.sync-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;margin-right:8px;}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:10px;}
+.search-input{width:100%;padding:10px 14px 10px 36px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;background:#fff;}
+.search-input:focus{border-color:var(--navy);outline:none;}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+
+/* EDIT btn in hist */
+.exp-edit{font-size:11px;color:var(--navy);display:block;margin-top:2px;text-align:left;}
+
+/* CONTENT */
+#content{padding:10px 12px calc(var(--tab-h) + env(safe-area-inset-bottom) + 12px);}
 .tab-pane{display:none;}
 .tab-pane.active{display:block;}
 
-/* ── SECTION LABEL ── */
-.section-label{
-  font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
-  letter-spacing:.5px;margin:14px 0 8px;padding:0 2px;
-}
-
-/* ── OVERVIEW CARD ── */
-.overview-card{
-  background:var(--navy2);color:#fff;border-radius:var(--radius);
-  padding:16px;margin-bottom:14px;
-}
-.ov-title{font-size:12px;color:var(--muted);margin-bottom:10px;}
-.ov-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
-.ov-phase{
-  background:rgba(255,255,255,.08);border-radius:8px;
-  padding:8px 4px;text-align:center;cursor:pointer;
-  transition:all .15s;
-}
+/* OVERVIEW */
+.overview-card{background:var(--navy2);color:#fff;border-radius:var(--radius);padding:14px;margin-bottom:12px;}
+.ov-title{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.ov-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.ov-phase{background:rgba(255,255,255,.08);border-radius:8px;padding:7px 3px;text-align:center;cursor:pointer;transition:all .15s;}
 .ov-phase:active{opacity:.8;}
-.ov-phase .ov-num{font-size:11px;font-weight:700;margin-bottom:4px;}
-.ov-phase .ov-bar-w{height:40px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;}
-.ov-phase .ov-bar-f{width:100%;border-radius:4px;transition:height .5s;}
-.ov-phase .ov-pct{font-size:9px;color:var(--muted);margin-top:4px;}
-.ov-phase.ov-active{background:rgba(255,255,255,.16);outline:2px solid rgba(255,255,255,.3);}
+.ov-num{font-size:10px;font-weight:700;margin-bottom:4px;}
+.ov-bar-w{height:36px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;}
+.ov-bar-f{width:100%;border-radius:4px;transition:height .5s;}
+.ov-pct{font-size:9px;color:var(--muted);margin-top:3px;}
 
-/* ── CUSTODIAN CARDS ── */
-.cust-card{
-  background:#fff;border-radius:var(--radius);
-  border:1.5px solid var(--border);margin-bottom:12px;
-  overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);
-}
+/* CUSTODIAN CARDS */
+.cust-card{background:#fff;border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);}
 .cust-head{padding:14px;}
 .cust-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
-.cust-badge{
-  width:40px;height:40px;border-radius:10px;display:flex;align-items:center;
-  justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;
-}
+.cust-badge{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;}
 .cust-info{flex:1;min-width:0;}
-.cust-phase{font-size:10px;font-weight:600;letter-spacing:.5px;margin-bottom:2px;}
+.cust-phase-lbl{font-size:10px;font-weight:600;letter-spacing:.5px;margin-bottom:2px;}
 .cust-name{font-size:15px;font-weight:800;color:var(--text);line-height:1.2;}
 .cust-scope{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.4;}
-.cust-edit-btn{
-  font-size:11px;padding:4px 10px;border-radius:99px;
-  border:1px solid var(--border);color:var(--sub);
-  white-space:nowrap;flex-shrink:0;
-}
+.cust-contract{font-size:10px;color:var(--muted);margin-top:3px;}
+.cust-edit-btn{font-size:11px;padding:4px 10px;border-radius:99px;border:1px solid var(--border);color:var(--sub);white-space:nowrap;flex-shrink:0;}
+.cust-warn-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;margin-bottom:10px;display:inline-block;}
 .cust-amounts{display:flex;justify-content:space-between;margin-bottom:10px;font-size:12px;}
 .cust-amounts .ca-item{text-align:center;}
-.cust-amounts .ca-lbl{color:var(--muted);margin-bottom:2px;}
+.cust-amounts .ca-lbl{color:var(--muted);margin-bottom:2px;font-size:10px;}
 .cust-amounts .ca-val{font-weight:700;font-size:14px;}
 .cust-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-bottom:8px;}
 .cust-bar-fill{height:100%;border-radius:99px;transition:width .5s;}
 .cust-foot{display:flex;justify-content:space-between;align-items:center;}
 .cust-pct{font-size:11px;color:var(--sub);}
 .cust-exp-btn{font-size:11px;color:var(--navy);text-decoration:underline;font-weight:600;}
-.cust-warn-badge{
-  font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;
-}
 
-/* Expanded expenses */
+/* Expanded txns */
 .cust-txns{border-top:1px solid var(--border);}
-.cust-txn{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 14px;border-bottom:1px solid var(--light);
-}
+.cust-txn{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--light);}
 .cust-txn:last-child{border-bottom:none;}
 .cust-txn-info{flex:1;min-width:0;}
-.cust-txn-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.cust-txn-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.cust-txn-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cust-txn-sub{font-size:10px;color:var(--muted);margin-top:2px;}
 .cust-txn-right{text-align:left;flex-shrink:0;}
-.cust-txn-amt{font-size:14px;font-weight:700;}
+.cust-txn-amt{font-size:13px;font-weight:700;}
 .cust-txn-del{font-size:10px;color:#ef4444;display:block;margin-top:2px;text-align:left;}
 .cust-empty{padding:14px;font-size:12px;color:var(--muted);text-align:center;}
 
-/* ── ADD FORM ── */
+/* pay type badge */
+.pay-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;display:inline-block;margin-right:4px;}
+.pay-mq{background:#eff6ff;color:#1d4ed8;}
+.pay-ms{background:#f0fdfa;color:#0f766e;}
+.pay-nh{background:#f0fdf4;color:#15803d;}
+.pay-vat{background:#fef9c3;color:#854d0e;}
+.pay-ot{background:#f1f5f9;color:#475569;}
+
+/* ADD FORM */
 .card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
 .card-body{padding:16px;}
 .form-group{margin-bottom:14px;}
 .form-label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:6px;}
 .form-label span{color:#dc2626;}
-.form-input{
-  width:100%;padding:11px 14px;border:1.5px solid var(--border);
-  border-radius:var(--radius-sm);font-size:14px;background:#fff;transition:border-color .2s;
-}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:#fff;transition:border-color .2s;}
 .form-input:focus{border-color:var(--navy);}
 textarea.form-input{resize:none;line-height:1.5;}
 
 /* Custodian selector */
 .cust-sel-grid{display:flex;flex-direction:column;gap:8px;}
-.cust-sel-btn{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);
-  background:#fff;transition:all .15s;text-align:right;
-}
+.cust-sel-btn{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;transition:all .15s;text-align:right;}
 .cust-sel-btn.sel{border-width:2px;}
-.cust-sel-dot{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;}
+.cust-sel-dot{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
 .cust-sel-info{flex:1;min-width:0;}
-.cust-sel-name{font-size:13px;font-weight:700;color:var(--text);}
+.cust-sel-name{font-size:13px;font-weight:700;}
 .cust-sel-scope{font-size:10px;color:var(--sub);}
 .cust-sel-left{font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
 
-/* Category selector */
-.cat-chips{display:flex;flex-wrap:wrap;gap:6px;}
-.cat-chip{
-  font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px;
-  border:1.5px solid var(--border);background:var(--light);color:var(--sub);
-  transition:all .15s;
-}
-.cat-chip.sel{border-color:var(--navy);background:var(--navy);color:#fff;}
+/* pay type selector */
+.pay-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.pt-btn{padding:9px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;font-size:11px;font-weight:600;color:var(--sub);transition:all .15s;text-align:center;}
+.pt-btn.sel{background:var(--navy);border-color:var(--navy);color:#fff;}
 
 /* Item chips */
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
-.chip{
-  font-size:11px;padding:5px 10px;border-radius:99px;
-  border:1px solid var(--border);background:var(--light);color:var(--sub);
-  transition:all .15s;
-}
+.chip{font-size:11px;padding:5px 10px;border-radius:99px;border:1px solid var(--border);background:var(--light);color:var(--sub);transition:all .15s;}
 .chip.sel{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* VAT hint */
+.vat-calc{font-size:11px;color:var(--sub);margin-top:6px;background:#f8fafc;border-radius:8px;padding:8px 12px;line-height:1.7;}
+.vat-calc strong{color:var(--text);}
 
 /* Amount hint */
 .amt-hint{font-size:11px;margin-top:5px;font-weight:500;}
@@ -256,125 +207,160 @@ textarea.form-input{resize:none;line-height:1.5;}
 .amt-hi{color:#ea580c;}
 .amt-warn{color:#ca8a04;}
 
-.submit-btn{
-  width:100%;padding:15px;background:var(--navy);color:#fff;
-  border-radius:var(--radius-sm);font-size:15px;font-weight:800;
-  transition:opacity .15s;letter-spacing:.3px;
-}
+.submit-btn{width:100%;padding:15px;background:var(--navy);color:#fff;border-radius:var(--radius-sm);font-size:15px;font-weight:800;transition:opacity .15s;letter-spacing:.3px;}
 .submit-btn:active{opacity:.85;}
 
-/* ── HISTORY ── */
+/* HISTORY */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
-.filter-chip{
-  font-size:11px;font-weight:600;padding:5px 12px;border-radius:99px;
-  border:1.5px solid var(--border);background:#fff;color:var(--sub);transition:all .15s;
-}
+.filter-chip{font-size:11px;font-weight:600;padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:#fff;color:var(--sub);transition:all .15s;}
 .filter-chip.sel{border-color:var(--navy);background:var(--navy);color:#fff;}
-
 .summary-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:10px;}
 .summary-title{font-size:13px;font-weight:700;margin-bottom:10px;}
 .summary-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--light);}
 .summary-row:last-child{border-bottom:none;}
-.summary-row .sr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.summary-row .sr-name{font-size:12px;color:var(--sub);flex:1;margin-right:8px;}
-.summary-row .sr-bar{flex:1;height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin:0 10px;}
-.summary-row .sr-bar-fill{height:100%;border-radius:99px;}
-.summary-row .sr-amt{font-size:12px;font-weight:700;white-space:nowrap;}
+.sr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.sr-name{font-size:12px;color:var(--sub);flex:1;margin-right:8px;}
+.sr-bar{flex:1;height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin:0 10px;}
+.sr-bar-fill{height:100%;border-radius:99px;}
+.sr-amt{font-size:12px;font-weight:700;white-space:nowrap;}
 .summary-total{display:flex;justify-content:space-between;padding-top:10px;margin-top:6px;border-top:1.5px solid var(--border);}
 .summary-total span{font-size:13px;font-weight:800;}
-
 .exp-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:8px;padding:12px 14px;}
 .exp-top{display:flex;align-items:flex-start;gap:10px;}
 .exp-info{flex:1;min-width:0;}
 .exp-name{font-size:14px;font-weight:700;line-height:1.3;}
-.exp-badges{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.exp-badges{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;align-items:center;}
 .exp-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;}
-.exp-meta{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.8;}
+.exp-meta{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.8;}
 .exp-right{text-align:left;flex-shrink:0;}
 .exp-amt{font-size:16px;font-weight:800;}
 .exp-sar{font-size:10px;color:var(--muted);}
 .exp-del{font-size:11px;color:#ef4444;margin-top:8px;display:block;text-align:left;}
-
 .empty-state{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:48px 20px;text-align:center;}
 .empty-icon{font-size:48px;margin-bottom:10px;}
 .empty-text{font-size:14px;color:var(--sub);}
 .empty-hint{font-size:12px;color:var(--muted);margin-top:4px;}
 
-/* ── CHECKLIST ── */
+/* CHECKLIST */
 .ck-intro{background:var(--navy);color:#fff;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;font-size:12px;line-height:1.7;}
 .ck-intro strong{display:block;margin-bottom:3px;font-size:13px;}
 .ck-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .ck-card{background:#fff;border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:10px;overflow:hidden;}
-.ck-head{padding:12px 14px;border-bottom:1px solid var(--border);}
-.ck-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-.ck-cat-name{font-size:13px;font-weight:700;}
-.ck-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;}
-.ck-bar{height:5px;background:var(--border);border-radius:99px;overflow:hidden;}
-.ck-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
-.ck-pct{font-size:10px;color:var(--muted);margin-top:4px;}
-.ck-item{
-  display:flex;align-items:center;gap:12px;padding:12px 14px;
-  border-bottom:1px solid var(--light);cursor:pointer;transition:background .1s;
-}
-.ck-item:last-child{border-bottom:none;}
-.ck-item:active{background:var(--light);}
-.ck-check{
-  width:22px;height:22px;border-radius:6px;border:2px solid var(--border);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;
-}
-.ck-check.done{background:var(--g-ok);border-color:var(--g-ok);}
-.ck-check.done::after{content:'✓';color:#fff;font-size:12px;font-weight:900;}
-.ck-text{font-size:13px;color:var(--text);transition:all .2s;flex:1;}
-.ck-item.done-item .ck-text{color:var(--muted);text-decoration:line-through;}
-.ck-done-badge{font-size:10px;color:var(--g-ok);font-weight:600;white-space:nowrap;}
-
-.tips-card{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:14px;margin-top:4px;}
-.tips-title{font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px;}
-.tip-row{font-size:11px;color:#78350f;padding:4px 0;line-height:1.5;display:flex;gap:8px;}
-.tip-n{flex-shrink:0;font-weight:700;}
-
-/* ── PHASE LABEL ── */
-.phase-header{
-  display:flex;align-items:center;gap:10px;padding:10px 14px;
-  border-bottom:1px solid var(--border);
-}
+.phase-header{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);}
 .phase-dot{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
 .phase-name{font-size:13px;font-weight:700;flex:1;}
 .phase-scope{font-size:10px;color:var(--sub);}
 .phase-prog{font-size:11px;font-weight:600;white-space:nowrap;}
+.ck-head{padding:10px 14px;border-bottom:1px solid var(--border);}
+.ck-bar{height:5px;background:var(--border);border-radius:99px;overflow:hidden;}
+.ck-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
+.ck-pct{font-size:10px;color:var(--muted);margin-top:4px;}
+/* 3-state checklist item */
+.ck-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--light);cursor:pointer;transition:background .1s;}
+.ck-item:last-child{border-bottom:none;}
+.ck-item:active{background:var(--light);}
+.ck-box{width:24px;height:24px;border-radius:7px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:12px;}
+.ck-box.s1{background:#fff7ed;border-color:#f97316;}
+.ck-box.s1::after{content:'▶';color:#f97316;font-size:9px;}
+.ck-box.s2{background:var(--g-ok);border-color:var(--g-ok);}
+.ck-box.s2::after{content:'✓';color:#fff;font-weight:900;}
+.ck-item-content{flex:1;min-width:0;}
+.ck-item-num{font-size:10px;font-weight:700;color:var(--muted);}
+.ck-text{font-size:13px;color:var(--text);transition:all .2s;}
+.ck-item.s1 .ck-text{color:#c2410c;}
+.ck-item.s2 .ck-text{color:var(--muted);text-decoration:line-through;}
+.ck-status-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+.ck-st0{}
+.ck-st1{background:#fff7ed;color:#c2410c;}
+.ck-st2{background:#f0fdf4;color:#15803d;}
 
-/* ── GAP NOTE ── */
-.gap-note{
-  background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);
-  padding:10px 12px;font-size:11.5px;color:#92400e;margin-bottom:10px;line-height:1.6;
-}
+/* gap note */
+.gap-note{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:10px 12px;font-size:11.5px;color:#92400e;margin-bottom:10px;line-height:1.6;}
+
+/* tips */
+.tips-card{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:14px;margin-top:4px;}
+.tips-title{font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px;}
+.tip-row{font-size:11px;color:#78350f;padding:4px 0;line-height:1.5;display:flex;gap:8px;}
+.tip-n{flex-shrink:0;font-weight:700;}
 </style>
 </head>
 <body>
-
 <div id="toast"></div>
 
 <!-- Delete modal -->
-<div id="modal-overlay">
-  <div id="modal-box">
+<div id="del-ov" class="modal-ov">
+  <div class="modal-box" style="text-align:center">
     <h3>حذف هذا السجل؟</h3>
     <p>لا يمكن التراجع عن هذا الإجراء</p>
     <div class="modal-btns">
       <button class="btn-danger" onclick="confirmDelete()">حذف</button>
-      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+      <button class="btn-cancel" onclick="closeModal('del-ov')">إلغاء</button>
     </div>
   </div>
 </div>
 
-<!-- Edit custodian name modal -->
-<div id="name-modal-overlay">
-  <div id="name-modal-box">
-    <h3 id="name-modal-title">تعيين اسم العهداء</h3>
-    <p id="name-modal-sub">أدخل اسم الموظف المسؤول عن هذه العهدة</p>
-    <input id="name-inp" class="form-input" type="text" placeholder="اسم الموظف…" maxlength="40">
-    <div class="name-modal-btns">
-      <button class="btn-save" onclick="saveName()">حفظ الاسم</button>
-      <button class="btn-cancel" onclick="closeNameModal()">إلغاء</button>
+<!-- Name / contract modal -->
+<div id="name-ov" class="modal-ov">
+  <div class="modal-box">
+    <h3 id="nm-title">تعيين اسم العهداء</h3>
+    <p id="nm-sub">أدخل اسم الموظف المسؤول</p>
+    <label class="m-lbl">اسم الموظف المسؤول</label>
+    <input id="nm-name" class="m-inp" type="text" placeholder="مثال: محمد العمري" maxlength="40">
+    <label class="m-lbl">رقم أمر الشراء / العقد</label>
+    <input id="nm-contract" class="m-inp" type="text" placeholder="مثال: PO-2025-001" maxlength="30">
+    <div class="modal-btns">
+      <button class="btn-navy" onclick="saveName()">حفظ</button>
+      <button class="btn-cancel" onclick="closeModal('name-ov')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Share report modal -->
+<div id="share-ov" class="modal-ov">
+  <div class="modal-box" id="share-box">
+    <h3>📤 مشاركة تقرير العهدة</h3>
+    <p>انسخ النص أدناه وشاركه على واتساب أو البريد</p>
+    <div id="share-text"></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-navy" style="flex:1;padding:12px;border-radius:var(--radius-sm);font-weight:700;min-width:80px" onclick="copyReport()">📋 نسخ</button>
+      <button style="flex:1;padding:12px;border-radius:var(--radius-sm);font-weight:700;background:#22c55e;color:#fff;border:none;cursor:pointer;font-family:inherit;min-width:80px" onclick="shareWhatsApp()">💬 واتساب</button>
+      <button class="btn-cancel" style="flex:1;padding:12px;border-radius:var(--radius-sm);font-weight:700;min-width:60px" onclick="closeModal('share-ov')">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit expense modal -->
+<div id="edit-ov" class="modal-ov">
+  <div class="modal-box" style="max-height:90vh;overflow-y:auto">
+    <h3>✏️ تعديل الدفعة</h3>
+    <p>عدّل البيانات ثم اضغط حفظ</p>
+    <label class="m-lbl">البند / العمل *</label>
+    <input id="edit-item" class="m-inp" type="text" maxlength="100">
+    <label class="m-lbl">المورد / المقاول *</label>
+    <input id="edit-sup" class="m-inp" type="text" maxlength="80">
+    <label class="m-lbl">المبلغ (ريال) *</label>
+    <input id="edit-amt" class="m-inp" type="number" min="0">
+    <label class="m-lbl">التاريخ *</label>
+    <input id="edit-date" class="m-inp" type="date">
+    <label class="m-lbl">رقم الفاتورة / المرجع</label>
+    <input id="edit-ref" class="m-inp" type="text" maxlength="50">
+    <label class="m-lbl">ملاحظات</label>
+    <textarea id="edit-notes" class="m-inp" rows="2" maxlength="200"></textarea>
+    <div class="modal-btns">
+      <button class="btn-navy" onclick="saveEdit()">💾 حفظ</button>
+      <button class="btn-cancel" onclick="closeModal('edit-ov')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Clear all data modal -->
+<div id="clr-ov" class="modal-ov">
+  <div class="modal-box" style="text-align:center">
+    <h3>⚠️ حذف كل البيانات؟</h3>
+    <p>سيتم حذف جميع الدفعات وحالة خطة العمل وأسماء العهداء. لا يمكن التراجع.</p>
+    <div class="modal-btns">
+      <button class="btn-danger" onclick="doClearAll()">حذف الكل</button>
+      <button class="btn-cancel" onclick="closeModal('clr-ov')">إلغاء</button>
     </div>
   </div>
 </div>
@@ -386,220 +372,209 @@ textarea.form-input{resize:none;line-height:1.5;}
   <div id="tab-add"  class="tab-pane"></div>
   <div id="tab-hist" class="tab-pane"></div>
   <div id="tab-ck"   class="tab-pane"></div>
+  <div id="tab-cfg"  class="tab-pane"></div>
 </div>
 
 <div id="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('dash')" id="tbtn-dash">
-    <span class="tab-icon">📊</span><span>العهدات</span>
-  </button>
-  <button class="tab-btn" onclick="switchTab('add')" id="tbtn-add">
-    <span class="tab-icon">➕</span><span>إضافة</span>
-  </button>
-  <button class="tab-btn" onclick="switchTab('hist')" id="tbtn-hist">
-    <span class="tab-icon">🧾</span><span>السجل</span>
-  </button>
-  <button class="tab-btn" onclick="switchTab('ck')" id="tbtn-ck">
-    <span class="tab-icon">✅</span><span>خطة العمل</span>
-  </button>
+  <button class="tab-btn active" onclick="switchTab('dash')" id="tbtn-dash"><span class="tab-icon">📊</span><span>العهدات</span></button>
+  <button class="tab-btn" onclick="switchTab('add')"  id="tbtn-add"><span class="tab-icon">➕</span><span>إضافة</span></button>
+  <button class="tab-btn" onclick="switchTab('hist')" id="tbtn-hist"><span class="tab-icon">🧾</span><span>السجل</span></button>
+  <button class="tab-btn" onclick="switchTab('ck')"   id="tbtn-ck"><span class="tab-icon">✅</span><span>الخطة</span></button>
+  <button class="tab-btn" onclick="switchTab('cfg')"  id="tbtn-cfg"><span class="tab-icon">⚙️</span><span>الإعدادات</span></button>
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────
+// ── DATA ──────────────────────────────────────────────────────────────
 const TOTAL_BUDGET = 680000;
 
 const CUSTODIANS = [
   {
-    id:'c1', phaseNum:1,
+    id:'c1', num:1,
     phase:'الصيانة العامة للمبنى',
     scope:'أعمال الهدم واللياسة والدهانات والعزل والأسقف',
     custody:150000, color:'#3b82f6', bg:'#eff6ff', tc:'#1d4ed8',
-    cats:{
-      items:[
-        'أعمال الهدم والإزالة والمباني',
-        'أعمال اللياسة الداخلية',
-        'أعمال الدهانات الداخلية',
-        'أعمال الدهانات الخارجية',
-        'أعمال العزل المائي (حمامات ومطابخ)',
-        'الأسقف المستعارة (جبس)',
-        'الأسقف المستعارة (ألمنيوم)',
-        'أعمال ترقيع وإصلاح الجدران',
-        'أعمال الحماية والتغليف',
-        'نقل ورفع المخلفات والأنقاض',
-      ]
-    }
+    items:[
+      {num:'1.1', text:'أعمال الهدم والإزالة والمباني'},
+      {num:'1.2', text:'أعمال اللياسة الداخلية'},
+      {num:'1.3', text:'أعمال الدهانات'},
+      {num:'1.4', text:'أعمال العزل المائي'},
+      {num:'1.5', text:'أعمال الأسقف المستعارة (جبس)'},
+    ]
   },
   {
-    id:'c2', phaseNum:2,
+    id:'c2', num:2,
     phase:'صيانة وتطوير التجهيزات',
     scope:'الأبواب والزجاج والسيراميك والأرضيات والديكور',
     custody:200000, color:'#8b5cf6', bg:'#f5f3ff', tc:'#6d28d9',
-    cats:{
-      items:[
-        'أعمال الأبواب الخشبية للمكاتب',
-        'أعمال أبواب وقواطيع HPL للحمامات',
-        'الأعمال الزجاجية (قواطيع وأبواب سيكوريت)',
-        'أعمال دواليب المطبخ الخدمي',
-        'أعمال السيراميك (أرضيات وحوائط)',
-        'أعمال البورسلان (أرضيات المكاتب والممرات)',
-        'أعمال السجاد والموكيت (المصلى وغيره)',
-        'أعمال الأرضيات المرتفعة (غرف السيرفر)',
-        'أعمال الستائر اليدوية والكهربائية',
-        'الديكورات الخشبية والتكسيات',
-        'ورق الجدران (Wallpaper)',
-        'أعمال اللوحات الإرشادية (Signage)',
-        'مرايا دورات المياه',
-        'نعلات ووزرات ديكورية',
-        'معابر رخام العتبات',
-      ]
-    }
+    items:[
+      {num:'2.1', text:'أعمال الأبواب للمكاتب والحمامات ودورات المياه'},
+      {num:'2.2', text:'الأعمال الزجاجية'},
+      {num:'2.3', text:'أعمال الدواليب المطبخ'},
+      {num:'2.4', text:'أعمال السيراميك'},
+      {num:'2.5', text:'أعمال السجاد والموكيت'},
+      {num:'2.6', text:'أعمال الأرضيات المرتفعة'},
+      {num:'2.7', text:'أعمال الستائر'},
+      {num:'2.8', text:'أعمال الديكورات الخشبية والورقية'},
+      {num:'2.9', text:'أعمال اللوحات الإرشادية'},
+    ]
   },
   {
-    id:'c3', phaseNum:3,
+    id:'c3', num:3,
     phase:'الأعمال الصحية',
     scope:'دورات المياه وغرف الخدمات المشتركة وملحقاتها',
     custody:100000, color:'#14b8a6', bg:'#f0fdfa', tc:'#0f766e',
-    cats:{
-      items:[
-        'توريد وتركيب مراحيض غربية',
-        'أحواض غسيل معلقة',
-        'مجموعات أحواض كاونتر رخام',
-        'أحواض غسيل ستانلس للمطابخ',
-        'سخانات مياه كهربائية',
-        'مراوح تهوية دورات المياه',
-        'رشاشات إطفاء حريق (نظام كامل)',
-        'مجاري هواء التكييف (duct)',
-        'مجاري طرد الهواء',
-        'أعمال العزل والسباكة الداخلية',
-        'إصلاح وصيانة شبكة الصرف الصحي',
-        'إصلاح وصيانة شبكة المياه الباردة والساخنة',
-      ]
-    }
+    items:[
+      {num:'3.1', text:'توريد وتركيب المراحيض وأطقم دورات المياه'},
+      {num:'3.2', text:'أحواض الغسيل المعلقة'},
+      {num:'3.3', text:'مجموعات أحواض الكاونتر'},
+      {num:'3.4', text:'سخانات المياه الكهربائية'},
+      {num:'3.5', text:'مراوح التهوية'},
+      {num:'3.6', text:'رشاشات الإطفاء (نظام كامل)'},
+      {num:'3.7', text:'مجاري هواء التكييف (duct)'},
+      {num:'3.8', text:'مجاري طرد الهواء'},
+      {num:'3.9', text:'أعمال السباكة والصرف الصحي'},
+    ]
   },
   {
-    id:'c4', phaseNum:4,
+    id:'c4', num:4,
     phase:'الأعمال الكهربائية وملحقاتها',
     scope:'الإنارة والإنذار والتوصيلات والشبكات',
     custody:200000, color:'#f59e0b', bg:'#fffbeb', tc:'#b45309',
-    cats:{
-      items:[
-        'نظام إنذار الحريق الكامل (لوحة + حساسات + جرسات)',
-        'حساسات دخان معنونة',
-        'حساسات حرارة معنونة',
-        'كاسرات زجاجية معنونة',
-        'كشافات EXIT وإنارة طوارئ',
-        'منظومة الإنارة الوظيفية (LED)',
-        'إنارة ديكورية وتراكات مغناطيسية',
-        'علب أرضية (طاقة + داتا)',
-        'مخارج كهرباء ومفاتيح إنارة',
-        'مخارج WiFi وداتا ومخارج HDMI',
-        'كابينة التوزيع الكهربائية (تعديل/تطوير)',
-        'شبكة البيانات والفايبر',
-        'نظام التحكم بالدخول (Access Control)',
-        'تمديد مواسير وكابلات كهربائية',
-        'شاشات عرض وشاشة قاعة الاجتماعات',
-        'ستائر كهربائية قاعة الاجتماعات',
-      ]
-    }
+    items:[
+      {num:'4.1', text:'نظام إنذار الحريق الكامل'},
+      {num:'4.2', text:'العلب الأرضية (طاقة + داتا)'},
+      {num:'4.3', text:'مخارج الكهرباء والمفاتيح'},
+      {num:'4.4', text:'منظومة الإنارة الوظيفية (LED)'},
+      {num:'4.5', text:'إنارة الطوارئ والـ EXIT'},
+      {num:'4.6', text:'شبكة البيانات والفايبر'},
+      {num:'4.7', text:'كابينة التوزيع الكهربائية'},
+      {num:'4.8', text:'نظام التحكم بالدخول (Access Control)'},
+      {num:'4.9', text:'شاشات العرض وملحقاتها'},
+    ]
   },
   {
-    id:'c5', phaseNum:5,
+    id:'c5', num:5,
     phase:'الكاميرات وأنظمة المراقبة',
-    scope:'كاميرات IP وجهاز التسجيل وشاشة المراقبة',
+    scope:'كاميرات IP وجهاز التسجيل وشاشة المراقبة والتمديدات',
     custody:30000, color:'#f43f5e', bg:'#fff1f2', tc:'#be123c',
-    cats:{
-      items:[
-        'كاميرات IP (8 ميغابيكسل — Hikvision)',
-        'جهاز تسجيل NVR (32 قناة)',
-        'شاشة المراقبة (49 بوصة)',
-        'الكابلات والتمديدات (UTP Cat6)',
-        'أقواس وحوامل الكاميرات',
-        'صندوق توزيع الطاقة PoE',
-        'برمجة وضبط النظام',
-        'اختبار وتسليم منظومة المراقبة',
-      ]
-    }
+    items:[
+      {num:'5.1', text:'كاميرات IP (8 ميغابيكسل)'},
+      {num:'5.2', text:'جهاز تسجيل NVR'},
+      {num:'5.3', text:'شاشة المراقبة'},
+      {num:'5.4', text:'الكابلات والتمديدات (UTP Cat6)'},
+      {num:'5.5', text:'أقواس وحوامل الكاميرات'},
+      {num:'5.6', text:'برمجة وضبط منظومة المراقبة'},
+      {num:'5.7', text:'اختبار وتسليم النظام'},
+    ]
   }
 ];
 
-const CATS = [
-  {id:'items', name:'بنود العمل', icon:'📋'},
-  {id:'other', name:'أخرى',       icon:'📌'},
+const PAY_TYPES = [
+  {id:'mq',  label:'مقدمة',  badge:'pay-mq',  icon:'🔵'},
+  {id:'ms',  label:'مستخلص', badge:'pay-ms',  icon:'🟢'},
+  {id:'nh',  label:'نهائية', badge:'pay-nh',  icon:'✅'},
+  {id:'vat', label:'ضريبة',  badge:'pay-vat', icon:'🧾'},
+  {id:'ot',  label:'أخرى',   badge:'pay-ot',  icon:'📌'},
 ];
 
 const THRESH = [
-  {p:100, cls:'err', lbl:'تجاوز العهدة!'},
-  {p:90,  cls:'hi',  lbl:'قريب جداً من الحد'},
-  {p:75,  cls:'warn',lbl:'تجاوز 75%'}
+  {p:100,cls:'err',lbl:'تجاوز العهدة!'},
+  {p:90, cls:'hi', lbl:'قريب جداً من الحد'},
+  {p:75, cls:'warn',lbl:'تجاوز 75%'}
 ];
 
-// ── STATE ─────────────────────────────────────────
-let expenses  = JSON.parse(localStorage.getItem('sisd-exp')   || '[]');
-let checklist = JSON.parse(localStorage.getItem('sisd-ck')    || '{}');
-let custNames = JSON.parse(localStorage.getItem('sisd-names') || '{}');
+// ── STATE ──────────────────────────────────────────────────────────────
+function safeJSON(s,f){try{const v=JSON.parse(s);return v!=null?v:f;}catch(e){return f;}}
+function sanitizeExp(arr){
+  if(!Array.isArray(arr))return[];
+  return arr.filter(e=>e&&typeof e.id==='string'&&/^[\w-]{1,30}$/.test(e.id)&&
+    CUSTODIANS.some(c=>c.id===e.custId)&&PAY_TYPES.some(p=>p.id===e.payType)&&
+    typeof e.item==='string'&&typeof e.supplier==='string'&&
+    typeof e.amount==='number'&&e.amount>=0&&
+    typeof e.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(e.date));
+}
+function sanitizeMeta(o){
+  if(!o||typeof o!=='object'||Array.isArray(o))return{};
+  const r={};
+  CUSTODIANS.forEach(c=>{
+    if(o[c.id]&&typeof o[c.id]==='object'){
+      r[c.id]={
+        name:typeof o[c.id].name==='string'?o[c.id].name.slice(0,60):'',
+        contract:typeof o[c.id].contract==='string'?o[c.id].contract.slice(0,40):''
+      };
+    }
+  });
+  return r;
+}
+let expenses  = sanitizeExp(safeJSON(localStorage.getItem('sisd-exp'), []));
+let ckState   = safeJSON(localStorage.getItem('sisd-ck'),  {});
+let custMeta  = sanitizeMeta(safeJSON(localStorage.getItem('sisd-meta'), {}));
 let expanded  = {};
-let delTarget = null;
-let nameTarget= null;
-let curTab    = 'dash';
-let histFilter= 'all';
-let ckFilter  = 'all';
-let formState = { custId:'c1', catId:'items', item:'', selItem:'' };
+let delTarget = null, nameTarget = null;
+let curTab    = 'dash', histFilter='all', ckFilter='all', histSearch='';
+let formState = {custId:'c1', payType:'mq', item:'', selItem:''};
 
-function save()    { localStorage.setItem('sisd-exp',   JSON.stringify(expenses));  }
-function saveCk()  { localStorage.setItem('sisd-ck',    JSON.stringify(checklist)); }
-function saveNames(){ localStorage.setItem('sisd-names',JSON.stringify(custNames)); }
+function save()    {localStorage.setItem('sisd-exp',  JSON.stringify(expenses)); pushToCloud();}
+function saveCk()  {localStorage.setItem('sisd-ck',   JSON.stringify(ckState));  pushToCloud();}
+function saveMeta(){localStorage.setItem('sisd-meta', JSON.stringify(custMeta)); pushToCloud();}
 
-// ── UTILS ─────────────────────────────────────────
-const fmt  = n => n.toLocaleString('ar-SA');
-const fmtN = n => n.toLocaleString('en-US');
-const pct  = (s,b) => b===0 ? 0 : Math.min(100, Math.round(s/b*100));
-const getToday = () => new Date().toISOString().split('T')[0];
-const custById = id => CUSTODIANS.find(c=>c.id===id);
-const catById  = id => CATS.find(c=>c.id===id);
-const custSpent= id => expenses.filter(e=>e.custId===id).reduce((s,e)=>s+e.amount,0);
-const totalSpent = () => expenses.reduce((s,e)=>s+e.amount,0);
-const barCls = p => p>=100?'fill-err':p>=90?'fill-hi':p>=75?'fill-warn':'fill-ok';
-const warnInfo = p => THRESH.find(t=>p>=t.p) || null;
-const custName = id => custNames[id] || custById(id)?.phase || id;
+// ── UTILS ──────────────────────────────────────────────────────────────
+const fmtN   = n => (+n||0).toLocaleString('en-US');
+const pct    = (s,b)=> b===0?0:Math.min(100,Math.round(s/b*100));
+const getToday = ()=>new Date().toISOString().split('T')[0];
+const custById = id=>CUSTODIANS.find(c=>c.id===id);
+const payById  = id=>PAY_TYPES.find(p=>p.id===id)||PAY_TYPES[4];
+const custSpent= id=>expenses.filter(e=>e.custId===id).reduce((s,e)=>s+e.amount,0);
+const totalSpent=()=>expenses.reduce((s,e)=>s+e.amount,0);
+const barCls   = p=>p>=100?'fill-err':p>=90?'fill-hi':p>=75?'fill-warn':'fill-ok';
+const warnInfo = p=>THRESH.find(t=>p>=t.p)||null;
+const custName = id=>(custMeta[id]?.name)||custById(id)?.phase||id;
+const custContract=id=>(custMeta[id]?.contract)||'';
 
-function showToast(msg, type='ok'){
+function showToast(msg,type='ok'){
   const t=document.getElementById('toast');
   t.textContent=msg; t.className='show '+type;
-  clearTimeout(t._timer);
-  t._timer=setTimeout(()=>{t.className='';}, 2800);
+  clearTimeout(t._tm); t._tm=setTimeout(()=>{t.className='';},2800);
 }
 
-function escHtml(s){
-  if(!s) return '';
+function escH(s){
+  if(!s)return'';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// ── TAB SWITCH ────────────────────────────────────
+// ── TABS ──────────────────────────────────────────────────────────────
 function switchTab(id){
   document.querySelectorAll('.tab-pane').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   document.getElementById('tbtn-'+id).classList.add('active');
-  curTab = id;
+  curTab=id;
   if(id==='add')  renderAdd();
   if(id==='hist') renderHist();
   if(id==='ck')   renderCk();
+  if(id==='cfg')  renderCfg();
 }
 
-// ── RENDER HEADER ─────────────────────────────────
+// ── MODALS ─────────────────────────────────────────────────────────────
+function closeModal(id){document.getElementById(id).classList.remove('open');delTarget=null;nameTarget=null;}
+document.querySelectorAll('.modal-ov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');}));
+
+// ── HEADER ─────────────────────────────────────────────────────────────
 function renderHeader(){
-  const spent = totalSpent();
-  const left  = TOTAL_BUDGET - spent;
-  const p     = pct(spent, TOTAL_BUDGET);
-  const bc    = barCls(p);
-  const phasesActive = CUSTODIANS.filter(c=>custSpent(c.id)>0).length;
-  document.getElementById('header').innerHTML = `
-    <div class="h-label">مركز البحوث والاستشارات — مشروع تأهيل مقر سيسد</div>
-    <div class="h-title">إدارة العهدات الخمس</div>
+  const spent=totalSpent(); const left=TOTAL_BUDGET-spent;
+  const p=pct(spent,TOTAL_BUDGET); const bc=barCls(p);
+  const done=CUSTODIANS.filter(c=>custSpent(c.id)>0).length;
+  document.getElementById('header').innerHTML=`
+    <div class="h-label">مركز البحوث والاستشارات — تأهيل مقر سيسد بالحرم الجامعي</div>
+    <div class="h-title-row">
+      <div class="h-title">إدارة العهدات الخمس <span id="sync-badge" class="sync-badge" style="display:none"></span></div>
+      <button class="h-share-btn" onclick="openShare()">📤 تقرير</button>
+    </div>
     <div class="stats-row">
       <div class="stat-box">
         <div class="s-lbl">إجمالي العهدات</div>
         <div class="s-val" style="color:var(--gold2)">${fmtN(TOTAL_BUDGET)}</div>
-        <div class="s-sub">680 ألف ريال</div>
+        <div class="s-sub">ريال سعودي</div>
       </div>
       <div class="stat-box">
         <div class="s-lbl">إجمالي مصروف</div>
@@ -607,147 +582,113 @@ function renderHeader(){
         <div class="s-sub">${p}% من الإجمالي</div>
       </div>
       <div class="stat-box">
-        <div class="s-lbl">المراحل النشطة</div>
-        <div class="s-val" style="color:var(--gold2)">${phasesActive} / 5</div>
-        <div class="s-sub">مرحلة</div>
+        <div class="s-lbl">المتبقي</div>
+        <div class="s-val" style="color:${left<0?'#fca5a5':'var(--gold2)'}">${fmtN(Math.abs(left))}</div>
+        <div class="s-sub">${left<0?'🔴 تجاوز':'متاح للصرف'}</div>
       </div>
     </div>
     <div class="bar-wrap">
-      <div class="bar-labels"><span>التقدم الكلي للمشروع</span><span>${fmtN(Math.max(0,left))} ر.س متبقٍ</span></div>
+      <div class="bar-labels"><span>التقدم المالي الكلي</span><span>${fmtN(Math.max(0,left))} ر.س متبقٍ</span></div>
       <div class="bar-track"><div class="bar-fill ${bc}" style="width:${Math.min(100,p)}%"></div></div>
     </div>`;
 }
 
-// ── RENDER ALERTS ─────────────────────────────────
+// ── ALERTS ─────────────────────────────────────────────────────────────
 function renderAlerts(){
-  let html = '';
+  let html='';
   CUSTODIANS.forEach(c=>{
     const s=custSpent(c.id); const p=pct(s,c.custody); const w=warnInfo(p);
     if(w){
-      const icon = p>=100?'🚨':p>=90?'⚠️':'🔔';
-      html += `<div class="alert alert-${w.cls}">
-        <span>${icon}</span>
-        <span><strong>${custName(c.id)} (${c.phase}):</strong> ${w.lbl} — ${fmtN(s)} من ${fmtN(c.custody)} ر.س (${p}%)</span>
-      </div>`;
+      const icon=p>=100?'🚨':p>=90?'⚠️':'🔔';
+      html+=`<div class="alert alert-${w.cls}"><span>${icon}</span><span><strong>${escH(custName(c.id))}:</strong> ${w.lbl} — ${fmtN(s)} من ${fmtN(c.custody)} ر.س (${p}%)</span></div>`;
     }
   });
-  const alerts = document.getElementById('alerts');
-  if(html){
-    alerts.innerHTML = `<div style="padding:8px 12px 4px">${html}</div>`;
-  } else {
-    alerts.innerHTML = '';
-  }
+  const el=document.getElementById('alerts');
+  el.innerHTML=html?`<div style="padding:8px 12px 4px">${html}</div>`:'';
 }
 
-// ── RENDER DASHBOARD ──────────────────────────────
+// ── DASHBOARD ──────────────────────────────────────────────────────────
 function renderDash(){
-  const totalS = totalSpent();
-
-  // Overview bars
-  let ovBars = CUSTODIANS.map(c=>{
+  let ovBars=CUSTODIANS.map(c=>{
     const s=custSpent(c.id); const p=pct(s,c.custody);
-    return `<div class="ov-phase" onclick="switchTab('add');setTimeout(()=>{selCust('${c.id}')},50)">
-      <div class="ov-num" style="color:${c.color}">${c.phaseNum}</div>
-      <div class="ov-bar-w">
-        <div class="ov-bar-f" style="height:${p}%;background:${c.color};min-height:${p>0?'4px':'0'}"></div>
-      </div>
+    return `<div class="ov-phase" onclick="switchTab('add');setTimeout(()=>selCust('${c.id}'),60)">
+      <div class="ov-num" style="color:${c.color}">${c.num}</div>
+      <div class="ov-bar-w"><div class="ov-bar-f" style="height:${p}%;background:${c.color};min-height:${p>0?4:0}px"></div></div>
       <div class="ov-pct">${p}%</div>
     </div>`;
   }).join('');
 
-  let html = `
-    <div class="gap-note">
-      📌 <strong>مشروع تأهيل مقر سيسد بالحرم الجامعي:</strong> إجمالي العهدة 680,000 ريال موزّعة على 5 تخصصات — كل شخص مسؤول عن تخصصه وعهدته مستقلة.
-    </div>
+  let html=`
+    <div class="gap-note">📌 <strong>خطة العمل:</strong> إجمالي العهدة 680,000 ريال — موزّعة على 5 تخصصات. كل عهداء مسؤول عن تخصصه وميزانيته بشكل مستقل.</div>
     <div class="overview-card">
-      <div class="ov-title">نظرة عامة — نسبة الإنجاز لكل مرحلة</div>
+      <div class="ov-title">نظرة عامة — نسبة الصرف لكل تخصص</div>
       <div class="ov-grid">${ovBars}</div>
     </div>`;
 
-  // Custodian cards
   CUSTODIANS.forEach(c=>{
     const s=custSpent(c.id); const p=pct(s,c.custody); const left=c.custody-s;
     const w=warnInfo(p); const exps=expenses.filter(e=>e.custId===c.id);
-    const isOpen=!!expanded[c.id]; const name=custName(c.id);
+    const isOpen=!!expanded[c.id]; const name=custName(c.id); const contract=custContract(c.id);
+    const borderColor=p>=100?'#fca5a5':p>=90?'#fed7aa':p>=75?'#fde68a':c.color+'33';
 
-    let warnBadge = w
-      ? `<span class="cust-warn-badge" style="background:${p>=100?'#fee2e2':p>=90?'#ffedd5':'#fef9c3'};color:${p>=100?'#991b1b':p>=90?'#9a3412':'#854d0e'}">${p>=100?'🚨':p>=90?'⚠️':'🔔'} ${w.lbl}</span>`
-      : '';
+    let warnBadge=w?`<div><span class="cust-warn-badge" style="background:${p>=100?'#fee2e2':p>=90?'#ffedd5':'#fef9c3'};color:${p>=100?'#991b1b':p>=90?'#9a3412':'#854d0e'}">${p>=100?'🚨':p>=90?'⚠️':'🔔'} ${w.lbl}</span></div>`:'';
 
-    html += `<div class="cust-card" style="border-color:${p>=100?'#fca5a5':p>=90?'#fed7aa':p>=75?'#fde68a':c.color+'33'}">
+    html+=`<div class="cust-card" style="border-color:${borderColor}">
       <div class="cust-head">
         <div class="cust-top">
-          <div class="cust-badge" style="background:${c.bg};color:${c.tc}">${c.phaseNum}</div>
+          <div class="cust-badge" style="background:${c.bg};color:${c.tc}">${c.num}</div>
           <div class="cust-info">
-            <div class="cust-phase" style="color:${c.tc}">${c.phase}</div>
-            <div class="cust-name">${escHtml(name)}</div>
+            <div class="cust-phase-lbl" style="color:${c.tc}">${c.phase}</div>
+            <div class="cust-name">${escH(name)}</div>
             <div class="cust-scope">${c.scope}</div>
+            ${contract?`<div class="cust-contract">🗂️ ${escH(contract)}</div>`:''}
           </div>
           <button class="cust-edit-btn" onclick="openNameModal('${c.id}')">✏️ تعيين</button>
         </div>
-        ${warnBadge ? `<div style="margin-bottom:10px">${warnBadge}</div>` : ''}
+        ${warnBadge}
         <div class="cust-amounts">
-          <div class="ca-item">
-            <div class="ca-lbl">العهدة</div>
-            <div class="ca-val" style="color:var(--gold)">${fmtN(c.custody)}</div>
-          </div>
-          <div class="ca-item">
-            <div class="ca-lbl">مصروف</div>
-            <div class="ca-val" style="color:${c.color}">${fmtN(s)}</div>
-          </div>
-          <div class="ca-item">
-            <div class="ca-lbl">${left<0?'تجاوز':'متبقٍ'}</div>
-            <div class="ca-val" style="color:${left<0?'#dc2626':'#15803d'}">${fmtN(Math.abs(left))}</div>
-          </div>
+          <div class="ca-item"><div class="ca-lbl">العهدة</div><div class="ca-val" style="color:var(--gold)">${fmtN(c.custody)}</div></div>
+          <div class="ca-item"><div class="ca-lbl">مصروف</div><div class="ca-val" style="color:${c.color}">${fmtN(s)}</div></div>
+          <div class="ca-item"><div class="ca-lbl">${left<0?'تجاوز':'متبقٍ'}</div><div class="ca-val" style="color:${left<0?'#dc2626':'#15803d'}">${fmtN(Math.abs(left))}</div></div>
         </div>
-        <div class="cust-bar">
-          <div class="cust-bar-fill ${barCls(p)}" style="width:${Math.min(100,p)}%;background:${p>=100?'#ef4444':p>=90?'#f97316':p>=75?'#f59e0b':c.color}"></div>
-        </div>
+        <div class="cust-bar"><div class="cust-bar-fill ${barCls(p)}" style="width:${Math.min(100,p)}%;background:${p>=100?'#ef4444':p>=90?'#f97316':p>=75?'#f59e0b':c.color}"></div></div>
         <div class="cust-foot">
-          <span class="cust-pct">${p}% من العهدة · ${exps.length} سجل</span>
-          <button class="cust-exp-btn" onclick="toggleExpand('${c.id}')">${isOpen?'إخفاء التفاصيل':'عرض التفاصيل'}</button>
+          <span class="cust-pct">${p}% من العهدة · ${exps.length} دفعة</span>
+          <button class="cust-exp-btn" onclick="toggleExpand('${c.id}')">${isOpen?'إخفاء':'عرض التفاصيل'}</button>
         </div>
       </div>
-      ${isOpen ? `<div class="cust-txns">
-        ${exps.length===0
-          ? `<div class="cust-empty">لا يوجد صرف مسجّل لهذه المرحلة</div>`
-          : exps.map(e=>{
-              const cat=catById(e.catId);
-              return `<div class="cust-txn">
-                <div class="cust-txn-info">
-                  <div class="cust-txn-name">${escHtml(e.item)}</div>
-                  <div class="cust-txn-sub">${cat?cat.icon+' '+cat.name:''} · ${escHtml(e.supplier)} · ${e.date}</div>
-                </div>
-                <div class="cust-txn-right">
-                  <div class="cust-txn-amt" style="color:${c.color}">${fmtN(e.amount)}</div>
-                  <button class="cust-txn-del" onclick="openDel('${e.id}')">🗑️ حذف</button>
-                </div>
-              </div>`;
-            }).join('')
-        }
-      </div>` : ''}
+      ${isOpen?`<div class="cust-txns">${exps.length===0?`<div class="cust-empty">لا يوجد صرف مسجّل</div>`:exps.map(e=>{
+        const pt=payById(e.payType);
+        return `<div class="cust-txn">
+          <div class="cust-txn-info">
+            <div class="cust-txn-name">${escH(e.item)}</div>
+            <div class="cust-txn-sub"><span class="pay-badge ${pt.badge}">${pt.icon} ${pt.label}</span>${escH(e.supplier)} · ${escH(e.date)}${e.ref?' · '+escH(e.ref):''}</div>
+          </div>
+          <div class="cust-txn-right">
+            <div class="cust-txn-amt" style="color:${c.color}">${fmtN(e.amount)}</div>
+            <button class="cust-txn-del" onclick="openDel('${escH(e.id)}')">🗑️ حذف</button>
+          </div>
+        </div>`;
+      }).join('')}</div>`:''}
     </div>`;
   });
-
-  document.getElementById('tab-dash').innerHTML = html;
+  document.getElementById('tab-dash').innerHTML=html;
 }
 
-function toggleExpand(id){ expanded[id]=!expanded[id]; renderDash(); }
+function toggleExpand(id){expanded[id]=!expanded[id];renderDash();}
 
-// ── RENDER ADD FORM ───────────────────────────────
+// ── ADD FORM ────────────────────────────────────────────────────────────
 function renderAdd(){
-  // Custodian selector
-  let custBtnsHtml = CUSTODIANS.map(c=>{
+  const custBtns=CUSTODIANS.map(c=>{
     const s=custSpent(c.id); const p=pct(s,c.custody); const left=c.custody-s;
-    const isSel=formState.custId===c.id;
-    const name=custName(c.id);
+    const isSel=formState.custId===c.id; const name=custName(c.id);
     return `<button type="button" class="cust-sel-btn ${isSel?'sel':''}"
       style="${isSel?`border-color:${c.color};background:${c.bg}`:''}"
       onclick="selCust('${c.id}')">
-      <div class="cust-sel-dot" style="background:${c.bg};color:${c.tc}">${c.phaseNum}</div>
+      <div class="cust-sel-dot" style="background:${c.bg};color:${c.tc}">${c.num}</div>
       <div class="cust-sel-info">
         <div class="cust-sel-name" style="${isSel?`color:${c.tc}`:''}">
-          ${escHtml(name)} <span style="font-weight:400;color:var(--muted);font-size:11px">/ ${c.phase}</span>
+          ${escH(name)} <span style="font-weight:400;color:var(--muted);font-size:10px">/ ${c.phase}</span>
         </div>
         <div class="cust-sel-scope">${c.scope}</div>
       </div>
@@ -757,29 +698,37 @@ function renderAdd(){
     </button>`;
   }).join('');
 
-  // Item chips from custodian's items list
-  const cust = custById(formState.custId);
-  const items = cust.cats.items || [];
-  let chipsHtml = items.map(it=>
-    `<span class="chip ${formState.selItem===it?'sel':''}" onclick="selChip('${escHtml(it)}')">${escHtml(it)}</span>`
+  const payBtns=PAY_TYPES.map(pt=>`
+    <button type="button" class="pt-btn ${formState.payType===pt.id?'sel':''}" onclick="selPay('${pt.id}')">
+      ${pt.icon} ${pt.label}
+    </button>`).join('');
+
+  const cust=custById(formState.custId);
+  const chipsHtml=cust.items.map(it=>
+    `<span class="chip ${formState.selItem===it.text?'sel':''}" onclick="selChip('${escH(it.text)}')">
+      <span style="color:var(--muted);font-size:10px">${it.num}</span> ${escH(it.text)}
+    </span>`
   ).join('');
 
-  document.getElementById('tab-add').innerHTML = `
+  document.getElementById('tab-add').innerHTML=`
     <div class="card"><div class="card-body">
       <div style="font-size:16px;font-weight:800;margin-bottom:16px">تسجيل دفعة / صرف جديد</div>
 
       <div class="form-group">
         <label class="form-label">التخصص / العهداء <span>*</span></label>
-        <div class="cust-sel-grid">${custBtnsHtml}</div>
+        <div class="cust-sel-grid">${custBtns}</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">نوع الدفعة <span>*</span></label>
+        <div class="pay-type-grid">${payBtns}</div>
       </div>
 
       <div class="form-group">
         <label class="form-label">البند / العمل <span>*</span></label>
         <div class="chips" id="chips-wrap">${chipsHtml}</div>
-        <input class="form-input" id="inp-item"
-          placeholder="أو اكتب اسم البند يدوياً…"
-          value="${escHtml(formState.item)}"
-          oninput="formState.item=this.value;formState.selItem=''">
+        <input class="form-input" id="inp-item" placeholder="أو اكتب اسم البند يدوياً…"
+          value="${escH(formState.item)}" oninput="formState.item=this.value;formState.selItem=''">
       </div>
 
       <div class="form-group">
@@ -789,8 +738,8 @@ function renderAdd(){
 
       <div class="form-group">
         <label class="form-label">المبلغ (ريال) <span>*</span></label>
-        <input class="form-input" type="number" id="inp-amt"
-          placeholder="0" min="0" oninput="checkAmtWarn()">
+        <input class="form-input" type="number" id="inp-amt" placeholder="0" min="0" oninput="checkAmtWarn()">
+        <div id="vat-calc" class="vat-calc" style="display:none"></div>
         <div class="amt-hint" id="amt-hint"></div>
       </div>
 
@@ -801,90 +750,91 @@ function renderAdd(){
 
       <div class="form-group">
         <label class="form-label">رقم الفاتورة / المرجع</label>
-        <input class="form-input" id="inp-ref" placeholder="اختياري — مثال: INV-2025-001">
+        <input class="form-input" id="inp-ref" placeholder="مثال: INV-2025-001">
       </div>
 
       <div class="form-group">
         <label class="form-label">ملاحظات</label>
-        <textarea class="form-input" id="inp-notes" rows="2"
-          placeholder="اختياري — مثال: دفعة أولى 50% من إجمالي العقد"></textarea>
+        <textarea class="form-input" id="inp-notes" rows="2" placeholder="مثال: دفعة أولى 50% من إجمالي العقد"></textarea>
       </div>
 
       <button class="submit-btn" onclick="submitExpense()">✅ تسجيل الصرف</button>
     </div></div>`;
 }
 
-function selCust(id){ formState.custId=id; formState.catId='items'; formState.selItem=''; formState.item=''; renderAdd(); }
-function selChip(it){
-  formState.selItem=it; formState.item=it; renderAdd();
-  const inp=document.getElementById('inp-item');
-  if(inp) inp.value=it;
-}
+function selCust(id){formState.custId=id;formState.selItem='';formState.item='';renderAdd();}
+function selPay(id){formState.payType=id;renderAdd();}
+function selChip(it){formState.selItem=it;formState.item=it;renderAdd();const inp=document.getElementById('inp-item');if(inp)inp.value=it;}
 
 function checkAmtWarn(){
   const amt=parseFloat(document.getElementById('inp-amt').value)||0;
   const hint=document.getElementById('amt-hint');
-  if(!amt||!hint){if(hint)hint.textContent='';return;}
+  const vat=document.getElementById('vat-calc');
+  if(!amt){if(hint)hint.textContent='';if(vat)vat.style.display='none';return;}
+  // VAT calculator
+  if(vat){
+    const amtEx=amt, amtInc=Math.round(amt*1.15);
+    vat.style.display='block';
+    vat.innerHTML=`حاسبة الضريبة: المبلغ بدون ضريبة <strong>${fmtN(amtEx)}</strong> ر.س | مع ضريبة 15% = <strong>${fmtN(amtInc)}</strong> ر.س`;
+  }
+  if(!hint)return;
   const c=custById(formState.custId);
-  const after=pct(custSpent(c.id)+amt, c.custody);
-  if(after>100){ hint.className='amt-hint amt-err'; hint.textContent='🚨 سيتجاوز عهدة هذه المرحلة!';}
-  else if(after>90){ hint.className='amt-hint amt-hi'; hint.textContent=`⚠️ سيصل إلى ${after}% من العهدة`;}
-  else if(after>75){ hint.className='amt-hint amt-warn'; hint.textContent=`🔔 سيصل إلى ${after}% من العهدة`;}
-  else{ hint.textContent=''; }
+  const after=pct(custSpent(c.id)+amt,c.custody);
+  if(after>100){hint.className='amt-hint amt-err';hint.textContent='🚨 سيتجاوز عهدة هذا التخصص!';}
+  else if(after>90){hint.className='amt-hint amt-hi';hint.textContent=`⚠️ سيصل إلى ${after}% من العهدة`;}
+  else if(after>75){hint.className='amt-hint amt-warn';hint.textContent=`🔔 سيصل إلى ${after}% من العهدة`;}
+  else{hint.textContent='';}
 }
 
 function submitExpense(){
   const item=(document.getElementById('inp-item').value||formState.item).trim();
-  const sup  = document.getElementById('inp-sup').value.trim();
-  const amt  = parseFloat(document.getElementById('inp-amt').value);
-  const date = document.getElementById('inp-date').value;
-  const ref  = document.getElementById('inp-ref').value.trim();
-  const notes= document.getElementById('inp-notes').value.trim();
-  if(!item){ showToast('أدخل اسم البند أو العمل','err'); return; }
-  if(!sup)  { showToast('أدخل اسم المورد','err'); return; }
-  if(!amt||amt<=0){ showToast('أدخل مبلغاً صحيحاً','err'); return; }
-  expenses.unshift({
-    id:Date.now().toString(),
-    custId:formState.custId,
-    catId:formState.catId,
-    item, supplier:sup, amount:amt, date, ref, notes
-  });
+  const sup=document.getElementById('inp-sup').value.trim();
+  const amt=parseFloat(document.getElementById('inp-amt').value);
+  const date=document.getElementById('inp-date').value;
+  const ref=document.getElementById('inp-ref').value.trim();
+  const notes=document.getElementById('inp-notes').value.trim();
+  if(!item){showToast('أدخل اسم البند أو العمل','err');return;}
+  if(!sup){showToast('أدخل اسم المورد','err');return;}
+  if(!amt||amt<=0){showToast('أدخل مبلغاً صحيحاً','err');return;}
+  expenses.unshift({id:Date.now().toString(),custId:formState.custId,payType:formState.payType,item,supplier:sup,amount:amt,date,ref,notes});
   save(); renderAll(); showToast('✅ تم تسجيل الصرف بنجاح');
   formState.item=''; formState.selItem='';
-  setTimeout(()=>switchTab('dash'), 1800);
+  setTimeout(()=>switchTab('dash'),1800);
 }
 
-// ── RENDER HISTORY ────────────────────────────────
+// ── HISTORY ─────────────────────────────────────────────────────────────
 function renderHist(){
-  const filterAll = histFilter==='all';
-  const filteredExp = filterAll ? expenses : expenses.filter(e=>e.custId===histFilter);
-  const spent = filteredExp.reduce((s,e)=>s+e.amount,0);
+  const filterAll=histFilter==='all';
+  const q=histSearch.trim().toLowerCase();
+  const filteredExp=expenses
+    .filter(e=>filterAll||e.custId===histFilter)
+    .filter(e=>!q||e.item.toLowerCase().includes(q)||e.supplier.toLowerCase().includes(q)||(e.ref&&e.ref.toLowerCase().includes(q))||(e.notes&&e.notes.toLowerCase().includes(q)));
+  const spent=filteredExp.reduce((s,e)=>s+e.amount,0);
 
-  // Filter chips
-  let filterHtml = `<span class="filter-chip ${filterAll?'sel':''}" onclick="setHistFilter('all')">الكل</span>`;
+  let filterHtml=`<span class="filter-chip ${filterAll?'sel':''}" onclick="setHistFilter('all')">الكل</span>`;
   CUSTODIANS.forEach(c=>{
-    const isSel = histFilter===c.id;
-    filterHtml+=`<span class="filter-chip ${isSel?'sel':''}"
-      style="${isSel?`border-color:${c.color};background:${c.color};color:#fff`:''}"
-      onclick="setHistFilter('${c.id}')">م${c.phaseNum}</span>`;
+    const isSel=histFilter===c.id;
+    filterHtml+=`<span class="filter-chip ${isSel?'sel':''}" style="${isSel?`border-color:${c.color};background:${c.color};color:#fff`:''}" onclick="setHistFilter('${c.id}')">${c.num}</span>`;
   });
 
-  // Summary
-  let sumHtml = '';
-  const showCusts = filterAll ? CUSTODIANS : CUSTODIANS.filter(c=>c.id===histFilter);
-  showCusts.forEach(c=>{
-    const s=custSpent(c.id); if(s===0&&filterAll) return;
+  let sumHtml='';
+  const showC=filterAll?CUSTODIANS:CUSTODIANS.filter(c=>c.id===histFilter);
+  showC.forEach(c=>{
+    const s=custSpent(c.id); if(s===0&&filterAll)return;
     const p=pct(s,c.custody);
     sumHtml+=`<div class="summary-row">
       <div class="sr-dot" style="background:${c.color}"></div>
-      <span class="sr-name">${custName(c.id)} (م${c.phaseNum})</span>
+      <span class="sr-name">${escH(custName(c.id))} (${c.num})</span>
       <div class="sr-bar"><div class="sr-bar-fill" style="width:${p}%;background:${c.color}"></div></div>
       <span class="sr-amt">${fmtN(s)} ر.س</span>
     </div>`;
   });
 
-  let html = `<div class="filter-bar">${filterHtml}</div>`;
-
+  let html=`<div class="filter-bar">${filterHtml}</div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="search" class="search-input" placeholder="بحث عن بند أو مورد أو مرجع…" value="${escH(histSearch)}" oninput="setHistSearch(this.value)">
+  </div>`;
   if(spent>0){
     html+=`<div class="summary-card">
       <div class="summary-title">ملخص المصروفات</div>
@@ -894,158 +844,466 @@ function renderHist(){
   }
 
   if(filteredExp.length===0){
-    html+=`<div class="empty-state">
-      <div class="empty-icon">🧾</div>
-      <div class="empty-text">لا توجد مصروفات${filterAll?'':' لهذه المرحلة'}</div>
-      <div class="empty-hint">اضغط "إضافة" لتسجيل أول دفعة</div>
-    </div>`;
+    html+=`<div class="empty-state"><div class="empty-icon">🧾</div><div class="empty-text">لا توجد مصروفات${filterAll?'':' لهذا التخصص'}</div><div class="empty-hint">اضغط "إضافة" لتسجيل أول دفعة</div></div>`;
   } else {
     html+=filteredExp.map(e=>{
-      const c=custById(e.custId)||{color:'#64748b',bg:'#f1f5f9',tc:'#475569',phaseNum:'?'};
-      const cat=catById(e.catId);
+      const c=custById(e.custId)||{color:'#64748b',bg:'#f1f5f9',tc:'#475569',num:'?'};
+      const pt=payById(e.payType);
       return `<div class="exp-card">
         <div class="exp-top">
           <div class="exp-info">
-            <div class="exp-name">${escHtml(e.item)}</div>
+            <div class="exp-name">${escH(e.item)}</div>
             <div class="exp-badges">
-              <span class="exp-badge" style="background:${c.bg};color:${c.tc}">م${c.phaseNum} — ${custName(c.id)}</span>
-              ${cat?`<span class="exp-badge" style="background:var(--light);color:var(--sub)">${cat.icon} ${cat.name}</span>`:''}
+              <span class="exp-badge" style="background:${c.bg};color:${c.tc}">${c.num} — ${escH(custName(c.id))}</span>
+              <span class="pay-badge ${pt.badge}">${pt.icon} ${pt.label}</span>
             </div>
             <div class="exp-meta">
-              👤 ${escHtml(e.supplier)}${e.ref?`<br>🧾 ${escHtml(e.ref)}`:''}${e.notes?`<br>📝 ${escHtml(e.notes)}`:''}
-              <br>📅 ${e.date}
+              👤 ${escH(e.supplier)}${e.ref?`<br>🧾 ${escH(e.ref)}`:''}${e.notes?`<br>📝 ${escH(e.notes)}`:''}
+              <br>📅 ${escH(e.date)}
             </div>
           </div>
           <div class="exp-right">
             <div class="exp-amt" style="color:${c.color}">${fmtN(e.amount)}</div>
             <div class="exp-sar">ر.س</div>
-            <button class="exp-del" onclick="openDel('${e.id}')">🗑️ حذف</button>
+            <button class="exp-del" onclick="openEdit('${escH(e.id)}')">✏️</button>
+            <button class="exp-del" onclick="openDel('${escH(e.id)}')">🗑️ حذف</button>
           </div>
         </div>
       </div>`;
     }).join('');
   }
-  document.getElementById('tab-hist').innerHTML = html;
+  document.getElementById('tab-hist').innerHTML=html;
 }
 
-function setHistFilter(f){ histFilter=f; renderHist(); }
-
-// ── RENDER CHECKLIST ──────────────────────────────
+// ── CHECKLIST (3-state) ──────────────────────────────────────────────────
 function renderCk(){
-  const filterAll = ckFilter==='all';
-
-  let filterHtml = `<span class="filter-chip ${filterAll?'sel':''}" onclick="setCkFilter('all')">الكل</span>`;
+  const filterAll=ckFilter==='all';
+  let filterHtml=`<span class="filter-chip ${filterAll?'sel':''}" onclick="setCkFilter('all')">الكل</span>`;
   CUSTODIANS.forEach(c=>{
     const isSel=ckFilter===c.id;
-    filterHtml+=`<span class="filter-chip ${isSel?'sel':''}"
-      style="${isSel?`border-color:${c.color};background:${c.color};color:#fff`:''}"
-      onclick="setCkFilter('${c.id}')">م${c.phaseNum}</span>`;
+    filterHtml+=`<span class="filter-chip ${isSel?'sel':''}" style="${isSel?`border-color:${c.color};background:${c.color};color:#fff`:''}" onclick="setCkFilter('${c.id}')">${c.num}</span>`;
   });
 
   let html=`
     <div class="ck-intro">
-      <strong>📋 خطة بنود التنفيذ — المراحل الخمس</strong>
-      اضغط على كل بند عند اكتمال تنفيذه وتسليمه من المورد. نتابع الإنجاز لكل مرحلة بشكل مستقل.
+      <strong>📋 خطة بنود التنفيذ — المراحل الرسمية</strong>
+      اضغط مرة: جاري التنفيذ ▶ · اضغط مرتين: مكتمل ✓ · اضغط ثلاثاً: إعادة تعيين
     </div>
     <div class="ck-filter">${filterHtml}</div>`;
 
-  const showCusts = filterAll ? CUSTODIANS : CUSTODIANS.filter(c=>c.id===ckFilter);
-
-  showCusts.forEach(c=>{
-    const items = c.cats.items || [];
-    const done  = items.filter(it=>checklist[`${c.id}::${it}`]).length;
-    const total = items.length;
-    const p     = total>0?Math.round(done/total*100):0;
+  const showC=filterAll?CUSTODIANS:CUSTODIANS.filter(c=>c.id===ckFilter);
+  showC.forEach(c=>{
+    const states=c.items.map(it=>ckState[`${c.id}::${it.num}`]||0);
+    const done=states.filter(s=>s===2).length;
+    const inProg=states.filter(s=>s===1).length;
+    const total=c.items.length;
+    const p=total>0?Math.round(done/total*100):0;
 
     html+=`<div class="ck-card">
       <div class="phase-header" style="background:${c.bg}">
-        <div class="phase-dot" style="background:${c.color};color:#fff">${c.phaseNum}</div>
-        <div>
-          <div class="phase-name" style="color:${c.tc}">${c.phase} — ${custName(c.id)}</div>
+        <div class="phase-dot" style="background:${c.color};color:#fff">${c.num}</div>
+        <div style="flex:1;min-width:0">
+          <div class="phase-name" style="color:${c.tc}">${c.phase} — ${escH(custName(c.id))}</div>
           <div class="phase-scope">${c.scope}</div>
         </div>
         <div class="phase-prog" style="color:${c.tc}">${done}/${total}</div>
       </div>
       <div class="ck-head">
+        <div style="display:flex;gap:8px;font-size:10px;color:var(--sub);margin-bottom:6px">
+          <span>✓ مكتمل: ${done}</span>
+          <span>▶ جاري: ${inProg}</span>
+          <span>○ لم يبدأ: ${total-done-inProg}</span>
+        </div>
         <div class="ck-bar"><div class="ck-bar-fill" style="width:${p}%;background:${p===100?'var(--g-ok)':c.color}"></div></div>
         <div class="ck-pct">${p}% مكتمل</div>
       </div>`;
 
-    items.forEach(it=>{
-      const key=`${c.id}::${it}`; const chk=!!checklist[key];
-      html+=`<div class="ck-item ${chk?'done-item':''}" onclick="toggleCk('${c.id}','${escHtml(it)}')">
-        <div class="ck-check ${chk?'done':''}"></div>
-        <span class="ck-text">${escHtml(it)}</span>
-        ${chk?`<span class="ck-done-badge">✓ مكتمل</span>`:''}
+    c.items.forEach(it=>{
+      const key=`${c.id}::${it.num}`;
+      const rawSt=ckState[key]; const st=(rawSt===1||rawSt===2)?rawSt:0;
+      const stClass=st===0?'':st===1?'s1':'s2';
+      const badge=st===0?'':`<span class="ck-status-badge ck-st${st}">${st===1?'▶ جاري':'✓ مكتمل'}</span>`;
+      html+=`<div class="ck-item ${stClass}" onclick="toggleCkItem('${c.id}','${it.num}')">
+        <div class="ck-box ${stClass}"></div>
+        <div class="ck-item-content">
+          <div class="ck-item-num">${it.num}</div>
+          <div class="ck-text">${escH(it.text)}</div>
+        </div>
+        ${badge}
       </div>`;
     });
-
     html+=`</div>`;
   });
 
   html+=`<div class="tips-card">
-    <div class="tips-title">💡 تذكيرات إدارة العهدة</div>
+    <div class="tips-title">💡 تذكيرات إدارة العهدة الحكومية</div>
     ${[
       'لا تدفع أكثر من 50% مقدماً لأي مورد — الباقي عند التسليم',
       'احتفظ بفاتورة + محضر استلام لكل دفعة قبل إغلاق العهدة',
       'افحص الجودة بشكل مستقل قبل الدفعة الأخيرة',
-      'وثّق كل صرف برقم مرجعي واضح',
-      'أغلق كل عهدة وسوّها قبل فتح العهدة التالية',
-      'التقسيم يجب أن يوثَّق كمراحل تنفيذية فعلية مع الإدارة المالية',
+      'وثّق كل صرف برقم أمر الشراء والفاتورة',
+      'سوّ كل عهدة وأقفلها قبل فتح التالية',
+      'المبالغ مشمولة الضريبة 15% — تأكد من الفاتورة الضريبية',
     ].map((t,i)=>`<div class="tip-row"><span class="tip-n">${'①②③④⑤⑥'[i]}</span><span>${t}</span></div>`).join('')}
   </div>`;
-
-  document.getElementById('tab-ck').innerHTML = html;
+  document.getElementById('tab-ck').innerHTML=html;
+}
+function setCkFilter(f){ckFilter=f;renderCk();}
+function toggleCkItem(custId,num){
+  const key=`${custId}::${num}`;
+  ckState[key]=((ckState[key]||0)+1)%3;
+  saveCk(); renderCk();
 }
 
-function setCkFilter(f){ ckFilter=f; renderCk(); }
-
-function toggleCk(custId, item){
-  const k=`${custId}::${item}`;
-  checklist[k]=!checklist[k]; saveCk(); renderCk();
-}
-
-// ── DELETE ────────────────────────────────────────
-function openDel(id){ delTarget=id; document.getElementById('modal-overlay').classList.add('open'); }
-function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); delTarget=null; }
+// ── DELETE ───────────────────────────────────────────────────────────────
+function openDel(id){delTarget=id;document.getElementById('del-ov').classList.add('open');}
 function confirmDelete(){
-  if(!delTarget) return;
+  if(!delTarget)return;
   expenses=expenses.filter(e=>e.id!==delTarget);
-  save(); closeModal(); renderAll(); showToast('🗑️ تم حذف السجل');
+  save(); closeModal('del-ov'); renderAll(); showToast('🗑️ تم حذف السجل');
 }
 
-// ── NAME MODAL ────────────────────────────────────
+// ── NAME / CONTRACT MODAL ────────────────────────────────────────────────
 function openNameModal(custId){
   nameTarget=custId;
   const c=custById(custId);
-  document.getElementById('name-modal-title').textContent=`تعيين اسم عهداء ${c.phase}`;
-  document.getElementById('name-modal-sub').textContent=`${c.scope}`;
-  const inp=document.getElementById('name-inp');
-  inp.value = custNames[custId]||'';
-  inp.placeholder=`مثال: محمد العمري — ${c.phase}`;
-  document.getElementById('name-modal-overlay').classList.add('open');
-  setTimeout(()=>inp.focus(),200);
+  document.getElementById('nm-title').textContent=`تعيين عهداء — ${c.phase}`;
+  document.getElementById('nm-sub').textContent=c.scope;
+  document.getElementById('nm-name').value=custMeta[custId]?.name||'';
+  document.getElementById('nm-contract').value=custMeta[custId]?.contract||'';
+  document.getElementById('nm-name').placeholder=`مثال: محمد العمري`;
+  document.getElementById('name-ov').classList.add('open');
+  setTimeout(()=>document.getElementById('nm-name').focus(),200);
 }
-function closeNameModal(){ document.getElementById('name-modal-overlay').classList.remove('open'); nameTarget=null; }
 function saveName(){
-  if(!nameTarget) return;
-  const v=document.getElementById('name-inp').value.trim();
-  if(v) custNames[nameTarget]=v; else delete custNames[nameTarget];
-  saveNames(); closeNameModal(); renderAll();
-  showToast('✅ تم حفظ اسم العهداء');
+  if(!nameTarget)return;
+  const name=document.getElementById('nm-name').value.trim();
+  const contract=document.getElementById('nm-contract').value.trim();
+  if(!custMeta[nameTarget])custMeta[nameTarget]={};
+  custMeta[nameTarget].name=name;
+  custMeta[nameTarget].contract=contract;
+  saveMeta(); closeModal('name-ov'); renderAll();
+  showToast('✅ تم حفظ بيانات العهداء');
 }
-document.getElementById('name-inp').addEventListener('keydown',e=>{if(e.key==='Enter')saveName();});
+document.getElementById('nm-name').addEventListener('keydown',e=>{if(e.key==='Enter')saveName();});
 
-// ── RENDER ALL ────────────────────────────────────
+// ── SHARE / REPORT ────────────────────────────────────────────────────────
+function openShare(){
+  const today=new Date().toLocaleDateString('ar-SA-u-nu-latn',{year:'numeric',month:'long',day:'numeric'});
+  const spent=totalSpent(); const left=TOTAL_BUDGET-spent;
+  let lines=[];
+  lines.push(`📋 تقرير عهدة مشروع تأهيل مقر سيسد`);
+  lines.push(`📅 ${today}`);
+  lines.push(`${'─'.repeat(36)}`);
+  lines.push(`💰 الإجمالي المصروف: ${fmtN(spent)} من ${fmtN(TOTAL_BUDGET)} ر.س`);
+  lines.push(`✅ المتبقي: ${fmtN(Math.max(0,left))} ر.س`);
+  lines.push(`${'─'.repeat(36)}`);
+  CUSTODIANS.forEach(c=>{
+    const s=custSpent(c.id); const p=pct(s,c.custody); const left2=c.custody-s;
+    const name=custName(c.id); const contract=custContract(c.id);
+    const bar='█'.repeat(Math.round(p/10))+'░'.repeat(10-Math.round(p/10));
+    lines.push(`\n${c.num}. ${c.phase}`);
+    if(name!==c.phase)lines.push(`   👤 ${name}`);
+    if(contract)lines.push(`   🗂️ ${contract}`);
+    lines.push(`   ${bar} ${p}%`);
+    lines.push(`   مصروف: ${fmtN(s)} | متبقٍ: ${fmtN(Math.max(0,left2))} من ${fmtN(c.custody)} ر.س`);
+    // last 3 expenses
+    const exps=expenses.filter(e=>e.custId===c.id).slice(0,3);
+    if(exps.length>0){
+      lines.push(`   آخر الدفعات:`);
+      exps.forEach(e=>{
+        const pt=payById(e.payType);
+        lines.push(`   • ${e.item} — ${fmtN(e.amount)} ر.س (${pt.label}) — ${e.date}`);
+      });
+    }
+  });
+  lines.push(`\n${'─'.repeat(36)}`);
+  lines.push(`🔢 إجمالي الدفعات المسجّلة: ${expenses.length}`);
+  const report=lines.join('\n');
+  document.getElementById('share-text').textContent=report;
+  document.getElementById('share-ov').classList.add('open');
+}
+
+function copyReport(){
+  const text=document.getElementById('share-text').textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>showToast('✅ تم نسخ التقرير'));
+  } else {
+    const ta=document.createElement('textarea');
+    ta.value=text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('✅ تم نسخ التقرير');
+  }
+}
+
+function setHistFilter(f){histFilter=f;renderHist();}
+function setHistSearch(v){histSearch=v;renderHist();}
+
+// ── EDIT EXPENSE ──────────────────────────────────────────────────────────
+let editTarget=null;
+function openEdit(id){
+  editTarget=id;
+  const e=expenses.find(x=>x.id===id); if(!e)return;
+  document.getElementById('edit-item').value=e.item;
+  document.getElementById('edit-sup').value=e.supplier;
+  document.getElementById('edit-amt').value=e.amount;
+  document.getElementById('edit-date').value=e.date;
+  document.getElementById('edit-ref').value=e.ref||'';
+  document.getElementById('edit-notes').value=e.notes||'';
+  document.getElementById('edit-ov').classList.add('open');
+}
+function saveEdit(){
+  if(!editTarget)return;
+  const idx=expenses.findIndex(x=>x.id===editTarget); if(idx===-1)return;
+  const item=document.getElementById('edit-item').value.trim();
+  const sup=document.getElementById('edit-sup').value.trim();
+  const amt=parseFloat(document.getElementById('edit-amt').value);
+  const date=document.getElementById('edit-date').value;
+  const ref=document.getElementById('edit-ref').value.trim();
+  const notes=document.getElementById('edit-notes').value.trim();
+  if(!item){showToast('أدخل اسم البند','err');return;}
+  if(!sup){showToast('أدخل اسم المورد','err');return;}
+  if(!amt||amt<=0){showToast('أدخل مبلغاً صحيحاً','err');return;}
+  expenses[idx]={...expenses[idx],item,supplier:sup,amount:amt,date,ref,notes};
+  save(); closeModal('edit-ov'); renderAll();
+  if(curTab==='hist')renderHist();
+  showToast('✅ تم تعديل الدفعة');
+}
+
+// ── EXPORT / IMPORT ────────────────────────────────────────────────────────
+function exportJSON(){
+  const data={expenses,ckState,custMeta,exportedAt:new Date().toISOString(),v:1};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`sisd-backup-${getToday()}.json`;
+  a.click(); URL.revokeObjectURL(url); showToast('📥 تم تنزيل ملف النسخة الاحتياطية');
+}
+function importJSON(){
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='.json';
+  inp.onchange=ev=>{
+    const file=ev.target.files[0]; if(!file)return;
+    const reader=new FileReader();
+    reader.onload=e=>{
+      try{
+        const d=JSON.parse(e.target.result);
+        if(!Array.isArray(d.expenses)){showToast('ملف غير صحيح','err');return;}
+        expenses=sanitizeExp(d.expenses);
+        ckState=(d.ckState&&typeof d.ckState==='object')?d.ckState:{};
+        custMeta=sanitizeMeta(d.custMeta||{});
+        save(); saveCk(); saveMeta(); renderAll();
+        if(curTab==='hist')renderHist(); if(curTab==='ck')renderCk();
+        showToast(`✅ تم استيراد ${expenses.length} دفعة`);
+      }catch(err){showToast('خطأ في قراءة الملف','err');}
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+function exportCSV(){
+  const rows=[['رقم','التخصص','البند','المورد','النوع','المبلغ','التاريخ','المرجع','ملاحظات']];
+  expenses.forEach((e,i)=>{
+    const c=custById(e.custId); const pt=payById(e.payType);
+    rows.push([i+1,c?c.phase:e.custId,e.item,e.supplier,pt.label,e.amount,e.date,e.ref||'',e.notes||'']);
+  });
+  const csv=rows.map(r=>r.map(cell=>`"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`sisd-expenses-${getToday()}.csv`;
+  a.click(); URL.revokeObjectURL(url); showToast('📊 تم تنزيل ملف Excel');
+}
+
+// ── CLEAR ALL ─────────────────────────────────────────────────────────────
+function confirmClearAll(){document.getElementById('clr-ov').classList.add('open');}
+function doClearAll(){
+  expenses=[]; ckState={}; custMeta={};
+  save(); saveCk(); saveMeta();
+  closeModal('clr-ov'); renderAll();
+  if(curTab==='hist')renderHist(); if(curTab==='ck')renderCk(); if(curTab==='cfg')renderCfg();
+  showToast('🗑️ تم حذف كل البيانات');
+}
+
+// ── WHATSAPP SHARE ────────────────────────────────────────────────────────
+function shareWhatsApp(){
+  const text=document.getElementById('share-text').textContent;
+  window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener,noreferrer');
+}
+
+// ── FIREBASE SYNC ─────────────────────────────────────────────────────────
+let fbCfg=safeJSON(localStorage.getItem('sisd-fb'),null);
+let fbDb=null, fbSyncOk=false, fbSyncing=false, fbPushTimer=null;
+
+function updateSyncBadge(){
+  const el=document.getElementById('sync-badge'); if(!el)return;
+  if(!fbCfg){el.style.display='none';return;}
+  el.style.display='inline-block';
+  if(fbSyncing){el.textContent='🔄';el.style.color='#fbbf24';}
+  else if(fbSyncOk){el.textContent='🟢';el.style.color='#22c55e';}
+  else{el.textContent='🔴';el.style.color='#ef4444';}
+}
+function loadScript(src){
+  return new Promise((res,rej)=>{
+    if(document.querySelector(`script[src="${src}"]`)){res();return;}
+    const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej;
+    document.head.appendChild(s);
+  });
+}
+async function initFirebase(){
+  if(!fbCfg)return;
+  try{
+    await loadScript('https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js');
+    await loadScript('https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js');
+    if(!window.firebase){throw new Error('Firebase SDK لم يُحمَّل');}
+    if(!firebase.apps.length)firebase.initializeApp(fbCfg);
+    fbDb=firebase.firestore();
+    fbDb.enablePersistence().catch(()=>{});
+    await loadFromCloud();
+    listenCloud();
+    fbSyncOk=true; updateSyncBadge();
+  }catch(e){
+    fbSyncOk=false; updateSyncBadge();
+    console.error('Firebase init error:',e);
+  }
+}
+async function loadFromCloud(){
+  if(!fbDb)return;
+  const snap=await fbDb.collection('sisd').doc('data').get();
+  if(!snap.exists)return;
+  const d=snap.data();
+  if(d.expenses)expenses=sanitizeExp(d.expenses);
+  if(d.ckState)ckState=d.ckState;
+  if(d.custMeta)custMeta=sanitizeMeta(d.custMeta);
+  localStorage.setItem('sisd-exp',JSON.stringify(expenses));
+  localStorage.setItem('sisd-ck',JSON.stringify(ckState));
+  localStorage.setItem('sisd-meta',JSON.stringify(custMeta));
+  renderAll(); if(curTab==='hist')renderHist(); if(curTab==='ck')renderCk();
+}
+function listenCloud(){
+  if(!fbDb)return;
+  fbDb.collection('sisd').doc('data').onSnapshot(snap=>{
+    if(!snap.exists)return;
+    const d=snap.data();
+    const incoming=sanitizeExp(d.expenses||[]);
+    if(JSON.stringify(incoming)!==JSON.stringify(expenses)){
+      expenses=incoming;
+      if(d.ckState)ckState=d.ckState;
+      if(d.custMeta)custMeta=sanitizeMeta(d.custMeta);
+      localStorage.setItem('sisd-exp',JSON.stringify(expenses));
+      localStorage.setItem('sisd-ck',JSON.stringify(ckState));
+      localStorage.setItem('sisd-meta',JSON.stringify(custMeta));
+      renderAll(); if(curTab==='hist')renderHist(); if(curTab==='ck')renderCk();
+      showToast('🔄 تمت المزامنة','info');
+    }
+    fbSyncOk=true; updateSyncBadge();
+  },()=>{fbSyncOk=false; updateSyncBadge();});
+}
+function pushToCloud(){
+  if(!fbDb)return;
+  clearTimeout(fbPushTimer);
+  fbPushTimer=setTimeout(async()=>{
+    try{
+      fbSyncing=true; updateSyncBadge();
+      await fbDb.collection('sisd').doc('data').set({
+        expenses,ckState,custMeta,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+      });
+      fbSyncing=false; fbSyncOk=true; updateSyncBadge();
+    }catch(e){fbSyncing=false; fbSyncOk=false; updateSyncBadge();}
+  },1500);
+}
+
+// ── SETTINGS TAB ──────────────────────────────────────────────────────────
+const APP_URL='https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/sisd.html';
+function renderCfg(){
+  const waLink='https://wa.me/?text='+encodeURIComponent('تطبيق إدارة عهدة مشروع تأهيل مقر سيسد: '+APP_URL);
+  document.getElementById('tab-cfg').innerHTML=`
+    <div class="cfg-card">
+      <div class="cfg-title">📤 مشاركة التطبيق</div>
+      <p class="cfg-sub">شارك رابط التطبيق مع باقي أعضاء الفريق — يعمل على أي جهاز بدون تثبيت</p>
+      <div class="cfg-url">${escH(APP_URL)}</div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="cfg-btn" onclick="copyAppUrl()">📋 نسخ الرابط</button>
+        <a class="cfg-btn cfg-btn-wa" href="${escH(waLink)}" target="_blank" rel="noopener noreferrer">💬 إرسال واتساب</a>
+      </div>
+    </div>
+
+    <div class="cfg-card">
+      <div class="cfg-title">💾 النسخ الاحتياطي والتصدير</div>
+      <p class="cfg-sub">صدّر كل بياناتك أو استعدها من ملف، أو نزّلها كجدول إكسل</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="cfg-btn" onclick="exportJSON()">📥 تصدير JSON</button>
+        <button class="cfg-btn" onclick="importJSON()">📤 استيراد JSON</button>
+        <button class="cfg-btn" onclick="exportCSV()">📊 Excel (CSV)</button>
+      </div>
+    </div>
+
+    <div class="cfg-card">
+      <div class="cfg-title">☁️ المزامنة السحابية — Firebase</div>
+      <p class="cfg-sub">اربط التطبيق بقاعدة بيانات سحابية مجانية لمزامنة البيانات بين أجهزة الفريق في الوقت الفعلي</p>
+      ${fbCfg?`
+        <div class="fb-ok-badge">🟢 متصل بمشروع: ${escH(fbCfg.projectId)}</div><br>
+        <button class="cfg-btn cfg-btn-danger" onclick="disconnectFb()">🔌 قطع الاتصال</button>
+      `:`
+        <div class="cfg-steps">
+          <div class="cfg-step"><strong>1.</strong> اذهب إلى <span class="cfg-link">console.firebase.google.com</span> وسجّل دخولاً بـ Google</div>
+          <div class="cfg-step"><strong>2.</strong> أنشئ مشروعاً جديداً (مجاني تماماً)</div>
+          <div class="cfg-step"><strong>3.</strong> من القائمة الجانبية → Build → Firestore Database → أنشئ قاعدة بـ "Test mode"</div>
+          <div class="cfg-step"><strong>4.</strong> من ⚙️ إعدادات المشروع → تبويب "General" → "Your apps" → أضف Web app → انسخ <strong>firebaseConfig</strong></div>
+          <div class="cfg-step"><strong>5.</strong> الصق الكود في الحقل أدناه واضغط ربط</div>
+        </div>
+        <textarea id="fb-cfg-input" class="m-inp" rows="6" style="font-family:monospace;font-size:11px" placeholder='الصق firebaseConfig هنا، مثال:
+{
+  "apiKey": "AIzaSy...",
+  "authDomain": "project.firebaseapp.com",
+  "projectId": "project-id",
+  "storageBucket": "project.appspot.com",
+  "messagingSenderId": "...",
+  "appId": "..."
+}'></textarea>
+        <button class="btn-navy" style="width:100%;padding:13px;border-radius:var(--radius-sm);font-weight:700;margin-top:6px" onclick="saveFbConfig()">🔗 ربط Firebase</button>
+      `}
+    </div>
+
+    <div class="cfg-card cfg-card-danger">
+      <div class="cfg-title" style="color:#dc2626">⚠️ منطقة الخطر</div>
+      <p class="cfg-sub">حذف كل البيانات من الجهاز (والسحابة إذا كانت مفعّلة). لا يمكن التراجع.</p>
+      <button class="cfg-btn cfg-btn-danger" onclick="confirmClearAll()">🗑️ حذف كل البيانات</button>
+    </div>
+  `;
+}
+function copyAppUrl(){
+  if(navigator.clipboard){navigator.clipboard.writeText(APP_URL).then(()=>showToast('✅ تم نسخ الرابط'));}
+  else{const ta=document.createElement('textarea');ta.value=APP_URL;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('✅ تم نسخ الرابط');}
+}
+function disconnectFb(){
+  fbCfg=null; fbDb=null; fbSyncOk=false;
+  localStorage.removeItem('sisd-fb');
+  updateSyncBadge(); renderCfg(); showToast('تم قطع الاتصال بـ Firebase');
+}
+function saveFbConfig(){
+  const raw=document.getElementById('fb-cfg-input').value.trim();
+  if(!raw){disconnectFb();return;}
+  try{
+    const match=raw.match(/\{[\s\S]*\}/);
+    const cfg=JSON.parse(match?match[0]:raw);
+    if(!cfg.apiKey||!cfg.projectId){showToast('الكود غير مكتمل — تأكد من نسخ firebaseConfig كاملاً','err');return;}
+    fbCfg=cfg; localStorage.setItem('sisd-fb',JSON.stringify(cfg));
+    initFirebase(); renderCfg(); showToast('✅ تم ربط Firebase — جاري الاتصال…','info');
+  }catch(e){showToast('تنسيق غير صحيح — الصق JSON فقط','err');}
+}
+
+// ── RENDER ALL ────────────────────────────────────────────────────────────
 function renderAll(){
   renderHeader(); renderAlerts(); renderDash();
-  if(curTab==='hist') renderHist();
-  if(curTab==='ck')   renderCk();
+  if(curTab==='hist')renderHist();
+  if(curTab==='ck')renderCk();
+  if(curTab==='cfg')renderCfg();
+  updateSyncBadge();
 }
 
-// ── INIT ──────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────────
 renderAll();
 renderAdd();
+if(fbCfg)initFirebase();
 </script>
 </body>
 </html>
