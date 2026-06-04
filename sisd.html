@@ -1137,7 +1137,7 @@ const FB_CFG={
   messagingSenderId:'1004544754825',
   appId:'1:1004544754825:web:68ea8c22d68a079d3ab258'
 };
-let fbDb=null, fbSyncOk=false, fbSyncing=false, fbPushTimer=null;
+let fbDb=null, fbSyncOk=false, fbSyncing=false, fbPushTimer=null, fbLastErr='';
 
 function updateSyncBadge(){
   const el=document.getElementById('sync-badge'); if(!el)return;
@@ -1146,9 +1146,13 @@ function updateSyncBadge(){
   else if(fbSyncOk){el.textContent='🟢';el.style.color='#22c55e';}
   else{el.textContent='🔴';el.style.color='#ef4444';}
   const cs=document.getElementById('cfg-sync-status'); if(!cs)return;
-  if(fbSyncing){cs.textContent='🟡 جاري المزامنة…';cs.style.background='#fef9c3';cs.style.color='#854d0e';}
-  else if(fbSyncOk){cs.textContent='🟢 متصل — يتزامن تلقائياً';cs.style.background='#f0fdf4';cs.style.color='#15803d';}
-  else{cs.textContent='🔴 غير متصل — تحقق من الإنترنت';cs.style.background='#fef2f2';cs.style.color='#991b1b';}
+  if(fbSyncing){cs.innerHTML='🟡 جاري المزامنة…';cs.style.background='#fef9c3';cs.style.color='#854d0e';}
+  else if(fbSyncOk){cs.innerHTML='🟢 متصل — يتزامن تلقائياً';cs.style.background='#f0fdf4';cs.style.color='#15803d';}
+  else{
+    cs.innerHTML='🔴 خطأ في الاتصال'+(fbLastErr?`<br><small style="font-weight:400;font-size:10px">${escH(fbLastErr)}</small>`:'')
+      +'<br><button onclick="initFirebase()" style="margin-top:6px;padding:5px 12px;border-radius:6px;border:1px solid #fca5a5;background:#fff;color:#dc2626;font-size:11px;cursor:pointer;font-family:inherit">🔄 إعادة المحاولة</button>';
+    cs.style.background='#fef2f2';cs.style.color='#991b1b';
+  }
 }
 function loadScript(src){
   return new Promise((res,rej)=>{
@@ -1158,19 +1162,22 @@ function loadScript(src){
   });
 }
 async function initFirebase(){
+  fbLastErr=''; fbSyncing=true; updateSyncBadge();
   try{
-    await loadScript('https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js');
-    await loadScript('https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js');
-    if(!window.firebase){throw new Error('Firebase SDK لم يُحمَّل');}
+    await loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js');
+    await loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js');
+    if(!window.firebase)throw new Error('تعذّر تحميل Firebase SDK');
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
     fbDb=firebase.firestore();
     fbDb.enablePersistence().catch(()=>{});
     await loadFromCloud();
     listenCloud();
-    fbSyncOk=true; updateSyncBadge();
+    fbSyncing=false; fbSyncOk=true; updateSyncBadge();
   }catch(e){
-    fbSyncOk=false; updateSyncBadge();
-    console.error('Firebase init error:',e);
+    fbSyncing=false; fbSyncOk=false;
+    fbLastErr=e.code?`${e.code}: ${e.message}`:e.message||String(e);
+    updateSyncBadge();
+    console.error('Firebase error:',e);
   }
 }
 async function loadFromCloud(){
