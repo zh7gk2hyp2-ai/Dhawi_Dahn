@@ -66,7 +66,7 @@ const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_02";
-const PENDING_RECIPES_VERSION="rec_12";
+const PENDING_RECIPES_VERSION="rec_13";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
@@ -506,6 +506,14 @@ function App(){
   useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
   useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
   useEffect(()=>lsSet("dw_shopcart",shopCart),[shopCart]);
+  useEffect(()=>{
+    if(inv.length===0)return;
+    const invIds=new Set(inv.map(i=>i.id));
+    setShopCart(prev=>{
+      const cleaned=prev.filter(x=>invIds.has(x.id));
+      return cleaned.length===prev.length?prev:cleaned;
+    });
+  },[inv]);
 
   // ── low stock check ─────────────────────────────────────────
   const lowStockItems=inv.filter(i=>i.stock<i.qty*LOW_STOCK_THRESHOLD && i.qty>0);
@@ -576,6 +584,13 @@ function App(){
 
   const confirmCartPurchase=()=>{
     if(!buyingCartItem||buyQty<=0)return;
+    const existsInInv=inv.some(i=>i.id===buyingCartItem.id);
+    if(!existsInInv){
+      show("⚠️ "+buyingCartItem.name+" محذوف من المخزون — أضفه أولاً قبل تسجيل الشراء",true);
+      setShopCart(prev=>prev.filter(x=>x.id!==buyingCartItem.id));
+      setBuyingCartItem(null);setBuyQty(0);setBuyPrice(0);
+      return;
+    }
     const noteText=buyingCartItem.fromRecipe==="__lowstock__"?"من قائمة الناقص":"من قائمة التسوق — وصفة "+buyingCartItem.fromRecipe;
     const entry={id:"pu_"+Date.now(),ingId:buyingCartItem.id,ingName:buyingCartItem.name,brand:buyingCartItem.brand,qty:buyQty,unit:buyingCartItem.unit,price:buyPrice,note:noteText,date:new Date().toISOString()};
     setPurchases(p=>[entry,...p]);
