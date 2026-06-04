@@ -1252,6 +1252,7 @@ function renderCfg(){
     </div>
 
   `;
+  updateSyncBadge();
 }
 function copyAppUrl(){
   if(navigator.clipboard){navigator.clipboard.writeText(APP_URL).then(()=>showToast('✅ تم نسخ الرابط'));}
