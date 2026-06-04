@@ -1129,16 +1129,26 @@ function shareWhatsApp(){
 }
 
 // ── FIREBASE SYNC ─────────────────────────────────────────────────────────
-let fbCfg=safeJSON(localStorage.getItem('sisd-fb'),null);
+const FB_CFG={
+  apiKey:'AIzaSyAAPXc3BqqDY_6mjBycbU_RhPqcuMl66xE',
+  authDomain:'test-mode-e2b37.firebaseapp.com',
+  projectId:'test-mode-e2b37',
+  storageBucket:'test-mode-e2b37.firebasestorage.app',
+  messagingSenderId:'1004544754825',
+  appId:'1:1004544754825:web:68ea8c22d68a079d3ab258'
+};
 let fbDb=null, fbSyncOk=false, fbSyncing=false, fbPushTimer=null;
 
 function updateSyncBadge(){
   const el=document.getElementById('sync-badge'); if(!el)return;
-  if(!fbCfg){el.style.display='none';return;}
   el.style.display='inline-block';
   if(fbSyncing){el.textContent='🔄';el.style.color='#fbbf24';}
   else if(fbSyncOk){el.textContent='🟢';el.style.color='#22c55e';}
   else{el.textContent='🔴';el.style.color='#ef4444';}
+  const cs=document.getElementById('cfg-sync-status'); if(!cs)return;
+  if(fbSyncing){cs.textContent='🟡 جاري المزامنة…';cs.style.background='#fef9c3';cs.style.color='#854d0e';}
+  else if(fbSyncOk){cs.textContent='🟢 متصل — يتزامن تلقائياً';cs.style.background='#f0fdf4';cs.style.color='#15803d';}
+  else{cs.textContent='🔴 غير متصل — تحقق من الإنترنت';cs.style.background='#fef2f2';cs.style.color='#991b1b';}
 }
 function loadScript(src){
   return new Promise((res,rej)=>{
@@ -1148,12 +1158,11 @@ function loadScript(src){
   });
 }
 async function initFirebase(){
-  if(!fbCfg)return;
   try{
     await loadScript('https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js');
     if(!window.firebase){throw new Error('Firebase SDK لم يُحمَّل');}
-    if(!firebase.apps.length)firebase.initializeApp(fbCfg);
+    if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
     fbDb=firebase.firestore();
     fbDb.enablePersistence().catch(()=>{});
     await loadFromCloud();
@@ -1237,30 +1246,9 @@ function renderCfg(){
     </div>
 
     <div class="cfg-card">
-      <div class="cfg-title">☁️ المزامنة السحابية — Firebase</div>
-      <p class="cfg-sub">اربط التطبيق بقاعدة بيانات سحابية مجانية لمزامنة البيانات بين أجهزة الفريق في الوقت الفعلي</p>
-      ${fbCfg?`
-        <div class="fb-ok-badge">🟢 متصل بمشروع: ${escH(fbCfg.projectId)}</div><br>
-        <button class="cfg-btn cfg-btn-danger" onclick="disconnectFb()">🔌 قطع الاتصال</button>
-      `:`
-        <div class="cfg-steps">
-          <div class="cfg-step"><strong>1.</strong> اذهب إلى <span class="cfg-link">console.firebase.google.com</span> وسجّل دخولاً بـ Google</div>
-          <div class="cfg-step"><strong>2.</strong> أنشئ مشروعاً جديداً (مجاني تماماً)</div>
-          <div class="cfg-step"><strong>3.</strong> من القائمة الجانبية → Build → Firestore Database → أنشئ قاعدة بـ "Test mode"</div>
-          <div class="cfg-step"><strong>4.</strong> من ⚙️ إعدادات المشروع → تبويب "General" → "Your apps" → أضف Web app → انسخ <strong>firebaseConfig</strong></div>
-          <div class="cfg-step"><strong>5.</strong> الصق الكود في الحقل أدناه واضغط ربط</div>
-        </div>
-        <textarea id="fb-cfg-input" class="m-inp" rows="6" style="font-family:monospace;font-size:11px" placeholder='الصق firebaseConfig هنا، مثال:
-{
-  "apiKey": "AIzaSy...",
-  "authDomain": "project.firebaseapp.com",
-  "projectId": "project-id",
-  "storageBucket": "project.appspot.com",
-  "messagingSenderId": "...",
-  "appId": "..."
-}'></textarea>
-        <button class="btn-navy" style="width:100%;padding:13px;border-radius:var(--radius-sm);font-weight:700;margin-top:6px" onclick="saveFbConfig()">🔗 ربط Firebase</button>
-      `}
+      <div class="cfg-title">☁️ المزامنة السحابية</div>
+      <p class="cfg-sub">البيانات تُزامَن تلقائياً مع Firebase في الوقت الفعلي بين جميع أجهزة الفريق</p>
+      <div class="fb-ok-badge" id="cfg-sync-status">🟡 جاري الاتصال…</div>
     </div>
 
     <div class="cfg-card cfg-card-danger">
@@ -1273,32 +1261,6 @@ function renderCfg(){
 function copyAppUrl(){
   if(navigator.clipboard){navigator.clipboard.writeText(APP_URL).then(()=>showToast('✅ تم نسخ الرابط'));}
   else{const ta=document.createElement('textarea');ta.value=APP_URL;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('✅ تم نسخ الرابط');}
-}
-function disconnectFb(){
-  fbCfg=null; fbDb=null; fbSyncOk=false;
-  localStorage.removeItem('sisd-fb');
-  updateSyncBadge(); renderCfg(); showToast('تم قطع الاتصال بـ Firebase');
-}
-function saveFbConfig(){
-  const raw=document.getElementById('fb-cfg-input').value.trim();
-  if(!raw){disconnectFb();return;}
-  try{
-    let cfg;
-    // 1) Try pure JSON directly
-    try{cfg=JSON.parse(raw);}catch(e){}
-    // 2) Extract the {...} block and evaluate as JS expression (handles unquoted keys)
-    if(!cfg){
-      const match=raw.match(/\{[\s\S]*\}/);
-      if(match){
-        try{cfg=new Function('return ('+match[0]+')')();}catch(e){}
-      }
-    }
-    if(!cfg||!cfg.apiKey||!cfg.projectId){
-      showToast('الكود غير مكتمل — تأكد من نسخ firebaseConfig كاملاً','err');return;
-    }
-    fbCfg=cfg; localStorage.setItem('sisd-fb',JSON.stringify(cfg));
-    initFirebase(); renderCfg(); showToast('✅ تم ربط Firebase — جاري الاتصال…','info');
-  }catch(e){showToast('خطأ — الصق الكود مباشرةً كما هو من Firebase','err');}
 }
 
 // ── RENDER ALL ────────────────────────────────────────────────────────────
@@ -1313,7 +1275,7 @@ function renderAll(){
 // ── INIT ──────────────────────────────────────────────────────────────────
 renderAll();
 renderAdd();
-if(fbCfg)initFirebase();
+initFirebase();
 </script>
 </body>
 </html>
