@@ -1283,12 +1283,22 @@ function saveFbConfig(){
   const raw=document.getElementById('fb-cfg-input').value.trim();
   if(!raw){disconnectFb();return;}
   try{
-    const match=raw.match(/\{[\s\S]*\}/);
-    const cfg=JSON.parse(match?match[0]:raw);
-    if(!cfg.apiKey||!cfg.projectId){showToast('الكود غير مكتمل — تأكد من نسخ firebaseConfig كاملاً','err');return;}
+    let cfg;
+    // 1) Try pure JSON directly
+    try{cfg=JSON.parse(raw);}catch(e){}
+    // 2) Extract the {...} block and evaluate as JS expression (handles unquoted keys)
+    if(!cfg){
+      const match=raw.match(/\{[\s\S]*\}/);
+      if(match){
+        try{cfg=new Function('return ('+match[0]+')')();}catch(e){}
+      }
+    }
+    if(!cfg||!cfg.apiKey||!cfg.projectId){
+      showToast('الكود غير مكتمل — تأكد من نسخ firebaseConfig كاملاً','err');return;
+    }
     fbCfg=cfg; localStorage.setItem('sisd-fb',JSON.stringify(cfg));
     initFirebase(); renderCfg(); showToast('✅ تم ربط Firebase — جاري الاتصال…','info');
-  }catch(e){showToast('تنسيق غير صحيح — الصق JSON فقط','err');}
+  }catch(e){showToast('خطأ — الصق الكود مباشرةً كما هو من Firebase','err');}
 }
 
 // ── RENDER ALL ────────────────────────────────────────────────────────────
