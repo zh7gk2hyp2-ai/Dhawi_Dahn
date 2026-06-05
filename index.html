@@ -897,7 +897,7 @@ function App(){
 
   // ── cart & store ─────────────────────────────────────────────
   const storePrice=r=>Math.ceil(recipeCost(r)*profitMult/5)*5;
-  const addToCart=(r,e)=>{e&&e.stopPropagation();const price=storePrice(r);setCartItems(p=>{const ex=p.find(i=>i.id===r.id);return ex?p.map(i=>i.id===r.id?{...i,qty:i.qty+1}:i):[...p,{id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,stability:r.stability,price,vol:BATCH[batchUnit],batchName:BATCH_NAME[batchUnit]}];});show(`🛒 ${r.name} أُضيف للسلة`);};
+  const addToCart=(r,e)=>{e&&e.stopPropagation();const price=storePrice(r);setCartItems(p=>{const ex=p.find(i=>i.id===r.id);return ex?p.map(i=>i.id===r.id?{...i,qty:(i.qty||0)+1}:i):[...p,{id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,stability:r.stability,price,vol:BATCH[batchUnit],batchName:BATCH_NAME[batchUnit],qty:1}];});show(`🛒 ${r.name} أُضيف للسلة`);};
   const removeFromCart=id=>setCartItems(p=>p.filter(i=>i.id!==id));
   const updateQty=(id,d)=>setCartItems(p=>p.map(i=>i.id===id?{...i,qty:Math.max(1,i.qty+d)}:i));
   const cartCount=cartItems.reduce((s,i)=>s+i.qty,0);
