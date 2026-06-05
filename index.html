@@ -727,7 +727,8 @@ function fmtDate(iso){
 
 // ─── notes classification (Top / Middle / Base) ─────────────────
 const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone']);
+const NOTES_CARRIER=new Set(['dpg','jojoba','benzyl']); // diluents — excluded from layer ratio
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 const NOTE_LABEL={top:"🔝 قمة",mid:"💫 قلب",base:"🪨 قاعدة"};
 
@@ -1070,8 +1071,10 @@ function App(){
   const analyzeRecipeAI=async(r)=>{
     const sc=recipeScale(r);
     const ingList=r.ing.map(([id,a])=>{const ing=getIng(id);const tier=noteTier(id);return `${ing?.name||id}(${NOTE_LABEL[tier]}): ${(a*sc).toFixed(2)}مل`;}).join(" | ");
-    const topPct=Math.round(r.ing.filter(([id])=>noteTier(id)==="top").reduce((s,[,a])=>s+a,0)/r.ing.reduce((s,[,a])=>s+a,0)*100);
-    const midPct=Math.round(r.ing.filter(([id])=>noteTier(id)==="mid").reduce((s,[,a])=>s+a,0)/r.ing.reduce((s,[,a])=>s+a,0)*100);
+    const pIngAI=r.ing.filter(([id])=>!NOTES_CARRIER.has(id));
+    const pTotAI=pIngAI.reduce((s,[,a])=>s+a,0)||1;
+    const topPct=Math.round(pIngAI.filter(([id])=>noteTier(id)==="top").reduce((s,[,a])=>s+a,0)/pTotAI*100);
+    const midPct=Math.round(pIngAI.filter(([id])=>noteTier(id)==="mid").reduce((s,[,a])=>s+a,0)/pTotAI*100);
     const basePct=100-topPct-midPct;
     const prompt=`أنت خبير في صناعة دهن العود العربي. حلّل هذه الوصفة:\n\nالاسم: ${r.name}\nالوصف: ${r.desc}\nالموسم: ${r.season} | الجنس: ${r.gender} | الثبات: ${r.stability}\nالمكونات: ${ingList}\nنسب النوتات: قمة ${topPct}% | قلب ${midPct}% | قاعدة ${basePct}%\n\nقدّم تحليلاً مختصراً يشمل:\n1. ✅ توازن النوتات — هل النسب مثالية؟\n2. 🎯 مدى ملاءمة الوصفة للموسم والجنس\n3. 💡 3 توصيات محددة للتحسين\n4. ⭐ تقييمك الإجمالي من 10\n\nأجب بالعربية بإيجاز ووضوح.`;
     setAiAnalysisRecipe(r);setAiAnalysisText("جارٍ التحليل...");setShowAIAnalysis(true);
@@ -1779,6 +1782,29 @@ function App(){
                   </div>
                 </div>
               </div>
+              {/* layer balance bar */}
+              {(()=>{
+                const pI=r.ing.filter(([id])=>!NOTES_CARRIER.has(id));
+                const tot=pI.reduce((s,[,a])=>s+a,0)||1;
+                const tp=pI.filter(([id])=>noteTier(id)==="top").reduce((s,[,a])=>s+a,0);
+                const mp=pI.filter(([id])=>noteTier(id)==="mid").reduce((s,[,a])=>s+a,0);
+                const bp=tot-tp-mp;
+                const tpct=Math.round(tp/tot*100),mpct=Math.round(mp/tot*100),bpct=100-tpct-mpct;
+                return(
+                  <div style={{marginBottom:"9px",cursor:"pointer"}} onClick={()=>setSelectedRecipe(r)}>
+                    <div style={{display:"flex",height:"3px",borderRadius:"2px",overflow:"hidden",gap:"1px"}}>
+                      <div style={{flex:tpct||0.1,background:"rgba(232,200,112,0.80)"}}/>
+                      <div style={{flex:mpct||0.1,background:"rgba(190,110,200,0.70)"}}/>
+                      <div style={{flex:bpct||0.1,background:"rgba(80,165,115,0.62)"}}/>
+                    </div>
+                    <div style={{display:"flex",gap:"10px",marginTop:"3px",fontSize:"0.50rem"}}>
+                      <span style={{color:"rgba(232,200,112,0.55)"}}>توب {tpct}%</span>
+                      <span style={{color:"rgba(190,110,200,0.52)"}}>قلب {mpct}%</span>
+                      <span style={{color:"rgba(80,165,115,0.50)"}}>قاعدة {bpct}%</span>
+                    </div>
+                  </div>
+                );
+              })()}
               {/* description */}
               <p onClick={()=>setSelectedRecipe(r)} style={{fontSize:"0.74rem",color:"rgba(200,180,140,0.65)",marginBottom:"10px",lineHeight:"1.7",cursor:"pointer"}}>{r.desc}</p>
               {/* bottom row */}
@@ -1918,6 +1944,30 @@ function App(){
               <h2 style={{color:"#D4AF37",fontSize:"1.15rem",fontWeight:"800",marginTop:"6px",letterSpacing:"-0.01em"}}>{r.name}</h2>
               <div className="g-line" style={{maxWidth:"100px",margin:"8px auto"}}/>
               <p style={{fontSize:"0.78rem",color:"#A88858",lineHeight:"1.75"}}>{r.desc}</p>
+              {/* layer balance detail */}
+              {(()=>{
+                const pI=r.ing.filter(([id])=>!NOTES_CARRIER.has(id));
+                const tot=pI.reduce((s,[,a])=>s+a,0)||1;
+                const tp=pI.filter(([id])=>noteTier(id)==="top").reduce((s,[,a])=>s+a,0);
+                const mp=pI.filter(([id])=>noteTier(id)==="mid").reduce((s,[,a])=>s+a,0);
+                const bp=tot-tp-mp;
+                const tpct=Math.round(tp/tot*100),mpct=Math.round(mp/tot*100),bpct=100-tpct-mpct;
+                return(
+                  <div style={{marginTop:"14px",padding:"0 2px"}}>
+                    <div style={{fontSize:"0.50rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.55em",textTransform:"uppercase",marginBottom:"7px",fontFamily:"'Cormorant Garamond',serif"}}>هيكل الطبقات</div>
+                    <div style={{display:"flex",height:"6px",borderRadius:"4px",overflow:"hidden",gap:"2px",marginBottom:"6px"}}>
+                      <div style={{flex:tpct||0.1,background:"linear-gradient(90deg,rgba(232,200,112,0.90),rgba(232,200,112,0.65))"}}/>
+                      <div style={{flex:mpct||0.1,background:"linear-gradient(90deg,rgba(190,110,200,0.80),rgba(160,90,180,0.58))"}}/>
+                      <div style={{flex:bpct||0.1,background:"linear-gradient(90deg,rgba(80,165,115,0.74),rgba(60,140,95,0.52))"}}/>
+                    </div>
+                    <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem",letterSpacing:"0.3px"}}>
+                      <span style={{color:"rgba(232,200,112,0.65)"}}>⬆ توب {tpct}%</span>
+                      <span style={{color:"rgba(190,110,200,0.62)"}}>◆ قلب {mpct}%</span>
+                      <span style={{color:"rgba(80,165,115,0.62)"}}>⬇ قاعدة {bpct}%</span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="glass">
