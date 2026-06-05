@@ -833,6 +833,7 @@ function App(){
   const [batchCounter,setBatchCounter]=useState(()=>lsGet("dw_batchnum",1));
   const [ratings,setRatings]=useState(()=>lsGet("dw_ratings",{}));
   const [showRating,setShowRating]=useState(false);
+  const [showRoadmap,setShowRoadmap]=useState(false);
   const [ratingRecId,setRatingRecId]=useState(null);
   const [ratingStars,setRatingStars]=useState(5);
   const [ratingNote,setRatingNote]=useState("");
@@ -1448,6 +1449,26 @@ function App(){
                 {(lowStockItems.length+shopCart.length)>0&&<span style={{background:"rgba(185,45,45,0.9)",borderRadius:"10px",padding:"1px 6px",fontSize:"0.6rem",marginInlineStart:"5px",color:"#FFD0D0"}}>{lowStockItems.length+shopCart.length}</span>}
               </button>
               <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("customers")}>👥 العملاء {customers.length>0&&<span className="mono" style={{fontSize:"0.72rem",color:"#8A6830"}}>({customers.length})</span>}</button>
+            </div>
+            {/* ── roadmap card ── */}
+            <div onClick={()=>setShowRoadmap(true)} style={{marginTop:"10px",background:"linear-gradient(135deg,rgba(201,168,76,0.06),rgba(120,70,200,0.06))",border:"1px solid rgba(201,168,76,0.18)",borderRadius:"16px",padding:"14px 16px",cursor:"pointer",position:"relative",overflow:"hidden"}}>
+              <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.4),rgba(120,70,200,0.3),transparent)"}}/>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div>
+                  <div style={{fontSize:"0.78rem",fontWeight:"800",color:"#E8C870",marginBottom:"3px"}}>🚀 متجر إلكتروني — خارطة الطريق</div>
+                  <div style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.30)"}}>Next.js · Supabase · Moyasar · Aramex</div>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:"3px"}}>
+                  {["①","②","③","④","⑤"].map((n,i)=><div key={i} style={{width:"28px",height:"4px",borderRadius:"2px",background:i===0?"rgba(201,168,76,0.6)":"rgba(255,255,255,0.08)"}}/>)}
+                </div>
+              </div>
+              <div style={{marginTop:"10px",display:"flex",gap:"6px",flexWrap:"wrap"}}>
+                {[{lbl:"كتالوج",done:true},{lbl:"سلة + فاتورة",done:true},{lbl:"دفع",done:false},{lbl:"شحن",done:false},{lbl:"إشعارات",done:false}].map(({lbl,done})=>(
+                  <span key={lbl} style={{fontSize:"0.58rem",padding:"2px 8px",borderRadius:"10px",background:done?"rgba(80,160,80,0.15)":"rgba(255,255,255,0.05)",border:`1px solid ${done?"rgba(80,160,80,0.35)":"rgba(255,255,255,0.08)"}`,color:done?"#80d080":"rgba(255,255,255,0.30)"}}>
+                    {done?"✓ ":""}{lbl}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>;
         })()}
@@ -2811,6 +2832,69 @@ function App(){
         </div>
       </div>}
 
+      {/* ── Roadmap Overlay ── */}
+      {showRoadmap&&<div className="cart-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowRoadmap(false);}}>
+        <div className="cart-sheet" style={{maxHeight:"90vh"}}>
+          <div className="cart-sheet-handle"/>
+          <div style={{textAlign:"center",marginBottom:"20px"}}>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.35rem",color:"#E8C870",lineHeight:1}}>Atelier Dhawi</div>
+            <div style={{fontSize:"0.55rem",letterSpacing:"0.5em",color:"rgba(201,168,76,0.40)",textTransform:"uppercase",marginTop:"3px"}}>E-COMMERCE ROADMAP</div>
+          </div>
+
+          {/* phase cards */}
+          {[
+            {num:1,title:"واجهة المتجر",sub:"Frontend",icon:"🖥",done:true,stack:["Next.js 14","TypeScript","Tailwind CSS","Framer Motion"],detail:"كتالوج المنتجات 3D، سلة التسوق، صفحة الدفع، تصميم RTL أسود-ذهبي"},
+            {num:2,title:"قاعدة البيانات",sub:"Backend",icon:"🗄",done:false,stack:["Supabase","PostgreSQL","Row Level Security","Storage"],detail:"جداول: products، orders، customers، payments. صور المنتجات في Supabase Storage"},
+            {num:3,title:"بوابة الدفع",sub:"Payments",icon:"💳",done:false,stack:["Moyasar","mada","Apple Pay","Visa / Mastercard"],detail:"دفع سعودي محلي. التحويل: ريال → هللة (×100). Webhook لتأكيد الدفع تلقائياً"},
+            {num:4,title:"الشحن والتوصيل",sub:"Logistics",icon:"📦",done:false,stack:["Aramex API","Create Shipment","Track & Trace","SMS"],detail:"إنشاء شحنة تلقائي بعد الدفع. رقم التتبع → SMS للزبون عبر Twilio"},
+            {num:5,title:"الإشعارات والفواتير",sub:"Notifications",icon:"🔔",done:false,stack:["Resend Email","WhatsApp API","React PDF","Cron Jobs"],detail:"فاتورة PDF تلقائية، إشعار WhatsApp/Email عند كل تحديث للطلب"},
+          ].map(p=>(
+            <div key={p.num} style={{marginBottom:"12px",background:p.done?"rgba(80,160,80,0.06)":"rgba(201,168,76,0.04)",border:`1px solid ${p.done?"rgba(80,160,80,0.25)":"rgba(201,168,76,0.12)"}`,borderRadius:"14px",padding:"14px",position:"relative",overflow:"hidden"}}>
+              <div style={{position:"absolute",top:0,left:0,bottom:0,width:"3px",background:p.done?"linear-gradient(180deg,#68D868,#2A8028)":"linear-gradient(180deg,rgba(201,168,76,0.5),rgba(201,168,76,0.1))",borderRadius:"3px 0 0 3px"}}/>
+              <div style={{paddingRight:"8px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"8px"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+                    <span style={{fontSize:"1.3rem"}}>{p.icon}</span>
+                    <div>
+                      <div style={{fontSize:"0.82rem",fontWeight:"800",color:p.done?"#80D080":"#E8C870"}}>{p.title}</div>
+                      <div style={{fontSize:"0.52rem",letterSpacing:"0.3em",color:"rgba(255,255,255,0.25)",textTransform:"uppercase"}}>{p.sub}</div>
+                    </div>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:"4px"}}>
+                    <span style={{fontSize:"0.45rem",padding:"2px 8px",borderRadius:"10px",background:p.done?"rgba(80,160,80,0.2)":"rgba(201,168,76,0.10)",border:`1px solid ${p.done?"rgba(80,160,80,0.4)":"rgba(201,168,76,0.20)"}`,color:p.done?"#80D080":"rgba(201,168,76,0.6)",fontWeight:"700"}}>
+                      {p.done?"✓ مكتمل":"قادم"}
+                    </span>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.1rem",fontWeight:"700",color:"rgba(201,168,76,0.18)"}}>0{p.num}</span>
+                  </div>
+                </div>
+                <div style={{fontSize:"0.65rem",color:"rgba(255,255,255,0.40)",marginBottom:"8px",lineHeight:1.5}}>{p.detail}</div>
+                <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
+                  {p.stack.map(s=>(
+                    <span key={s} style={{fontSize:"0.55rem",padding:"2px 7px",borderRadius:"6px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",color:"rgba(255,255,255,0.35)",fontFamily:"'IBM Plex Mono',monospace"}}>{s}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* timeline estimate */}
+          <div style={{background:"rgba(201,168,76,0.04)",border:"1px solid rgba(201,168,76,0.12)",borderRadius:"12px",padding:"12px 14px",marginBottom:"12px"}}>
+            <div style={{fontSize:"0.70rem",fontWeight:"700",color:"rgba(201,168,76,0.60)",marginBottom:"8px"}}>⏱ الجدول الزمني المقترح</div>
+            {[["أسبوع 1–2","Next.js + Supabase + كتالوج بدون دفع"],["أسبوع 3","Moyasar sandbox + سلة + تسديد"],["أسبوع 4","Aramex + إشعارات SMS/Email"],["أسبوع 5","لوحة إدارة + تقارير مبيعات"],["أسبوع 6","اختبار شامل + إطلاق"],].map(([w,t])=>(
+              <div key={w} style={{display:"flex",gap:"10px",padding:"5px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.58rem",color:"rgba(201,168,76,0.50)",whiteSpace:"nowrap",minWidth:"68px"}}>{w}</span>
+                <span style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.35)"}}>{t}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{fontSize:"0.58rem",color:"rgba(255,255,255,0.18)",textAlign:"center",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>
+            scaffold المشروع جاهز في dhawi-store/ داخل المستودع
+          </div>
+          <button className="btn-ghost" style={{width:"100%",marginTop:"12px"}} onClick={()=>setShowRoadmap(false)}>إغلاق</button>
+        </div>
+      </div>}
+
       {/* ── Cart Overlay ── */}
       {showCart&&<div className="cart-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowCart(false);}}>
         <div className="cart-sheet">
@@ -2874,7 +2958,7 @@ function App(){
           {id:"stats",icon:"📊",label:"إحصائيات"},
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);setShowCustomerStore(false);setShowCart(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);setShowCustomerStore(false);setShowCart(false);setShowRoadmap(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon">{t.icon}</span>
             {t.label}
           </button>
