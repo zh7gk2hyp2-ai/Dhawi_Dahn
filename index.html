@@ -53,6 +53,7 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
 .fade{animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both;}
+.tab-fade{animation:slideUp 0.32s cubic-bezier(0.22,1,0.36,1) both;}
 .alert-pulse{animation:alertPulse 2s ease-in-out infinite;}
 
 /* ── Splash ── */
@@ -200,6 +201,76 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   border:1px solid rgba(255,255,255,0.065);
   box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
 }
+
+/* ── KPI Card (premium) ── */
+.kpi-card{
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.065);
+  border-radius:18px;padding:16px 14px;
+  position:relative;overflow:hidden;
+}
+.kpi-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.10) 50%,transparent);
+  pointer-events:none;
+}
+
+/* ── Recipe Card ── */
+.recipe-card{
+  border-radius:20px;padding:16px;margin-bottom:10px;
+  position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.065);
+  background:rgba(14,9,2,0.82);
+  transition:border-color 0.25s,box-shadow 0.25s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.40);
+}
+.recipe-card.ready-card{
+  border-color:rgba(201,168,76,0.28);
+  box-shadow:0 0 0 0.5px rgba(201,168,76,0.10),0 8px 32px rgba(0,0,0,0.55);
+}
+.recipe-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.18) 50%,transparent);
+  pointer-events:none;
+}
+.recipe-card.fav-card{border-color:rgba(228,196,96,0.45);}
+.recipe-card.compare-card{border-color:rgba(100,130,210,0.55);}
+
+/* ── Ingredient Card ── */
+.ing-card{
+  background:rgba(14,9,2,0.80);
+  border:1px solid rgba(255,255,255,0.065);
+  border-radius:16px;padding:13px 14px;margin-bottom:7px;
+  position:relative;overflow:hidden;
+  transition:border-color 0.2s;
+}
+.ing-card.low-card{border-inline-start:3px solid rgba(185,45,45,0.75);}
+.ing-card.expiry-card{border-inline-start:3px solid rgba(190,125,25,0.65);}
+
+/* ── Customer Avatar ── */
+.cust-avatar{
+  width:42px;height:42px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));
+  border:1px solid rgba(201,168,76,0.22);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.05rem;font-weight:800;color:#D4AF37;
+  flex-shrink:0;font-family:'Alexandria',sans-serif;
+  box-shadow:0 2px 8px rgba(0,0,0,0.30);
+}
+
+/* ── Fancy Section Divider ── */
+.fancy-div{display:flex;align-items:center;gap:10px;margin:16px 0 12px;}
+.fancy-div-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.22));}
+.fancy-div-line-rev{flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.22),transparent);}
+.fancy-div-text{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:0.50rem;color:rgba(201,168,76,0.45);
+  letter-spacing:0.48em;text-transform:uppercase;white-space:nowrap;
+}
+
+/* ── Tab Slide Transition ── */
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.tab-fade{animation:slideUp 0.32s cubic-bezier(0.22,1,0.36,1) both;}
 
 /* ── Modal ── */
 .modal-overlay{
@@ -1331,42 +1402,68 @@ function App(){
           {fInv.map(ing=>{
             const isLow=ing.stock<ing.qty*LOW_STOCK_THRESHOLD&&ing.qty>0;
             const expSt=expiryStatus(ing.expiry);
+            const pct=Math.min(100,(ing.stock/Math.max(ing.qty,1))*100);
+            const ringColor=pct>50?"#5AA840":pct>20?"#C9A84C":"#C04040";
+            const r2=14,circ=2*Math.PI*r2;
+            const cardClass=`ing-card${isLow?" low-card":expSt?" expiry-card":""}`;
             return(
-            <div key={ing.id} className="glass" style={{padding:"13px 14px",marginBottom:"8px",borderInlineStart:isLow?"3px solid rgba(185,45,45,0.75)":expSt?"3px solid rgba(190,125,25,0.65)":"3px solid transparent",background:"rgba(12,7,1,0.80)"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"7px"}}>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:"0.88rem",fontWeight:"700",color:"#F0E6D0",lineHeight:"1.3"}}>{ing.name}{isLow&&<span style={{marginInlineStart:"6px",fontSize:"0.62rem",color:"#C06868",fontWeight:"700"}}>⚠️ ينفد</span>}{expSt==="soon"&&<span style={{marginInlineStart:"6px",fontSize:"0.60rem",color:"#C08840",fontWeight:"700"}}>⚠️ قارب الانتهاء</span>}{expSt==="expired"&&<span style={{marginInlineStart:"6px",fontSize:"0.60rem",color:"#C06868",fontWeight:"700"}}>❌ منتهي</span>}</div>
-                  <div style={{fontSize:"0.65rem",color:"#7A5820",marginTop:"3px",letterSpacing:"0.2px"}}>{ing.brand} · {ing.cat}{ing.brand==="Bulkaroma"&&ing.ship>0&&<span style={{color:"#68A868"}}> · شحن <span className="mono">{ing.ship.toFixed(1)}</span>ر</span>}{ing.expiry&&<span style={{color:expSt?"#C08840":"#5A4015"}}> · ينتهي {fmtDate(ing.expiry)}</span>}</div>
+            <div key={ing.id} className={cardClass}>
+              <div style={{display:"flex",alignItems:"center",gap:"11px",marginBottom:"9px"}}>
+                {/* SVG ring */}
+                <div style={{flexShrink:0,cursor:"pointer"}} onClick={()=>setEditCostId(editCostId===ing.id?null:ing.id)}>
+                  <svg width="38" height="38" viewBox="0 0 38 38">
+                    <circle cx="19" cy="19" r={r2} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3.5"/>
+                    <circle cx="19" cy="19" r={r2} fill="none" stroke={ringColor} strokeWidth="3.5"
+                      strokeDasharray={`${pct/100*circ} ${circ}`}
+                      strokeLinecap="round"
+                      style={{transform:"rotate(-90deg)",transformOrigin:"19px 19px",transition:"stroke-dasharray 0.5s ease"}}/>
+                    <text x="19" y="23" textAnchor="middle" fill={ringColor} fontSize="7.5" fontFamily="'IBM Plex Mono',monospace" fontWeight="700">{Math.round(pct)}%</text>
+                  </svg>
                 </div>
-                <div style={{textAlign:"left",marginInlineStart:"10px",flexShrink:0}}>
-                  <div className="mono" style={{color:"#C9A84C",fontWeight:"600",fontSize:"0.88rem"}}>{ing.stock} <span style={{fontSize:"0.65rem",opacity:0.7}}>{ing.unit}</span></div>
-                  <div onClick={()=>setEditCostId(editCostId===ing.id?null:ing.id)} style={{fontSize:"0.62rem",color:"#68A868",cursor:"pointer",textDecoration:"underline dotted",marginTop:"2px"}} className="mono">{ing.unitCost.toFixed(2)}ر/{ing.unit}</div>
+                {/* name + meta */}
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:"0.87rem",fontWeight:"700",color:"#F0E6D0",lineHeight:"1.25",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
+                    {ing.name}
+                    {isLow&&<span style={{marginInlineStart:"6px",fontSize:"0.58rem",color:"#C06868",fontWeight:"700",background:"rgba(185,45,45,0.12)",border:"1px solid rgba(185,45,45,0.25)",borderRadius:"8px",padding:"1px 5px"}}>ينفد</span>}
+                    {expSt==="expired"&&<span style={{marginInlineStart:"5px",fontSize:"0.58rem",color:"#C06868",background:"rgba(185,45,45,0.12)",border:"1px solid rgba(185,45,45,0.25)",borderRadius:"8px",padding:"1px 5px"}}>منتهي</span>}
+                    {expSt==="soon"&&<span style={{marginInlineStart:"5px",fontSize:"0.58rem",color:"#C08840",background:"rgba(190,125,25,0.12)",border:"1px solid rgba(190,125,25,0.25)",borderRadius:"8px",padding:"1px 5px"}}>قارب الانتهاء</span>}
+                  </div>
+                  <div style={{display:"flex",gap:"5px",marginTop:"3px",flexWrap:"wrap"}}>
+                    <span style={{fontSize:"0.60rem",color:"rgba(201,168,76,0.45)",background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.12)",borderRadius:"8px",padding:"1px 6px"}}>{ing.brand}</span>
+                    <span style={{fontSize:"0.60rem",color:"rgba(255,255,255,0.25)",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:"8px",padding:"1px 6px"}}>{ing.cat}</span>
+                  </div>
+                </div>
+                {/* stock + cost */}
+                <div style={{textAlign:"left",flexShrink:0}}>
+                  <div className="mono" style={{color:"#C9A84C",fontWeight:"700",fontSize:"0.92rem",letterSpacing:"-0.02em"}}>{ing.stock}<span style={{fontSize:"0.62rem",opacity:0.55,fontFamily:"'Alexandria',sans-serif"}}> {ing.unit}</span></div>
+                  <div onClick={()=>setEditCostId(editCostId===ing.id?null:ing.id)} style={{fontSize:"0.60rem",color:"rgba(106,170,72,0.75)",cursor:"pointer",marginTop:"2px",fontFamily:"'IBM Plex Mono',monospace"}}>{ing.unitCost.toFixed(2)}ر/{ing.unit}</div>
                 </div>
               </div>
-              {editCostId===ing.id&&<div style={{marginBottom:"7px",padding:"8px",background:"rgba(0,0,0,0.3)",borderRadius:"8px"}}>
-                <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"7px"}}>
-                  <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>السعر الكلي:</span>
+              {editCostId===ing.id&&<div style={{marginBottom:"8px",padding:"10px",background:"rgba(0,0,0,0.3)",borderRadius:"11px",border:"1px solid rgba(201,168,76,0.12)"}}>
+                <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
+                  <span style={{fontSize:"0.70rem",color:"#c8a46a"}}>السعر الكلي:</span>
                   <input type="number" value={ing.price} onChange={e=>setPrice(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.8rem",padding:"4px"}}/>
-                  <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>ريال / {ing.qty}{ing.unit}</span>
+                  <span style={{fontSize:"0.68rem",color:"#7a5a20"}}>ر / {ing.qty}{ing.unit}</span>
                 </div>
-                <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"7px"}}>
-                  <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>الكمية الأصلية:</span>
+                <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
+                  <span style={{fontSize:"0.70rem",color:"#c8a46a"}}>الكمية الأصلية:</span>
                   <input type="number" value={ing.qty} onChange={e=>setQty(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.8rem",padding:"4px"}}/>
-                  <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>{ing.unit}</span>
+                  <span style={{fontSize:"0.68rem",color:"#7a5a20"}}>{ing.unit}</span>
                 </div>
-                <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"7px"}}>
-                  <span style={{fontSize:"0.7rem",color:"#c8a46a"}}>تاريخ الانتهاء:</span>
+                <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
+                  <span style={{fontSize:"0.70rem",color:"#c8a46a"}}>تاريخ الانتهاء:</span>
                   <input type="date" value={ing.expiry||""} onChange={e=>setExpiry(ing.id,e.target.value)} style={{background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.75rem",padding:"4px",colorScheme:"dark"}}/>
                 </div>
-                <button onClick={()=>deleteIng(ing.id)} style={{width:"100%",background:"rgba(200,60,60,0.15)",border:"1px solid rgba(200,60,60,0.4)",color:"#e08080",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>🗑️ حذف من المخزون</button>
+                <button onClick={()=>deleteIng(ing.id)} style={{width:"100%",background:"rgba(200,60,60,0.12)",border:"1px solid rgba(200,60,60,0.35)",color:"#e08080",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>🗑️ حذف</button>
               </div>}
+              {/* stock bar + controls */}
               <div style={{display:"flex",alignItems:"center",gap:"7px"}}>
-                <div style={{flex:1,background:"rgba(255,255,255,0.05)",borderRadius:"4px",height:"4px",overflow:"hidden"}}>
-                  <div style={{height:"100%",borderRadius:"4px",width:`${Math.min(100,(ing.stock/Math.max(ing.qty,1))*100)}%`,background:ing.stock>ing.qty*0.5?"linear-gradient(90deg,#4A8A30,#5AA840)":ing.stock>ing.qty*0.2?"linear-gradient(90deg,#C9A84C,#E8C460)":"linear-gradient(90deg,#8A2020,#C04040)",transition:"width 0.4s ease",boxShadow:ing.stock>ing.qty*0.5?"0 0 4px rgba(90,168,64,0.4)":ing.stock>ing.qty*0.2?"0 0 4px rgba(201,168,76,0.4)":"0 0 4px rgba(192,64,64,0.4)"}}/>
+                <div style={{flex:1,background:"rgba(255,255,255,0.05)",borderRadius:"4px",height:"3px",overflow:"hidden"}}>
+                  <div style={{height:"100%",borderRadius:"4px",width:`${pct}%`,background:pct>50?"linear-gradient(90deg,#4A8A30,#5AA840)":pct>20?"linear-gradient(90deg,#C9A84C,#E8C460)":"linear-gradient(90deg,#8A2020,#C04040)",transition:"width 0.5s ease"}}/>
                 </div>
-                <button onClick={()=>updateStock(ing.id,-5)} style={{background:"rgba(170,40,40,0.14)",border:"1px solid rgba(180,50,50,0.28)",color:"#C06868",width:"26px",height:"26px",borderRadius:"50%",cursor:"pointer",fontSize:"0.95rem",lineHeight:"1",display:"flex",alignItems:"center",justifyContent:"center"}}>−</button>
-                <input type="number" value={ing.stock} onChange={e=>setStock(ing.id,+e.target.value)} className="mono" style={{width:"50px",textAlign:"center",background:"rgba(0,0,0,0.45)",border:"1px solid rgba(201,168,76,0.35)",borderRadius:"8px",color:"#F0E6D0",fontSize:"0.78rem",padding:"4px"}}/>
-                <button onClick={()=>updateStock(ing.id,5)} style={{background:"rgba(60,130,60,0.14)",border:"1px solid rgba(70,150,70,0.28)",color:"#68B068",width:"26px",height:"26px",borderRadius:"50%",cursor:"pointer",fontSize:"0.95rem",lineHeight:"1",display:"flex",alignItems:"center",justifyContent:"center"}}>+</button>
+                <button onClick={()=>updateStock(ing.id,-5)} style={{background:"rgba(170,40,40,0.14)",border:"1px solid rgba(180,50,50,0.28)",color:"#C06868",width:"28px",height:"28px",borderRadius:"50%",cursor:"pointer",fontSize:"1rem",lineHeight:"1",display:"flex",alignItems:"center",justifyContent:"center"}}>−</button>
+                <input type="number" value={ing.stock} onChange={e=>setStock(ing.id,+e.target.value)} className="mono" style={{width:"52px",textAlign:"center",background:"rgba(0,0,0,0.45)",border:"1px solid rgba(201,168,76,0.30)",borderRadius:"9px",color:"#F0E6D0",fontSize:"0.78rem",padding:"5px"}}/>
+                <button onClick={()=>updateStock(ing.id,5)} style={{background:"rgba(60,130,60,0.14)",border:"1px solid rgba(70,150,70,0.28)",color:"#68B068",width:"28px",height:"28px",borderRadius:"50%",cursor:"pointer",fontSize:"1rem",lineHeight:"1",display:"flex",alignItems:"center",justifyContent:"center"}}>+</button>
               </div>
             </div>);
           })}
@@ -1615,30 +1712,48 @@ function App(){
             ));
           })()}
           {/* normal mode — full operational cards */}
-          {!catalogMode&&(readyFilter?sortedRecipes.filter(r=>canMake(r)):sortedRecipes).map(r=>{const fav=favoriteIds.includes(r.id);const ready=canMake(r);return(
-            <div key={r.id} className="glass" style={{
-              cursor:"pointer",
-              borderInlineStart:`3px solid ${compareIds.includes(r.id)?"rgba(100,130,210,0.7)":fav?"rgba(228,196,96,0.7)":ready?"rgba(201,168,76,0.55)":"rgba(60,30,8,0.5)"}`,
-              marginBottom:"10px",padding:"14px 14px 12px",
-              background:ready?"rgba(14,9,2,0.82)":"rgba(12,7,1,0.78)"
-            }}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:"5px"}}>
-                <span onClick={()=>setSelectedRecipe(r)} style={{fontSize:"0.97rem",fontWeight:"700",color:"#F0E6D0",flex:1,lineHeight:"1.4"}}>{fav&&<span style={{color:"#E8C060",marginLeft:"4px"}}>⭐</span>}{r.name}</span>
-                <div style={{display:"flex",gap:"5px",alignItems:"center",flexShrink:0}}>
-                  <span style={{fontSize:"1.25rem"}}>{r.icon}</span>
-                  <button onClick={e=>{e.stopPropagation();toggleFav(r.id);}} style={{background:fav?"rgba(201,168,76,0.22)":"rgba(255,255,255,0.05)",border:"1px solid rgba(201,168,76,0.35)",color:"#D4AF37",borderRadius:"8px",padding:"2px 7px",fontSize:"0.68rem",cursor:"pointer",fontWeight:"700"}}>{fav?"★":"☆"}</button>
-                  <button onClick={e=>{e.stopPropagation();toggleCompare(r.id);}} style={{background:compareIds.includes(r.id)?"rgba(80,120,200,0.25)":"rgba(255,255,255,0.05)",border:"1px solid rgba(80,120,200,0.35)",color:"#6888C8",borderRadius:"8px",padding:"2px 6px",fontSize:"0.62rem",cursor:"pointer",fontWeight:"600"}}>⚖️</button>
+          {!catalogMode&&(readyFilter?sortedRecipes.filter(r=>canMake(r)):sortedRecipes).map(r=>{
+            const fav=favoriteIds.includes(r.id);const ready=canMake(r);
+            const cardClass=`recipe-card${compareIds.includes(r.id)?" compare-card":fav?" fav-card":ready?" ready-card":""}`;
+            const seasonIcon=r.season==="صيف"?"🌞":r.season==="شتاء"?"❄️":r.season==="مناسبات"?"✨":r.season==="ربيع"?"🌸":"🍂";
+            const rat=ratings[r.id];
+            return(
+            <div key={r.id} className={cardClass} style={{opacity:ready?1:0.75}}>
+              {/* top row */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"10px"}}>
+                <div style={{flex:1,paddingInlineEnd:"10px",cursor:"pointer"}} onClick={()=>setSelectedRecipe(r)}>
+                  {ready&&<div style={{display:"inline-flex",alignItems:"center",gap:"4px",background:"rgba(60,140,60,0.12)",border:"1px solid rgba(60,140,60,0.28)",borderRadius:"20px",padding:"2px 8px",marginBottom:"6px"}}>
+                    <div style={{width:"5px",height:"5px",borderRadius:"50%",background:"#6AAA48",boxShadow:"0 0 5px rgba(106,170,72,0.7)"}}/>
+                    <span style={{fontSize:"0.52rem",color:"#6AAA48",fontWeight:"700",letterSpacing:"0.4px",textTransform:"uppercase"}}>جاهز</span>
+                  </div>}
+                  {!ready&&<div style={{display:"inline-flex",alignItems:"center",gap:"4px",background:"rgba(180,50,50,0.09)",border:"1px solid rgba(180,50,50,0.22)",borderRadius:"20px",padding:"2px 8px",marginBottom:"6px"}}>
+                    <span style={{fontSize:"0.52rem",color:"rgba(200,100,100,0.70)",fontWeight:"700",letterSpacing:"0.4px",textTransform:"uppercase"}}>مخزون ناقص</span>
+                  </div>}
+                  <div style={{fontSize:"1.0rem",fontWeight:"700",color:"#F0E6D0",lineHeight:"1.35",letterSpacing:"-0.01em"}}>{r.name}</div>
+                  <div style={{fontSize:"0.55rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.35em",textTransform:"uppercase",marginTop:"2px",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>{seasonIcon} {r.season} · {r.gender}</div>
+                </div>
+                {/* icon + actions */}
+                <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:"5px",flexShrink:0}}>
+                  <div style={{width:"44px",height:"44px",borderRadius:"14px",background:"rgba(201,168,76,0.07)",border:"1px solid rgba(201,168,76,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.5rem",cursor:"pointer"}} onClick={()=>setSelectedRecipe(r)}>{r.icon}</div>
+                  <div style={{display:"flex",gap:"4px"}}>
+                    <button onClick={e=>{e.stopPropagation();toggleFav(r.id);}} style={{background:fav?"rgba(201,168,76,0.18)":"rgba(255,255,255,0.04)",border:`1px solid ${fav?"rgba(201,168,76,0.40)":"rgba(255,255,255,0.08)"}`,color:fav?"#E8C060":"rgba(255,255,255,0.25)",borderRadius:"8px",padding:"3px 7px",fontSize:"0.75rem",cursor:"pointer",lineHeight:1}}>{fav?"★":"☆"}</button>
+                    <button onClick={e=>{e.stopPropagation();toggleCompare(r.id);}} style={{background:compareIds.includes(r.id)?"rgba(80,120,200,0.22)":"rgba(255,255,255,0.04)",border:`1px solid ${compareIds.includes(r.id)?"rgba(80,120,200,0.40)":"rgba(255,255,255,0.08)"}`,color:compareIds.includes(r.id)?"#8AAAE0":"rgba(255,255,255,0.25)",borderRadius:"8px",padding:"3px 6px",fontSize:"0.68rem",cursor:"pointer",lineHeight:1}}>⚖</button>
+                  </div>
                 </div>
               </div>
-              <p onClick={()=>setSelectedRecipe(r)} style={{fontSize:"0.76rem",color:"#A88858",marginBottom:"9px",lineHeight:"1.65"}}>{r.desc}</p>
-              <div style={{display:"flex",gap:"5px",flexWrap:"wrap",alignItems:"center"}}>
-                <span className="tag tag-gold">⏱ {r.stability}</span>
-                <span className="tag" style={{background:"rgba(255,255,255,0.05)",color:"#C8A870",border:"1px solid rgba(255,255,255,0.07)"}}>👤 {r.gender}</span>
-                <span className="tag" style={{background:"rgba(255,255,255,0.05)",color:"#C8A870",border:"1px solid rgba(255,255,255,0.07)"}}>{r.season==="صيف"?"🌞":r.season==="شتاء"?"❄️":r.season==="مناسبات"?"✨":r.season==="ربيع"?"🌸":"🍂"} {r.season}</span>
-                <span className={`tag ${ready?"tag-green":"tag-red"}`}>{ready?"✅ جاهز":"⚠️ ناقص"}</span>
-                <span className="tag tag-gold mono" style={{marginInlineStart:"auto",fontSize:"0.63rem"}}>💰 {recipeCost(r).toFixed(0)}ر/{BATCH_NAME[batchUnit]}</span>
+              {/* description */}
+              <p onClick={()=>setSelectedRecipe(r)} style={{fontSize:"0.74rem",color:"rgba(200,180,140,0.65)",marginBottom:"10px",lineHeight:"1.7",cursor:"pointer"}}>{r.desc}</p>
+              {/* bottom row */}
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"6px"}}>
+                <div style={{display:"flex",gap:"5px",flexWrap:"wrap",flex:1}}>
+                  <span className="tag tag-gold" style={{fontSize:"0.58rem"}}>⏱ {r.stability}</span>
+                  <span className="tag" style={{background:"rgba(255,255,255,0.04)",color:"rgba(200,180,140,0.55)",border:"1px solid rgba(255,255,255,0.06)",fontSize:"0.58rem"}}>{r.ing.length} خامة</span>
+                  {rat&&<span style={{fontSize:"0.68rem",color:"#E8C060",letterSpacing:"0.5px"}}>{"★".repeat(rat.stars)}{"☆".repeat(5-rat.stars)}</span>}
+                </div>
+                <div style={{background:ready?"rgba(60,140,60,0.10)":"rgba(255,255,255,0.04)",border:`1px solid ${ready?"rgba(60,140,60,0.22)":"rgba(255,255,255,0.07)"}`,borderRadius:"20px",padding:"4px 10px",flexShrink:0}}>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.70rem",color:ready?"#6AAA48":"rgba(255,255,255,0.30)",fontWeight:"600",letterSpacing:"-0.02em"}}>{recipeCost(r).toFixed(0)}<span style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.58rem",opacity:0.75}}> ر</span></span>
+                </div>
               </div>
-              {ratings[r.id]&&<div style={{fontSize:"0.67rem",color:"#C9A050",marginTop:"5px"}}>{"⭐".repeat(ratings[r.id].stars)}{ratings[r.id].note&&<span style={{color:"#8A6830"}}> — {ratings[r.id].note}</span>}</div>}
             </div>
           );})}
         </div>}
@@ -1867,13 +1982,21 @@ function App(){
             <button className="btn-gold" style={{padding:"13px 32px",fontSize:"0.9rem"}} onClick={()=>setTab("recipes")}>ابدأ أول دفعة ←</button>
           </div>}
           {/* kpi row */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"14px"}}>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>قيمة المخزون</div><div className="p-num">{totalInvValue.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>إجمالي المشتريات</div><div className="p-num">{totalPurchaseSpend.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>دفعات مُنتجة</div><div className="p-num" style={{background:"linear-gradient(135deg,#6888C8,#4868A8)"}}>{totalProduced}</div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>دفعات مباعة</div><div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)"}}>{totalSold}</div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>إجمالي الإيرادات</div><div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)"}}>{totalRevenue.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>الربح الصافي</div><div className="p-num" style={{background:netProfit>=0?"linear-gradient(135deg,#68B068,#48904A)":"linear-gradient(135deg,#C06868,#A04848)"}}>{netProfit.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"16px"}}>
+            {[
+              {icon:"🏺",label:"قيمة المخزون",val:totalInvValue.toFixed(0),unit:"ر",cls:"p-num"},
+              {icon:"🛒",label:"إجمالي المشتريات",val:totalPurchaseSpend.toFixed(0),unit:"ر",cls:"p-num"},
+              {icon:"🧪",label:"دفعات مُنتجة",val:totalProduced,unit:"",cls:"p-num-blue"},
+              {icon:"✅",label:"دفعات مباعة",val:totalSold,unit:"",cls:"p-num-green"},
+              {icon:"💰",label:"إجمالي الإيرادات",val:totalRevenue.toFixed(0),unit:"ر",cls:"p-num-green"},
+              {icon:"📈",label:"الربح الصافي",val:netProfit.toFixed(0),unit:"ر",cls:netProfit>=0?"p-num-green":"p-num-amber"},
+            ].map((k,i)=>(
+              <div key={i} className="kpi-card">
+                <div style={{fontSize:"1.25rem",marginBottom:"8px",filter:"drop-shadow(0 1px 4px rgba(0,0,0,0.5))"}}>{k.icon}</div>
+                <div className="data-label" style={{marginBottom:"5px"}}>{k.label}</div>
+                <div className={k.cls} style={{fontSize:"1.55rem",lineHeight:1}}>{k.val}<span style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.72rem",opacity:0.55}}>{k.unit&&` ${k.unit}`}</span></div>
+              </div>
+            ))}
           </div>
 
           {topRecipe&&<div className="glass" style={{background:"linear-gradient(rgba(14,8,2,0.85),rgba(14,8,2,0.85)) padding-box,linear-gradient(135deg,rgba(201,168,76,0.45),rgba(100,60,5,0.20),rgba(201,168,76,0.45)) border-box",border:"1.5px solid transparent",padding:"14px 16px",marginBottom:"14px"}}>
@@ -2092,26 +2215,32 @@ function App(){
           {customers.map(c=>{
             const orders=prodLog.filter(e=>e.customerId===c.id);
             const spent=orders.filter(o=>o.sold&&o.sellPrice).reduce((s,o)=>s+o.sellPrice,0);
+            const isVip=orders.length>2||spent>500;
+            const initials=c.name.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join("");
             return(
-            <div key={c.id} className="glass" style={{padding:"14px",marginBottom:"8px",borderInlineStart:`3px solid ${orders.length>2?"rgba(201,168,76,0.55)":"rgba(100,140,200,0.50)"}`}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}} onClick={()=>setSelectedCustomer(c)}>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:"0.92rem",fontWeight:"800",color:"#F0E6D0",marginBottom:"3px"}}>{c.name}</div>
-                  {c.phone&&<div style={{fontSize:"0.67rem",color:"#8A6830",fontFamily:"'IBM Plex Mono',monospace",letterSpacing:"-0.01em"}}>{c.phone}</div>}
-                </div>
-                <div style={{textAlign:"left",flexShrink:0}}>
-                  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:"3px"}}>
-                    <span className="tag tag-blue" style={{fontSize:"0.62rem"}}>{orders.length} طلب</span>
-                    {spent>0&&<span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.65rem",color:"#6AAA48",letterSpacing:"-0.02em"}}>{spent.toFixed(0)} ر</span>}
-                    {c.preferredRecipes&&c.preferredRecipes.length>0&&<div style={{fontSize:"0.60rem",color:"#E8C460"}}>⭐ {c.preferredRecipes.length}</div>}
+            <div key={c.id} className="glass" style={{padding:"14px",marginBottom:"8px",borderColor:isVip?"rgba(201,168,76,0.25)":"rgba(255,255,255,0.065)",boxShadow:isVip?"0 0 0 0.5px rgba(201,168,76,0.08),0 6px 24px rgba(0,0,0,0.45)":"0 4px 16px rgba(0,0,0,0.35)"}}>
+              <div style={{display:"flex",alignItems:"center",gap:"11px",cursor:"pointer",marginBottom:"10px"}} onClick={()=>setSelectedCustomer(c)}>
+                {/* avatar */}
+                <div className="cust-avatar">{initials}</div>
+                {/* info */}
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"2px"}}>
+                    <span style={{fontSize:"0.92rem",fontWeight:"800",color:"#F0E6D0"}}>{c.name}</span>
+                    {isVip&&<span style={{fontSize:"0.55rem",background:"rgba(201,168,76,0.12)",color:"#D4AF37",border:"1px solid rgba(201,168,76,0.25)",borderRadius:"20px",padding:"1px 7px",letterSpacing:"0.3px",fontWeight:"700"}}>VIP</span>}
                   </div>
+                  {c.phone&&<div style={{fontSize:"0.65rem",color:"rgba(201,168,76,0.45)",fontFamily:"'IBM Plex Mono',monospace",letterSpacing:"-0.01em"}}>{c.phone}</div>}
+                  {c.notes&&<div style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.22)",marginTop:"2px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.notes}</div>}
+                </div>
+                {/* stats */}
+                <div style={{textAlign:"left",flexShrink:0}}>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.80rem",color:spent>0?"#6AAA48":"rgba(255,255,255,0.20)",fontWeight:"600",letterSpacing:"-0.02em"}}>{spent>0?`${spent.toFixed(0)} ر`:"—"}</div>
+                  <div style={{fontSize:"0.58rem",color:"rgba(255,255,255,0.28)",marginTop:"2px",textAlign:"left"}}>{orders.length} طلب</div>
                 </div>
               </div>
-              <div className="g-line" style={{margin:"10px 0 8px"}}/>
               <div style={{display:"flex",gap:"6px"}}>
-                {c.phone&&<a href={`https://wa.me/${c.phone.replace(/^0/,"966").replace(/[^0-9]/g,"")}`} target="_blank" onClick={e=>e.stopPropagation()} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"4px",background:"rgba(37,211,102,0.10)",border:"1px solid rgba(37,211,102,0.32)",color:"#25d366",borderRadius:"10px",padding:"6px",fontSize:"0.72rem",fontWeight:"700",textDecoration:"none",fontFamily:"'Alexandria',sans-serif"}}>💬 واتساب</a>}
-                <button onClick={e=>{e.stopPropagation();setSelectedCustomer(c);}} style={{flex:1,background:"rgba(201,168,76,0.08)",border:"1px solid rgba(201,168,76,0.25)",color:"#C9A84C",borderRadius:"10px",padding:"6px",cursor:"pointer",fontSize:"0.72rem",fontWeight:"700"}}>📋 الملف</button>
-                <button onClick={e=>{e.stopPropagation();deleteCustomer(c.id);}} style={{background:"rgba(200,60,60,0.08)",border:"1px solid rgba(200,60,60,0.25)",color:"#C07070",borderRadius:"10px",padding:"6px 10px",cursor:"pointer",fontSize:"0.72rem"}}>🗑️</button>
+                {c.phone&&<a href={`https://wa.me/${c.phone.replace(/^0/,"966").replace(/[^0-9]/g,"")}`} target="_blank" onClick={e=>e.stopPropagation()} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"5px",background:"rgba(37,211,102,0.08)",border:"1px solid rgba(37,211,102,0.28)",color:"#25d366",borderRadius:"12px",padding:"7px",fontSize:"0.72rem",fontWeight:"700",textDecoration:"none",fontFamily:"'Alexandria',sans-serif"}}>💬 واتساب</a>}
+                <button onClick={e=>{e.stopPropagation();setSelectedCustomer(c);}} style={{flex:1,background:"rgba(201,168,76,0.07)",border:"1px solid rgba(201,168,76,0.22)",color:"#C9A84C",borderRadius:"12px",padding:"7px",cursor:"pointer",fontSize:"0.72rem",fontWeight:"700"}}>📋 الملف</button>
+                <button onClick={e=>{e.stopPropagation();deleteCustomer(c.id);}} style={{background:"rgba(200,60,60,0.06)",border:"1px solid rgba(200,60,60,0.20)",color:"#C07070",borderRadius:"12px",padding:"7px 12px",cursor:"pointer",fontSize:"0.72rem"}}>🗑️</button>
               </div>
             </div>
           );})}
