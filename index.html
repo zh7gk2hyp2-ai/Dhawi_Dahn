@@ -1085,11 +1085,11 @@ function App(){
                 <div style={{fontSize:"0.52rem",color:"#8A6830",marginTop:"4px",letterSpacing:"0.5px",textTransform:"uppercase"}}>المخزون · ر</div>
               </div>
               <div className="glass" style={{textAlign:"center",padding:"16px 6px",cursor:"pointer",background:"rgba(14,8,2,0.82)"}} onClick={()=>goTab("recipes")}>
-                <div className="p-num" style={{background:"linear-gradient(135deg,#78C878,#48A048)",-WebkitBackgroundClip:"text",-WebkitTextFillColor:"transparent",backgroundClip:"text"}}>{_ready.length}<span style={{fontSize:"0.75rem",opacity:0.6}}>/{recipes.length}</span></div>
+                <div className="p-num" style={{background:"linear-gradient(135deg,#78C878,#48A048)"}}>{_ready.length}<span style={{fontSize:"0.75rem",opacity:0.6}}>/{recipes.length}</span></div>
                 <div style={{fontSize:"0.52rem",color:"#8A6830",marginTop:"4px",letterSpacing:"0.5px",textTransform:"uppercase"}}>وصفة جاهزة</div>
               </div>
               <div className="glass" style={{textAlign:"center",padding:"16px 6px",cursor:"pointer",background:"rgba(14,8,2,0.82)"}} onClick={()=>goTab("stats")}>
-                <div className="p-num" style={{background:agingBatches.length>0?"linear-gradient(135deg,#E0A860,#C07830)":"linear-gradient(135deg,#4A3515,#2A1A08)",-WebkitBackgroundClip:"text",-WebkitTextFillColor:"transparent",backgroundClip:"text"}}>{agingBatches.length}</div>
+                <div className="p-num" style={{background:agingBatches.length>0?"linear-gradient(135deg,#E0A860,#C07830)":"linear-gradient(135deg,#4A3515,#2A1A08)"}}>{agingBatches.length}</div>
                 <div style={{fontSize:"0.52rem",color:"#8A6830",marginTop:"4px",letterSpacing:"0.5px",textTransform:"uppercase"}}>قيد التعتيق</div>
               </div>
             </div>
@@ -1690,11 +1690,11 @@ function App(){
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
                 <div style={{background:"rgba(40,90,40,0.12)",border:"1px solid rgba(60,130,60,0.28)",borderRadius:"12px",padding:"12px",textAlign:"center"}}>
                   <div style={{fontSize:"0.55rem",color:"#4A8040",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"4px"}}>سعر بيع المل</div>
-                  <div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)",-WebkitBackgroundClip:"text",-WebkitTextFillColor:"transparent",backgroundClip:"text",fontSize:"1.2rem"}}>{sellMl.toFixed(1)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></div>
+                  <div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)",fontSize:"1.2rem"}}>{sellMl.toFixed(1)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></div>
                 </div>
                 <div style={{background:"rgba(40,90,40,0.12)",border:"1px solid rgba(60,130,60,0.28)",borderRadius:"12px",padding:"12px",textAlign:"center"}}>
                   <div style={{fontSize:"0.55rem",color:"#4A8040",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"4px"}}>سعر بيع الدفعة</div>
-                  <div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)",-WebkitBackgroundClip:"text",-WebkitTextFillColor:"transparent",backgroundClip:"text",fontSize:"1.2rem"}}>{(sellMl*vol).toFixed(0)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></div>
+                  <div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)",fontSize:"1.2rem"}}>{(sellMl*vol).toFixed(0)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></div>
                 </div>
               </div>
               <div style={{marginTop:"9px",textAlign:"center",fontSize:"0.68rem",color:"#7A5820"}}>الربح الصافي للدفعة: <span className="mono" style={{color:"#68B068",fontWeight:"600"}}>{(sellMl*vol-cost).toFixed(0)} ريال</span></div>
@@ -1751,10 +1751,10 @@ function App(){
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"14px"}}>
             <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>قيمة المخزون</div><div className="p-num">{totalInvValue.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
             <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>إجمالي المشتريات</div><div className="p-num">{totalPurchaseSpend.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>دفعات مُنتجة</div><div className="p-num" style={{background:"linear-gradient(135deg,#6888C8,#4868A8)",-WebkitBackgroundClip:"text",-WebkitTextFillColor:"transparent",backgroundClip:"text"}}>{totalProduced}</div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>دفعات مباعة</div><div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)",-WebkitBackgroundClip:"text",-WebkitTextFillColor:"transparent",backgroundClip:"text"}}>{totalSold}</div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>إجمالي الإيرادات</div><div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)",-WebkitBackgroundClip:"text",-WebkitTextFillColor:"transparent",backgroundClip:"text"}}>{totalRevenue.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
-            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>الربح الصافي</div><div className="p-num" style={{background:netProfit>=0?"linear-gradient(135deg,#68B068,#48904A)":"linear-gradient(135deg,#C06868,#A04848)",-WebkitBackgroundClip:"text",-WebkitTextFillColor:"transparent",backgroundClip:"text"}}>{netProfit.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
+            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>دفعات مُنتجة</div><div className="p-num" style={{background:"linear-gradient(135deg,#6888C8,#4868A8)"}}>{totalProduced}</div></div>
+            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>دفعات مباعة</div><div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)"}}>{totalSold}</div></div>
+            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>إجمالي الإيرادات</div><div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)"}}>{totalRevenue.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
+            <div className="stat-card"><div style={{fontSize:"0.55rem",color:"#7A5820",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"5px"}}>الربح الصافي</div><div className="p-num" style={{background:netProfit>=0?"linear-gradient(135deg,#68B068,#48904A)":"linear-gradient(135deg,#C06868,#A04848)"}}>{netProfit.toFixed(0)}<span style={{fontSize:"0.7rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div></div>
           </div>
 
           {topRecipe&&<div className="glass" style={{background:"linear-gradient(rgba(14,8,2,0.85),rgba(14,8,2,0.85)) padding-box,linear-gradient(135deg,rgba(201,168,76,0.45),rgba(100,60,5,0.20),rgba(201,168,76,0.45)) border-box",border:"1.5px solid transparent",padding:"14px 16px",marginBottom:"14px"}}>
