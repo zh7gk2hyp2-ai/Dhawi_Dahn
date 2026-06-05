@@ -1550,8 +1550,8 @@ async function initFirebase(){
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
     if(!fbDb){
       fbDb=firebase.firestore();
-      // ForceLongPolling bypasses WebSocket (blocked on many mobile networks in GCC)
-      fbDb.settings({experimentalForceLongPolling:true, merge:true});
+      // SDK v12: ForceLongPolling removed — use AutoDetect (handles GCC network blocks)
+      fbDb.settings({experimentalAutoDetectLongPolling:true});
       // enable offline persistence — await so cache is ready before first read
       await fbDb.enablePersistence({synchronizeTabs:true}).catch(()=>{});
       listenCloud();
