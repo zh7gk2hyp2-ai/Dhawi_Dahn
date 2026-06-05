@@ -299,6 +299,29 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   border:1px solid rgba(50,130,52,0.28);border-radius:18px;padding:16px;margin-bottom:12px;
   animation:fadeUp 0.4s ease both;
 }
+/* ── Customer Store ── */
+.pkg-card{
+  transition:transform 0.38s cubic-bezier(0.22,1,0.36,1),box-shadow 0.38s ease;
+  cursor:pointer;
+  background:linear-gradient(160deg,rgba(18,11,3,0.92),rgba(8,4,1,0.97)) padding-box,
+             linear-gradient(135deg,rgba(201,168,76,0.42),rgba(60,35,5,0.18),rgba(201,168,76,0.42)) border-box;
+  border:1.5px solid transparent;border-radius:20px;overflow:hidden;position:relative;
+}
+.pkg-card:hover{
+  transform:perspective(640px) rotateY(10deg) rotateX(-4deg) translateY(-6px);
+  box-shadow:18px 14px 48px rgba(0,0,0,0.72),-3px -2px 20px rgba(201,168,76,0.10);
+}
+.pkg-top-bar{height:6px;background:linear-gradient(90deg,rgba(201,168,76,0.0),rgba(201,168,76,0.55),rgba(201,168,76,0.0));}
+.pkg-badge{position:absolute;top:10px;right:10px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.28);border-radius:20px;padding:2px 8px;font-size:0.52rem;color:rgba(201,168,76,0.70);letter-spacing:0.4px;text-transform:uppercase;font-family:'Cormorant Garamond',serif;font-style:italic;}
+/* ── Cart Overlay ── */
+.cart-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.78);backdrop-filter:blur(10px);}
+.cart-sheet{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+  background:#08050F;border-top:1px solid rgba(201,168,76,0.22);border-radius:24px 24px 0 0;
+  padding:20px 18px 40px;max-height:82vh;overflow-y:auto;}
+.cart-sheet-handle{width:36px;height:4px;background:rgba(255,255,255,0.10);border-radius:2px;margin:0 auto 18px;}
+.cart-item-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+/* Barcode */
+.barcode{display:flex;align-items:flex-end;gap:0;height:28px;}
 .expiry-row{
   display:flex;justify-content:space-between;align-items:center;
   padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.78rem;
@@ -794,6 +817,9 @@ function App(){
   const [catalogGender,setCatalogGender]=useState("الكل");
   const [catalogView,setCatalogView]=useState(null);
   const [recipePrices,setRecipePrices]=useState(()=>lsGet("dw_rprices",{}));
+  const [cartItems,setCartItems]=useState([]);
+  const [showCart,setShowCart]=useState(false);
+  const [showCustomerStore,setShowCustomerStore]=useState(false);
   const [qrRecipe,setQrRecipe]=useState(null);
   const [showShopList,setShowShopList]=useState(false);
   const [shopCart,setShopCart]=useState(()=>lsGet("dw_shopcart",[]));
@@ -868,6 +894,44 @@ function App(){
   const recipeScale=r=>BATCH[batchUnit]/recipeBaseVol(r);
   const recipeCost=r=>{const sc=recipeScale(r);return r.ing.reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a*sc:0);},0);};
   const canMake=r=>{const sc=recipeScale(r);return r.ing.every(([id,a])=>{const ing=getIng(id);return ing&&ing.stock>=a*sc;});};
+
+  // ── cart & store ─────────────────────────────────────────────
+  const storePrice=r=>Math.ceil(recipeCost(r)*profitMult/5)*5;
+  const addToCart=(r,e)=>{e&&e.stopPropagation();const price=storePrice(r);setCartItems(p=>{const ex=p.find(i=>i.id===r.id);return ex?p.map(i=>i.id===r.id?{...i,qty:i.qty+1}:i):[...p,{id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,stability:r.stability,price,vol:BATCH[batchUnit],batchName:BATCH_NAME[batchUnit]}];});show(`🛒 ${r.name} أُضيف للسلة`);};
+  const removeFromCart=id=>setCartItems(p=>p.filter(i=>i.id!==id));
+  const updateQty=(id,d)=>setCartItems(p=>p.map(i=>i.id===id?{...i,qty:Math.max(1,i.qty+d)}:i));
+  const cartCount=cartItems.reduce((s,i)=>s+i.qty,0);
+  const cartTotal=cartItems.reduce((s,i)=>s+i.price*i.qty,0);
+  const mkBarcode=seed=>{const r=n=>{let x=n;x=((x>>16)^x)*0x45d9f3b;x=((x>>16)^x)*0x45d9f3b;return((x>>16)^x)>>>0;};return Array.from({length:38},(_,i)=>{const v=r(seed*37+i);return{w:(v%3)+1,dark:!!(v&4)};});};
+  const printInvoice=()=>{
+    const now=new Date();const invNo="DW-"+String(Date.now()).slice(-6);
+    const dateStr=now.toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
+    const rows=cartItems.map(i=>`<tr><td>${i.icon} ${i.name}<br><span style="font-size:9px;color:#888">${i.batchName||""}</span></td><td style="text-align:center">${i.qty}</td><td style="text-align:left">${i.price}</td><td style="text-align:left;font-weight:700">${i.price*i.qty}</td></tr>`).join("");
+    const w=window.open("","_blank","width=390,height=720");
+    w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>فاتورة Atelier Dhawi</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 22px;max-width:340px;margin:0 auto;font-size:13px}
+    .hdr{text-align:center;padding-bottom:14px;margin-bottom:14px;border-bottom:3px double #000}
+    .brand{font-size:22px;font-weight:900;letter-spacing:5px}
+    .sub{font-size:9px;letter-spacing:7px;color:#555;margin-top:3px}
+    .meta{display:flex;justify-content:space-between;font-size:10px;color:#555;margin-bottom:14px}
+    table{width:100%;border-collapse:collapse}th{padding:5px 3px;border-bottom:2px solid #000;font-size:11px}
+    td{padding:7px 3px;border-bottom:1px dashed #ccc;font-size:12px;vertical-align:top}
+    .tot{margin-top:12px;border-top:2px solid #000;padding-top:10px}
+    .tot-row{display:flex;justify-content:space-between;padding:3px 0}
+    .tot-final{font-size:16px;font-weight:900;border-top:1px dashed #000;margin-top:6px;padding-top:6px}
+    .ftr{text-align:center;margin-top:20px;padding-top:14px;border-top:1px dashed #aaa;font-size:9px;color:#777;letter-spacing:2px;line-height:1.9}
+    .stars{color:#C9A84C;font-size:15px;letter-spacing:4px}</style></head><body>
+    <div class="hdr"><div class="brand">ATELIER DHAWI</div><div class="sub">دهن العود الفاخر</div><div style="font-size:10px;margin-top:6px;color:#444">${dateStr}</div></div>
+    <div class="meta"><span>فاتورة: ${invNo}</span><span>ضريبة: 300000000000003</span></div>
+    <table><thead><tr><th style="text-align:right">المنتج</th><th>ك</th><th style="text-align:left">السعر</th><th style="text-align:left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="tot">
+      <div class="tot-row"><span>المجموع</span><span>${cartTotal} ر</span></div>
+      <div class="tot-row" style="color:#777;font-size:11px"><span>ضريبة القيمة المضافة 15%</span><span>${Math.round(cartTotal*0.15)} ر</span></div>
+      <div class="tot-row tot-final"><span>الإجمالي شامل الضريبة</span><span>${Math.round(cartTotal*1.15)} ر</span></div>
+    </div>
+    <div class="ftr"><div class="stars">★ ★ ★ ★ ★</div><div>شكراً لتعاملكم معنا</div><div>Atelier Dhawi · Private Oud Lab</div><div style="margin-top:8px;direction:ltr;font-size:8px;letter-spacing:0">${invNo} — ${cartItems.length} منتج</div></div>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+  };
 
   const produce=r=>{
     if(!canMake(r))return;
@@ -1661,13 +1725,18 @@ function App(){
         {/* ══════════════ RECIPES ══════════════ */}
         {tab==="recipes"&&!selectedRecipe&&!showAddRec&&!showCompare&&!showMixer&&<div className="fade">
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
-            <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700"}}>{catalogMode?"كتالوج العطور":`الوصفات (${recipes.length})`}</h2>
+            <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700"}}>{showCustomerStore?"🛍 متجر الزبائن":catalogMode?"كتالوج العطور":`الوصفات (${recipes.length})`}</h2>
             <div style={{display:"flex",gap:"5px",flexWrap:"wrap",justifyContent:"flex-end"}}>
-              <button className="btn-ghost" style={catalogMode?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>setCatalogMode(c=>!c)}>📖 كتالوج</button>
-              {!catalogMode&&<button className="btn-ghost" onClick={()=>setShowMixer(true)}>🧪 خلط</button>}
-              {!catalogMode&&compareIds.length===2&&<button className="btn-ghost" onClick={()=>setShowCompare(true)}>⚖️ قارن</button>}
-              {!catalogMode&&<button className="btn-ghost" onClick={()=>setShowAddRec(true)}>+ وصفة</button>}
-              {!catalogMode&&<button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:aiKey?"#80a0e0":"#5a5a7a"}} onClick={generateAIRecipe}>🤖 AI</button>}
+              {cartCount>0&&<button className="btn-ghost" style={{borderColor:"rgba(201,168,76,0.5)",color:"#E8C870",position:"relative",paddingInlineEnd:"18px"}} onClick={()=>setShowCart(true)}>
+                🛒
+                <span style={{position:"absolute",top:"-5px",right:"-5px",background:"#C9A84C",color:"#06040C",borderRadius:"50%",width:"17px",height:"17px",fontSize:"0.60rem",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"900",lineHeight:1}}>{cartCount}</span>
+              </button>}
+              <button className="btn-ghost" style={showCustomerStore?{background:"rgba(201,168,76,0.18)",color:"#E8C870",borderColor:"rgba(201,168,76,0.5)"}:{}} onClick={()=>{setShowCustomerStore(s=>!s);setCatalogMode(false);}}>🛍 متجر</button>
+              {!showCustomerStore&&<button className="btn-ghost" style={catalogMode?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>setCatalogMode(c=>!c)}>📖 كتالوج</button>}
+              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" onClick={()=>setShowMixer(true)}>🧪 خلط</button>}
+              {!catalogMode&&!showCustomerStore&&compareIds.length===2&&<button className="btn-ghost" onClick={()=>setShowCompare(true)}>⚖️ قارن</button>}
+              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" onClick={()=>setShowAddRec(true)}>+ وصفة</button>}
+              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:aiKey?"#80a0e0":"#5a5a7a"}} onClick={generateAIRecipe}>🤖 AI</button>}
             </div>
           </div>
           {compareIds.length>0&&<div style={{background:"rgba(80,120,200,0.12)",border:"1px solid rgba(80,120,200,0.3)",borderRadius:"10px",padding:"8px 12px",marginBottom:"10px",fontSize:"0.75rem",color:"#80a0e0"}}>
@@ -1723,8 +1792,69 @@ function App(){
               <select className="inp" value={catalogGender} onChange={e=>setCatalogGender(e.target.value)} style={{flex:1,background:"#0C0601",fontSize:"0.78rem"}}>{["الكل","للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select>
             </div>
           </div>}
+          {/* ── customer store ── */}
+          {showCustomerStore&&(()=>{
+            const storeRecipes=sortedRecipes.filter(r=>canMake(r)||true); // show all
+            return(<div className="fade">
+              <div style={{textAlign:"center",marginBottom:"16px"}}>
+                <div style={{fontSize:"0.45rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.7em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"4px"}}>Atelier Dhawi · Private Collection</div>
+                <div style={{fontSize:"0.72rem",color:"rgba(255,255,255,0.28)"}}>اختر منتجاتك — أضفها للسلة — اطلب فاتورتك</div>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px"}}>
+                {storeRecipes.map(r=>{
+                  const price=storePrice(r);
+                  const inCart=cartItems.find(i=>i.id===r.id);
+                  const bc=mkBarcode(r.id.split("").reduce((a,c)=>a+c.charCodeAt(0),0));
+                  const pI=r.ing.filter(([id])=>!NOTES_CARRIER.has(id));
+                  const tot=pI.reduce((s,[,a])=>s+a,0)||1;
+                  const tpct=Math.round(pI.filter(([id])=>noteTier(id)==="top").reduce((s,[,a])=>s+a,0)/tot*100);
+                  const mpct=Math.round(pI.filter(([id])=>noteTier(id)==="mid").reduce((s,[,a])=>s+a,0)/tot*100);
+                  const bpct=100-tpct-mpct;
+                  return(
+                  <div key={r.id} className="pkg-card" onClick={()=>addToCart(r)} style={{userSelect:"none"}}>
+                    <div className="pkg-top-bar"/>
+                    <div style={{padding:"14px 12px 12px",textAlign:"center"}}>
+                      <div className="pkg-badge">{r.season}</div>
+                      <div style={{fontSize:"2.6rem",filter:"drop-shadow(0 4px 16px rgba(0,0,0,0.6))",marginBottom:"6px",marginTop:"8px"}}>{r.icon}</div>
+                      <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"0.40rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.35em",textTransform:"uppercase",marginBottom:"3px"}}>ATELIER DHAWI</div>
+                      <div style={{fontSize:"0.82rem",fontWeight:"800",color:"#F0E6D0",letterSpacing:"-0.01em",lineHeight:1.25,marginBottom:"6px"}}>{r.name}</div>
+                      {/* layer mini bar */}
+                      <div style={{display:"flex",height:"3px",borderRadius:"2px",overflow:"hidden",gap:"1px",marginBottom:"8px"}}>
+                        <div style={{flex:tpct||0.1,background:"rgba(232,200,112,0.75)"}}/>
+                        <div style={{flex:mpct||0.1,background:"rgba(200,120,190,0.65)"}}/>
+                        <div style={{flex:bpct||0.1,background:"rgba(190,140,70,0.60)"}}/>
+                      </div>
+                      <div style={{fontSize:"0.48rem",color:"rgba(255,255,255,0.22)",marginBottom:"10px",direction:"ltr"}}>{r.gender} · {r.stability}</div>
+                      {/* barcode */}
+                      <div style={{display:"flex",justifyContent:"center",marginBottom:"6px"}}>
+                        <div className="barcode">
+                          {bc.map((b,i)=><div key={i} style={{width:`${b.w}px`,height:b.dark?"100%":"60%",background:b.dark?"rgba(201,168,76,0.85)":"transparent",alignSelf:"flex-end"}}/>)}
+                        </div>
+                      </div>
+                      {/* price + add */}
+                      <div style={{borderTop:"1px solid rgba(201,168,76,0.12)",paddingTop:"10px",marginTop:"2px"}}>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.15rem",fontWeight:"700",background:"linear-gradient(135deg,#E8C870,#A07830)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",marginBottom:"6px"}}>{price}<span style={{fontSize:"0.60rem",opacity:0.7}}> ر</span></div>
+                        <div style={{fontSize:"0.48rem",color:"rgba(255,255,255,0.22)",marginBottom:"8px"}}>{BATCH_NAME[batchUnit]}</div>
+                        <button onClick={e=>addToCart(r,e)} style={{
+                          width:"100%",padding:"7px 4px",borderRadius:"20px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700",
+                          background:inCart?"rgba(201,168,76,0.22)":"rgba(201,168,76,0.10)",
+                          border:`1px solid ${inCart?"rgba(201,168,76,0.55)":"rgba(201,168,76,0.22)"}`,
+                          color:inCart?"#E8C870":"rgba(201,168,76,0.65)"
+                        }}>{inCart?`✓ في السلة (${inCart.qty})`:"+ أضف للسلة"}</button>
+                      </div>
+                    </div>
+                  </div>);
+                })}
+              </div>
+              {cartCount>0&&<div style={{marginTop:"16px",textAlign:"center"}}>
+                <button className="btn-gold" style={{width:"100%",padding:"14px"}} onClick={()=>setShowCart(true)}>
+                  🛒 السلة — {cartCount} منتج · {cartTotal} ريال
+                </button>
+              </div>}
+            </div>);
+          })()}
           {/* catalog mode — luxury cards, no prices */}
-          {catalogMode&&(()=>{
+          {catalogMode&&!showCustomerStore&&(()=>{
             const q=catalogSearch.trim().toLowerCase();
             const filtered=sortedRecipes.filter(r=>
               (catalogSeason==="الكل"||r.season===catalogSeason)&&
@@ -2673,6 +2803,60 @@ function App(){
         </div>
       </div>}
 
+      {/* ── Cart Overlay ── */}
+      {showCart&&<div className="cart-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowCart(false);}}>
+        <div className="cart-sheet">
+          <div className="cart-sheet-handle"/>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"16px"}}>
+            <div>
+              <div style={{fontSize:"1.05rem",fontWeight:"800",color:"#D4AF37"}}>🛒 السلة</div>
+              <div style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.30)",marginTop:"2px"}}>{cartCount} منتج</div>
+            </div>
+            <button onClick={()=>setCartItems([])} style={{background:"rgba(200,60,60,0.10)",border:"1px solid rgba(200,60,60,0.22)",color:"rgba(200,100,100,0.70)",borderRadius:"8px",padding:"4px 10px",fontSize:"0.70rem",cursor:"pointer"}}>مسح الكل</button>
+          </div>
+          {cartItems.length===0
+            ?<div style={{textAlign:"center",padding:"32px",color:"rgba(255,255,255,0.22)",fontSize:"0.85rem"}}>السلة فارغة</div>
+            :<div>
+              {cartItems.map(i=>(
+                <div key={i.id} className="cart-item-row">
+                  <div style={{fontSize:"1.6rem",flexShrink:0}}>{i.icon}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:"0.82rem",fontWeight:"700",color:"#F0E6D0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{i.name}</div>
+                    <div style={{fontSize:"0.58rem",color:"rgba(201,168,76,0.45)",marginTop:"2px"}}>{i.batchName} · {i.season} · {i.gender}</div>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:"6px",flexShrink:0}}>
+                    <button onClick={()=>updateQty(i.id,-1)} style={{width:"24px",height:"24px",borderRadius:"50%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.10)",color:"#D4AF37",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>−</button>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.85rem",color:"#E8C870",minWidth:"16px",textAlign:"center"}}>{i.qty}</span>
+                    <button onClick={()=>updateQty(i.id,1)} style={{width:"24px",height:"24px",borderRadius:"50%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.10)",color:"#D4AF37",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>+</button>
+                  </div>
+                  <div style={{minWidth:"58px",textAlign:"left",flexShrink:0}}>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.85rem",fontWeight:"700",color:"#E8C870"}}>{i.price*i.qty}<span style={{fontSize:"0.55rem",opacity:0.6}}> ر</span></div>
+                    <button onClick={()=>removeFromCart(i.id)} style={{background:"none",border:"none",color:"rgba(200,100,100,0.50)",cursor:"pointer",fontSize:"0.65rem",padding:0,marginTop:"2px"}}>✕ حذف</button>
+                  </div>
+                </div>
+              ))}
+              <div style={{borderTop:"1px solid rgba(201,168,76,0.15)",marginTop:"14px",paddingTop:"14px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:"4px",fontSize:"0.72rem",color:"rgba(255,255,255,0.35)"}}>
+                  <span>المجموع</span><span style={{fontFamily:"'IBM Plex Mono',monospace"}}>{cartTotal} ر</span>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:"14px",fontSize:"0.68rem",color:"rgba(255,255,255,0.25)"}}>
+                  <span>ضريبة القيمة المضافة 15%</span><span style={{fontFamily:"'IBM Plex Mono',monospace"}}>{Math.round(cartTotal*0.15)} ر</span>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:"16px",background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.20)",borderRadius:"12px",padding:"10px 14px"}}>
+                  <span style={{fontSize:"0.78rem",color:"rgba(201,168,76,0.70)"}}>الإجمالي شامل الضريبة</span>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.25rem",fontWeight:"700",color:"#E8C870"}}>{Math.round(cartTotal*1.15)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></span>
+                </div>
+                <button className="btn-gold" style={{width:"100%",padding:"14px",fontSize:"0.88rem"}} onClick={()=>{printInvoice();setShowCart(false);}}>
+                  🧾 طباعة الفاتورة
+                </button>
+                <button className="btn-ghost" style={{width:"100%",marginTop:"8px"}} onClick={()=>setShowCart(false)}>
+                  متابعة التسوق
+                </button>
+              </div>
+            </div>}
+        </div>
+      </div>}
+
       <div className="bottom-nav">
         {[
           {id:"home",icon:"🏠",label:"الرئيسية"},
@@ -2682,7 +2866,7 @@ function App(){
           {id:"stats",icon:"📊",label:"إحصائيات"},
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);setShowCustomerStore(false);setShowCart(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon">{t.icon}</span>
             {t.label}
           </button>
