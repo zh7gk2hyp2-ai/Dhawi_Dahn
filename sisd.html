@@ -6,7 +6,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="عهدة سيسد">
+<meta name="apple-mobile-web-app-title" content="سيسد">
 <meta name="theme-color" content="#4d704c">
 <title>إدارة عهدة مشروع تأهيل سيسد — جامعة الطائف</title>
 <style>
@@ -679,7 +679,7 @@ const CUSTODIANS = [
     id:'c1', num:1,
     phase:'الصيانة العامة للمبنى',
     scope:'أعمال الهدم واللياسة والدهانات والعزل والأسقف',
-    custody:150000, color:'#4d704c', bg:'#edf3ec', tc:'#3d5c3c',
+    custody:150000, color:'#2563eb', bg:'#eff6ff', tc:'#1d4ed8',
     items:[
       {num:'1.1', text:'أعمال الهدم والإزالة والمباني'},
       {num:'1.2', text:'أعمال اللياسة الداخلية'},
@@ -692,7 +692,7 @@ const CUSTODIANS = [
     id:'c2', num:2,
     phase:'صيانة وتطوير التجهيزات',
     scope:'الأبواب والزجاج والسيراميك والأرضيات والديكور',
-    custody:200000, color:'#6c926a', bg:'#eef4ed', tc:'#4d704c',
+    custody:200000, color:'#7c3aed', bg:'#f5f3ff', tc:'#5b21b6',
     items:[
       {num:'2.1', text:'أعمال الأبواب للمكاتب والحمامات ودورات المياه'},
       {num:'2.2', text:'الأعمال الزجاجية'},
@@ -709,7 +709,7 @@ const CUSTODIANS = [
     id:'c3', num:3,
     phase:'الأعمال الصحية',
     scope:'دورات المياه وغرف الخدمات المشتركة وملحقاتها',
-    custody:100000, color:'#be9647', bg:'#fdf6e3', tc:'#8a6b2a',
+    custody:100000, color:'#0891b2', bg:'#e0f7fa', tc:'#0e7490',
     items:[
       {num:'3.1', text:'توريد وتركيب المراحيض وأطقم دورات المياه'},
       {num:'3.2', text:'أحواض الغسيل المعلقة'},
@@ -726,7 +726,7 @@ const CUSTODIANS = [
     id:'c4', num:4,
     phase:'الأعمال الكهربائية وملحقاتها',
     scope:'الإنارة والإنذار والتوصيلات والشبكات',
-    custody:200000, color:'#d5b254', bg:'#fdf6e3', tc:'#8a6b2a',
+    custody:200000, color:'#d97706', bg:'#fffbeb', tc:'#b45309',
     items:[
       {num:'4.1', text:'نظام إنذار الحريق الكامل'},
       {num:'4.2', text:'العلب الأرضية (طاقة + داتا)'},
@@ -743,7 +743,7 @@ const CUSTODIANS = [
     id:'c5', num:5,
     phase:'الكاميرات وأنظمة المراقبة',
     scope:'كاميرات IP وجهاز التسجيل وشاشة المراقبة والتمديدات',
-    custody:30000, color:'#3d5c3c', bg:'#e8f0e8', tc:'#2a3f2a',
+    custody:30000, color:'#e11d48', bg:'#fff1f2', tc:'#be123c',
     items:[
       {num:'5.1', text:'كاميرات IP (8 ميغابيكسل)'},
       {num:'5.2', text:'جهاز تسجيل NVR'},
@@ -877,7 +877,7 @@ function renderHeader(){
       <button class="h-share-btn" onclick="openShare()">📤 تقرير</button>
     </div>
     <div class="h-title-row">
-      <div class="h-title">إدارة العهدات الخمس <span id="sync-badge" class="sync-badge" style="display:none"></span></div>
+      <div class="h-title">إدارة العهدة <span id="sync-badge" class="sync-badge" style="display:none"></span></div>
     </div>
     <div class="stats-row">
       <div class="stat-box">
@@ -920,48 +920,54 @@ function renderAlerts(){
 function buildDonut(){
   const R=44, cx=56, cy=56, stroke=14;
   const circumference=2*Math.PI*R;
-  const totalBudget=TOTAL_BUDGET;
+  const spent=totalSpent();
+  const spentP=pct(spent,TOTAL_BUDGET);
+  const isEmpty=spent===0;
+
+  // build segments: show spending if data exists, else show budget allocation
   let offset=0;
   const segments=CUSTODIANS.map(c=>{
-    const share=c.custody/totalBudget;
+    const base=isEmpty?c.custody:custSpent(c.id);
+    const share=base/(isEmpty?TOTAL_BUDGET:Math.max(spent,1));
     const dash=share*circumference;
     const seg=`<circle cx="${cx}" cy="${cy}" r="${R}"
       fill="none" stroke="${c.color}" stroke-width="${stroke}"
-      stroke-dasharray="${dash-1} ${circumference-(dash-1)}"
+      stroke-dasharray="${Math.max(dash-1,0)} ${circumference-Math.max(dash-1,0)}"
       stroke-dashoffset="${-offset+circumference/4}"
-      transform="rotate(-90 ${cx} ${cy})"
-      style="transition:stroke-dasharray .6s"/>`;
+      style="transition:all .8s cubic-bezier(.4,0,.2,1)"/>`;
     offset+=dash;
     return seg;
   }).join('');
 
-  const spent=totalSpent();
-  const spentP=pct(spent,TOTAL_BUDGET);
-
   const legend=CUSTODIANS.map(c=>{
     const s=custSpent(c.id);
-    const p=pct(s,totalBudget);
+    const p=pct(s,c.custody);
     return `<div class="dl-row">
       <div class="dl-dot" style="background:${c.color}"></div>
-      <div class="dl-name">${c.phase}</div>
-      <div class="dl-pct">${fmtN(c.custody)}</div>
+      <div class="dl-name">${c.phase.replace('الأعمال ','').replace('صيانة وتطوير ','')}</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0">
+        <span style="font-size:10px;font-weight:800;color:var(--text)">${fmtN(c.custody)}</span>
+        ${s>0?`<span style="font-size:9px;color:${c.color};font-weight:700">${p}% مصروف</span>`:''}
+      </div>
     </div>`;
   }).join('');
 
+  const centerContent=isEmpty
+    ? `<div style="font-size:11px;font-weight:800;color:var(--green2);line-height:1.3">توزيع<br>الميزانية</div>`
+    : `<div class="donut-center-pct">${spentP}%</div><div class="donut-center-lbl">مصروف</div>`;
+
   return `<div class="donut-card">
     <div class="donut-title">
-      <span>توزيع الميزانية على التخصصات</span>
-      <span style="color:var(--green);font-size:11px">${fmtN(TOTAL_BUDGET)} ر.س</span>
+      <span>${isEmpty?'توزيع الميزانية على التخصصات':'نسبة الصرف من كل تخصص'}</span>
+      <span style="color:var(--green2);font-size:10px;font-weight:700;background:var(--light);padding:3px 8px;border-radius:99px;border:1px solid var(--border)">${fmtN(TOTAL_BUDGET)} ر.س</span>
     </div>
+    ${isEmpty?`<div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding:6px 8px;background:var(--gold-light);border-radius:var(--radius-xs);border:1px solid var(--gold-pale)">📊 الدائرة تُظهر توزيع الميزانية — ستتغير تلقائياً عند تسجيل أول صرف</div>`:''}
     <div class="donut-wrap">
       <div class="donut-svg-wrap">
         <svg width="112" height="112" viewBox="0 0 112 112">${segments}
           <circle cx="${cx}" cy="${cy}" r="${R-stroke/2-2}" fill="white"/>
         </svg>
-        <div class="donut-center">
-          <div class="donut-center-pct">${spentP}%</div>
-          <div class="donut-center-lbl">مصروف</div>
-        </div>
+        <div class="donut-center">${centerContent}</div>
       </div>
       <div class="donut-legend">${legend}</div>
     </div>
@@ -1648,7 +1654,7 @@ function renderCfg(){
       <div>
         <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:.8px">جامعة الطائف — مركز البحوث والاستشارات</div>
         <div style="font-size:12px;font-weight:800;color:var(--gold);margin-top:2px">مشروع تأهيل وصيانة مقر سيسد</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:2px">الإصدار 2.0 · إدارة العهدات الخمس</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:2px">الإصدار 2.0 · إدارة العهدة</div>
       </div>
     </div>
 
