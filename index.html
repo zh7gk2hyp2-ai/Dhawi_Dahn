@@ -2014,16 +2014,18 @@ function App(){
                 <span className="mono" style={{color:"#C9A84C",fontWeight:"600",fontSize:"0.88rem",minWidth:"32px"}}>×{profitMult}</span>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
-                <div style={{background:"rgba(40,90,40,0.12)",border:"1px solid rgba(60,130,60,0.28)",borderRadius:"12px",padding:"12px",textAlign:"center"}}>
-                  <div style={{fontSize:"0.55rem",color:"#4A8040",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"4px"}}>سعر بيع المل</div>
-                  <div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)",fontSize:"1.2rem"}}>{sellMl.toFixed(1)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></div>
+                <div style={{background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.22)",borderRadius:"12px",padding:"14px 12px",textAlign:"center",position:"relative",overflow:"hidden"}}>
+                  <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.35),transparent)"}}/>
+                  <div style={{fontSize:"0.50rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.5px",textTransform:"uppercase",marginBottom:"5px",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>سعر بيع المل</div>
+                  <div className="p-num" style={{fontSize:"1.55rem",lineHeight:1}}>{sellMl.toFixed(1)}<span style={{fontSize:"0.60rem",opacity:0.55,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div>
                 </div>
-                <div style={{background:"rgba(40,90,40,0.12)",border:"1px solid rgba(60,130,60,0.28)",borderRadius:"12px",padding:"12px",textAlign:"center"}}>
-                  <div style={{fontSize:"0.55rem",color:"#4A8040",letterSpacing:"0.4px",textTransform:"uppercase",marginBottom:"4px"}}>سعر بيع الدفعة</div>
-                  <div className="p-num" style={{background:"linear-gradient(135deg,#68B068,#48904A)",fontSize:"1.2rem"}}>{(sellMl*vol).toFixed(0)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></div>
+                <div style={{background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.22)",borderRadius:"12px",padding:"14px 12px",textAlign:"center",position:"relative",overflow:"hidden"}}>
+                  <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.35),transparent)"}}/>
+                  <div style={{fontSize:"0.50rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.5px",textTransform:"uppercase",marginBottom:"5px",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>سعر بيع الدفعة</div>
+                  <div className="p-num" style={{fontSize:"1.55rem",lineHeight:1}}>{(sellMl*vol).toFixed(0)}<span style={{fontSize:"0.60rem",opacity:0.55,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div>
                 </div>
               </div>
-              <div style={{marginTop:"9px",textAlign:"center",fontSize:"0.68rem",color:"#7A5820"}}>الربح الصافي للدفعة: <span className="mono" style={{color:"#68B068",fontWeight:"600"}}>{(sellMl*vol-cost).toFixed(0)} ريال</span></div>
+              <div style={{marginTop:"9px",textAlign:"center",fontSize:"0.68rem",color:"rgba(255,255,255,0.35)"}}>الربح الصافي للدفعة: <span className="mono" style={{color:"#6AAA48",fontWeight:"700"}}>{(sellMl*vol-cost).toFixed(0)} ريال</span></div>
             </div>
 
             <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>🏺 المكونات ({BATCH_NAME[batchUnit]})</h3>
