@@ -730,6 +730,8 @@ const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbu
 const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone']);
 const NOTES_CARRIER=new Set(['dpg','jojoba','benzyl']); // diluents — excluded from layer ratio
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
+// scale a number and format it cleanly
+const fmtAmt=v=>v>=10?Math.round(v)+"":+(v.toFixed(2))+"";
 const NOTE_LABEL={top:"🔝 قمة",mid:"💫 قلب",base:"🪨 قاعدة"};
 
 // ─── aging: parse stability ("7 أيام"→7, "24 ساعة"→1) ───────────
@@ -983,7 +985,8 @@ function App(){
   const printRecipe=r=>{
     const sc=recipeScale(r);const cost=recipeCost(r);const vol=BATCH[batchUnit];
     const lines=r.ing.map(([id,a])=>{const ing=getIng(id);const need=a*sc;return `${ing?.name||id}: ${need.toFixed(2)} ${ing?.unit||''} (${(ing?ing.unitCost*need:0).toFixed(2)} ر)`;}).join('\n');
-    const steps=r.steps.map((s,i)=>`${i+1}. ${s}`).join('\n');
+    const scStep=txt=>txt.replace(/(\d+(?:\.\d+)?)\s*(مل|جم)/g,(_,n,u)=>`${fmtAmt(parseFloat(n)*sc)}${u}`);
+    const steps=r.steps.map((s,i)=>`${i+1}. ${scStep(s)}`).join('\n');
     const txt=`ضاوي دهن العود — ${r.name} ${r.icon}\n${'='.repeat(35)}\n${r.desc}\n\nالدفعة: ${BATCH_NAME[batchUnit]} (${vol} مل)\nالتكلفة: ${cost.toFixed(1)} ريال\n\nالمكونات:\n${lines}\n\nالخطوات:\n${steps}\n\nالثبات: ${r.stability} | ${r.gender} | ${r.season}`;
     const w=window.open('','_blank','width=600,height=700');
     w.document.write(`<html dir="rtl"><body style="font-family:Arial;padding:24px;white-space:pre-wrap;font-size:14px;direction:rtl;">${txt.replace(/</g,'&lt;')}</body></html>`);
@@ -1920,6 +1923,17 @@ function App(){
         {tab==="recipes"&&selectedRecipe&&!showAddRec&&!showCompare&&!showMixer&&(()=>{
           const r=selectedRecipe;const sc=recipeScale(r);const cost=recipeCost(r);const vol=BATCH[batchUnit];
           const mlCost=cost/vol;const sellMl=mlCost*profitMult;
+          // render a step string with amounts scaled to current batch; highlights numbers in gold
+          const renderStep=txt=>{
+            const out=[];let last=0;
+            txt.replace(/(\d+(?:\.\d+)?)\s*(مل|جم)/g,(match,n,u,offset)=>{
+              if(offset>last)out.push(txt.slice(last,offset));
+              out.push(<mark key={offset} style={{background:"none",color:"#E8C870",fontWeight:"700"}}>{fmtAmt(parseFloat(n)*sc)}{u}</mark>);
+              last=offset+match.length;
+            });
+            if(last<txt.length)out.push(txt.slice(last));
+            return out;
+          };
           return <div className="fade">
             <div style={{display:"flex",gap:"6px",marginBottom:"4px"}}>
               <button className="btn-ghost" onClick={()=>setSelectedRecipe(null)}>← رجوع</button>
@@ -2019,7 +2033,7 @@ function App(){
             <div style={{background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"10px",padding:"8px",textAlign:"center",color:"#D4AF37",fontSize:"0.85rem",margin:"6px 0 12px",fontWeight:"700"}}>إجمالي الحجم: {vol} مل • التكلفة: {cost.toFixed(1)} ريال</div>
 
             <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>📝 الخطوات</h3>
-            {r.steps.map((s,i)=>(<div key={i} style={{display:"flex",gap:"8px",padding:"8px 11px",marginBottom:"4px",borderRadius:"10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)"}}><div style={{minWidth:"21px",height:"21px",borderRadius:"50%",background:"#D4AF37",color:"#1a0800",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.68rem",fontWeight:"700"}}>{i+1}</div><span style={{fontSize:"0.8rem",color:"#c8a46a"}}>{s}</span></div>))}
+            {r.steps.map((s,i)=>(<div key={i} style={{display:"flex",gap:"8px",padding:"8px 11px",marginBottom:"4px",borderRadius:"10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)"}}><div style={{minWidth:"21px",height:"21px",borderRadius:"50%",background:"#D4AF37",color:"#1a0800",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.68rem",fontWeight:"700"}}>{i+1}</div><span style={{fontSize:"0.8rem",color:"#c8a46a"}}>{renderStep(s)}</span></div>))}
 
             {!canMake(r)&&(()=>{
               const sc2=recipeScale(r);
