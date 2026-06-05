@@ -1743,7 +1743,7 @@ function App(){
             ⚖️ اختر وصفتين للمقارنة ({compareIds.length}/2) — {compareIds.length===2?"اضغط «قارن»":"اختر وصفة ثانية"}
             <button onClick={()=>setCompareIds([])} style={{background:"none",border:"none",color:"#e08080",cursor:"pointer",marginRight:"8px",fontSize:"0.75rem"}}>✕ إلغاء</button>
           </div>}
-          {!catalogMode&&<div style={{marginBottom:"10px"}}>
+          {!catalogMode&&!showCustomerStore&&<div style={{marginBottom:"10px"}}>
             {/* search */}
             <div style={{position:"relative",marginBottom:"8px"}}>
               <span style={{position:"absolute",right:"11px",top:"50%",transform:"translateY(-50%)",fontSize:"0.85rem",opacity:0.4,pointerEvents:"none"}}>🔍</span>
@@ -1773,7 +1773,7 @@ function App(){
               {filteredRecipes.length} وصفة — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);}}>مسح الفلاتر</span>
             </div>}
           </div>}
-          {suggestedRecipe&&!catalogMode&&<div className="suggest-card">
+          {suggestedRecipe&&!catalogMode&&!showCustomerStore&&<div className="suggest-card">
             <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{flex:1}}>
@@ -1796,9 +1796,17 @@ function App(){
           {showCustomerStore&&(()=>{
             const storeRecipes=sortedRecipes.filter(r=>canMake(r)||true); // show all
             return(<div className="fade">
-              <div style={{textAlign:"center",marginBottom:"16px"}}>
-                <div style={{fontSize:"0.45rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.7em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"4px"}}>Atelier Dhawi · Private Collection</div>
-                <div style={{fontSize:"0.72rem",color:"rgba(255,255,255,0.28)"}}>اختر منتجاتك — أضفها للسلة — اطلب فاتورتك</div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"14px"}}>
+                <div>
+                  <div style={{fontSize:"0.42rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>Atelier Dhawi · Private Collection</div>
+                  <div style={{fontSize:"0.68rem",color:"rgba(255,255,255,0.28)",marginTop:"2px"}}>اختر منتجاتك وأضفها للسلة</div>
+                </div>
+                {cartCount>0
+                  ?<button className="btn-gold" style={{padding:"8px 14px",fontSize:"0.72rem",borderRadius:"20px",whiteSpace:"nowrap"}} onClick={()=>setShowCart(true)}>
+                    🛒 السلة ({cartCount}) · {cartTotal} ر
+                  </button>
+                  :<div style={{fontSize:"0.62rem",color:"rgba(201,168,76,0.30)",fontStyle:"italic"}}>السلة فارغة</div>
+                }
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px"}}>
                 {storeRecipes.map(r=>{
