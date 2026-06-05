@@ -1289,10 +1289,10 @@ async function initFirebase(){
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
     if(!fbDb){
       fbDb=firebase.firestore();
-      // auto-detect: uses WebSocket if available, otherwise falls back to long-polling
-      fbDb.settings({experimentalAutoDetectLongPolling:true, merge:true});
-      // enable offline cache — errors silently if not supported (e.g. private mode)
-      fbDb.enablePersistence({synchronizeTabs:true}).catch(()=>{});
+      // ForceLongPolling bypasses WebSocket (blocked on many mobile networks in GCC)
+      fbDb.settings({experimentalForceLongPolling:true, merge:true});
+      // enable offline persistence — await so cache is ready before first read
+      await fbDb.enablePersistence({synchronizeTabs:true}).catch(()=>{});
       listenCloud();
     }
     await loadFromCloud();
@@ -1302,7 +1302,7 @@ async function initFirebase(){
     fbLastErr=e.code?`${e.code}: ${e.message}`:e.message||String(e);
     updateSyncBadge();
     console.error('Firebase error:',e);
-    // exponential backoff retry: 10s, 20s, 30s, 30s, ...
+    // exponential backoff retry: 10s, 20s, 30s max
     fbRetryCount++;
     const delay=Math.min(30,fbRetryCount*10)*1000;
     fbRetryTimer=setTimeout(()=>{ if(!fbSyncOk) initFirebase(); }, delay);
