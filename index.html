@@ -6,223 +6,280 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="ضاوي دهن العود"/>
-<meta name="theme-color" content="#1a0800"/>
+<meta name="theme-color" content="#06040C"/>
 <title>ضاوي دهن العود — مختبر العطور التراثي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&family=Cormorant+Garamond:ital,wght@0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
+/* ═══════════ ATELIER DHAWI — Obsidian Edition ═══════════ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{height:100%;}
 body{
   font-family:'Alexandria',sans-serif;
-  color:#F0E6D0;
-  overflow-x:hidden;
-  min-height:100vh;
-  font-size:16px;
-  background:
-    radial-gradient(ellipse 80% 40% at 15% 0%,rgba(130,65,10,0.18) 0%,transparent 55%),
-    radial-gradient(ellipse 60% 50% at 85% 100%,rgba(80,30,5,0.14) 0%,transparent 55%),
-    linear-gradient(175deg,#060300 0%,#0C0601 35%,#100802 55%,#0C0601 100%);
+  color:#EDE0C8;
+  overflow-x:hidden;min-height:100vh;font-size:15px;
+  background:#06040C;
+  background-image:
+    radial-gradient(ellipse 100% 55% at 50% -5%,rgba(180,110,18,0.09) 0%,transparent 65%),
+    radial-gradient(ellipse 60% 40% at 85% 105%,rgba(90,45,8,0.07) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 35% at 5% 60%,rgba(60,30,5,0.05) 0%,transparent 50%);
   background-attachment:fixed;
 }
+/* noise grain overlay via pseudo */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:180px;opacity:0.6;
+}
+#root{position:relative;z-index:1;}
 input,select,button,textarea{font-family:'Alexandria',sans-serif;}
-::-webkit-scrollbar{width:3px;height:3px;}
-::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#C9A84C,#7A5820);border-radius:4px;}
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.25);border-radius:2px;}
 ::-webkit-scrollbar-track{background:transparent;}
 
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeInScale{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
-@keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 5px rgba(201,168,76,0.4));}50%{filter:drop-shadow(0 0 18px rgba(201,168,76,0.75));}}
-@keyframes alertPulse{0%,100%{opacity:1;}50%{opacity:0.38;}}
-@keyframes shimmerSweep{0%{left:-80%;}100%{left:140%;}}
-@keyframes dotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(0.85);}}
-@keyframes splashOut{0%{opacity:1;}85%{opacity:1;}100%{opacity:0;}}
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shimmerSweep{0%{left:-100%}100%{left:120%}}
+@keyframes alertPulse{0%,100%{opacity:1}50%{opacity:0.35}}
+@keyframes splashOut{0%{opacity:1}80%{opacity:1}100%{opacity:0}}
+@keyframes navPop{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes borderGlow{0%,100%{border-color:rgba(201,168,76,0.20)}50%{border-color:rgba(201,168,76,0.50)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
-.fade{animation:fadeIn 0.42s cubic-bezier(0.22,1,0.36,1) both;}
-.pulse-glow{animation:pulseGlow 3s ease-in-out infinite;}
-.alert-pulse{animation:alertPulse 1.8s ease-in-out infinite;}
+.fade{animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both;}
+.alert-pulse{animation:alertPulse 2s ease-in-out infinite;}
 
-/* Splash auto-hides via CSS — pointer-events:none so it never blocks login */
-#splash{position:fixed;inset:0;background:url('brand_poster.jpg') center/cover no-repeat;z-index:99999;animation:splashOut 2.4s 0.6s cubic-bezier(0.22,1,0.36,1) forwards;pointer-events:none;}
-#splash::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 55%);}
+/* ── Splash ── */
+#splash{
+  position:fixed;inset:0;
+  background:url('brand_poster.jpg') center/cover no-repeat;
+  z-index:99999;
+  animation:splashOut 2.5s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+  pointer-events:none;
+}
+#splash::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,4,12,0.95) 0%,rgba(6,4,12,0.3) 50%,transparent 100%);
+}
 
-/* ── Glass Card ── */
+/* ── Card System ── */
 .glass{
-  background:rgba(14,8,2,0.80);
-  backdrop-filter:blur(18px) saturate(155%);
-  -webkit-backdrop-filter:blur(18px) saturate(155%);
-  border:1.5px solid rgba(201,168,76,0.20);
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:14px;
-  position:relative;
-  overflow:hidden;
-  box-shadow:
-    0 8px 40px rgba(0,0,0,0.60),
-    0 2px 8px rgba(0,0,0,0.35),
-    inset 0 1px 0 rgba(201,168,76,0.10);
+  background:rgba(255,255,255,0.034);
+  border:1px solid rgba(255,255,255,0.075);
+  border-radius:20px;padding:18px;margin-bottom:12px;
+  position:relative;overflow:hidden;
+  box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 20px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30);
+  transition:border-color 0.3s;
 }
 .glass::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent 0%,rgba(201,168,76,0.30) 25%,rgba(232,196,96,0.55) 50%,rgba(201,168,76,0.30) 75%,transparent 100%);
+  content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.10) 40%,rgba(255,255,255,0.16) 50%,rgba(255,255,255,0.10) 60%,transparent);
+  pointer-events:none;
+}
+.glass-gold{
+  background:rgba(201,168,76,0.05);
+  border:1px solid rgba(201,168,76,0.22);
+  border-radius:20px;padding:18px;margin-bottom:12px;
+  position:relative;overflow:hidden;
+  box-shadow:0 2px 0 rgba(201,168,76,0.07) inset,0 20px 48px rgba(0,0,0,0.45);
+}
+.glass-gold::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.35) 25%,rgba(232,196,96,0.65) 50%,rgba(201,168,76,0.35) 75%,transparent);
   pointer-events:none;
 }
 
-/* ── Bottom Nav ── */
+/* ── Floating Bottom Nav ── */
 .bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;height:76px;
-  background:rgba(5,3,1,0.97);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border-top:1px solid rgba(201,168,76,0.25);
+  position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 28px);max-width:420px;height:64px;
+  background:rgba(8,6,16,0.97);
+  backdrop-filter:blur(40px) saturate(200%);
+  -webkit-backdrop-filter:blur(40px) saturate(200%);
+  border:1px solid rgba(201,168,76,0.18);
+  border-radius:36px;
   display:flex;justify-content:space-around;align-items:center;
-  padding-bottom:10px;z-index:9999;
-  box-shadow:0 -10px 40px rgba(0,0,0,0.55),0 -1px 0 rgba(201,168,76,0.07);
+  padding:0 6px;z-index:9999;
+  box-shadow:0 24px 64px rgba(0,0,0,0.80),0 0 0 1px rgba(255,255,255,0.04),inset 0 1px 0 rgba(255,255,255,0.05);
 }
 .nav-btn{
-  background:none;border:none;color:#4A3315;
+  background:none;border:none;color:rgba(255,255,255,0.22);
   display:flex;flex-direction:column;align-items:center;
-  font-size:0.50rem;font-weight:700;cursor:pointer;
-  transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);
-  gap:3px;padding:5px 2px;min-width:44px;
-  letter-spacing:0.3px;
+  font-size:0.42rem;font-weight:700;cursor:pointer;
+  transition:all 0.24s cubic-bezier(0.34,1.56,0.64,1);
+  gap:2px;padding:6px 4px;min-width:46px;
+  letter-spacing:0.5px;text-transform:uppercase;
+  position:relative;border-radius:28px;
 }
-.nav-btn.active{
-  color:#D4AF37;
-  transform:translateY(-4px);
-  filter:drop-shadow(0 0 10px rgba(212,175,55,0.45));
+.nav-btn.active{color:#D4AF37;}
+.nav-btn.active::before{
+  content:'';position:absolute;inset:-2px -4px;
+  background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.06));
+  border:1px solid rgba(201,168,76,0.22);
+  border-radius:28px;
+  animation:navPop 0.25s cubic-bezier(0.34,1.56,0.64,1);
 }
-.nav-icon{font-size:1.2rem;}
+.nav-icon{font-size:1.18rem;position:relative;z-index:1;}
 
 /* ── Input ── */
 .inp{
-  background:rgba(7,4,1,0.68);
-  border:1.5px solid rgba(201,168,76,0.24);
-  border-radius:12px;padding:12px 14px;
-  color:#F0E6D0;outline:none;
-  font-family:'Alexandria',sans-serif;
-  font-size:0.9rem;width:100%;
-  transition:border-color 0.2s,box-shadow 0.2s;
-  line-height:1.7;
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:14px;padding:13px 16px;
+  color:#EDE0C8;outline:none;
+  font-family:'Alexandria',sans-serif;font-size:0.9rem;width:100%;
+  transition:border-color 0.22s,background 0.22s,box-shadow 0.22s;
+  line-height:1.7;-webkit-appearance:none;
 }
-.inp:focus{
-  border-color:rgba(212,175,55,0.60);
-  box-shadow:0 0 0 3px rgba(201,168,76,0.07);
-}
-.inp::placeholder{color:#4A3315;}
+.inp:focus{border-color:rgba(201,168,76,0.50);background:rgba(255,255,255,0.065);box-shadow:0 0 0 4px rgba(201,168,76,0.06);}
+.inp::placeholder{color:rgba(255,255,255,0.18);}
 
 /* ── Buttons ── */
 .btn-gold{
-  background:linear-gradient(135deg,#C9A84C 0%,#9E7828 45%,#D4B85A 100%);
-  color:#0A0500;border:none;
-  padding:13px 20px;border-radius:13px;
+  background:linear-gradient(135deg,#B8892A 0%,#D4AF37 48%,#C09830 100%);
+  color:#07050E;border:none;
+  padding:14px 24px;border-radius:32px;
   font-weight:800;font-size:0.9rem;cursor:pointer;
-  box-shadow:0 4px 18px rgba(201,168,76,0.28),0 2px 5px rgba(0,0,0,0.45);
-  transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);
-  letter-spacing:0.4px;position:relative;overflow:hidden;
+  box-shadow:0 6px 24px rgba(180,140,36,0.30),0 1px 3px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.25);
+  transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  letter-spacing:0.3px;position:relative;overflow:hidden;
   font-family:'Alexandria',sans-serif;
 }
-.btn-gold:active{transform:scale(0.97);}
+.btn-gold:active{transform:scale(0.97);box-shadow:0 2px 10px rgba(180,140,36,0.20);}
 .btn-gold::after{
-  content:'';position:absolute;top:0;left:-80%;
-  width:55%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);
-  transform:skewX(-18deg);
-  animation:shimmerSweep 3s 0.5s infinite;
+  content:'';position:absolute;top:0;left:-100%;
+  width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);
+  transform:skewX(-20deg);
+  animation:shimmerSweep 3.5s 1s infinite;
 }
 .btn-ghost{
-  background:rgba(201,168,76,0.07);
+  background:transparent;
   border:1px solid rgba(201,168,76,0.28);
-  color:#C9A84C;padding:8px 16px;border-radius:20px;
-  font-size:0.77rem;cursor:pointer;font-weight:700;
-  transition:all 0.18s;letter-spacing:0.3px;
-  font-family:'Alexandria',sans-serif;
+  color:#C9A84C;padding:9px 18px;border-radius:28px;
+  font-size:0.75rem;cursor:pointer;font-weight:700;
+  transition:all 0.18s;font-family:'Alexandria',sans-serif;letter-spacing:0.2px;
 }
-.btn-ghost:active{background:rgba(201,168,76,0.14);}
+.btn-ghost:active{background:rgba(201,168,76,0.10);border-color:rgba(201,168,76,0.45);}
 .btn-danger{
-  background:rgba(155,35,35,0.12);
-  border:1px solid rgba(185,50,50,0.30);
-  color:#C07070;padding:8px 16px;border-radius:20px;
-  font-size:0.77rem;cursor:pointer;font-weight:600;
+  background:transparent;
+  border:1px solid rgba(160,50,50,0.32);
+  color:#A07070;padding:9px 16px;border-radius:28px;
+  font-size:0.75rem;cursor:pointer;font-weight:600;
   font-family:'Alexandria',sans-serif;
 }
+.btn-danger:active{background:rgba(160,50,50,0.10);}
 
 /* ── Tags ── */
-.tag{padding:4px 10px;border-radius:20px;font-size:0.65rem;font-weight:700;letter-spacing:0.3px;}
-.tag-gold{background:rgba(201,168,76,0.10);color:#C9A84C;border:1px solid rgba(201,168,76,0.24);}
-.tag-green{background:rgba(60,130,60,0.10);color:#68B068;border:1px solid rgba(60,130,60,0.24);}
-.tag-red{background:rgba(165,40,40,0.10);color:#C06868;border:1px solid rgba(165,40,40,0.24);}
-.tag-blue{background:rgba(60,100,170,0.10);color:#6888C8;border:1px solid rgba(60,100,170,0.24);}
-.tag-top{background:rgba(201,168,76,0.13);color:#DEB855;border:1px solid rgba(201,168,76,0.32);}
-.tag-mid{background:rgba(175,110,38,0.11);color:#C08545;border:1px solid rgba(175,110,38,0.26);}
-.tag-base{background:rgba(115,70,30,0.13);color:#A07545;border:1px solid rgba(115,70,30,0.30);}
+.tag{padding:3px 10px;border-radius:20px;font-size:0.62rem;font-weight:700;letter-spacing:0.2px;display:inline-block;}
+.tag-gold{background:rgba(201,168,76,0.08);color:#C9A84C;border:1px solid rgba(201,168,76,0.20);}
+.tag-green{background:rgba(60,140,60,0.08);color:#68B068;border:1px solid rgba(60,140,60,0.18);}
+.tag-red{background:rgba(160,40,40,0.08);color:#B06060;border:1px solid rgba(160,40,40,0.18);}
+.tag-blue{background:rgba(60,100,180,0.08);color:#7090C8;border:1px solid rgba(60,100,180,0.18);}
+.tag-top{background:rgba(201,168,76,0.10);color:#D4AF37;border:1px solid rgba(201,168,76,0.24);}
+.tag-mid{background:rgba(160,100,30,0.09);color:#B08040;border:1px solid rgba(160,100,30,0.20);}
+.tag-base{background:rgba(100,70,30,0.09);color:#907050;border:1px solid rgba(100,70,30,0.20);}
 
 input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 
-/* ── Stat / Info Cards ── */
+/* ── Stat Cards ── */
 .stat-card{
-  background:rgba(7,4,1,0.50);border-radius:14px;padding:14px;text-align:center;
-  border:1px solid rgba(201,168,76,0.13);
-  box-shadow:inset 0 1px 0 rgba(201,168,76,0.06);
+  background:rgba(255,255,255,0.028);border-radius:16px;padding:16px 14px;text-align:center;
+  border:1px solid rgba(255,255,255,0.065);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 /* ── Modal ── */
 .modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9998;
+  position:fixed;inset:0;background:rgba(0,0,0,0.90);z-index:9998;
   display:flex;align-items:flex-end;justify-content:center;
-  backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
 .modal-sheet{
-  background:linear-gradient(170deg,#110800,#1C0D03,#110800);
-  border-radius:24px 24px 0 0;padding:20px 18px 36px;
+  background:#0B0814;
+  border-radius:28px 28px 0 0;padding:22px 20px 44px;
   width:100%;max-width:480px;
-  border-top:1.5px solid rgba(201,168,76,0.40);
-  max-height:86vh;overflow-y:auto;
-  box-shadow:0 -18px 64px rgba(0,0,0,0.72);
+  border-top:1px solid rgba(201,168,76,0.35);
+  max-height:88vh;overflow-y:auto;
+  box-shadow:0 -28px 80px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,255,255,0.04);
 }
 .modal-sheet::before{
-  content:'';display:block;width:38px;height:3px;
-  background:rgba(201,168,76,0.35);border-radius:2px;
-  margin:0 auto 18px;
+  content:'';display:block;width:36px;height:4px;
+  background:rgba(201,168,76,0.28);border-radius:2px;margin:0 auto 20px;
 }
 
 /* ── Misc ── */
-.star-btn{background:none;border:none;cursor:pointer;font-size:1.7rem;padding:3px;transition:all 0.15s;}
-.star-btn:hover{transform:scale(1.28);}
+.star-btn{background:none;border:none;cursor:pointer;font-size:1.7rem;padding:4px;transition:transform 0.15s;}
+.star-btn:active{transform:scale(1.32);}
 .suggest-card{
-  background:linear-gradient(135deg,rgba(38,108,42,0.12),rgba(14,8,2,0.90));
-  border:1.5px solid rgba(60,140,62,0.35);border-radius:18px;padding:16px;margin-bottom:14px;
-  animation:fadeIn 0.4s ease both;
-  box-shadow:0 4px 22px rgba(0,0,0,0.40);
+  background:linear-gradient(135deg,rgba(25,80,28,0.12),rgba(6,4,12,0.96));
+  border:1px solid rgba(50,130,52,0.28);border-radius:18px;padding:16px;margin-bottom:12px;
+  animation:fadeUp 0.4s ease both;
 }
 .expiry-row{
   display:flex;justify-content:space-between;align-items:center;
-  padding:7px 2px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.78rem;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.78rem;
 }
-/* Gold separator line */
-.g-line{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.38),transparent);margin:14px 0;}
-/* Premium number - monospace gradient */
+
+/* ── Typography System ── */
+.g-line{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.28),transparent);margin:14px 0;}
+.brand-sub{
+  font-family:'Cormorant Garamond','Georgia',serif;font-style:italic;
+  font-size:0.50rem;font-weight:300;
+  color:rgba(201,168,76,0.50);letter-spacing:0.38em;text-transform:uppercase;
+  margin-top:2px;display:block;
+}
+.data-label{
+  font-size:0.50rem;color:rgba(255,255,255,0.32);
+  letter-spacing:0.65px;text-transform:uppercase;font-weight:700;
+}
+.section-hdr{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.section-hdr-bar{width:3px;height:18px;background:linear-gradient(180deg,#E8C870,#7A5820);border-radius:2px;flex-shrink:0;}
+.mono{font-family:'IBM Plex Mono','Courier New',monospace;letter-spacing:-0.02em;}
+
+/* ── Premium Number Classes (gradient text in CSS — no inline webkit) ── */
 .p-num{
   font-family:'IBM Plex Mono','Courier New',monospace;
-  font-size:1.35rem;font-weight:600;letter-spacing:-0.03em;line-height:1;
-  background:linear-gradient(135deg,#E8C460,#C9A84C);
+  font-size:1.4rem;font-weight:600;letter-spacing:-0.04em;line-height:1;
+  background:linear-gradient(135deg,#F0D878 0%,#C9A84C 55%,#9A7828 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-/* App brand sub-label */
-.brand-sub{
-  font-family:'Cormorant Garamond','Georgia',serif;
-  font-style:italic;font-size:0.54rem;font-weight:400;
-  color:rgba(201,168,76,0.62);letter-spacing:0.32em;text-transform:uppercase;
-  margin-top:3px;display:block;
+.p-num-hero{
+  font-family:'IBM Plex Mono','Courier New',monospace;
+  font-size:3.2rem;font-weight:300;letter-spacing:-0.06em;line-height:0.9;
+  background:linear-gradient(135deg,#F8E898 0%,#D4AF37 40%,#9A7828 80%,#C9A84C 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-/* Mono values in tables/lists */
-.mono{font-family:'IBM Plex Mono','Courier New',monospace;letter-spacing:-0.02em;}
+.p-num-lg{
+  font-family:'IBM Plex Mono','Courier New',monospace;
+  font-size:2rem;font-weight:400;letter-spacing:-0.05em;line-height:1;
+  background:linear-gradient(135deg,#F0D878,#C9A84C,#9A7828);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.p-num-green{
+  font-family:'IBM Plex Mono','Courier New',monospace;
+  font-size:1.4rem;font-weight:600;letter-spacing:-0.04em;line-height:1;
+  background:linear-gradient(135deg,#90D870,#50A838);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.p-num-blue{
+  font-family:'IBM Plex Mono','Courier New',monospace;
+  font-size:1.4rem;font-weight:600;letter-spacing:-0.04em;line-height:1;
+  background:linear-gradient(135deg,#90B8F8,#5070C8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.p-num-amber{
+  font-family:'IBM Plex Mono','Courier New',monospace;
+  font-size:1.4rem;font-weight:600;letter-spacing:-0.04em;line-height:1;
+  background:linear-gradient(135deg,#F0C050,#C07818);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
 </style>
 </head>
 <body>
@@ -1028,33 +1085,36 @@ function App(){
   const mixCost=mixItems.reduce((s,i)=>{const ing=getIng(i.id);return s+(ing?ing.unitCost*i.amount:0);},0);
 
   if(!logged) return(
-    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-end",minHeight:"100dvh",padding:"16px 16px 56px",background:"url('brand_poster.jpg') center/cover no-repeat"}} className="fade">
-      <div style={{
-        maxWidth:"340px",width:"100%",textAlign:"center",
-        background:"linear-gradient(160deg,rgba(18,10,2,0.90),rgba(8,4,1,0.95)) padding-box, linear-gradient(135deg,rgba(201,168,76,0.6),rgba(80,50,10,0.3),rgba(201,168,76,0.6)) border-box",
-        border:"1.5px solid transparent",
-        borderRadius:"22px",
-        padding:"30px 22px 24px",
-        backdropFilter:"blur(20px)",
-        WebkitBackdropFilter:"blur(20px)",
-        boxShadow:"0 20px 64px rgba(0,0,0,0.80),inset 0 1px 0 rgba(201,168,76,0.12)",
-        position:"relative",overflow:"hidden"
-      }}>
-        <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.55),transparent)"}}/>
-        <Logo size={56}/>
-        <h2 style={{color:"#D4AF37",fontWeight:"800",fontSize:"1.4rem",margin:"10px 0 2px"}}>ضاوي دهن العود</h2>
-        <span className="brand-sub" style={{marginBottom:"20px",display:"block"}}>PRIVATE LAB ACCESS</span>
-        <input type="password" inputMode="numeric" placeholder="· · · ·" value={pin} autoFocus onChange={e=>setPin(e.target.value)}
-          onKeyDown={e=>{if(e.key==="Enter"){if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}}
-          style={{background:"rgba(0,0,0,0.55)",border:"1.5px solid rgba(201,168,76,0.45)",borderRadius:"14px",padding:"15px",color:"#F0E6D0",textAlign:"center",fontSize:"1.8rem",letterSpacing:"12px",outline:"none",width:"100%",marginBottom:"14px",fontFamily:"'IBM Plex Mono',monospace",boxShadow:"inset 0 2px 8px rgba(0,0,0,0.4)"}}/>
-        <button className="btn-gold" style={{width:"100%",fontSize:"1rem",padding:"14px"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}>دخول المعمل ←</button>
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",padding:"32px 24px",background:"url('brand_poster.jpg') center/cover no-repeat",position:"relative"}} className="fade">
+      <div style={{position:"absolute",inset:0,background:"linear-gradient(170deg,rgba(6,4,12,0.72) 0%,rgba(6,4,12,0.88) 60%,rgba(6,4,12,0.97) 100%)"}}/>
+      <div style={{position:"relative",zIndex:1,maxWidth:"340px",width:"100%",textAlign:"center"}}>
+        <div style={{marginBottom:"32px"}}>
+          <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"3.2rem",letterSpacing:"0.04em",color:"rgba(232,200,112,0.92)",lineHeight:1,marginBottom:"8px"}}>Atelier Dhawi</div>
+          <div style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.95rem",fontWeight:600,color:"rgba(237,224,200,0.88)",letterSpacing:"0.08em",marginBottom:"4px"}}>ضاوي دهن العود</div>
+          <div className="brand-sub">PRIVATE LAB ACCESS</div>
+          <div className="g-line" style={{maxWidth:"120px",margin:"16px auto 0"}}/>
+        </div>
+        <div style={{
+          background:"rgba(255,255,255,0.032)",
+          border:"1px solid rgba(201,168,76,0.22)",
+          borderRadius:"24px",padding:"28px 22px 24px",
+          backdropFilter:"blur(32px)",
+          WebkitBackdropFilter:"blur(32px)",
+          boxShadow:"0 32px 80px rgba(0,0,0,0.80),inset 0 1px 0 rgba(201,168,76,0.10)"
+        }}>
+          <div style={{fontSize:"0.52rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.55em",textTransform:"uppercase",marginBottom:"18px",fontFamily:"'Cormorant Garamond',serif"}}>رمز الدخول</div>
+          <input type="password" inputMode="numeric" placeholder="· · · ·" value={pin} autoFocus onChange={e=>setPin(e.target.value)}
+            onKeyDown={e=>{if(e.key==="Enter"){if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}}
+            style={{background:"rgba(0,0,0,0.40)",border:"1px solid rgba(201,168,76,0.28)",borderRadius:"16px",padding:"18px",color:"#F0E6D0",textAlign:"center",fontSize:"2rem",letterSpacing:"16px",outline:"none",width:"100%",marginBottom:"16px",fontFamily:"'IBM Plex Mono',monospace",boxShadow:"inset 0 2px 12px rgba(0,0,0,0.5)",transition:"border-color 0.22s"}}/>
+          <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}>دخول المعمل</button>
+        </div>
       </div>
-      {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",background:toastErr?"rgba(120,20,20,0.95)":"rgba(10,6,1,0.95)",border:`1px solid ${toastErr?"rgba(180,50,50,0.6)":"rgba(201,168,76,0.5)"}`,color:toastErr?"#D88080":"#D4AF37",padding:"12px 24px",borderRadius:"30px",fontWeight:"700",backdropFilter:"blur(12px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>{toast}</div>}
+      {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",background:toastErr?"rgba(120,20,20,0.95)":"rgba(8,5,14,0.96)",border:`1px solid ${toastErr?"rgba(180,50,50,0.6)":"rgba(201,168,76,0.5)"}`,color:toastErr?"#D88080":"#D4AF37",padding:"12px 24px",borderRadius:"30px",fontWeight:"700",backdropFilter:"blur(16px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>{toast}</div>}
     </div>
   );
 
   return(
-    <div style={{paddingBottom:"92px"}}>
+    <div style={{paddingBottom:"90px"}}>
       {toast&&<div className="fade" style={{position:"fixed",bottom:"92px",left:"50%",transform:"translateX(-50%)",background:toastErr?"rgba(100,15,15,0.96)":"rgba(8,5,1,0.96)",border:`1px solid ${toastErr?"rgba(180,50,50,0.55)":"rgba(201,168,76,0.50)"}`,color:toastErr?"#C87070":"#D4AF37",padding:"11px 22px",borderRadius:"30px",fontSize:"0.82rem",fontWeight:"700",zIndex:99999,whiteSpace:"nowrap",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",boxShadow:"0 6px 24px rgba(0,0,0,0.55)"}}>{toast}</div>}
 
       {/* ── low stock banner ── */}
@@ -1063,12 +1123,15 @@ function App(){
         <span><b style={{color:"#D08080"}}>مخزون منخفض:</b> {lowStockItems.slice(0,3).map(i=>i.name.split('(')[0].trim()).join(" · ")}{lowStockItems.length>3&&` و${lowStockItems.length-3} أخرى`}</span>
       </div>}
 
-      <div style={{textAlign:"center",padding:"22px 12px 6px"}}>
-        <Logo size={50}/>
-        <h1 style={{fontSize:"1.55rem",color:"#D4AF37",fontWeight:"800",marginTop:"6px",letterSpacing:"-0.01em"}}>ضاوي دهن العود</h1>
-        <span className="brand-sub">DHAWI OUD OIL — HERITAGE LAB</span>
-        <div className="g-line" style={{maxWidth:"160px",margin:"10px auto 0"}}/>
+      <div style={{padding:"20px 18px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
+        <Logo size={32}/>
+        <div style={{flex:1,textAlign:"center"}}>
+          <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"1.55rem",letterSpacing:"0.04em",color:"rgba(232,200,112,0.90)",lineHeight:1.1}}>Atelier Dhawi</div>
+          <div className="brand-sub" style={{marginTop:"2px"}}>HERITAGE OUD LAB</div>
+        </div>
+        <div style={{width:32}}/>
       </div>
+      <div className="g-line" style={{margin:"0 18px 4px"}}/>
 
       <div style={{padding:"0 14px",maxWidth:"480px",margin:"0 auto"}}>
 
@@ -1079,25 +1142,35 @@ function App(){
           const goTab=(t)=>{setTab(t);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);};
           return <div className="fade">
             {/* ── hero stats ── */}
+            <div className="glass-gold" style={{textAlign:"center",padding:"22px 18px 18px",marginBottom:"10px",cursor:"pointer"}} onClick={()=>goTab("inventory")}>
+              <div className="data-label" style={{marginBottom:"8px"}}>إجمالي قيمة المخزون</div>
+              <div style={{display:"flex",alignItems:"baseline",justifyContent:"center",gap:"6px"}}>
+                <div className="p-num-hero">{totalInvValue.toFixed(0)}</div>
+                <div style={{fontSize:"0.85rem",color:"rgba(201,168,76,0.55)",fontFamily:"'Alexandria',sans-serif",fontWeight:300}}>ر.س</div>
+              </div>
+            </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px",marginBottom:"12px"}}>
-              <div className="glass" style={{textAlign:"center",padding:"16px 6px",cursor:"pointer",background:"rgba(14,8,2,0.82)"}} onClick={()=>goTab("inventory")}>
-                <div className="p-num">{totalInvValue.toFixed(0)}</div>
-                <div style={{fontSize:"0.52rem",color:"#8A6830",marginTop:"4px",letterSpacing:"0.5px",textTransform:"uppercase"}}>المخزون · ر</div>
+              <div className="glass" style={{textAlign:"center",padding:"14px 6px",cursor:"pointer"}} onClick={()=>goTab("recipes")}>
+                <div className="p-num-green" style={{fontSize:"1.5rem"}}>{_ready.length}<span style={{fontSize:"0.7rem",opacity:0.5}}>/{recipes.length}</span></div>
+                <div className="data-label" style={{marginTop:"5px"}}>وصفة جاهزة</div>
               </div>
-              <div className="glass" style={{textAlign:"center",padding:"16px 6px",cursor:"pointer",background:"rgba(14,8,2,0.82)"}} onClick={()=>goTab("recipes")}>
-                <div className="p-num" style={{background:"linear-gradient(135deg,#78C878,#48A048)"}}>{_ready.length}<span style={{fontSize:"0.75rem",opacity:0.6}}>/{recipes.length}</span></div>
-                <div style={{fontSize:"0.52rem",color:"#8A6830",marginTop:"4px",letterSpacing:"0.5px",textTransform:"uppercase"}}>وصفة جاهزة</div>
+              <div className="glass" style={{textAlign:"center",padding:"14px 6px",cursor:"pointer"}} onClick={()=>goTab("stats")}>
+                <div className="p-num-amber" style={{fontSize:"1.5rem"}}>{agingBatches.length}</div>
+                <div className="data-label" style={{marginTop:"5px"}}>قيد التعتيق</div>
               </div>
-              <div className="glass" style={{textAlign:"center",padding:"16px 6px",cursor:"pointer",background:"rgba(14,8,2,0.82)"}} onClick={()=>goTab("stats")}>
-                <div className="p-num" style={{background:agingBatches.length>0?"linear-gradient(135deg,#E0A860,#C07830)":"linear-gradient(135deg,#4A3515,#2A1A08)"}}>{agingBatches.length}</div>
-                <div style={{fontSize:"0.52rem",color:"#8A6830",marginTop:"4px",letterSpacing:"0.5px",textTransform:"uppercase"}}>قيد التعتيق</div>
+              <div className="glass" style={{textAlign:"center",padding:"14px 6px",cursor:"pointer"}} onClick={()=>goTab("stats")}>
+                <div className="p-num" style={{fontSize:"1.5rem"}}>{totalSold}</div>
+                <div className="data-label" style={{marginTop:"5px"}}>دفعة مُباعة</div>
               </div>
             </div>
 
             {/* ── ready to sell ── */}
             {readyBatches.length>0&&<div className="glass" style={{border:"1.5px solid rgba(60,140,62,0.40)",background:"rgba(12,30,14,0.40)",marginBottom:"12px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
-                <h3 style={{color:"#68B068",fontSize:"0.85rem",fontWeight:"800",letterSpacing:"0.2px"}}>✅ جاهز للبيع ({readyBatches.length})</h3>
+                <div className="section-hdr" style={{marginBottom:0}}>
+                  <div style={{width:"3px",height:"16px",background:"linear-gradient(180deg,#68D868,#2A8028)",borderRadius:"2px",flexShrink:0}}/>
+                  <h3 style={{color:"#68B068",fontSize:"0.85rem",fontWeight:"700"}}>جاهز للبيع <span className="mono" style={{fontSize:"0.78rem",opacity:0.7}}>({readyBatches.length})</span></h3>
+                </div>
                 <button className="btn-ghost" style={{fontSize:"0.65rem",borderColor:"rgba(60,140,62,0.38)",color:"#68B068",padding:"5px 12px"}} onClick={()=>goTab("stats")}>عرض الكل</button>
               </div>
               {readyBatches.slice(0,3).map(e=>(
@@ -1113,8 +1186,9 @@ function App(){
 
             {/* ── aging queue ── */}
             {agingBatches.length>0&&<div className="glass" style={{marginBottom:"12px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
-                <h3 style={{color:"#C08840",fontSize:"0.85rem",fontWeight:"800",letterSpacing:"0.2px"}}>⏳ قيد التعتيق ({agingBatches.length})</h3>
+              <div className="section-hdr">
+                <div className="section-hdr-bar"/>
+                <h3 style={{color:"#C9A84C",fontSize:"0.85rem",fontWeight:"700"}}>قيد التعتيق <span className="mono" style={{fontSize:"0.78rem",opacity:0.7}}>({agingBatches.length})</span></h3>
               </div>
               {agingBatches.slice(0,3).map(e=>{
                 const dl=daysLeft(e.readyDate);
@@ -1185,13 +1259,13 @@ function App(){
 
             {/* ── quick actions ── */}
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginTop:"4px"}}>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700",borderRadius:"14px"}} onClick={()=>goTab("recipes")}>📋 الوصفات</button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700",borderRadius:"14px"}} onClick={()=>goTab("inventory")}>🏺 المخزون</button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700",borderRadius:"14px",position:"relative"}} onClick={()=>{goTab("inventory");setShowShopList(true);}}>
+              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("recipes")}>📋 الوصفات</button>
+              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("inventory")}>🏺 المخزون</button>
+              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700",position:"relative"}} onClick={()=>{goTab("inventory");setShowShopList(true);}}>
                 🛒 قائمة التسوق
                 {(lowStockItems.length+shopCart.length)>0&&<span style={{background:"rgba(185,45,45,0.9)",borderRadius:"10px",padding:"1px 6px",fontSize:"0.6rem",marginInlineStart:"5px",color:"#FFD0D0"}}>{lowStockItems.length+shopCart.length}</span>}
               </button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700",borderRadius:"14px"}} onClick={()=>goTab("customers")}>👥 العملاء {customers.length>0&&<span className="mono" style={{fontSize:"0.72rem",color:"#8A6830"}}>({customers.length})</span>}</button>
+              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("customers")}>👥 العملاء {customers.length>0&&<span className="mono" style={{fontSize:"0.72rem",color:"#8A6830"}}>({customers.length})</span>}</button>
             </div>
           </div>;
         })()}
@@ -2270,10 +2344,7 @@ function App(){
           {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
           <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);}} className={`nav-btn ${tab===t.id?"active":""}`}>
-            <div style={{position:"relative",display:"inline-block"}}>
-              <span className="nav-icon">{t.icon}</span>
-              {tab===t.id&&<div style={{position:"absolute",bottom:"-3px",left:"50%",transform:"translateX(-50%)",width:"4px",height:"4px",borderRadius:"50%",background:"#D4AF37",boxShadow:"0 0 6px rgba(212,175,55,0.8)"}}/>}
-            </div>
+            <span className="nav-icon">{t.icon}</span>
             {t.label}
           </button>
         ))}
