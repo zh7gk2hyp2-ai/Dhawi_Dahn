@@ -1238,12 +1238,12 @@ function shareWhatsApp(){
 
 // ── FIREBASE SYNC ─────────────────────────────────────────────────────────
 const FB_CFG={
-  apiKey:'AIzaSyAAPXc3BqqDY_6mjBycbU_RhPqcuMl66xE',
-  authDomain:'test-mode-e2b37.firebaseapp.com',
-  projectId:'test-mode-e2b37',
-  storageBucket:'test-mode-e2b37.firebasestorage.app',
-  messagingSenderId:'1004544754825',
-  appId:'1:1004544754825:web:68ea8c22d68a079d3ab258'
+  apiKey:'AIzaSyD8BsWNdRls82vBRFRw1eDa2O4nlHNL2hg',
+  authDomain:'sisd-app.firebaseapp.com',
+  projectId:'sisd-app',
+  storageBucket:'sisd-app.firebasestorage.app',
+  messagingSenderId:'585415362065',
+  appId:'1:585415362065:web:7dfa8641e7d5cd970593b0'
 };
 let fbDb=null, fbSyncOk=false, fbSyncing=false, fbPushTimer=null, fbLastErr='';
 let fbRetryTimer=null, fbRetryCount=0;
@@ -1283,8 +1283,8 @@ async function initFirebase(){
   clearTimeout(fbRetryTimer);
   fbLastErr=''; fbSyncing=true; updateSyncBadge();
   try{
-    await loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js');
-    await loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js');
+    await loadScript('https://www.gstatic.com/firebasejs/12.14.0/firebase-app-compat.js');
+    await loadScript('https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore-compat.js');
     if(!window.firebase)throw new Error('تعذّر تحميل Firebase SDK');
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
     if(!fbDb){
