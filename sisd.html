@@ -7,16 +7,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="عهدة سيسد">
-<meta name="theme-color" content="#0f172a">
-<title>إدارة عهدة مشروع تأهيل سيسد</title>
+<meta name="theme-color" content="#4d704c">
+<title>إدارة عهدة مشروع تأهيل سيسد — جامعة الطائف</title>
 <style>
 :root{
-  --navy:#0f172a;--navy2:#1e293b;--navy3:#334155;
-  --gold:#f59e0b;--gold2:#fbbf24;
-  --white:#fff;--light:#f8fafc;--border:#e2e8f0;
-  --muted:#94a3b8;--text:#1e293b;--sub:#64748b;
-  --g-ok:#22c55e;--g-warn:#f59e0b;--g-hi:#f97316;--g-err:#ef4444;
-  --radius:14px;--radius-sm:10px;--tab-h:62px;
+  --green:#4d704c;--green2:#3d5c3c;--green3:#6c926a;--green4:#2a3f2a;
+  --gold:#d5b254;--gold2:#be9647;--gold-light:#fdf6e3;--gold-pale:#f5e9c4;
+  --white:#fff;--light:#f3f6f2;--border:#d4e0d2;
+  --muted:#7a9478;--text:#1a2d1a;--sub:#4a6848;
+  --g-ok:#22c55e;--g-warn:#d5b254;--g-hi:#f97316;--g-err:#ef4444;
+  --radius:16px;--radius-sm:10px;--tab-h:64px;
   font-family:system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -27,25 +27,25 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 /* TOAST */
 #toast{position:fixed;top:calc(env(safe-area-inset-top)+12px);right:12px;left:12px;max-width:400px;margin:0 auto;z-index:999;padding:12px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;transform:translateY(-80px);opacity:0;transition:all .3s ease;pointer-events:none;text-align:center;}
 #toast.show{transform:translateY(0);opacity:1;}
-#toast.ok{background:#15803d;color:#fff;}
+#toast.ok{background:var(--green2);color:#fff;}
 #toast.err{background:#dc2626;color:#fff;}
-#toast.info{background:var(--navy);color:#fff;}
+#toast.info{background:var(--green);color:#fff;}
 
 /* MODAL base */
-.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;align-items:flex-end;justify-content:center;}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:90;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);}
 .modal-ov.open{display:flex;}
-.modal-box{background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:24px 20px calc(20px + env(safe-area-inset-bottom));}
-.modal-box h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--navy);}
+.modal-box{background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:24px 20px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -8px 40px rgba(0,0,0,.18);}
+.modal-box h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--green2);}
 .modal-box p{font-size:12px;color:var(--sub);margin-bottom:16px;}
 .modal-btns{display:flex;gap:10px;}
 .modal-btns button{flex:1;padding:13px;border-radius:var(--radius-sm);font-weight:700;font-size:14px;}
 .btn-danger{background:#dc2626;color:#fff;}
-.btn-navy{background:var(--navy);color:#fff;}
+.btn-navy{background:var(--green);color:#fff;}
 .btn-cancel{background:var(--light);color:var(--text);}
 
 /* modal form */
 .m-inp{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;margin-bottom:10px;font-family:inherit;}
-.m-inp:focus{border-color:var(--navy);outline:none;}
+.m-inp:focus{border-color:var(--green);outline:none;}
 .m-lbl{font-size:11px;font-weight:600;color:var(--sub);margin-bottom:4px;display:block;}
 
 /* Share modal */
@@ -53,24 +53,29 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 #share-text{flex:1;min-height:180px;max-height:300px;overflow-y:auto;background:var(--light);border-radius:var(--radius-sm);padding:12px;font-size:12px;line-height:1.8;direction:rtl;white-space:pre-wrap;border:1px solid var(--border);font-family:inherit;}
 
 /* HEADER */
-#header{background:var(--navy);color:#fff;padding:calc(env(safe-area-inset-top)+14px) 16px 14px;}
-.h-label{font-size:10px;color:var(--muted);margin-bottom:1px;}
-.h-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.h-title{font-size:16px;font-weight:800;letter-spacing:.3px;}
-.h-share-btn{background:rgba(255,255,255,.12);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:5px;}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
-.stat-box{background:rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;}
-.stat-box .s-lbl{font-size:10px;color:var(--muted);margin-bottom:3px;}
-.stat-box .s-val{font-size:13px;font-weight:700;}
-.stat-box .s-sub{font-size:9px;color:var(--muted);margin-top:2px;}
-.bar-wrap{margin-top:2px;}
-.bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;}
-.bar-track{height:10px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;}
-.bar-fill{height:100%;border-radius:99px;transition:width .5s ease;}
-.fill-ok{background:var(--g-ok);}
-.fill-warn{background:var(--g-warn);}
-.fill-hi{background:var(--g-hi);}
-.fill-err{background:var(--g-err);}
+#header{background:linear-gradient(160deg,var(--green4) 0%,var(--green2) 55%,var(--green) 100%);color:#fff;padding:calc(env(safe-area-inset-top)+14px) 16px 16px;position:relative;overflow:hidden;}
+#header::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+.h-emblem-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;position:relative;}
+.h-emblem{width:44px;height:44px;flex-shrink:0;}
+.h-brand{flex:1;min-width:0;}
+.h-univ{font-size:9px;color:rgba(255,255,255,.65);font-weight:600;letter-spacing:.5px;margin-bottom:1px;}
+.h-proj{font-size:12px;font-weight:800;color:var(--gold);line-height:1.2;}
+.h-share-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:7px 12px;font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:5px;backdrop-filter:blur(4px);}
+.h-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;position:relative;}
+.h-title{font-size:15px;font-weight:800;letter-spacing:.2px;color:#fff;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;position:relative;}
+.stat-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:10px 8px;text-align:center;backdrop-filter:blur(4px);}
+.stat-box .s-lbl{font-size:10px;color:rgba(255,255,255,.65);margin-bottom:3px;}
+.stat-box .s-val{font-size:13px;font-weight:800;}
+.stat-box .s-sub{font-size:9px;color:rgba(255,255,255,.5);margin-top:2px;}
+.bar-wrap{margin-top:2px;position:relative;}
+.bar-labels{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.6);margin-bottom:5px;}
+.bar-track{height:10px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.fill-ok{background:linear-gradient(90deg,#22c55e,#4ade80);}
+.fill-warn{background:linear-gradient(90deg,var(--gold2),var(--gold));}
+.fill-hi{background:linear-gradient(90deg,#f97316,#fb923c);}
+.fill-err{background:linear-gradient(90deg,#ef4444,#f87171);}
 
 /* ALERTS */
 #alerts{padding:0;}
@@ -80,15 +85,15 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 .alert-err{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
 
 /* TABS */
-#tab-bar{position:fixed;bottom:0;right:0;left:0;z-index:50;background:#fff;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 20px rgba(0,0,0,.06);}
-.tab-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 2px;gap:1px;font-size:9px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;transition:all .15s;}
-.tab-btn .tab-icon{font-size:16px;line-height:1;}
-.tab-btn.active{color:var(--navy);border-color:var(--navy);}
+#tab-bar{position:fixed;bottom:0;right:0;left:0;z-index:50;background:#fff;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 24px rgba(77,112,76,.12);}
+.tab-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 2px;gap:2px;font-size:9px;font-weight:600;color:var(--muted);border-bottom:2.5px solid transparent;transition:all .2s;}
+.tab-btn .tab-icon{font-size:17px;line-height:1;}
+.tab-btn.active{color:var(--green);border-color:var(--gold);}
 
 /* SETTINGS */
-.cfg-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:16px;margin-bottom:10px;}
+.cfg-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:16px;margin-bottom:10px;box-shadow:0 1px 6px rgba(77,112,76,.06);}
 .cfg-card-danger{border-color:#fecaca;}
-.cfg-title{font-size:14px;font-weight:800;margin-bottom:4px;}
+.cfg-title{font-size:14px;font-weight:800;margin-bottom:4px;color:var(--green2);}
 .cfg-sub{font-size:12px;color:var(--sub);margin-bottom:12px;line-height:1.5;}
 .cfg-url{font-size:11px;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:8px 12px;word-break:break-all;color:var(--sub);margin-bottom:4px;}
 .cfg-btn{display:inline-flex;align-items:center;gap:5px;padding:9px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;font-family:inherit;text-decoration:none;}
@@ -96,56 +101,78 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 .cfg-btn-danger{background:#fee2e2;border-color:#fca5a5;color:#dc2626;margin-top:4px;}
 .cfg-steps{background:var(--light);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;}
 .cfg-step{font-size:11px;color:var(--sub);padding:3px 0;line-height:1.6;}
-.cfg-link{color:var(--navy);font-weight:600;}
+.cfg-link{color:var(--green);font-weight:600;}
 .fb-ok-badge{display:inline-block;background:#f0fdf4;border:1px solid #86efac;color:#15803d;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:700;margin-bottom:10px;}
 .sync-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;margin-right:8px;}
 
 /* SEARCH */
 .search-wrap{position:relative;margin-bottom:10px;}
 .search-input{width:100%;padding:10px 14px 10px 36px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;background:#fff;}
-.search-input:focus{border-color:var(--navy);outline:none;}
+.search-input:focus{border-color:var(--green);outline:none;}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
 
 /* EDIT btn in hist */
-.exp-edit{font-size:11px;color:var(--navy);display:block;margin-top:2px;text-align:left;}
+.exp-edit{font-size:11px;color:var(--green);display:block;margin-top:2px;text-align:left;}
 
 /* CONTENT */
 #content{padding:10px 12px calc(var(--tab-h) + env(safe-area-inset-bottom) + 12px);}
 .tab-pane{display:none;}
 .tab-pane.active{display:block;}
 
+/* PROJECT IDENTITY CARD */
+.proj-identity{background:linear-gradient(135deg,var(--green2) 0%,var(--green) 100%);border-radius:var(--radius);padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 20px rgba(77,112,76,.25);}
+.proj-emblem{width:52px;height:52px;flex-shrink:0;}
+.proj-info{flex:1;min-width:0;}
+.proj-tag{font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px;}
+.proj-name{font-size:13px;font-weight:800;color:#fff;line-height:1.3;}
+.proj-budget{font-size:11px;color:var(--gold);font-weight:700;margin-top:3px;}
+
+/* DONUT CHART */
+.donut-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:12px;box-shadow:0 2px 10px rgba(77,112,76,.08);}
+.donut-title{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.donut-wrap{display:flex;align-items:center;gap:16px;}
+.donut-svg-wrap{flex-shrink:0;position:relative;}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.donut-center-pct{font-size:17px;font-weight:800;color:var(--green2);}
+.donut-center-lbl{font-size:8px;color:var(--muted);font-weight:600;}
+.donut-legend{flex:1;min-width:0;}
+.dl-row{display:flex;align-items:center;gap:7px;padding:3px 0;}
+.dl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.dl-name{font-size:10px;color:var(--sub);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.dl-pct{font-size:10px;font-weight:700;color:var(--text);}
+
 /* OVERVIEW */
-.overview-card{background:var(--navy2);color:#fff;border-radius:var(--radius);padding:14px;margin-bottom:12px;}
-.ov-title{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.overview-card{background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:0 4px 16px rgba(77,112,76,.2);}
+.ov-title{font-size:11px;color:rgba(255,255,255,.65);margin-bottom:10px;font-weight:600;}
 .ov-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
-.ov-phase{background:rgba(255,255,255,.08);border-radius:8px;padding:7px 3px;text-align:center;cursor:pointer;transition:all .15s;}
-.ov-phase:active{opacity:.8;}
+.ov-phase{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:7px 3px;text-align:center;cursor:pointer;transition:all .2s;}
+.ov-phase:active{opacity:.8;transform:scale(.96);}
 .ov-num{font-size:10px;font-weight:700;margin-bottom:4px;}
 .ov-bar-w{height:36px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;}
-.ov-bar-f{width:100%;border-radius:4px;transition:height .5s;}
-.ov-pct{font-size:9px;color:var(--muted);margin-top:3px;}
+.ov-bar-f{width:100%;border-radius:4px;transition:height .6s cubic-bezier(.4,0,.2,1);}
+.ov-pct{font-size:9px;color:rgba(255,255,255,.6);margin-top:3px;}
 
 /* CUSTODIAN CARDS */
-.cust-card{background:#fff;border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.cust-card{background:#fff;border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:0 2px 12px rgba(77,112,76,.07);transition:box-shadow .2s;}
 .cust-head{padding:14px;}
 .cust-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
-.cust-badge{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;}
+.cust-badge{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex-shrink:0;}
 .cust-info{flex:1;min-width:0;}
-.cust-phase-lbl{font-size:10px;font-weight:600;letter-spacing:.5px;margin-bottom:2px;}
+.cust-phase-lbl{font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:2px;}
 .cust-name{font-size:15px;font-weight:800;color:var(--text);line-height:1.2;}
 .cust-scope{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.4;}
 .cust-contract{font-size:10px;color:var(--muted);margin-top:3px;}
-.cust-edit-btn{font-size:11px;padding:4px 10px;border-radius:99px;border:1px solid var(--border);color:var(--sub);white-space:nowrap;flex-shrink:0;}
+.cust-edit-btn{font-size:11px;padding:5px 11px;border-radius:99px;border:1.5px solid var(--border);color:var(--green);background:var(--light);white-space:nowrap;flex-shrink:0;font-weight:600;}
 .cust-warn-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;margin-bottom:10px;display:inline-block;}
 .cust-amounts{display:flex;justify-content:space-between;margin-bottom:10px;font-size:12px;}
 .cust-amounts .ca-item{text-align:center;}
 .cust-amounts .ca-lbl{color:var(--muted);margin-bottom:2px;font-size:10px;}
-.cust-amounts .ca-val{font-weight:700;font-size:14px;}
-.cust-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-bottom:8px;}
-.cust-bar-fill{height:100%;border-radius:99px;transition:width .5s;}
+.cust-amounts .ca-val{font-weight:800;font-size:14px;}
+.cust-bar{height:8px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:8px;}
+.cust-bar-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);}
 .cust-foot{display:flex;justify-content:space-between;align-items:center;}
 .cust-pct{font-size:11px;color:var(--sub);}
-.cust-exp-btn{font-size:11px;color:var(--navy);text-decoration:underline;font-weight:600;}
+.cust-exp-btn{font-size:11px;color:var(--green);font-weight:700;padding:4px 10px;border-radius:99px;background:var(--light);border:1px solid var(--border);}
 
 /* Expanded txns */
 .cust-txns{border-top:1px solid var(--border);}
@@ -164,17 +191,17 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 .pay-mq{background:#eff6ff;color:#1d4ed8;}
 .pay-ms{background:#f0fdfa;color:#0f766e;}
 .pay-nh{background:#f0fdf4;color:#15803d;}
-.pay-vat{background:#fef9c3;color:#854d0e;}
+.pay-vat{background:var(--gold-light);color:#854d0e;}
 .pay-ot{background:#f1f5f9;color:#475569;}
 
 /* ADD FORM */
-.card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:10px;overflow:hidden;box-shadow:0 1px 6px rgba(77,112,76,.06);}
 .card-body{padding:16px;}
 .form-group{margin-bottom:14px;}
-.form-label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:6px;}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--sub);margin-bottom:6px;}
 .form-label span{color:#dc2626;}
-.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:#fff;transition:border-color .2s;}
-.form-input:focus{border-color:var(--navy);}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:#fff;transition:border-color .2s,box-shadow .2s;}
+.form-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(77,112,76,.1);}
 textarea.form-input{resize:none;line-height:1.5;}
 
 /* Custodian selector */
@@ -185,21 +212,21 @@ textarea.form-input{resize:none;line-height:1.5;}
 .cust-sel-info{flex:1;min-width:0;}
 .cust-sel-name{font-size:13px;font-weight:700;}
 .cust-sel-scope{font-size:10px;color:var(--sub);}
-.cust-sel-left{font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+.cust-sel-left{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
 
 /* pay type selector */
 .pay-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .pt-btn{padding:9px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;font-size:11px;font-weight:600;color:var(--sub);transition:all .15s;text-align:center;}
-.pt-btn.sel{background:var(--navy);border-color:var(--navy);color:#fff;}
+.pt-btn.sel{background:var(--green);border-color:var(--green);color:#fff;}
 
 /* Item chips */
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
 .chip{font-size:11px;padding:5px 10px;border-radius:99px;border:1px solid var(--border);background:var(--light);color:var(--sub);transition:all .15s;}
-.chip.sel{background:var(--navy);border-color:var(--navy);color:#fff;}
+.chip.sel{background:var(--green);border-color:var(--green);color:#fff;}
 
 /* VAT hint */
-.vat-calc{font-size:11px;color:var(--sub);margin-top:6px;background:#f8fafc;border-radius:8px;padding:8px 12px;line-height:1.7;}
-.vat-calc strong{color:var(--text);}
+.vat-calc{font-size:11px;color:var(--sub);margin-top:6px;background:var(--gold-light);border-radius:8px;padding:8px 12px;line-height:1.7;border:1px solid var(--gold-pale);}
+.vat-calc strong{color:var(--green2);}
 
 /* Amount hint */
 .amt-hint{font-size:11px;margin-top:5px;font-weight:500;}
@@ -207,15 +234,15 @@ textarea.form-input{resize:none;line-height:1.5;}
 .amt-hi{color:#ea580c;}
 .amt-warn{color:#ca8a04;}
 
-.submit-btn{width:100%;padding:15px;background:var(--navy);color:#fff;border-radius:var(--radius-sm);font-size:15px;font-weight:800;transition:opacity .15s;letter-spacing:.3px;}
-.submit-btn:active{opacity:.85;}
+.submit-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;border-radius:var(--radius-sm);font-size:15px;font-weight:800;transition:opacity .15s,transform .1s;letter-spacing:.3px;box-shadow:0 4px 16px rgba(77,112,76,.3);}
+.submit-btn:active{opacity:.9;transform:scale(.99);}
 
 /* HISTORY */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
 .filter-chip{font-size:11px;font-weight:600;padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:#fff;color:var(--sub);transition:all .15s;}
-.filter-chip.sel{border-color:var(--navy);background:var(--navy);color:#fff;}
-.summary-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:10px;}
-.summary-title{font-size:13px;font-weight:700;margin-bottom:10px;}
+.filter-chip.sel{border-color:var(--green);background:var(--green);color:#fff;}
+.summary-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(77,112,76,.07);}
+.summary-title{font-size:13px;font-weight:800;margin-bottom:10px;color:var(--green2);}
 .summary-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--light);}
 .summary-row:last-child{border-bottom:none;}
 .sr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
@@ -223,12 +250,12 @@ textarea.form-input{resize:none;line-height:1.5;}
 .sr-bar{flex:1;height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin:0 10px;}
 .sr-bar-fill{height:100%;border-radius:99px;}
 .sr-amt{font-size:12px;font-weight:700;white-space:nowrap;}
-.summary-total{display:flex;justify-content:space-between;padding-top:10px;margin-top:6px;border-top:1.5px solid var(--border);}
+.summary-total{display:flex;justify-content:space-between;padding-top:10px;margin-top:6px;border-top:2px solid var(--border);}
 .summary-total span{font-size:13px;font-weight:800;}
-.exp-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:8px;padding:12px 14px;}
+.exp-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:8px;padding:12px 14px;box-shadow:0 1px 6px rgba(77,112,76,.06);}
 .exp-top{display:flex;align-items:flex-start;gap:10px;}
 .exp-info{flex:1;min-width:0;}
-.exp-name{font-size:14px;font-weight:700;line-height:1.3;}
+.exp-name{font-size:14px;font-weight:700;line-height:1.3;color:var(--text);}
 .exp-badges{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;align-items:center;}
 .exp-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;}
 .exp-meta{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.8;}
@@ -242,27 +269,26 @@ textarea.form-input{resize:none;line-height:1.5;}
 .empty-hint{font-size:12px;color:var(--muted);margin-top:4px;}
 
 /* CHECKLIST */
-.ck-intro{background:var(--navy);color:#fff;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;font-size:12px;line-height:1.7;}
-.ck-intro strong{display:block;margin-bottom:3px;font-size:13px;}
+.ck-intro{background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;font-size:12px;line-height:1.7;box-shadow:0 4px 16px rgba(77,112,76,.2);}
+.ck-intro strong{display:block;margin-bottom:3px;font-size:13px;color:var(--gold);}
 .ck-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.ck-card{background:#fff;border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.ck-card{background:#fff;border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:10px;overflow:hidden;box-shadow:0 2px 10px rgba(77,112,76,.07);}
 .phase-header{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);}
 .phase-dot{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
 .phase-name{font-size:13px;font-weight:700;flex:1;}
 .phase-scope{font-size:10px;color:var(--sub);}
-.phase-prog{font-size:11px;font-weight:600;white-space:nowrap;}
+.phase-prog{font-size:11px;font-weight:700;white-space:nowrap;}
 .ck-head{padding:10px 14px;border-bottom:1px solid var(--border);}
 .ck-bar{height:5px;background:var(--border);border-radius:99px;overflow:hidden;}
 .ck-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
 .ck-pct{font-size:10px;color:var(--muted);margin-top:4px;}
-/* 3-state checklist item */
 .ck-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--light);cursor:pointer;transition:background .1s;}
 .ck-item:last-child{border-bottom:none;}
 .ck-item:active{background:var(--light);}
 .ck-box{width:24px;height:24px;border-radius:7px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:12px;}
 .ck-box.s1{background:#fff7ed;border-color:#f97316;}
 .ck-box.s1::after{content:'▶';color:#f97316;font-size:9px;}
-.ck-box.s2{background:var(--g-ok);border-color:var(--g-ok);}
+.ck-box.s2{background:var(--green);border-color:var(--green);}
 .ck-box.s2::after{content:'✓';color:#fff;font-weight:900;}
 .ck-item-content{flex:1;min-width:0;}
 .ck-item-num{font-size:10px;font-weight:700;color:var(--muted);}
@@ -272,16 +298,16 @@ textarea.form-input{resize:none;line-height:1.5;}
 .ck-status-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
 .ck-st0{}
 .ck-st1{background:#fff7ed;color:#c2410c;}
-.ck-st2{background:#f0fdf4;color:#15803d;}
+.ck-st2{background:#f0fdf4;color:var(--green2);}
 
 /* gap note */
-.gap-note{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:10px 12px;font-size:11.5px;color:#92400e;margin-bottom:10px;line-height:1.6;}
+.gap-note{background:var(--gold-light);border:1px solid var(--gold-pale);border-radius:var(--radius-sm);padding:10px 12px;font-size:11.5px;color:#6b4b00;margin-bottom:10px;line-height:1.6;}
 
 /* tips */
-.tips-card{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:14px;margin-top:4px;}
-.tips-title{font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px;}
-.tip-row{font-size:11px;color:#78350f;padding:4px 0;line-height:1.5;display:flex;gap:8px;}
-.tip-n{flex-shrink:0;font-weight:700;}
+.tips-card{background:var(--gold-light);border:1px solid var(--gold-pale);border-radius:var(--radius);padding:16px;margin-top:4px;}
+.tips-title{font-size:12px;font-weight:800;color:var(--gold2);margin-bottom:10px;}
+.tip-row{font-size:11px;color:#5a3e00;padding:4px 0;line-height:1.5;display:flex;gap:8px;}
+.tip-n{flex-shrink:0;font-weight:800;color:var(--gold2);}
 </style>
 </head>
 <body>
@@ -392,7 +418,7 @@ const CUSTODIANS = [
     id:'c1', num:1,
     phase:'الصيانة العامة للمبنى',
     scope:'أعمال الهدم واللياسة والدهانات والعزل والأسقف',
-    custody:150000, color:'#3b82f6', bg:'#eff6ff', tc:'#1d4ed8',
+    custody:150000, color:'#4d704c', bg:'#edf3ec', tc:'#3d5c3c',
     items:[
       {num:'1.1', text:'أعمال الهدم والإزالة والمباني'},
       {num:'1.2', text:'أعمال اللياسة الداخلية'},
@@ -405,7 +431,7 @@ const CUSTODIANS = [
     id:'c2', num:2,
     phase:'صيانة وتطوير التجهيزات',
     scope:'الأبواب والزجاج والسيراميك والأرضيات والديكور',
-    custody:200000, color:'#8b5cf6', bg:'#f5f3ff', tc:'#6d28d9',
+    custody:200000, color:'#6c926a', bg:'#eef4ed', tc:'#4d704c',
     items:[
       {num:'2.1', text:'أعمال الأبواب للمكاتب والحمامات ودورات المياه'},
       {num:'2.2', text:'الأعمال الزجاجية'},
@@ -422,7 +448,7 @@ const CUSTODIANS = [
     id:'c3', num:3,
     phase:'الأعمال الصحية',
     scope:'دورات المياه وغرف الخدمات المشتركة وملحقاتها',
-    custody:100000, color:'#14b8a6', bg:'#f0fdfa', tc:'#0f766e',
+    custody:100000, color:'#be9647', bg:'#fdf6e3', tc:'#8a6b2a',
     items:[
       {num:'3.1', text:'توريد وتركيب المراحيض وأطقم دورات المياه'},
       {num:'3.2', text:'أحواض الغسيل المعلقة'},
@@ -439,7 +465,7 @@ const CUSTODIANS = [
     id:'c4', num:4,
     phase:'الأعمال الكهربائية وملحقاتها',
     scope:'الإنارة والإنذار والتوصيلات والشبكات',
-    custody:200000, color:'#f59e0b', bg:'#fffbeb', tc:'#b45309',
+    custody:200000, color:'#d5b254', bg:'#fdf6e3', tc:'#8a6b2a',
     items:[
       {num:'4.1', text:'نظام إنذار الحريق الكامل'},
       {num:'4.2', text:'العلب الأرضية (طاقة + داتا)'},
@@ -456,7 +482,7 @@ const CUSTODIANS = [
     id:'c5', num:5,
     phase:'الكاميرات وأنظمة المراقبة',
     scope:'كاميرات IP وجهاز التسجيل وشاشة المراقبة والتمديدات',
-    custody:30000, color:'#f43f5e', bg:'#fff1f2', tc:'#be123c',
+    custody:30000, color:'#3d5c3c', bg:'#e8f0e8', tc:'#2a3f2a',
     items:[
       {num:'5.1', text:'كاميرات IP (8 ميغابيكسل)'},
       {num:'5.2', text:'جهاز تسجيل NVR'},
@@ -560,20 +586,42 @@ function closeModal(id){document.getElementById(id).classList.remove('open');del
 document.querySelectorAll('.modal-ov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');}));
 
 // ── HEADER ─────────────────────────────────────────────────────────────
+const EMBLEM_SVG=`<svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="44" height="44" rx="10" fill="#2a3f2a"/>
+  <rect x="1" y="1" width="42" height="42" rx="9" stroke="#d5b254" stroke-width="1.5"/>
+  <!-- open book -->
+  <path d="M11 16 C11 16 16 14 22 16 C22 16 22 28 22 28 C16 26 11 28 11 28 Z" fill="white" opacity="0.9"/>
+  <path d="M33 16 C33 16 28 14 22 16 C22 16 22 28 22 28 C28 26 33 28 33 28 Z" fill="white" opacity="0.75"/>
+  <line x1="22" y1="16" x2="22" y2="28" stroke="#d5b254" stroke-width="1"/>
+  <!-- spine bottom -->
+  <path d="M11 28 Q16 30 22 28 Q28 30 33 28" stroke="#d5b254" stroke-width="1" fill="none"/>
+  <!-- stars / decorative dots -->
+  <circle cx="22" cy="34" r="1.2" fill="#d5b254"/>
+  <circle cx="18" cy="34" r="0.7" fill="#d5b254" opacity=".6"/>
+  <circle cx="26" cy="34" r="0.7" fill="#d5b254" opacity=".6"/>
+  <!-- arabic letter ط stylized at top -->
+  <text x="22" y="13" text-anchor="middle" font-size="5" fill="#d5b254" font-weight="bold">ط</text>
+</svg>`;
+
 function renderHeader(){
   const spent=totalSpent(); const left=TOTAL_BUDGET-spent;
   const p=pct(spent,TOTAL_BUDGET); const bc=barCls(p);
-  const done=CUSTODIANS.filter(c=>custSpent(c.id)>0).length;
   document.getElementById('header').innerHTML=`
-    <div class="h-label">مركز البحوث والاستشارات — تأهيل مقر سيسد بالحرم الجامعي</div>
+    <div class="h-emblem-row">
+      <div class="h-emblem">${EMBLEM_SVG}</div>
+      <div class="h-brand">
+        <div class="h-univ">جامعة الطائف — مركز البحوث والاستشارات</div>
+        <div class="h-proj">مشروع تأهيل وصيانة مقر سيسد</div>
+      </div>
+      <button class="h-share-btn" onclick="openShare()">📤 تقرير</button>
+    </div>
     <div class="h-title-row">
       <div class="h-title">إدارة العهدات الخمس <span id="sync-badge" class="sync-badge" style="display:none"></span></div>
-      <button class="h-share-btn" onclick="openShare()">📤 تقرير</button>
     </div>
     <div class="stats-row">
       <div class="stat-box">
         <div class="s-lbl">إجمالي العهدات</div>
-        <div class="s-val" style="color:var(--gold2)">${fmtN(TOTAL_BUDGET)}</div>
+        <div class="s-val" style="color:var(--gold)">${fmtN(TOTAL_BUDGET)}</div>
         <div class="s-sub">ريال سعودي</div>
       </div>
       <div class="stat-box">
@@ -583,7 +631,7 @@ function renderHeader(){
       </div>
       <div class="stat-box">
         <div class="s-lbl">المتبقي</div>
-        <div class="s-val" style="color:${left<0?'#fca5a5':'var(--gold2)'}">${fmtN(Math.abs(left))}</div>
+        <div class="s-val" style="color:${left<0?'#fca5a5':'var(--gold)'}">${fmtN(Math.abs(left))}</div>
         <div class="s-sub">${left<0?'🔴 تجاوز':'متاح للصرف'}</div>
       </div>
     </div>
@@ -607,21 +655,81 @@ function renderAlerts(){
   el.innerHTML=html?`<div style="padding:8px 12px 4px">${html}</div>`:'';
 }
 
+// ── DONUT CHART ────────────────────────────────────────────────────────
+function buildDonut(){
+  const R=44, cx=56, cy=56, stroke=14;
+  const circumference=2*Math.PI*R;
+  const totalBudget=TOTAL_BUDGET;
+  let offset=0;
+  const segments=CUSTODIANS.map(c=>{
+    const share=c.custody/totalBudget;
+    const dash=share*circumference;
+    const seg=`<circle cx="${cx}" cy="${cy}" r="${R}"
+      fill="none" stroke="${c.color}" stroke-width="${stroke}"
+      stroke-dasharray="${dash-1} ${circumference-(dash-1)}"
+      stroke-dashoffset="${-offset+circumference/4}"
+      transform="rotate(-90 ${cx} ${cy})"
+      style="transition:stroke-dasharray .6s"/>`;
+    offset+=dash;
+    return seg;
+  }).join('');
+
+  const spent=totalSpent();
+  const spentP=pct(spent,TOTAL_BUDGET);
+
+  const legend=CUSTODIANS.map(c=>{
+    const s=custSpent(c.id);
+    const p=pct(s,totalBudget);
+    return `<div class="dl-row">
+      <div class="dl-dot" style="background:${c.color}"></div>
+      <div class="dl-name">${c.phase}</div>
+      <div class="dl-pct">${fmtN(c.custody)}</div>
+    </div>`;
+  }).join('');
+
+  return `<div class="donut-card">
+    <div class="donut-title">
+      <span>توزيع الميزانية على التخصصات</span>
+      <span style="color:var(--green);font-size:11px">${fmtN(TOTAL_BUDGET)} ر.س</span>
+    </div>
+    <div class="donut-wrap">
+      <div class="donut-svg-wrap">
+        <svg width="112" height="112" viewBox="0 0 112 112">${segments}
+          <circle cx="${cx}" cy="${cy}" r="${R-stroke/2-2}" fill="white"/>
+        </svg>
+        <div class="donut-center">
+          <div class="donut-center-pct">${spentP}%</div>
+          <div class="donut-center-lbl">مصروف</div>
+        </div>
+      </div>
+      <div class="donut-legend">${legend}</div>
+    </div>
+  </div>`;
+}
+
 // ── DASHBOARD ──────────────────────────────────────────────────────────
 function renderDash(){
   let ovBars=CUSTODIANS.map(c=>{
     const s=custSpent(c.id); const p=pct(s,c.custody);
     return `<div class="ov-phase" onclick="switchTab('add');setTimeout(()=>selCust('${c.id}'),60)">
-      <div class="ov-num" style="color:${c.color}">${c.num}</div>
+      <div class="ov-num" style="color:rgba(255,255,255,.8)">${c.num}</div>
       <div class="ov-bar-w"><div class="ov-bar-f" style="height:${p}%;background:${c.color};min-height:${p>0?4:0}px"></div></div>
       <div class="ov-pct">${p}%</div>
     </div>`;
   }).join('');
 
   let html=`
-    <div class="gap-note">📌 <strong>خطة العمل:</strong> إجمالي العهدة 680,000 ريال — موزّعة على 5 تخصصات. كل عهداء مسؤول عن تخصصه وميزانيته بشكل مستقل.</div>
+    <div class="proj-identity">
+      <div class="proj-emblem">${EMBLEM_SVG}</div>
+      <div class="proj-info">
+        <div class="proj-tag">SISD — جامعة الطائف</div>
+        <div class="proj-name">مشروع تأهيل وصيانة مقر مركز البحوث والاستشارات</div>
+        <div class="proj-budget">الميزانية الكلية: ${fmtN(TOTAL_BUDGET)} ريال سعودي</div>
+      </div>
+    </div>
+    ${buildDonut()}
     <div class="overview-card">
-      <div class="ov-title">نظرة عامة — نسبة الصرف لكل تخصص</div>
+      <div class="ov-title">نسبة الصرف من كل عهدة</div>
       <div class="ov-grid">${ovBars}</div>
     </div>`;
 
@@ -647,7 +755,7 @@ function renderDash(){
         </div>
         ${warnBadge}
         <div class="cust-amounts">
-          <div class="ca-item"><div class="ca-lbl">العهدة</div><div class="ca-val" style="color:var(--gold)">${fmtN(c.custody)}</div></div>
+          <div class="ca-item"><div class="ca-lbl">العهدة</div><div class="ca-val" style="color:var(--gold2)">${fmtN(c.custody)}</div></div>
           <div class="ca-item"><div class="ca-lbl">مصروف</div><div class="ca-val" style="color:${c.color}">${fmtN(s)}</div></div>
           <div class="ca-item"><div class="ca-lbl">${left<0?'تجاوز':'متبقٍ'}</div><div class="ca-val" style="color:${left<0?'#dc2626':'#15803d'}">${fmtN(Math.abs(left))}</div></div>
         </div>
@@ -1234,6 +1342,15 @@ const APP_URL='https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/sisd.html';
 function renderCfg(){
   const waLink='https://wa.me/?text='+encodeURIComponent('تطبيق إدارة عهدة مشروع تأهيل مقر سيسد: '+APP_URL);
   document.getElementById('tab-cfg').innerHTML=`
+    <div style="background:linear-gradient(135deg,var(--green2),var(--green));border-radius:var(--radius);padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(77,112,76,.2)">
+      <div style="width:40px;height:40px;flex-shrink:0">${EMBLEM_SVG}</div>
+      <div>
+        <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:.8px">جامعة الطائف — مركز البحوث والاستشارات</div>
+        <div style="font-size:12px;font-weight:800;color:var(--gold);margin-top:2px">مشروع تأهيل وصيانة مقر سيسد</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:2px">الإصدار 2.0 · إدارة العهدات الخمس</div>
+      </div>
+    </div>
+
     <div class="cfg-card">
       <div class="cfg-title">📤 مشاركة التطبيق</div>
       <p class="cfg-sub">شارك رابط التطبيق مع باقي أعضاء الفريق — يعمل على أي جهاز بدون تثبيت</p>
@@ -1260,6 +1377,10 @@ function renderCfg(){
       <div class="fb-ok-badge" id="cfg-sync-status">🟡 جاري الاتصال…</div>
     </div>
 
+    <div style="text-align:center;padding:12px 0;font-size:10px;color:var(--muted)">
+      إدارة العهدات · مركز سيسد · جامعة الطائف<br>
+      <span style="color:var(--gold2);font-weight:700">١٤٤٦ هـ</span>
+    </div>
   `;
   updateSyncBadge();
 }
