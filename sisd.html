@@ -1246,22 +1246,31 @@ const FB_CFG={
   appId:'1:1004544754825:web:68ea8c22d68a079d3ab258'
 };
 let fbDb=null, fbSyncOk=false, fbSyncing=false, fbPushTimer=null, fbLastErr='';
+let fbRetryTimer=null, fbRetryCount=0;
 
 function updateSyncBadge(){
   const el=document.getElementById('sync-badge'); if(!el)return;
   el.style.display='inline-block';
-  if(fbSyncing){el.textContent='🔄';el.style.color='#fbbf24';}
+  if(fbSyncing){el.textContent='🔄';el.style.color='#d5b254';}
   else if(fbSyncOk){el.textContent='🟢';el.style.color='#22c55e';}
   else{el.textContent='🔴';el.style.color='#ef4444';}
   const cs=document.getElementById('cfg-sync-status'); if(!cs)return;
-  if(fbSyncing){cs.innerHTML='🟡 جاري المزامنة…';cs.style.background='#fef9c3';cs.style.color='#854d0e';}
-  else if(fbSyncOk){cs.innerHTML='🟢 متصل — يتزامن تلقائياً';cs.style.background='#f0fdf4';cs.style.color='#15803d';}
-  else{
+  if(fbSyncing){
+    cs.innerHTML='🟡 جاري الاتصال…';
+    cs.style.background='#fef9c3';cs.style.color='#854d0e';
+  } else if(fbSyncOk){
+    cs.innerHTML='🟢 متصل — يتزامن تلقائياً';
+    cs.style.background='#f0fdf4';cs.style.color='#15803d';
+  } else {
+    const retryIn=fbRetryCount>0?` (إعادة تلقائية بعد ${Math.min(30,fbRetryCount*10)} ث)`:'';
     cs.innerHTML='🔴 خطأ في الاتصال'+(fbLastErr?`<br><small style="font-weight:400;font-size:10px">${escH(fbLastErr)}</small>`:'')
-      +'<br><button onclick="initFirebase()" style="margin-top:6px;padding:5px 12px;border-radius:6px;border:1px solid #fca5a5;background:#fff;color:#dc2626;font-size:11px;cursor:pointer;font-family:inherit">🔄 إعادة المحاولة</button>';
+      +`<br><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+        <button onclick="fbRetryCount=0;clearTimeout(fbRetryTimer);initFirebase()" style="padding:5px 12px;border-radius:6px;border:1px solid #fca5a5;background:#fff;color:#dc2626;font-size:11px;cursor:pointer;font-family:inherit">🔄 إعادة المحاولة</button>
+      </div>${retryIn?`<div style="font-size:10px;color:#9a3412;margin-top:4px">${retryIn}</div>`:''}`;
     cs.style.background='#fef2f2';cs.style.color='#991b1b';
   }
 }
+
 function loadScript(src){
   return new Promise((res,rej)=>{
     if(document.querySelector(`script[src="${src}"]`)){res();return;}
@@ -1269,7 +1278,9 @@ function loadScript(src){
     document.head.appendChild(s);
   });
 }
+
 async function initFirebase(){
+  clearTimeout(fbRetryTimer);
   fbLastErr=''; fbSyncing=true; updateSyncBadge();
   try{
     await loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js');
@@ -1278,22 +1289,42 @@ async function initFirebase(){
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
     if(!fbDb){
       fbDb=firebase.firestore();
-      fbDb.settings({experimentalForceLongPolling:true,merge:true});
+      // auto-detect: uses WebSocket if available, otherwise falls back to long-polling
+      fbDb.settings({experimentalAutoDetectLongPolling:true, merge:true});
+      // enable offline cache — errors silently if not supported (e.g. private mode)
+      fbDb.enablePersistence({synchronizeTabs:true}).catch(()=>{});
       listenCloud();
     }
     await loadFromCloud();
-    fbSyncing=false; fbSyncOk=true; updateSyncBadge();
+    fbSyncing=false; fbSyncOk=true; fbRetryCount=0; updateSyncBadge();
   }catch(e){
     fbSyncing=false; fbSyncOk=false;
     fbLastErr=e.code?`${e.code}: ${e.message}`:e.message||String(e);
     updateSyncBadge();
     console.error('Firebase error:',e);
+    // exponential backoff retry: 10s, 20s, 30s, 30s, ...
+    fbRetryCount++;
+    const delay=Math.min(30,fbRetryCount*10)*1000;
+    fbRetryTimer=setTimeout(()=>{ if(!fbSyncOk) initFirebase(); }, delay);
   }
 }
+
 async function loadFromCloud(){
   if(!fbDb)return;
-  const snap=await fbDb.collection('sisd').doc('data').get();
-  if(!snap.exists)return;
+  let snap;
+  try{
+    // try server first with 10s timeout
+    const p=fbDb.collection('sisd').doc('data').get();
+    const timeout=new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),10000));
+    snap=await Promise.race([p,timeout]);
+  }catch(serverErr){
+    // fall back to local cache if server unreachable
+    try{
+      snap=await fbDb.collection('sisd').doc('data').get({source:'cache'});
+      if(snap.exists)showToast('📦 تم التحميل من الكاش المحلي','info');
+    }catch(cacheErr){throw serverErr;}
+  }
+  if(!snap||!snap.exists)return;
   const d=snap.data();
   if(d.expenses)expenses=sanitizeExp(d.expenses);
   if(d.ckState)ckState=d.ckState;
@@ -1303,6 +1334,7 @@ async function loadFromCloud(){
   localStorage.setItem('sisd-meta',JSON.stringify(custMeta));
   renderAll(); if(curTab==='hist')renderHist(); if(curTab==='ck')renderCk();
 }
+
 function listenCloud(){
   if(!fbDb)return;
   fbDb.collection('sisd').doc('data').onSnapshot(snap=>{
@@ -1319,9 +1351,10 @@ function listenCloud(){
       renderAll(); if(curTab==='hist')renderHist(); if(curTab==='ck')renderCk();
       showToast('🔄 تمت المزامنة','info');
     }
-    fbSyncOk=true; updateSyncBadge();
+    fbSyncOk=true; fbRetryCount=0; updateSyncBadge();
   },()=>{fbSyncOk=false; updateSyncBadge();});
 }
+
 function pushToCloud(){
   if(!fbDb)return;
   clearTimeout(fbPushTimer);
@@ -1333,9 +1366,16 @@ function pushToCloud(){
         updatedAt:firebase.firestore.FieldValue.serverTimestamp()
       });
       fbSyncing=false; fbSyncOk=true; updateSyncBadge();
-    }catch(e){fbSyncing=false; fbSyncOk=false; updateSyncBadge();}
+    }catch(e){
+      fbSyncing=false; fbSyncOk=false; updateSyncBadge();
+      // retry push after reconnect
+      if(!fbRetryTimer) fbRetryTimer=setTimeout(()=>{ if(!fbSyncOk) initFirebase(); },10000);
+    }
   },1500);
 }
+
+// auto-reconnect when network comes back online
+window.addEventListener('online',()=>{ if(!fbSyncOk&&!fbSyncing){ fbRetryCount=0; initFirebase(); } });
 
 // ── SETTINGS TAB ──────────────────────────────────────────────────────────
 const APP_URL='https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/sisd.html';
