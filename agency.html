@@ -244,6 +244,14 @@ body {
 .card-form { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; margin-top:10px; }
 .cod-note { background:rgba(27,104,48,0.10); border:1px solid rgba(39,163,72,0.25); border-radius:10px; padding:12px 14px; margin-top:10px; font-size:0.74rem; color:rgba(80,210,100,0.85); line-height:1.75; text-align:center; }
 .stc-note { font-size:0.62rem; color:rgba(255,255,255,0.28); margin-top:5px; }
+/* Expanded payment card */
+.pay-expanded { position:relative; background:rgba(14,10,34,0.98); backdrop-filter:blur(28px); border:1px solid rgba(212,168,67,0.30); border-radius:20px; padding:22px 18px 18px; animation:payExpand 0.28s cubic-bezier(0.22,1,0.36,1); }
+@keyframes payExpand { from{opacity:0;transform:scale(0.90) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.pay-exp-close { position:absolute; top:12px; left:12px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14); color:rgba(255,255,255,0.60); border-radius:50%; width:34px; height:34px; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; transition:all 0.18s; }
+.pay-exp-close:hover { background:rgba(220,60,60,0.20); border-color:rgba(220,60,60,0.50); color:#FF6060; }
+.pay-exp-logo { display:flex; justify-content:center; margin-bottom:14px; margin-top:6px; }
+.pay-exp-name { text-align:center; font-size:1.08rem; font-weight:800; color:#F5EFE0; margin-bottom:4px; }
+.pay-exp-desc { text-align:center; font-size:0.62rem; color:rgba(255,255,255,0.32); margin-bottom:14px; }
 </style>
 </head>
 <body>
@@ -505,6 +513,38 @@ let coDelivery='standard';
 let coPayment='mada';
 let coData={name:'',phone:'',city:'الرياض',district:'',street:''};
 let coCardNum='', coCardExp='', coCardCvv='', coCardName='', coStcPhone='';
+let coPayExpanded=false;
+
+const PAY_METHODS=[
+  {id:'mada',
+   logo:`<div style="background:#582D82;color:#fff;padding:7px 10px;border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:900;letter-spacing:1px;min-width:54px;text-align:center">mada</div>`,
+   logoLg:`<div style="background:#582D82;color:#fff;padding:18px 36px;border-radius:12px;font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:900;letter-spacing:3px">mada</div>`,
+   name:'مدى', desc:'بطاقات مدى السعودية'},
+  {id:'apple',
+   logo:`<div style="background:#000;color:#fff;padding:6px 8px;border-radius:5px;font-size:10px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;min-width:54px;text-align:center;letter-spacing:-0.3px">&#63743; Pay</div>`,
+   logoLg:`<div style="background:#000;color:#fff;padding:18px 36px;border-radius:12px;font-size:26px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:-0.5px">&#63743; Pay</div>`,
+   name:'Apple Pay', desc:'ادفع بسرعة وأمان مع Apple Pay'},
+  {id:'stc',
+   logo:`<div style="background:linear-gradient(135deg,#7B1760,#C030A0);color:#fff;padding:4px 6px;border-radius:5px;text-align:center;min-width:54px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:900">STC</div><div style="font-size:8px;opacity:0.85">pay</div></div>`,
+   logoLg:`<div style="background:linear-gradient(135deg,#7B1760,#C030A0);color:#fff;padding:18px 36px;border-radius:12px;text-align:center"><div style="font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:900">STC</div><div style="font-size:14px;opacity:0.90;margin-top:2px">pay</div></div>`,
+   name:'STC Pay', desc:'ادفع من محفظة STC Pay'},
+  {id:'cod',
+   logo:`<div style="background:linear-gradient(135deg,#1C6B30,#27A348);color:#fff;padding:6px 8px;border-radius:5px;font-size:8px;font-weight:700;text-align:center;min-width:54px;line-height:1.5">💵<br>نقداً</div>`,
+   logoLg:`<div style="background:linear-gradient(135deg,#1C6B30,#27A348);color:#fff;padding:18px 36px;border-radius:12px;text-align:center"><div style="font-size:42px">💵</div><div style="font-size:15px;font-weight:700;margin-top:8px">الدفع نقداً</div></div>`,
+   name:'عند الاستلام', desc:'ادفع نقداً أو بالبطاقة عند استلام طلبك'},
+];
+
+function expandedPaymentView(){
+  const m=PAY_METHODS.find(p=>p.id===coPayment);
+  if(!m) return '';
+  return `<div class="pay-expanded">
+    <button class="pay-exp-close" onclick="coPayExpanded=false;renderCheckout()">✕</button>
+    <div class="pay-exp-logo">${m.logoLg}</div>
+    <div class="pay-exp-name">${m.name}</div>
+    <div class="pay-exp-desc">${m.desc}</div>
+    ${paymentDetailsHtml()}
+  </div>`;
+}
 
 function paymentDetailsHtml(){
   if(coPayment==='mada') return `<div class="card-form">
@@ -524,6 +564,7 @@ function paymentDetailsHtml(){
 function openCheckout(){
   if(!cart.length){toast('السلة فارغة');return;}
   coStep='info';
+  coPayExpanded=false;
   document.getElementById('coPage').classList.add('open');
   renderCheckout();
 }
@@ -634,19 +675,13 @@ function renderCheckout(){
     <!-- طريقة الدفع -->
     <div class="co-section">
       <div class="co-sec-title">💳 طريقة الدفع</div>
-      <div class="co-pay-opts">
-        ${[
-          {id:'mada',  logo:`<div style="background:#582D82;color:#fff;padding:7px 10px;border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:900;letter-spacing:1px;min-width:54px;text-align:center">mada</div>`, name:'مدى'},
-          {id:'apple', logo:`<div style="background:#000;color:#fff;padding:6px 8px;border-radius:5px;font-size:10px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;min-width:54px;text-align:center;letter-spacing:-0.3px">&#63743; Pay</div>`, name:'Apple Pay'},
-          {id:'stc',   logo:`<div style="background:linear-gradient(135deg,#7B1760,#C030A0);color:#fff;padding:4px 6px;border-radius:5px;text-align:center;min-width:54px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:900">STC</div><div style="font-size:8px;opacity:0.85">pay</div></div>`, name:'STC Pay'},
-          {id:'cod',   logo:`<div style="background:linear-gradient(135deg,#1C6B30,#27A348);color:#fff;padding:6px 8px;border-radius:5px;font-size:8px;font-weight:700;text-align:center;min-width:54px;line-height:1.5">💵<br>نقداً</div>`, name:'عند الاستلام'},
-        ].map(p=>`
-          <div class="co-pay-opt${coPayment===p.id?' sel':''}" onclick="coPayment='${p.id}';renderCheckout()">
+      ${coPayExpanded ? expandedPaymentView() : `<div class="co-pay-opts">
+        ${PAY_METHODS.map(p=>`
+          <div class="co-pay-opt${coPayment===p.id?' sel':''}" onclick="coPayment='${p.id}';coPayExpanded=true;renderCheckout()">
             <div class="co-pay-icon" style="font-size:inherit;display:flex;justify-content:center">${p.logo}</div>
             <div class="co-pay-name">${p.name}</div>
           </div>`).join('')}
-      </div>
-      ${paymentDetailsHtml()}
+      </div>`}
     </div>
 
     <!-- إجمالي -->
