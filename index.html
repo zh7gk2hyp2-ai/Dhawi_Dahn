@@ -23,11 +23,11 @@ body{
   font-family:'Alexandria',sans-serif;
   color:#EDE0C8;
   overflow-x:hidden;min-height:100vh;font-size:15px;
-  background:#06040C;
+  background:#07050F;
   background-image:
-    radial-gradient(ellipse 100% 55% at 50% -5%,rgba(180,110,18,0.09) 0%,transparent 65%),
-    radial-gradient(ellipse 60% 40% at 85% 105%,rgba(90,45,8,0.07) 0%,transparent 55%),
-    radial-gradient(ellipse 50% 35% at 5% 60%,rgba(60,30,5,0.05) 0%,transparent 50%);
+    radial-gradient(ellipse 140% 60% at 50% -10%, rgba(180,100,15,0.13) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 95% 110%, rgba(140,40,100,0.09) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 45% at 5% 65%, rgba(40,20,90,0.08) 0%, transparent 55%);
   background-attachment:fixed;
 }
 /* noise grain overlay via pseudo */
@@ -71,12 +71,17 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 
 /* ── Card System ── */
 .glass{
-  background:rgba(255,255,255,0.034);
-  border:1px solid rgba(255,255,255,0.075);
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
   border-radius:20px;padding:18px;margin-bottom:12px;
   position:relative;overflow:hidden;
   box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 20px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30);
-  transition:border-color 0.3s;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.glass:hover{
+  box-shadow: 0 8px 32px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 .glass::before{
   content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
@@ -88,7 +93,9 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
   border:1px solid rgba(201,168,76,0.22);
   border-radius:20px;padding:18px;margin-bottom:12px;
   position:relative;overflow:hidden;
-  box-shadow:0 2px 0 rgba(201,168,76,0.07) inset,0 20px 48px rgba(0,0,0,0.45);
+  box-shadow:0 2px 0 rgba(201,168,76,0.07) inset,0 20px 48px rgba(0,0,0,0.45),0 0 30px rgba(201,168,76,0.10);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
 }
 .glass-gold::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
@@ -149,11 +156,11 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 
 /* ── Buttons ── */
 .btn-gold{
-  background:linear-gradient(135deg,#B8892A 0%,#D4AF37 48%,#C09830 100%);
+  background:linear-gradient(135deg,#C9A030,#8B6010);
   color:#07050E;border:none;
   padding:14px 24px;border-radius:32px;
   font-weight:800;font-size:0.9rem;cursor:pointer;
-  box-shadow:0 6px 24px rgba(180,140,36,0.30),0 1px 3px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.25);
+  box-shadow:0 4px 16px rgba(201,168,76,0.30),0 1px 3px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.25);
   transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
   letter-spacing:0.3px;position:relative;overflow:hidden;
   font-family:'Alexandria',sans-serif;
@@ -298,6 +305,8 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   background:linear-gradient(135deg,rgba(25,80,28,0.12),rgba(6,4,12,0.96));
   border:1px solid rgba(50,130,52,0.28);border-radius:18px;padding:16px;margin-bottom:12px;
   animation:fadeUp 0.4s ease both;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
 /* ── Customer Store ── */
 .pkg-card{
@@ -355,6 +364,7 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   font-size:3.2rem;font-weight:300;letter-spacing:-0.06em;line-height:0.9;
   background:linear-gradient(135deg,#F8E898 0%,#D4AF37 40%,#9A7828 80%,#C9A84C 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 40px rgba(201,168,76,0.30));
 }
 .p-num-lg{
   font-family:'IBM Plex Mono','Courier New',monospace;
