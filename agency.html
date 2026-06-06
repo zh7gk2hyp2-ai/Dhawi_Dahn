@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AISLE 7 — Creative Agency</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;700;900&family=Barlow+Condensed:wght@400;700;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --shelf-wood: #6b4c2a;
+    --shelf-dark: #3d2a14;
+    --shelf-edge: #8c6135;
+    --floor: #1a1a2e;
+    --bg: #0d0d1a;
+    --neon-g: #39ff14;
+    --neon-b: #00d4ff;
+    --neon-r: #ff073a;
+    --neon-y: #ffe135;
+    --text: #f0ece4;
+    --price-bg: #fff200;
+    --price-text: #1a1a1a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ─── STORE ENTRANCE HERO ─── */
+  .hero {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 0%, #1a0a3d 0%, #0d0d1a 70%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; padding: 40px 20px;
+  }
+
+  .hero-ceiling {
+    position: absolute; top: 0; left: 0; right: 0; height: 80px;
+    background: repeating-linear-gradient(90deg, #111 0px, #111 60px, #1a1a1a 60px, #1a1a1a 120px);
+  }
+
+  .ceiling-light {
+    position: absolute; top: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,240,180,0.4) 0%, transparent 70%);
+  }
+  .ceiling-light::before {
+    content:''; position:absolute; top:10px; left:32px;
+    width:16px; height:50px;
+    background: linear-gradient(180deg, #ffe9a0 0%, rgba(255,233,160,0.1) 100%);
+    border-radius:2px;
+  }
+  .cl1{left:10%} .cl2{left:30%} .cl3{left:50%} .cl4{left:70%} .cl5{left:90%}
+
+  .neon-sign {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(56px, 12vw, 130px);
+    letter-spacing: -2px;
+    color: #fff;
+    text-shadow:
+      0 0 7px #fff,
+      0 0 20px #fff,
+      0 0 40px var(--neon-b),
+      0 0 80px var(--neon-b),
+      0 0 130px var(--neon-b);
+    animation: flicker 8s infinite;
+    line-height: 1;
+  }
+
+  .neon-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(14px, 3vw, 22px);
+    font-weight: 700;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--neon-y);
+    text-shadow: 0 0 10px var(--neon-y), 0 0 30px rgba(255,225,53,0.5);
+    margin-top: 8px;
+  }
+
+  .hero-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(16px, 2.5vw, 20px);
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .hero-cta {
+    margin-top: 48px;
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  }
+
+  .btn-primary {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 2px;
+    padding: 14px 40px;
+    background: var(--neon-y); color: #1a1a1a;
+    border: none; border-radius: 2px; cursor: pointer;
+    box-shadow: 0 0 20px rgba(255,225,53,0.5);
+    transition: all .2s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 40px rgba(255,225,53,0.8); }
+
+  .btn-outline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 2px;
+    padding: 13px 40px;
+    background: transparent; color: var(--text);
+    border: 2px solid rgba(255,255,255,0.3); border-radius: 2px; cursor: pointer;
+    transition: all .2s; text-decoration: none; display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--neon-b); color: var(--neon-b); box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+
+  .scroll-hint {
+    position: absolute; bottom: 32px;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    animation: bounce 2s infinite;
+  }
+  .scroll-hint::after {
+    content:''; width:1px; height:40px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+  }
+
+  .store-tag {
+    position: absolute; top: 100px; right: 40px;
+    background: var(--neon-r);
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: 2px;
+    padding: 8px 16px; border-radius: 2px;
+    transform: rotate(3deg);
+    box-shadow: 0 0 20px rgba(255,7,58,0.4);
+    display: none;
+  }
+  @media(min-width:600px){ .store-tag{display:block} }
+
+  /* ─── AISLE SECTION ─── */
+  .aisle-section {
+    background: #0d0d1a;
+    padding: 80px 20px 120px;
+    position: relative;
+  }
+
+  .aisle-header {
+    text-align: center; margin-bottom: 80px;
+  }
+
+  .aisle-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px; letter-spacing: 6px; text-transform: uppercase;
+    color: var(--neon-g);
+    text-shadow: 0 0 10px var(--neon-g);
+    margin-bottom: 12px;
+  }
+
+  .aisle-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(36px, 7vw, 72px);
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.5) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .aisle-desc {
+    font-size: 16px; color: rgba(255,255,255,0.45);
+    margin-top: 16px; max-width: 500px; margin-inline: auto;
+    line-height: 1.6;
+  }
+
+  /* ─── SHELF ─── */
+  .shelf-container {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 80px;
+  }
+
+  .shelf-row {
+    position: relative;
+  }
+
+  .shelf-board {
+    position: absolute; bottom: -18px; left: -20px; right: -20px; height: 22px;
+    background: linear-gradient(180deg, var(--shelf-edge) 0%, var(--shelf-wood) 40%, var(--shelf-dark) 100%);
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .shelf-board::before {
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:4px;
+    background: var(--shelf-edge);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .shelf-back {
+    position: absolute; top: -20px; bottom: -18px; left: -20px; right: -20px;
+    background: repeating-linear-gradient(
+      90deg,
+      #111 0px, #111 2px,
+      #161616 2px, #161616 60px
+    );
+    z-index: 0; border-radius: 4px;
+  }
+
+  .shelf-label-strip {
+    position: absolute; bottom: 4px; left: 0; right: 0;
+    height: 12px;
+    background: var(--price-bg);
+    display: flex; align-items: center; padding: 0 10px; z-index: 2;
+  }
+  .shelf-label-strip span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; font-weight: 900; letter-spacing: 2px;
+    color: #1a1a1a; text-transform: uppercase;
+  }
+
+  .products-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 40px 20px 30px;
+    position: relative; z-index: 1;
+    flex-wrap: wrap;
+  }
+
+  /* ─── 3D PRODUCT BASE ─── */
+  .product-slot {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    cursor: pointer;
+  }
+
+  .product-scene {
+    perspective: 800px;
+  }
+
+  .product-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .product-slot:hover .product-3d {
+    transform: rotateY(-25deg) rotateX(5deg) translateY(-12px);
+  }
+
+  .face {
+    position: absolute;
+    backface-visibility: hidden;
+    overflow: hidden;
+  }
+
+  /* ─── PRODUCT 1: CEREAL BOX — Brand Identity ─── */
+  .box-brand {
+    width: 110px; height: 160px;
+    position: relative;
+  }
+
+  .box-brand .product-3d {
+    width: 110px; height: 160px;
+  }
+
+  .box-brand .face-front {
+    width: 110px; height: 160px;
+    transform: translateZ(40px);
+    background: linear-gradient(160deg, #e63946 0%, #c1121f 50%, #780000 100%);
+    border-radius: 4px 4px 0 0;
+  }
+
+  .box-brand .face-back {
+    width: 110px; height: 160px;
+    transform: rotateY(180deg) translateZ(40px);
+    background: #fff;
+    border-radius: 4px 4px 0 0;
+    padding: 12px;
+    color: #1a1a1a;
+  }
+
+  .box-brand .face-right {
+    width: 80px; height: 160px;
+    transform: rotateY(90deg) translateZ(55px);
+    background: linear-gradient(180deg, #c1121f, #780000);
+    left: 15px;
+  }
+
+  .box-brand .face-left {
+    width: 80px; height: 160px;
+    transform: rotateY(-90deg) translateZ(55px);
+    background: linear-gradient(180deg, #c1121f, #780000);
+    left: 15px;
+  }
+
+  .box-brand .face-top {
+    width: 110px; height: 80px;
+    transform: rotateX(90deg) translateZ(80px);
+    background: #c1121f;
+    top: 40px;
+  }
+
+  /* ─── PRODUCT 2: SOUP CAN — Web Dev ─── */
+  .can-web {
+    width: 100px; height: 150px; position: relative;
+  }
+
+  .can-web .product-3d {
+    width: 100px; height: 150px;
+  }
+
+  .can-web .face-front {
+    width: 100px; height: 150px;
+    transform: translateZ(50px);
+    background: #e8e8e8;
+    border-radius: 50px / 8px;
+  }
+
+  .can-web .face-back {
+    width: 100px; height: 150px;
+    transform: rotateY(180deg) translateZ(50px);
+    background: #f5f5f5;
+    border-radius: 50px / 8px;
+    padding: 12px;
+    color: #1a1a1a;
+  }
+
+  .can-web .face-right {
+    width: 100px; height: 150px;
+    transform: rotateY(90deg) translateZ(50px);
+    background: linear-gradient(90deg, #e8e8e8, #bdbdbd);
+    border-radius: 0;
+    left: 0;
+  }
+
+  .can-web .face-left {
+    width: 100px; height: 150px;
+    transform: rotateY(-90deg) translateZ(50px);
+    background: linear-gradient(90deg, #bdbdbd, #e8e8e8);
+    left: 0;
+  }
+
+  /* ─── PRODUCT 3: JUICE BOTTLE — Social Media ─── */
+  .bottle-social {
+    width: 80px; height: 180px; position: relative;
+  }
+
+  .bottle-social .product-3d {
+    width: 80px; height: 180px;
+  }
+
+  .bottle-social .face-front {
+    width: 80px; height: 180px;
+    transform: translateZ(38px);
+    background: linear-gradient(180deg, #f77f00 0%, #fcbf49 50%, #f77f00 100%);
+    border-radius: 16px 16px 8px 8px;
+  }
+
+  .bottle-social .face-back {
+    width: 80px; height: 180px;
+    transform: rotateY(180deg) translateZ(38px);
+    background: linear-gradient(180deg, #f77f00, #fcbf49, #f77f00);
+    border-radius: 16px 16px 8px 8px;
+    padding: 10px;
+    color: #1a1a1a;
+  }
+
+  .bottle-social .face-right {
+    width: 76px; height: 180px;
+    transform: rotateY(90deg) translateZ(40px);
+    background: linear-gradient(90deg, #f77f00, #e65c00);
+    left: 2px;
+  }
+
+  .bottle-social .face-left {
+    width: 76px; height: 180px;
+    transform: rotateY(-90deg) translateZ(40px);
+    background: linear-gradient(90deg, #e65c00, #f77f00);
+    left: 2px;
+  }
+
+  /* ─── PRODUCT 4: DETERGENT BOX — SEO ─── */
+  .box-seo {
+    width: 120px; height: 170px; position: relative;
+  }
+
+  .box-seo .product-3d {
+    width: 120px; height: 170px;
+  }
+
+  .box-seo .face-front {
+    width: 120px; height: 170px;
+    transform: translateZ(45px);
+    background: linear-gradient(135deg, #0077b6 0%, #023e8a 60%, #03045e 100%);
+    border-radius: 4px 4px 0 0;
+  }
+
+  .box-seo .face-back {
+    width: 120px; height: 170px;
+    transform: rotateY(180deg) translateZ(45px);
+    background: #fff;
+    border-radius: 4px 4px 0 0;
+    padding: 12px; color: #1a1a1a;
+  }
+
+  .box-seo .face-right {
+    width: 90px; height: 170px;
+    transform: rotateY(90deg) translateZ(60px);
+    background: linear-gradient(180deg, #0077b6, #023e8a);
+    left: 15px;
+  }
+
+  .box-seo .face-left {
+    width: 90px; height: 170px;
+    transform: rotateY(-90deg) translateZ(60px);
+    background: linear-gradient(180deg, #023e8a, #0077b6);
+    left: 15px;
+  }
+
+  /* ─── PRODUCT 5: MILK CARTON — Copywriting ─── */
+  .carton-copy {
+    width: 90px; height: 175px; position: relative;
+  }
+
+  .carton-copy .product-3d {
+    width: 90px; height: 175px;
+  }
+
+  .carton-copy .face-front {
+    width: 90px; height: 175px;
+    transform: translateZ(42px);
+    background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 2px 2px 0 0;
+  }
+
+  .carton-copy .face-back {
+    width: 90px; height: 175px;
+    transform: rotateY(180deg) translateZ(42px);
+    background: #f8f9fa;
+    border-radius: 2px 2px 0 0;
+    padding: 10px; color: #1a1a1a;
+  }
+
+  .carton-copy .face-right {
+    width: 84px; height: 175px;
+    transform: rotateY(90deg) translateZ(45px);
+    background: #e9ecef;
+    left: 3px;
+  }
+
+  .carton-copy .face-left {
+    width: 84px; height: 175px;
+    transform: rotateY(-90deg) translateZ(45px);
+    background: #dee2e6;
+    left: 3px;
+  }
+
+  /* ─── PRODUCT 6: JAM JAR — Strategy ─── */
+  .jar-strategy {
+    width: 105px; height: 130px; position: relative;
+  }
+
+  .jar-strategy .product-3d {
+    width: 105px; height: 130px;
+  }
+
+  .jar-strategy .face-front {
+    width: 105px; height: 130px;
+    transform: translateZ(52px);
+    background: linear-gradient(180deg, #2d6a4f 0%, #1b4332 100%);
+    border-radius: 6px;
+  }
+
+  .jar-strategy .face-back {
+    width: 105px; height: 130px;
+    transform: rotateY(180deg) translateZ(52px);
+    background: #fff;
+    border-radius: 6px;
+    padding: 10px; color: #1a1a1a;
+  }
+
+  .jar-strategy .face-right {
+    width: 104px; height: 130px;
+    transform: rotateY(90deg) translateZ(52px);
+    background: linear-gradient(90deg, #2d6a4f, #1b4332);
+    left: 0;
+  }
+
+  .jar-strategy .face-left {
+    width: 104px; height: 130px;
+    transform: rotateY(-90deg) translateZ(52px);
+    background: linear-gradient(90deg, #1b4332, #2d6a4f);
+    left: 0;
+  }
+
+  /* ─── FRONT FACE CONTENT ─── */
+  .face-front-inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 10px 8px; position: relative; overflow: hidden;
+  }
+
+  .product-brand-stripe {
+    height: 8px;
+    border-radius: 2px;
+    margin-bottom: 4px;
+  }
+
+  .product-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px; line-height: 1; letter-spacing: 1px;
+  }
+
+  .product-variant {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; opacity: 0.8;
+  }
+
+  .product-illustration {
+    font-size: 42px; text-align: center; line-height: 1;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  }
+
+  .product-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 400; letter-spacing: 1px;
+    opacity: 0.7; font-style: italic;
+  }
+
+  .product-weight {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    opacity: 0.6; text-align: right;
+  }
+
+  .product-starburst {
+    position: absolute; top: 8px; right: 6px;
+    width: 36px; height: 36px;
+    background: var(--neon-y);
+    clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product-starburst span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 7px; font-weight: 900; color: #1a1a1a;
+    text-align: center; line-height: 1.1;
+  }
+
+  /* ─── BACK FACE (NUTRITION FACTS STYLE) ─── */
+  .back-inner {
+    width: 100%; height: 100%;
+    font-size: 9px; color: #1a1a1a;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+
+  .back-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 13px; border-bottom: 3px solid #1a1a1a;
+    padding-bottom: 2px; margin-bottom: 2px;
+  }
+
+  .back-serving {
+    font-size: 7px; color: #555; border-bottom: 1px solid #aaa;
+    padding-bottom: 2px;
+  }
+
+  .nutrient-row {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid #ddd; padding: 1px 0;
+    font-size: 8px;
+  }
+  .nutrient-row.bold { font-weight: 700; }
+  .nutrient-row.sub { padding-left: 8px; font-size: 7px; }
+
+  .back-features {
+    margin-top: 3px;
+    font-size: 7px; line-height: 1.5;
+  }
+
+  .back-barcode {
+    margin-top: auto;
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+  }
+
+  .barcode-lines {
+    display: flex; gap: 1px; height: 18px; align-items: flex-end;
+  }
+
+  .barcode-lines span {
+    display: block; background: #1a1a1a;
+    height: 100%;
+  }
+
+  .barcode-num {
+    font-size: 7px; letter-spacing: 2px; color: #1a1a1a;
+  }
+
+  /* ─── PRICE TAG ─── */
+  .price-tag {
+    background: var(--price-bg);
+    color: var(--price-text);
+    padding: 6px 14px 6px 10px;
+    position: relative;
+    font-family: 'Bebas Neue', sans-serif;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+    display: flex; flex-direction: column; align-items: flex-start;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  }
+  .price-tag:hover { transform: scale(1.05); box-shadow: 3px 3px 12px rgba(0,0,0,0.5); }
+
+  .price-amount {
+    font-size: 20px; line-height: 1;
+  }
+  .price-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 8px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: #555;
+  }
+
+  .product-name-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    color: rgba(255,255,255,0.6); text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* ─── CAN SPECIFIC STYLING ─── */
+  .can-top {
+    width: 100%; height: 14px;
+    background: radial-gradient(ellipse, #d0d0d0 0%, #b0b0b0 60%, #909090 100%);
+    border-radius: 50%;
+    position: absolute; top: -7px; left: 0;
+    transform-style: preserve-3d;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.2);
+  }
+
+  .can-label-band {
+    position: absolute; top: 25%; left: 0; right: 0;
+    height: 50%;
+  }
+
+  /* ─── BOTTLE CAP ─── */
+  .bottle-cap {
+    position: absolute; top: -12px; left: 50%;
+    transform: translateX(-50%);
+    width: 28px; height: 20px;
+    background: linear-gradient(180deg, #333 0%, #1a1a1a 100%);
+    border-radius: 4px 4px 0 0;
+    z-index: 10;
+  }
+
+  /* ─── JAR LID ─── */
+  .jar-lid {
+    position: absolute; top: -14px; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 18px;
+    background: linear-gradient(180deg, #555 0%, #333 100%);
+    border-radius: 4px 4px 0 0;
+    z-index: 10;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.4);
+  }
+
+  /* ─── SECTION: PROCESS ─── */
+  .process-section {
+    background: linear-gradient(180deg, #0d0d1a 0%, #1a1a2e 100%);
+    padding: 100px 20px;
+  }
+
+  .process-grid {
+    max-width: 900px; margin: 60px auto 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2px;
+  }
+
+  .process-step {
+    background: #12122a;
+    padding: 32px 24px;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all .3s;
+    position: relative; overflow: hidden;
+  }
+  .process-step:hover {
+    background: #1a1a3e;
+    border-color: rgba(0,212,255,0.3);
+    transform: translateY(-4px);
+  }
+  .process-step::before {
+    content: attr(data-num);
+    position: absolute; top: -20px; right: -10px;
+    font-family: 'Anton', sans-serif;
+    font-size: 100px; color: rgba(255,255,255,0.03);
+    line-height: 1; pointer-events: none;
+  }
+
+  .step-icon { font-size: 32px; margin-bottom: 16px; }
+  .step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 1px; margin-bottom: 8px;
+    color: var(--neon-b);
+  }
+  .step-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+  /* ─── TESTIMONIALS (RECEIPT STYLE) ─── */
+  .receipts-section {
+    background: #0d0d1a; padding: 100px 20px;
+  }
+
+  .receipts-grid {
+    max-width: 900px; margin: 60px auto 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+  }
+
+  .receipt {
+    background: #fff;
+    color: #1a1a1a;
+    padding: 24px 20px;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+    position: relative;
+    clip-path: polygon(
+      0 0, 100% 0, 100% calc(100% - 10px),
+      calc(100% - 10px) 100%, calc(100% - 20px) calc(100% - 10px),
+      calc(100% - 30px) 100%, calc(100% - 40px) calc(100% - 10px),
+      calc(100% - 50px) 100%, calc(100% - 60px) calc(100% - 10px),
+      calc(100% - 70px) 100%, calc(100% - 80px) calc(100% - 10px),
+      calc(100% - 90px) 100%, calc(100% - 100px) calc(100% - 10px),
+      calc(100% - 110px) 100%, calc(100% - 120px) calc(100% - 10px),
+      0 calc(100% - 10px)
+    );
+    transition: transform .3s;
+  }
+  .receipt:hover { transform: translateY(-6px) rotate(1deg); }
+
+  .receipt-header { text-align: center; border-bottom: 1px dashed #999; padding-bottom: 12px; margin-bottom: 12px; }
+  .receipt-store { font-size: 16px; font-weight: 700; letter-spacing: 3px; }
+  .receipt-date { font-size: 10px; color: #666; }
+
+  .receipt-item {
+    display: flex; justify-content: space-between;
+    font-size: 11px; margin: 4px 0;
+  }
+  .receipt-item.total {
+    border-top: 1px solid #999; margin-top: 8px; padding-top: 8px;
+    font-weight: 700; font-size: 13px;
+  }
+
+  .receipt-quote {
+    font-size: 11px; font-style: italic; color: #555;
+    margin-top: 12px; border-top: 1px dashed #ccc; padding-top: 10px;
+    line-height: 1.5;
+  }
+
+  .receipt-sig { font-size: 10px; color: #999; margin-top: 8px; }
+
+  /* ─── CONTACT: CHECKOUT COUNTER ─── */
+  .checkout-section {
+    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
+    padding: 100px 20px;
+    text-align: center;
+  }
+
+  .checkout-counter {
+    max-width: 600px; margin: 48px auto 0;
+    background: #12122a;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 48px 40px;
+    position: relative;
+  }
+
+  .checkout-counter::before {
+    content: 'CHECKOUT';
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--neon-y);
+    color: #1a1a1a;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: 4px;
+    padding: 4px 20px;
+  }
+
+  .checkout-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+
+  .form-row { display: flex; gap: 12px; }
+
+  .form-field {
+    display: flex; flex-direction: column; gap: 6px; flex: 1;
+  }
+
+  .form-field label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+  }
+
+  .form-field input, .form-field textarea, .form-field select {
+    background: #1a1a3e;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 2px; padding: 12px 14px;
+    color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px;
+    outline: none; transition: border-color .2s;
+    width: 100%;
+  }
+  .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+    border-color: var(--neon-b);
+    box-shadow: 0 0 12px rgba(0,212,255,0.15);
+  }
+  .form-field textarea { resize: vertical; min-height: 100px; }
+  .form-field select option { background: #1a1a3e; }
+
+  .submit-btn {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 3px;
+    padding: 16px 40px;
+    background: var(--neon-y); color: #1a1a1a;
+    border: none; border-radius: 2px; cursor: pointer;
+    width: 100%; transition: all .2s;
+    box-shadow: 0 0 20px rgba(255,225,53,0.3);
+    margin-top: 8px;
+  }
+  .submit-btn:hover {
+    background: #fff; box-shadow: 0 0 40px rgba(255,225,53,0.6);
+    transform: translateY(-2px);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #080810;
+    padding: 48px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .footer-logo {
+    font-family: 'Anton', sans-serif;
+    font-size: 28px; letter-spacing: 2px;
+    color: rgba(255,255,255,0.8);
+    text-shadow: 0 0 20px var(--neon-b);
+  }
+
+  .footer-links {
+    display: flex; justify-content: center; gap: 24px;
+    margin-top: 20px; flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,0.35);
+    text-decoration: none; transition: color .2s;
+  }
+  .footer-links a:hover { color: var(--neon-b); }
+
+  .footer-copy {
+    margin-top: 24px;
+    font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 1px;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(13,13,26,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all .3s;
+  }
+
+  .nav-logo {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px; letter-spacing: 3px;
+    text-shadow: 0 0 15px var(--neon-b);
+    color: #fff; text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex; gap: 28px; list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+    text-decoration: none; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--neon-y); }
+
+  .nav-cart {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px; letter-spacing: 1px;
+    padding: 8px 20px;
+    background: transparent; color: var(--neon-y);
+    border: 1px solid var(--neon-y); border-radius: 2px;
+    cursor: pointer; transition: all .2s; text-decoration: none;
+    box-shadow: 0 0 10px rgba(255,225,53,0.15);
+  }
+  .nav-cart:hover { background: var(--neon-y); color: #1a1a1a; }
+
+  /* ─── SECTION HEADER REUSE ─── */
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px; letter-spacing: 6px; text-transform: uppercase;
+    color: var(--neon-g); text-shadow: 0 0 10px var(--neon-g);
+    margin-bottom: 12px; text-align: center;
+  }
+  .section-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(32px, 6vw, 64px); line-height: 1;
+    text-align: center;
+  }
+  .section-desc {
+    font-size: 15px; color: rgba(255,255,255,0.45);
+    margin-top: 12px; max-width: 480px; margin-inline: auto;
+    text-align: center; line-height: 1.6;
+  }
+
+  /* ─── STATS TICKER ─── */
+  .ticker {
+    background: var(--neon-y); color: #1a1a1a;
+    overflow: hidden; padding: 10px 0; white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-flex; gap: 60px;
+    animation: tickerMove 30s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; letter-spacing: 3px; white-space: nowrap;
+  }
+  .ticker-sep { opacity: 0.4; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes flicker {
+    0%,19%,21%,23%,25%,54%,56%,100% {
+      text-shadow: 0 0 7px #fff, 0 0 20px #fff, 0 0 40px var(--neon-b), 0 0 80px var(--neon-b), 0 0 130px var(--neon-b);
+    }
+    20%,24%,55% { text-shadow: none; opacity: 0.8; }
+  }
+
+  @keyframes bounce {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)}
+  }
+
+  @keyframes tickerMove {
+    from{transform:translateX(0)} to{transform:translateX(-50%)}
+  }
+
+  @keyframes fadeUp {
+    from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)}
+  }
+
+  .animate-up {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .animate-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── MOBILE NAV ─── */
+  .mobile-menu-btn { display: none; }
+  @media(max-width:700px){
+    .nav-links{display:none}
+    .mobile-menu-btn{
+      display:block;
+      background:none;border:none;color:#fff;font-size:22px;cursor:pointer;
+    }
+  }
+
+  /* ─── PRODUCT SIDE LABEL ─── */
+  .side-label {
+    position: absolute; left: 0; top: 0;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .side-label-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px; letter-spacing: 3px;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    opacity: 0.8;
+  }
+
+  /* ─── HOVER TOOLTIP ─── */
+  .product-hint {
+    position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,212,255,0.15);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--neon-b);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    padding: 3px 10px; white-space: nowrap;
+    opacity: 0; transition: opacity .3s;
+  }
+  .product-slot:hover .product-hint { opacity: 1; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">AISLE 7</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cart">🛒 Get a Quote</a>
+  <button class="mobile-menu-btn">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ceiling">
+    <div class="ceiling-light cl1"></div>
+    <div class="ceiling-light cl2"></div>
+    <div class="ceiling-light cl3"></div>
+    <div class="ceiling-light cl4"></div>
+    <div class="ceiling-light cl5"></div>
+  </div>
+  <div class="store-tag">EST. 2019</div>
+  <p class="neon-sub">Welcome to</p>
+  <h1 class="neon-sign">AISLE 7</h1>
+  <p class="neon-sub">Creative Agency</p>
+  <p class="hero-tagline">Everything your brand needs — shelf-ready</p>
+  <div class="hero-cta">
+    <a href="#services" class="btn-primary">Browse Services</a>
+    <a href="#contact" class="btn-outline">Start a Project</a>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Brand Identity</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Web Development</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Social Media</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">SEO & Growth</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Copywriting</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Strategy</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Brand Identity</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Web Development</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Social Media</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">SEO & Growth</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Copywriting</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Strategy</span>
+    <span class="ticker-item ticker-sep">✦</span>
+  </div>
+</div>
+
+<!-- SERVICES / SHELVES -->
+<section class="aisle-section" id="services">
+  <div class="aisle-header animate-up">
+    <p class="aisle-label">● Aisle 7 · Services</p>
+    <h2 class="aisle-title">PICK YOUR<br>PACKAGE</h2>
+    <p class="aisle-desc">Hover to flip. Each product is engineered for maximum brand impact. No fillers.</p>
+  </div>
+
+  <div class="shelf-container">
+
+    <!-- SHELF 1 -->
+    <div class="shelf-row animate-up">
+      <div class="shelf-back"></div>
+      <div class="products-row">
+
+        <!-- PRODUCT 1: BRAND IDENTITY — Cereal Box -->
+        <div class="product-slot">
+          <div class="product-scene">
+            <div class="box-brand">
+              <div class="product-3d">
+                <!-- FRONT -->
+                <div class="face face-front">
+                  <div class="face-front-inner" style="color:#fff">
+                    <div>
+                      <div class="product-brand-stripe" style="background:rgba(255,255,255,0.3)"></div>
+                      <div class="product-variant">Premium Blend</div>
+                      <div class="product-name">BRAND<br>FLAKES™</div>
+                    </div>
+                    <div class="product-illustration">🎨</div>
+                    <div>
+                      <div class="product-tagline">"Start every day with a strong identity"</div>
+                      <div class="product-weight">680g NET</div>
+                    </div>
+                    <div class="product-starburst"><span>NEW<br>LOOK</span></div>
+                  </div>
+                </div>
+                <!-- BACK -->
+                <div class="face face-back">
+                  <div class="back-inner">
+                    <div class="back-title">NUTRITION FACTS</div>
+                    <div class="back-serving">Serving: 1 Complete Brand</div>
+                    <div class="nutrient-row bold"><span>Logo Design</span><span>✓</span></div>
+                    <div class="nutrient-row sub"><span>Primary + Variants</span><span>3 files</span></div>
+                    <div class="nutrient-row bold"><span>Brand Guidelines</span><span>✓</span></div>
+                    <div class="nutrient-row sub"><span>Color System</span><span>Full</span></div>
+                    <div class="nutrient-row sub"><span>Typography</span><span>2 fonts</span></div>
+                    <div class="nutrient-row bold"><span>Business Cards</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>Social Templates</span><span>✓</span></div>
+                    <div class="back-features">★ 2 revision rounds included<br>★ Source files delivered</div>
+                    <div class="back-barcode">
+                      <div class="barcode-lines">
+                        <span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:3px"></span>
+                      </div>
+                      <div class="barcode-num">4-0 19200 BRAND</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- SIDES -->
+                <div class="face face-right">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.7)">BRAND IDENTITY · AISLE 7</span></div>
+                </div>
+                <div class="face face-left">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.7)">FROM $2,400</span></div>
+                </div>
+                <div class="face face-top" style="background:#e63946"></div>
+              </div>
+            </div>
+          </div>
+          <div class="price-tag">
+            <span class="price-label">From</span>
+            <span class="price-amount">$2,400</span>
+          </div>
+          <span class="product-name-label">Brand Identity</span>
+          <span class="product-hint">HOVER TO FLIP</span>
+        </div>
+
+        <!-- PRODUCT 2: WEB DEV — Soup Can -->
+        <div class="product-slot">
+          <div class="product-scene">
+            <div class="can-web">
+              <div class="product-3d">
+                <!-- CAN TOP -->
+                <div class="can-top"></div>
+                <!-- FRONT -->
+                <div class="face face-front">
+                  <div style="position:absolute;top:0;left:0;right:0;height:22%;background:linear-gradient(180deg,#1976d2,#0d47a1);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:#fff;">CAMPBELL'S</span>
+                  </div>
+                  <div style="position:absolute;top:22%;left:0;right:0;height:56%;background:#e53935;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+                    <div style="font-family:'Anton',sans-serif;font-size:11px;color:#fff;letter-spacing:2px;">CONDENSED</div>
+                    <div style="font-family:'Anton',sans-serif;font-size:22px;color:#fff;line-height:1;text-align:center;padding:0 4px;">WEB<br>SOUP™</div>
+                    <div style="font-size:20px;">💻</div>
+                  </div>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:22%;background:#e8e8e8;display:flex;align-items:center;justify-content:center;">
+                    <span style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:2px;color:#555;font-weight:700;">FULL STACK RECIPE</span>
+                  </div>
+                </div>
+                <!-- BACK -->
+                <div class="face face-back">
+                  <div class="back-inner">
+                    <div class="back-title">INGREDIENTS</div>
+                    <div class="back-serving">Makes: 1 High-Perf Website</div>
+                    <div class="nutrient-row bold"><span>UI/UX Design</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>Frontend Dev</span><span>✓</span></div>
+                    <div class="nutrient-row sub"><span>React / Next.js</span><span>Latest</span></div>
+                    <div class="nutrient-row bold"><span>Backend API</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>CMS Setup</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>Perf Optimized</span><span>99/100</span></div>
+                    <div class="back-features">★ Mobile-first responsive<br>★ SEO-ready structure<br>★ 3-month support</div>
+                    <div class="back-barcode">
+                      <div class="barcode-lines">
+                        <span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span>
+                      </div>
+                      <div class="barcode-num">4-0 19200 WEBSOUP</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="face face-right">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.6)">WEB DEVELOPMENT</span></div>
+                </div>
+                <div class="face face-left">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.6)">FROM $4,800</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="price-tag">
+            <span class="price-label">From</span>
+            <span class="price-amount">$4,800</span>
+          </div>
+          <span class="product-name-label">Web Development</span>
+          <span class="product-hint">HOVER TO FLIP</span>
+        </div>
+
+        <!-- PRODUCT 3: SOCIAL MEDIA — Juice Bottle -->
+        <div class="product-slot">
+          <div class="product-scene">
+            <div class="bottle-social">
+              <div class="product-3d">
+                <!-- CAP -->
+                <div class="bottle-cap"></div>
+                <!-- FRONT -->
+                <div class="face face-front">
+                  <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:18px 6px 12px;position:relative;">
+                    <div style="text-align:center;">
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(0,0,0,0.5)">FRESH SQUEEZED</div>
+                      <div style="font-family:'Anton',sans-serif;font-size:19px;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.2);line-height:1.1">SOCIAL<br>BOOST™</div>
+                    </div>
+                    <div style="font-size:32px">📱</div>
+                    <div style="text-align:center">
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;color:rgba(0,0,0,0.5)">100% ORGANIC REACH</div>
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;color:rgba(0,0,0,0.4)">300ml PER MONTH</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- BACK -->
+                <div class="face face-back">
+                  <div class="back-inner">
+                    <div class="back-title">CONTENTS</div>
+                    <div class="back-serving">Monthly Subscription</div>
+                    <div class="nutrient-row bold"><span>Posts/mo</span><span>20</span></div>
+                    <div class="nutrient-row sub"><span>Stories</span><span>30</span></div>
+                    <div class="nutrient-row sub"><span>Reels</span><span>8</span></div>
+                    <div class="nutrient-row bold"><span>Community Mgmt</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>Ad Campaigns</span><span>2/mo</span></div>
+                    <div class="nutrient-row bold"><span>Analytics Report</span><span>✓</span></div>
+                    <div class="back-features">★ All platforms covered<br>★ Hashtag strategy<br>★ Weekly check-ins</div>
+                    <div class="back-barcode">
+                      <div class="barcode-lines">
+                        <span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span>
+                      </div>
+                      <div class="barcode-num">4-0 00310 SOCIAL</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="face face-right">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.7)">SOCIAL MEDIA MGT</span></div>
+                </div>
+                <div class="face face-left">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.7)">$1,200/MO</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="price-tag">
+            <span class="price-label">Per Month</span>
+            <span class="price-amount">$1,200</span>
+          </div>
+          <span class="product-name-label">Social Media</span>
+          <span class="product-hint">HOVER TO FLIP</span>
+        </div>
+
+      </div>
+      <div class="shelf-board"></div>
+      <div class="shelf-label-strip"><span>Aisle 7 · Creative Services · Shelf A · Premium Grade</span></div>
+    </div>
+
+    <!-- SHELF 2 -->
+    <div class="shelf-row animate-up">
+      <div class="shelf-back"></div>
+      <div class="products-row">
+
+        <!-- PRODUCT 4: SEO — Detergent Box -->
+        <div class="product-slot">
+          <div class="product-scene">
+            <div class="box-seo">
+              <div class="product-3d">
+                <!-- FRONT -->
+                <div class="face face-front">
+                  <div class="face-front-inner" style="color:#fff">
+                    <div>
+                      <div class="product-brand-stripe" style="background:rgba(255,255,255,0.2)"></div>
+                      <div class="product-variant" style="color:#7ecfff">Ultra Formula</div>
+                      <div class="product-name" style="font-size:24px">SEO<br>CLEAN™</div>
+                    </div>
+                    <div style="text-align:center">
+                      <div style="font-size:38px">🔍</div>
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;margin-top:4px;color:#7ecfff">REMOVES INVISIBILITY</div>
+                    </div>
+                    <div>
+                      <div class="product-tagline">"Gets your brand to page 1, guaranteed"</div>
+                      <div class="product-weight">3.5kg RESULTS</div>
+                    </div>
+                    <div class="product-starburst"><span>3X<br>POWER</span></div>
+                  </div>
+                </div>
+                <!-- BACK -->
+                <div class="face face-back">
+                  <div class="back-inner">
+                    <div class="back-title">DIRECTIONS</div>
+                    <div class="back-serving">Apply monthly for best results</div>
+                    <div class="nutrient-row bold"><span>Technical Audit</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>Keyword Research</span><span>200+</span></div>
+                    <div class="nutrient-row bold"><span>On-Page Optim.</span><span>✓</span></div>
+                    <div class="nutrient-row sub"><span>Meta / Schema</span><span>All</span></div>
+                    <div class="nutrient-row bold"><span>Link Building</span><span>20/mo</span></div>
+                    <div class="nutrient-row bold"><span>Content Strategy</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>Monthly Report</span><span>✓</span></div>
+                    <div class="back-features">★ Avg 280% traffic lift<br>★ No black-hat tactics</div>
+                    <div class="back-barcode">
+                      <div class="barcode-lines">
+                        <span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span>
+                      </div>
+                      <div class="barcode-num">4-0 19200 SEOCLEAN</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="face face-right">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.6)">SEO & GROWTH</span></div>
+                </div>
+                <div class="face face-left">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.6)">$1,600/MO</span></div>
+                </div>
+                <div class="face face-top" style="background:#0077b6"></div>
+              </div>
+            </div>
+          </div>
+          <div class="price-tag">
+            <span class="price-label">Per Month</span>
+            <span class="price-amount">$1,600</span>
+          </div>
+          <span class="product-name-label">SEO & Growth</span>
+          <span class="product-hint">HOVER TO FLIP</span>
+        </div>
+
+        <!-- PRODUCT 5: COPYWRITING — Milk Carton -->
+        <div class="product-slot">
+          <div class="product-scene">
+            <div class="carton-copy">
+              <div class="product-3d">
+                <!-- FRONT -->
+                <div class="face face-front">
+                  <div style="width:100%;height:100%;background:linear-gradient(180deg,#f8f9fa,#e9ecef);padding:10px 8px;display:flex;flex-direction:column;justify-content:space-between;color:#1a1a1a;">
+                    <div>
+                      <div style="font-family:'Anton',sans-serif;font-size:11px;letter-spacing:3px;color:#555;border-bottom:2px solid #333;padding-bottom:3px;margin-bottom:4px;">COPY FRESH™</div>
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:#888">PREMIUM WORDS</div>
+                    </div>
+                    <div style="text-align:center;font-size:34px">✍️</div>
+                    <div>
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;color:#444">100% NATURAL LANGUAGE</div>
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;color:#999;margin-top:2px">BEST BEFORE: EVERGREEN</div>
+                    </div>
+                    <div style="background:#1a1a1a;padding:4px;text-align:center;">
+                      <span style="font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2px;color:#fff;">WORDS THAT SELL</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- BACK -->
+                <div class="face face-back">
+                  <div class="back-inner">
+                    <div class="back-title">WHAT'S INSIDE</div>
+                    <div class="back-serving">Per Project Package</div>
+                    <div class="nutrient-row bold"><span>Website Copy</span><span>✓</span></div>
+                    <div class="nutrient-row sub"><span>Up to 10 pages</span><span></span></div>
+                    <div class="nutrient-row bold"><span>Email Sequences</span><span>5</span></div>
+                    <div class="nutrient-row bold"><span>Ad Copy</span><span>10 ads</span></div>
+                    <div class="nutrient-row bold"><span>Brand Voice Guide</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>SEO-Optimized</span><span>✓</span></div>
+                    <div class="back-features">★ Tone of voice aligned<br>★ A/B variants included<br>★ Unlimited revisions</div>
+                    <div class="back-barcode">
+                      <div class="barcode-lines">
+                        <span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span>
+                      </div>
+                      <div class="barcode-num">4-0 12019 COPYFRESH</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="face face-right">
+                  <div class="side-label"><span class="side-label-text" style="color:#555">COPYWRITING</span></div>
+                </div>
+                <div class="face face-left">
+                  <div class="side-label"><span class="side-label-text" style="color:#777">FROM $900</span></div>
+                </div>
+                <div class="face face-top" style="background:#e9ecef"></div>
+              </div>
+            </div>
+          </div>
+          <div class="price-tag">
+            <span class="price-label">From</span>
+            <span class="price-amount">$900</span>
+          </div>
+          <span class="product-name-label">Copywriting</span>
+          <span class="product-hint">HOVER TO FLIP</span>
+        </div>
+
+        <!-- PRODUCT 6: STRATEGY — Jam Jar -->
+        <div class="product-slot">
+          <div class="product-scene">
+            <div class="jar-strategy">
+              <div class="product-3d">
+                <!-- LID -->
+                <div class="jar-lid"></div>
+                <!-- FRONT -->
+                <div class="face face-front">
+                  <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px 8px 12px;">
+                    <div style="text-align:center;">
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,0.5)">ARTISANAL</div>
+                      <div style="font-family:'Anton',sans-serif;font-size:21px;color:#fff;line-height:1">STRATEGY<br>JAM™</div>
+                    </div>
+                    <div style="font-size:34px">🗺️</div>
+                    <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:4px 10px;border-radius:2px;text-align:center;">
+                      <span style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;color:#fff;opacity:.7">THICK-CUT ROADMAP</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- BACK -->
+                <div class="face face-back">
+                  <div class="back-inner">
+                    <div class="back-title">CONTENTS</div>
+                    <div class="back-serving">1 x 90-day Sprint</div>
+                    <div class="nutrient-row bold"><span>Audit & Discovery</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>Competitor Analysis</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>90-Day Roadmap</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>OKR Framework</span><span>✓</span></div>
+                    <div class="nutrient-row bold"><span>Weekly Sprints</span><span>12</span></div>
+                    <div class="back-features">★ C-suite presentations<br>★ KPI dashboard included<br>★ Quarterly reviews</div>
+                    <div class="back-barcode">
+                      <div class="barcode-lines">
+                        <span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span>
+                      </div>
+                      <div class="barcode-num">4-0 77201 STRATEGY</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="face face-right">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.6)">BRAND STRATEGY</span></div>
+                </div>
+                <div class="face face-left">
+                  <div class="side-label"><span class="side-label-text" style="color:rgba(255,255,255,0.6)">FROM $3,200</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="price-tag">
+            <span class="price-label">From</span>
+            <span class="price-amount">$3,200</span>
+          </div>
+          <span class="product-name-label">Strategy</span>
+          <span class="product-hint">HOVER TO FLIP</span>
+        </div>
+
+      </div>
+      <div class="shelf-board"></div>
+      <div class="shelf-label-strip"><span>Aisle 7 · Growth Services · Shelf B · Best Sellers</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="section-label animate-up">● How It Works</div>
+  <h2 class="section-title animate-up">FROM SHELF<br>TO LAUNCH</h2>
+  <p class="section-desc animate-up">Four simple steps between "let's talk" and a brand your customers can't ignore.</p>
+
+  <div class="process-grid">
+    <div class="process-step animate-up" data-num="01">
+      <div class="step-icon">🛒</div>
+      <div class="step-title">Add to Cart</div>
+      <p class="step-desc">Pick your package. Fill out the brief. We'll schedule a discovery call within 24 hours.</p>
+    </div>
+    <div class="process-step animate-up" data-num="02">
+      <div class="step-icon">🔬</div>
+      <div class="step-title">Lab Work</div>
+      <p class="step-desc">We research, audit, and formulate a strategy. No filler — just the active ingredients your brand needs.</p>
+    </div>
+    <div class="process-step animate-up" data-num="03">
+      <div class="step-icon">🏭</div>
+      <div class="step-title">Production</div>
+      <p class="step-desc">Design, develop, write, optimise. You see every stage before it goes on the shelf.</p>
+    </div>
+    <div class="process-step animate-up" data-num="04">
+      <div class="step-icon">📦</div>
+      <div class="step-title">Delivery</div>
+      <p class="step-desc">Shelf-ready assets, handoff docs, and ongoing support so your brand keeps selling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RECEIPTS / TESTIMONIALS -->
+<section class="receipts-section" id="clients">
+  <div class="section-label animate-up">● Customer Reviews</div>
+  <h2 class="section-title animate-up">HAPPY<br>SHOPPERS</h2>
+  <p class="section-desc animate-up">Real results. No fakes. Check the receipt.</p>
+
+  <div class="receipts-grid">
+
+    <div class="receipt animate-up">
+      <div class="receipt-header">
+        <div class="receipt-store">★★★★★</div>
+        <div class="receipt-date">AISLE 7 CREATIVE · REF# 00419</div>
+      </div>
+      <div class="receipt-item"><span>Brand Flakes™ × 1</span><span>$2,400</span></div>
+      <div class="receipt-item"><span>Strategy Jam™ × 1</span><span>$3,200</span></div>
+      <div class="receipt-item"><span>SEO Clean™ × 3mo</span><span>$4,800</span></div>
+      <div class="receipt-item total"><span>TOTAL IMPACT</span><span>247% ROI</span></div>
+      <div class="receipt-quote">"Our new brand doubled our conversion rate in the first quarter. Worth every penny."</div>
+      <div class="receipt-sig">— Maya K., Founder @ Lumi Skincare</div>
+    </div>
+
+    <div class="receipt animate-up">
+      <div class="receipt-header">
+        <div class="receipt-store">★★★★★</div>
+        <div class="receipt-date">AISLE 7 CREATIVE · REF# 00601</div>
+      </div>
+      <div class="receipt-item"><span>Web Soup™ × 1</span><span>$4,800</span></div>
+      <div class="receipt-item"><span>Copy Fresh™ × 1</span><span>$900</span></div>
+      <div class="receipt-item"><span>Social Boost™ × 6mo</span><span>$7,200</span></div>
+      <div class="receipt-item total"><span>TOTAL IMPACT</span><span>3.1K leads</span></div>
+      <div class="receipt-quote">"Went from zero digital presence to 3,100 inbound leads in six months. Unreal."</div>
+      <div class="receipt-sig">— James P., CMO @ Vaultek Capital</div>
+    </div>
+
+    <div class="receipt animate-up">
+      <div class="receipt-header">
+        <div class="receipt-store">★★★★★</div>
+        <div class="receipt-date">AISLE 7 CREATIVE · REF# 00778</div>
+      </div>
+      <div class="receipt-item"><span>Brand Flakes™ × 1</span><span>$2,400</span></div>
+      <div class="receipt-item"><span>SEO Clean™ × 6mo</span><span>$9,600</span></div>
+      <div class="receipt-item"><span>Strategy Jam™ × 1</span><span>$3,200</span></div>
+      <div class="receipt-item total"><span>TOTAL IMPACT</span><span>Top 3 rankings</span></div>
+      <div class="receipt-quote">"From page 8 to top 3 for every target keyword. The team knows what they're doing."</div>
+      <div class="receipt-sig">— Sarah O., CEO @ Northlight Legal</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="checkout-section" id="contact">
+  <div class="section-label animate-up">● Get Started</div>
+  <h2 class="section-title animate-up">PROCEED TO<br>CHECKOUT</h2>
+  <p class="section-desc animate-up">Tell us what's in your basket. We'll price it up and get back to you within one business day.</p>
+
+  <div class="checkout-counter animate-up">
+    <form class="checkout-form" onsubmit="handleCheckout(event)">
+      <div class="form-row">
+        <div class="form-field">
+          <label>Your Name</label>
+          <input type="text" placeholder="Alex Johnson" required>
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" placeholder="alex@company.com" required>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Company / Project</label>
+        <input type="text" placeholder="Acme Corp">
+      </div>
+      <div class="form-field">
+        <label>Which Package(s)?</label>
+        <select>
+          <option value="">— Select a service —</option>
+          <option>Brand Flakes™ · Brand Identity — from $2,400</option>
+          <option>Web Soup™ · Web Development — from $4,800</option>
+          <option>Social Boost™ · Social Media — $1,200/mo</option>
+          <option>SEO Clean™ · SEO & Growth — $1,600/mo</option>
+          <option>Copy Fresh™ · Copywriting — from $900</option>
+          <option>Strategy Jam™ · Brand Strategy — from $3,200</option>
+          <option>Full Aisle Bundle · All Services</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Tell us about your project</label>
+        <textarea placeholder="What are you building? Who's the customer? What's broken right now?"></textarea>
+      </div>
+      <button type="submit" class="submit-btn">🛒 ADD TO CART &amp; SUBMIT</button>
+    </form>
+    <div id="checkout-thanks" style="display:none;text-align:center;padding:40px 0;">
+      <div style="font-size:48px;margin-bottom:16px">🧾</div>
+      <div style="font-family:'Anton',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:8px">ORDER RECEIVED!</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:14px">We'll bag it up and reach out within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AISLE 7</div>
+  <p style="font-size:12px;color:rgba(255,255,255,0.2);margin-top:6px;letter-spacing:3px;font-family:'Barlow Condensed',sans-serif">CREATIVE AGENCY</p>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#clients">Clients</a>
+    <a href="#contact">Contact</a>
+    <a href="#">Instagram</a>
+    <a href="#">LinkedIn</a>
+  </div>
+  <p class="footer-copy">© 2025 Aisle 7 Creative. All services shelf-tested and brand-certified.</p>
+</footer>
+
+<script>
+  // Intersection observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.animate-up').forEach(el => observer.observe(el));
+
+  // Checkout form
+  function handleCheckout(e) {
+    e.preventDefault();
+    e.target.style.display = 'none';
+    document.getElementById('checkout-thanks').style.display = 'block';
+  }
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(8,8,16,0.97)';
+      nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.5)';
+    } else {
+      nav.style.background = 'rgba(13,13,26,0.85)';
+      nav.style.boxShadow = 'none';
+    }
+  });
+
+  // Mobile menu
+  document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (links.style.display === 'flex') {
+      links.style.display = 'none';
+    } else {
+      links.style.display = 'flex';
+      links.style.flexDirection = 'column';
+      links.style.position = 'absolute';
+      links.style.top = '60px';
+      links.style.left = '0';
+      links.style.right = '0';
+      links.style.background = 'rgba(8,8,16,0.98)';
+      links.style.padding = '20px 32px';
+      links.style.gap = '16px';
+      links.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+    }
+  });
+
+  // Touch/click rotation for mobile (tap to flip)
+  document.querySelectorAll('.product-slot').forEach(slot => {
+    let flipped = false;
+    slot.addEventListener('click', () => {
+      flipped = !flipped;
+      const p3d = slot.querySelector('.product-3d');
+      if (flipped) {
+        p3d.style.transform = 'rotateY(-180deg) translateY(-12px)';
+      } else {
+        p3d.style.transform = '';
+      }
+    });
+  });
+</script>
+</body>
+</html>
