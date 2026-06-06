@@ -252,6 +252,33 @@ body {
 .pay-exp-logo { display:flex; justify-content:center; margin-bottom:14px; margin-top:6px; }
 .pay-exp-name { text-align:center; font-size:1.08rem; font-weight:800; color:#F5EFE0; margin-bottom:4px; }
 .pay-exp-desc { text-align:center; font-size:0.62rem; color:rgba(255,255,255,0.32); margin-bottom:14px; }
+
+/* Product detail modal */
+.prod-modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(4,2,14,0.88); backdrop-filter:blur(16px); display:none; align-items:center; justify-content:center; padding:20px; }
+.prod-modal-overlay.open { display:flex; }
+.prod-modal { background:rgba(14,10,34,0.97); backdrop-filter:blur(30px); border:1px solid rgba(212,168,67,0.28); border-radius:28px; width:100%; max-width:380px; max-height:90vh; overflow-y:auto; position:relative; animation:modalPop 0.32s cubic-bezier(0.22,1,0.36,1); }
+@keyframes modalPop { from{opacity:0;transform:scale(0.85) translateY(30px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.prod-modal-close { position:absolute; top:14px; left:14px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.55); border-radius:50%; width:36px; height:36px; cursor:pointer; font-size:0.90rem; display:flex; align-items:center; justify-content:center; z-index:10; transition:all 0.18s; }
+.prod-modal-close:hover { background:rgba(220,60,60,0.22); border-color:rgba(220,60,60,0.55); color:#FF6060; }
+.prod-modal-bar { height:5px; background:linear-gradient(90deg,rgba(212,168,67,0),rgba(212,168,67,0.80),rgba(200,72,128,0.60),rgba(212,168,67,0)); border-radius:28px 28px 0 0; }
+.prod-modal-body { padding:24px 22px 28px; text-align:center; }
+.prod-modal-icon { font-size:5rem; filter:drop-shadow(0 12px 36px rgba(212,168,67,0.45)); margin:10px 0 14px; display:block; }
+.prod-modal-badge { display:inline-block; font-size:0.55rem; padding:4px 12px; border-radius:10px; background:rgba(212,168,67,0.15); border:1px solid rgba(212,168,67,0.40); color:rgba(240,200,64,0.95); font-family:'IBM Plex Mono',monospace; font-weight:700; margin-bottom:14px; }
+.prod-modal-name { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:#F5EFE0; line-height:1.1; margin-bottom:8px; }
+.prod-modal-meta { font-size:0.72rem; color:rgba(245,239,224,0.48); margin-bottom:14px; }
+.prod-modal-lbar { display:flex; height:7px; border-radius:4px; overflow:hidden; gap:1px; margin:0 0 6px; }
+.prod-modal-lbar-labels { display:flex; justify-content:space-between; font-size:0.52rem; color:rgba(255,255,255,0.28); margin-bottom:16px; font-family:'IBM Plex Mono',monospace; }
+.prod-modal-desc { font-size:0.80rem; color:rgba(212,168,67,0.75); line-height:2; margin-bottom:20px; }
+.prod-modal-sep { height:1px; background:linear-gradient(90deg,transparent,rgba(212,168,67,0.22),transparent); margin:0 0 18px; }
+.prod-modal-price { font-family:'IBM Plex Mono',monospace; font-size:2.4rem; font-weight:700; background:linear-gradient(135deg,#F0C840,#D4A843,#C06020); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:4px; }
+.prod-modal-size { font-size:0.60rem; color:rgba(212,168,67,0.48); margin-bottom:22px; font-family:'IBM Plex Mono',monospace; }
+.prod-modal-qty-row { display:flex; align-items:center; justify-content:center; gap:18px; margin-bottom:16px; }
+.prod-modal-qbtn { width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(212,168,67,0.30); color:#D4A843; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.18s; }
+.prod-modal-qbtn:hover { background:rgba(212,168,67,0.22); box-shadow:0 0 14px rgba(212,168,67,0.32); }
+.prod-modal-qnum { font-family:'IBM Plex Mono',monospace; font-size:1.5rem; color:#F0C840; min-width:32px; text-align:center; font-weight:700; }
+.prod-modal-addbtn { width:100%; padding:14px; border-radius:16px; cursor:pointer; font-size:0.92rem; font-weight:800; font-family:'Alexandria',sans-serif; transition:all 0.22s; border:1px solid rgba(212,168,67,0.40); background:rgba(212,168,67,0.12); color:#F0C840; backdrop-filter:blur(4px); }
+.prod-modal-addbtn:hover { background:linear-gradient(135deg,rgba(201,160,48,0.32),rgba(180,100,20,0.22)); border-color:rgba(212,168,67,0.70); box-shadow:0 0 22px rgba(212,168,67,0.28); }
+.prod-modal-addbtn.ic { background:linear-gradient(135deg,rgba(50,180,80,0.20),rgba(30,120,50,0.15)); border-color:rgba(80,200,100,0.50); color:#80e0a0; }
 </style>
 </head>
 <body>
@@ -316,6 +343,14 @@ body {
     </div>
     <div id="ci"></div>
     <div id="ct"></div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="prod-modal-overlay" id="prodModal" onclick="if(event.target===this)closeProdModal()">
+  <div class="prod-modal">
+    <button class="prod-modal-close" onclick="closeProdModal()">✕</button>
+    <div id="prodModalContent"></div>
   </div>
 </div>
 
@@ -404,7 +439,7 @@ function render(){
     const qty=cardQty[p.id]||1;
     const s=p.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
     const bars=bc(s).map(b=>`<div style="width:${b.w}px;height:${b.d?'100%':'55%'};background:${b.d?'rgba(201,168,76,0.80)':'transparent'};align-self:flex-end"></div>`).join('');
-    return`<div class="pcard">
+    return`<div class="pcard" onclick="openProductModal('${p.id}')">
 <div class="pcard-bar"></div>
 <div class="pcard-body">
 <div class="pcard-badge">${p.season}</div>
@@ -419,11 +454,11 @@ ${p.desc?`<div style="font-size:0.54rem;color:rgba(220,185,100,0.72);line-height
 <div class="pcard-price">${price}<span style="font-size:0.56rem;opacity:0.6"> ر</span></div>
 <div class="pcard-size">${BATCH[batch].label} · ${BATCH[batch].ml}</div>
 <div class="card-qty-row">
-  <button class="cqbtn" onclick="cqChange('${p.id}',-1)">−</button>
+  <button class="cqbtn" onclick="event.stopPropagation();cqChange('${p.id}',-1)">−</button>
   <span class="cqnum" id="cq_${p.id}">${qty}</span>
-  <button class="cqbtn" onclick="cqChange('${p.id}',1)">+</button>
+  <button class="cqbtn" onclick="event.stopPropagation();cqChange('${p.id}',1)">+</button>
 </div>
-<button class="pcard-btn${ic?' ic':''}" onclick="add('${p.id}')">
+<button class="pcard-btn${ic?' ic':''}" onclick="event.stopPropagation();add('${p.id}')">
   ${ic?`✓ في السلة (${ic.qty})`:'+ أضف للسلة'}
 </button>
 </div></div>`;
@@ -737,6 +772,70 @@ function invoiceFromCheckout(no){
 }
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('s');setTimeout(()=>t.classList.remove('s'),2400);}
+
+// ── PRODUCT MODAL ────────────────────────────────────────────────────────────
+let prodModalId=null;
+
+function openProductModal(id){
+  prodModalId=id;
+  renderProductModal();
+  document.getElementById('prodModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeProdModal(){
+  document.getElementById('prodModal').classList.remove('open');
+  document.body.style.overflow='';
+  prodModalId=null;
+}
+
+function renderProductModal(){
+  if(!prodModalId)return;
+  const p=P.find(x=>x.id===prodModalId);
+  if(!p)return;
+  const price=calcPrice(p.price);
+  const qty=cardQty[p.id]||1;
+  const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
+  document.getElementById('prodModalContent').innerHTML=`
+    <div class="prod-modal-bar"></div>
+    <div class="prod-modal-body">
+      <span class="prod-modal-icon">${p.icon}</span>
+      <div class="prod-modal-badge">${p.season}</div>
+      <div class="prod-modal-name">${p.name}</div>
+      <div class="prod-modal-meta">${p.gender} · ${p.stab}</div>
+      <div class="prod-modal-lbar">
+        <div style="flex:${p.top||0.1};background:rgba(240,200,64,0.80);border-radius:4px 0 0 4px"></div>
+        <div style="flex:${p.mid||0.1};background:rgba(200,80,160,0.70)"></div>
+        <div style="flex:${p.base||0.1};background:rgba(160,100,40,0.70);border-radius:0 4px 4px 0"></div>
+      </div>
+      <div class="prod-modal-lbar-labels"><span>قمة ${p.top}%</span><span>قلب ${p.mid}%</span><span>قاعدة ${p.base}%</span></div>
+      ${p.desc?`<div class="prod-modal-desc">${p.desc}</div>`:''}
+      <div class="prod-modal-sep"></div>
+      <div class="prod-modal-price">${price}<span style="font-size:1rem;opacity:0.6;-webkit-text-fill-color:rgba(212,168,67,0.6)"> ر</span></div>
+      <div class="prod-modal-size">${BATCH[batch].label} · ${BATCH[batch].ml}</div>
+      <div class="prod-modal-qty-row">
+        <button class="prod-modal-qbtn" onclick="pmQty(-1)">−</button>
+        <span class="prod-modal-qnum" id="pmQnum">${qty}</span>
+        <button class="prod-modal-qbtn" onclick="pmQty(1)">+</button>
+      </div>
+      <button class="prod-modal-addbtn${ic?' ic':''}" onclick="pmAdd()">
+        ${ic?`✓ في السلة (${ic.qty}) — أضف المزيد`:'+ أضف للسلة'}
+      </button>
+    </div>`;
+}
+
+function pmQty(d){
+  if(!prodModalId)return;
+  cardQty[prodModalId]=Math.max(1,Math.min(99,(cardQty[prodModalId]||1)+d));
+  const el=document.getElementById('pmQnum');
+  if(el)el.textContent=cardQty[prodModalId];
+}
+
+function pmAdd(){
+  if(!prodModalId)return;
+  add(prodModalId);
+  renderProductModal();
+}
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 renderBatch();chips();render();
