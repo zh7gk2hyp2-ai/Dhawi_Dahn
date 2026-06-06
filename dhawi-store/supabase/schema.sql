@@ -94,11 +94,92 @@ create policy "Anyone can create order"
 -- Service role bypasses RLS for admin dashboard and webhooks.
 -- Use createAdminClient() (service key) for server-side order reads.
 
--- ─── Seed data (6 sample products) ───────
-insert into products (id, name, name_en, icon, description, season, gender, stability, price, layer_top, layer_heart, layer_base) values
-  ('layali_riyadh', 'ليالي الرياض', 'Layali Riyadh', '🌙', 'عود كمبودي فاخر مع نفحات الورد والمسك الأبيض', 'شتاء', 'للجنسين', 'طويل الأمد', 185, 18, 52, 30),
-  ('sir_altaif',    'سر الطائف',    'Sir Al Taif',    '🌹', 'ورد طائفي أصيل مع قلب من العود الهندي',          'ربيع',  'نسائي',    'متوسط',      145, 28, 45, 27),
-  ('malaki_fakhir', 'الملكي الفاخر','Al Malaki',      '❄️', 'تركيبة ملكية من العود والمر والعنبر',            'شتاء',  'رجالي',    'ثقيل ودائم', 220, 12, 48, 40),
-  ('oud_alaseel',   'عود الأصيل',   'Oud Al Aseel',   '🟤', 'عود خالص بنكهة تراثية عميقة',                   'مناسبات','رجالي',   'ثقيل ودائم', 260, 8,  35, 57),
-  ('noor_alsabah',  'نور الصباح',   'Noor Al Sabah',  '✨', 'انتعاش الصباح بالحمضيات والياسمين والمسك',       'صيف',   'نسائي',    'خفيف',       120, 40, 42, 18),
-  ('amber_royal',   'العنبر الملكي','Amber Royal',    '🍯', 'دفء العنبر مع البخور الشرقي والمسك الثقيل',      'خريف',  'للجنسين',  'طويل الأمد', 175, 15, 40, 45);
+-- ─── Seed data (8 sample products) ───────
+insert into products (
+  id, name, name_en, icon, description, season, gender, stability,
+  concentration, volume_ml, price,
+  layer_top, layer_heart, layer_base,
+  notes_top, notes_heart, notes_base,
+  featured
+) values
+  (
+    'layali_riyadh', 'ليالي الرياض', 'Layali Riyadh', '🌙',
+    'عود كمبودي فاخر مع نفحات الورد الطائفي والمسك الأبيض. رحلة شرقية عميقة.',
+    'شتاء', 'للجنسين', 'طويل الأمد', 'EDP Intense', 50, 185,
+    18, 52, 30, 'زعفران,برغموت', 'ورد طائفي,عود كمبودي', 'مسك أبيض,أمبرجري', true
+  ),
+  (
+    'sir_altaif', 'سر الطائف', 'Sir Al Taif', '🌹',
+    'ورد طائفي أصيل مستخلص بالبخار مع قلب من العود الهندي الفاخر.',
+    'ربيع', 'نسائي', 'متوسط', 'EDP', 50, 145,
+    28, 45, 27, 'ليمون,ألدهايد', 'ورد طائفي,عود هندي', 'مسك,صندل', true
+  ),
+  (
+    'malaki_fakhir', 'الملكي الفاخر', 'Al Malaki Al Fakhir', '👑',
+    'تركيبة ملكية من العود العماني والمر اليمني والعنبر الرمادي.',
+    'شتاء', 'رجالي', 'ثقيل ودائم', 'Extrait', 30, 220,
+    12, 48, 40, 'توابل سوداء,كافور', 'عود عماني,مر يمني', 'عنبر رمادي,بنكا', true
+  ),
+  (
+    'oud_alaseel', 'عود الأصيل', 'Oud Al Aseel', '🪵',
+    'عود خالص بنكهة تراثية عميقة من بلاد الرافدين.',
+    'مناسبات', 'رجالي', 'ثقيل ودائم', 'Extrait', 30, 260,
+    8, 35, 57, 'دخان خفيف', 'عود رافديني', 'أرض,راتينج,مسك أسود', false
+  ),
+  (
+    'noor_alsabah', 'نور الصباح', 'Noor Al Sabah', '✨',
+    'انتعاش الصباح بالحمضيات والياسمين والمسك الخفيف.',
+    'صيف', 'نسائي', 'خفيف', 'EDP', 50, 120,
+    40, 42, 18, 'نارنج,ليمون,غريب فروت', 'ياسمين,مورينغا', 'مسك أبيض,خشب الأرز', false
+  ),
+  (
+    'amber_royal', 'العنبر الملكي', 'Amber Royal', '🍯',
+    'دفء العنبر الشرقي مع البخور الفاخر والمسك الثقيل.',
+    'خريف', 'للجنسين', 'طويل الأمد', 'EDP Intense', 50, 175,
+    15, 40, 45, 'قرفة,هيل', 'عنبر,بخور لبنان', 'مسك ثقيل,فانيليا,صندل', false
+  ),
+  (
+    'wardh_almalik', 'وردة الملك', 'Wardh Al Malik', '🌸',
+    'ورد بلغاري وورد طائفي في تناغم مثالي مع العود الكمبودي الخالص.',
+    'ربيع', 'نسائي', 'متوسط', 'EDP', 50, 195,
+    30, 50, 20, 'توت بري,ألدهايد وردي', 'ورد بلغاري,ورد طائفي', 'مسك وردي,بودرة', false
+  ),
+  (
+    'layl_alsahra', 'ليل الصحراء', 'Layl Al Sahra', '🌌',
+    'تجسيد عطري للصحراء ليلاً: رمال دافئة وأخشاب ندية وعود مُبخَّر.',
+    'كل المواسم', 'رجالي', 'طويل الأمد', 'EDP Intense', 50, 210,
+    10, 38, 52, 'عرعر,بهارات جافة', 'عود مُبخَّر,خشب الغاف', 'رمل أبيض,مسك صحراوي,أمبرجري', false
+  )
+on conflict (id) do update set
+  name        = excluded.name,
+  description = excluded.description,
+  price       = excluded.price,
+  updated_at  = now();
+
+-- ─── Views (convenience) ──────────────────
+
+-- Sales summary per product
+create or replace view product_sales_summary as
+select
+  p.id, p.name, p.name_en, p.price,
+  coalesce(sum(oi.qty), 0)       as total_units_sold,
+  coalesce(sum(oi.subtotal), 0)  as total_revenue_sar,
+  count(distinct oi.order_id)    as order_count
+from products p
+left join order_items oi on oi.product_id = p.id
+left join orders      o  on o.id = oi.order_id and o.status not in ('cancelled','refunded')
+group by p.id, p.name, p.name_en, p.price
+order by total_revenue_sar desc;
+
+-- Order overview with totals
+create or replace view order_overview as
+select
+  o.id, o.customer_name, o.customer_phone, o.customer_city,
+  o.status, o.total, o.payment_method, o.tracking_number,
+  count(oi.id)  as item_types,
+  sum(oi.qty)   as total_qty,
+  o.created_at
+from orders o
+left join order_items oi on oi.order_id = o.id
+group by o.id
+order by o.created_at desc;
