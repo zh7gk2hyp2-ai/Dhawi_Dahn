@@ -54,7 +54,7 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 .pcard:hover{transform:perspective(600px) rotateY(8deg) rotateX(-4deg) translateY(-6px);box-shadow:16px 12px 48px rgba(0,0,0,0.72),0 0 0 1px rgba(201,168,76,0.20);border-color:rgba(201,168,76,0.22)}
 .pcard-bar{height:5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.52),transparent)}
 .pcard-body{padding:13px 11px 11px;text-align:center}
-.pcard-badge{position:absolute;top:15px;right:11px;font-size:0.46rem;padding:2px 6px;border-radius:6px;background:rgba(201,168,76,0.09);border:1px solid rgba(201,168,76,0.20);color:rgba(201,168,76,0.58);font-family:'IBM Plex Mono',monospace}
+.pcard-badge{position:absolute;top:15px;right:11px;font-size:0.50rem;padding:3px 8px;border-radius:6px;background:rgba(201,168,76,0.18);border:1px solid rgba(201,168,76,0.45);color:rgba(232,200,112,0.92);font-family:'IBM Plex Mono',monospace;font-weight:600}
 .pcard-icon{font-size:2.7rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.55));margin:6px 0 5px}
 .pcard-brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.36rem;color:rgba(201,168,76,0.32);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:4px}
 .pcard-name{font-size:0.83rem;font-weight:800;color:#F0E6D0;line-height:1.2;margin-bottom:6px}
@@ -62,7 +62,7 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 .lt{background:rgba(232,200,112,0.75);border-radius:2px 0 0 2px}
 .lm{background:rgba(200,120,190,0.65)}
 .lb{background:rgba(190,140,70,0.62);border-radius:0 2px 2px 0}
-.pcard-meta{font-size:0.47rem;color:rgba(255,255,255,0.20);margin-bottom:9px}
+.pcard-meta{font-size:0.50rem;color:rgba(237,224,200,0.55);margin-bottom:9px;font-weight:600}
 .bcode{display:flex;align-items:flex-end;height:22px;justify-content:center;margin-bottom:6px}
 .pcard-sep{height:1px;background:rgba(201,168,76,0.09);margin-bottom:9px}
 .pcard-price{font-family:'IBM Plex Mono',monospace;font-size:1.18rem;font-weight:700;background:linear-gradient(135deg,#E8C870,#A07830);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:2px}
@@ -255,7 +255,7 @@ function render(){
 <div class="pcard-name">${p.name}</div>
 <div class="lbar"><div class="lt" style="flex:${p.top||0.1}"></div><div class="lm" style="flex:${p.mid||0.1}"></div><div class="lb" style="flex:${p.base||0.1}"></div></div>
 <div class="pcard-meta">${p.gender} · ${p.stab}</div>
-${p.desc?`<div style="font-size:0.52rem;color:rgba(201,168,76,0.48);line-height:1.6;margin-bottom:7px;direction:rtl">${p.desc}</div>`:''}
+${p.desc?`<div style="font-size:0.54rem;color:rgba(220,185,100,0.72);line-height:1.65;margin-bottom:7px;direction:rtl">${p.desc}</div>`:''}
 <div class="bcode">${bars}</div>
 <div class="pcard-sep"></div>
 <div class="pcard-price">${price}<span style="font-size:0.56rem;opacity:0.6"> ر</span></div>
