@@ -166,16 +166,26 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 <script>
 // ── DATA ───────────────────────────────────────────────────────────────────
 const P=[
-  {id:'layali',name:'ليالي الرياض',icon:'🌙',season:'شتاء',gender:'للجنسين',price:185,top:18,mid:52,base:30,stab:'طويل الأمد'},
-  {id:'taif',name:'سر الطائف',icon:'🌹',season:'ربيع',gender:'نسائي',price:145,top:28,mid:45,base:27,stab:'متوسط'},
-  {id:'malaki',name:'الملكي الفاخر',icon:'❄️',season:'شتاء',gender:'رجالي',price:220,top:12,mid:38,base:50,stab:'طويل جداً'},
-  {id:'khashab',name:'خشب الليل',icon:'🌿',season:'خريف',gender:'رجالي',price:195,top:10,mid:42,base:48,stab:'طويل الأمد'},
-  {id:'ward',name:'ورد الصفاء',icon:'🌸',season:'ربيع',gender:'نسائي',price:155,top:35,mid:48,base:17,stab:'متوسط'},
-  {id:'amber',name:'عنبر السلطان',icon:'✨',season:'مناسبات',gender:'للجنسين',price:250,top:15,mid:40,base:45,stab:'طويل جداً'},
-  {id:'bkhoor',name:'بخور الليالي',icon:'🕌',season:'مناسبات',gender:'للجنسين',price:170,top:20,mid:45,base:35,stab:'طويل الأمد'},
-  {id:'nakheel',name:'نخيل الذهب',icon:'🌴',season:'صيف',gender:'للجنسين',price:135,top:40,mid:38,base:22,stab:'خفيف'},
-  {id:'fajr',name:'فجر الرياض',icon:'🌅',season:'صيف',gender:'رجالي',price:160,top:30,mid:42,base:28,stab:'متوسط'},
-  {id:'yasmin',name:'ليلة الياسمين',icon:'🌺',season:'ربيع',gender:'نسائي',price:140,top:42,mid:43,base:15,stab:'خفيف'},
+  {id:'layali',name:'ليالي الرياض',icon:'🌙',season:'شتاء',gender:'للجنسين',price:185,top:18,mid:52,base:30,stab:'طويل الأمد',
+   desc:'دهن عود كمبودي · ورد · خشب الصندل · مسك'},
+  {id:'taif',name:'سر الطائف',icon:'🌹',season:'ربيع',gender:'نسائي',price:145,top:28,mid:45,base:27,stab:'متوسط',
+   desc:'ورد الطائف · دهن عود هندي · مسك · خشب الصندل'},
+  {id:'malaki',name:'الملكي الفاخر',icon:'❄️',season:'شتاء',gender:'رجالي',price:220,top:12,mid:38,base:50,stab:'طويل جداً',
+   desc:'دهن عود كمبودي · عنبر · جاوي · خشب الصندل'},
+  {id:'khashab',name:'خشب الليل',icon:'🌿',season:'خريف',gender:'رجالي',price:195,top:10,mid:42,base:48,stab:'طويل الأمد',
+   desc:'دهن عود هندي · نجيل · جاوي · عنبر'},
+  {id:'ward',name:'ورد الصفاء',icon:'🌸',season:'ربيع',gender:'نسائي',price:155,top:35,mid:48,base:17,stab:'متوسط',
+   desc:'ورد الطائف · زعفران · مسك'},
+  {id:'amber',name:'عنبر السلطان',icon:'✨',season:'مناسبات',gender:'للجنسين',price:250,top:15,mid:40,base:45,stab:'طويل جداً',
+   desc:'عنبر · دهن عود · مسك · جاوي'},
+  {id:'bkhoor',name:'بخور الليالي',icon:'🕌',season:'مناسبات',gender:'للجنسين',price:170,top:20,mid:45,base:35,stab:'طويل الأمد',
+   desc:'دهن عود · جاوي · خشب الصندل · توابل'},
+  {id:'nakheel',name:'نخيل الذهب',icon:'🌴',season:'صيف',gender:'للجنسين',price:135,top:40,mid:38,base:22,stab:'خفيف',
+   desc:'زعفران · مسك · خشب الصندل'},
+  {id:'fajr',name:'فجر الرياض',icon:'🌅',season:'صيف',gender:'رجالي',price:160,top:30,mid:42,base:28,stab:'متوسط',
+   desc:'دهن عود هندي · هيل · زعفران · خشب الصندل'},
+  {id:'yasmin',name:'ليلة الياسمين',icon:'🌺',season:'ربيع',gender:'نسائي',price:140,top:42,mid:43,base:15,stab:'خفيف',
+   desc:'ورد · مسك · جاوي'},
 ];
 
 // ── BATCH SIZES ─────────────────────────────────────────────────────────────
@@ -245,6 +255,7 @@ function render(){
 <div class="pcard-name">${p.name}</div>
 <div class="lbar"><div class="lt" style="flex:${p.top||0.1}"></div><div class="lm" style="flex:${p.mid||0.1}"></div><div class="lb" style="flex:${p.base||0.1}"></div></div>
 <div class="pcard-meta">${p.gender} · ${p.stab}</div>
+${p.desc?`<div style="font-size:0.52rem;color:rgba(201,168,76,0.48);line-height:1.6;margin-bottom:7px;direction:rtl">${p.desc}</div>`:''}
 <div class="bcode">${bars}</div>
 <div class="pcard-sep"></div>
 <div class="pcard-price">${price}<span style="font-size:0.56rem;opacity:0.6"> ر</span></div>
