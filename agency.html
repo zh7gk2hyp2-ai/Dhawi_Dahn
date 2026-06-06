@@ -241,6 +241,9 @@ body {
 .co-success-title { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.8rem; color:#F0C840; margin-bottom:8px; }
 .co-success-sub { font-size:0.80rem; color:rgba(245,239,224,0.45); line-height:1.7; max-width:280px; margin:0 auto; }
 .co-order-no { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:rgba(212,168,67,0.55); margin-top:12px; letter-spacing:0.1em; }
+.card-form { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; margin-top:10px; }
+.cod-note { background:rgba(27,104,48,0.10); border:1px solid rgba(39,163,72,0.25); border-radius:10px; padding:12px 14px; margin-top:10px; font-size:0.74rem; color:rgba(80,210,100,0.85); line-height:1.75; text-align:center; }
+.stc-note { font-size:0.62rem; color:rgba(255,255,255,0.28); margin-top:5px; }
 </style>
 </head>
 <body>
@@ -478,7 +481,6 @@ function renderSheet(){
 <div class="trow"><span>ضريبة القيمة المضافة 15%</span><span style="font-family:'IBM Plex Mono',monospace">${vat} ر</span></div>
 <div class="grand-box"><span class="grand-lbl">الإجمالي شامل الضريبة</span><span class="grand-val">${tot}<span style="font-size:0.60rem;opacity:0.7"> ر</span></span></div>
 <button class="btn-g" onclick="closeCart();openCheckout()">🛍 إتمام الطلب</button>
-<button class="btn-gh" onclick="invoice()">🧾 طباعة فاتورة</button>
 <button class="btn-gh" style="margin-top:5px" onclick="closeCart()">متابعة التسوق</button>
 </div>`;
 }
@@ -502,6 +504,22 @@ let coStep='info'; // info | success
 let coDelivery='standard';
 let coPayment='mada';
 let coData={name:'',phone:'',city:'الرياض',district:'',street:''};
+let coCardNum='', coCardExp='', coCardCvv='', coCardName='', coStcPhone='';
+
+function paymentDetailsHtml(){
+  if(coPayment==='mada') return `<div class="card-form">
+    <div class="co-field"><label class="co-label">رقم البطاقة</label><input class="co-inp" id="f-cn" placeholder="•••• •••• •••• ••••" maxlength="19" value="${coCardNum}" oninput="coCardNum=this.value" style="direction:ltr;letter-spacing:2px"/></div>
+    <div class="co-row2">
+      <div class="co-field"><label class="co-label">تاريخ الانتهاء</label><input class="co-inp" id="f-ce" placeholder="MM/YY" maxlength="5" value="${coCardExp}" oninput="coCardExp=this.value" style="direction:ltr"/></div>
+      <div class="co-field"><label class="co-label">CVV</label><input class="co-inp" id="f-cv" placeholder="•••" maxlength="4" value="${coCardCvv}" oninput="coCardCvv=this.value" style="direction:ltr" type="password"/></div>
+    </div>
+    <div class="co-field"><label class="co-label">اسم حامل البطاقة</label><input class="co-inp" id="f-cname" placeholder="FULL NAME" value="${coCardName}" oninput="coCardName=this.value" style="direction:ltr;text-transform:uppercase"/></div>
+  </div>`;
+  if(coPayment==='apple') return `<div style="background:#000;border-radius:12px;padding:14px;text-align:center;color:#fff;font-size:0.88rem;font-weight:600;margin-top:10px;cursor:pointer;border:1px solid rgba(255,255,255,0.10)" onclick="toast('سيتم تفعيل Apple Pay عند تأكيد الطلب')"> Pay</div>`;
+  if(coPayment==='stc') return `<div class="card-form"><div class="co-field"><label class="co-label">رقم جوال STC Pay</label><input class="co-inp" id="f-stc" placeholder="05XXXXXXXX" maxlength="10" value="${coStcPhone}" oninput="coStcPhone=this.value.replace(/[^0-9]/g,'')" style="direction:ltr"/></div><div class="stc-note">ستصلك رسالة تأكيد على رقم STC Pay المرتبط</div></div>`;
+  if(coPayment==='cod') return `<div class="cod-note">💵 ادفع نقداً أو بالبطاقة عند استلام طلبك<br><span style="opacity:0.7;font-size:0.62rem">لا توجد رسوم إضافية على الدفع عند الاستلام</span></div>`;
+  return '';
+}
 
 function openCheckout(){
   if(!cart.length){toast('السلة فارغة');return;}
@@ -515,7 +533,7 @@ function closeCheckout(){
 
 function renderCheckout(){
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const deliveryCost=coDelivery==='express'?25:0;
+  const deliveryCost=coDelivery==='express'?45:25;
   const vat=Math.round((sub+deliveryCost)*0.15);
   const tot=sub+deliveryCost+vat;
 
@@ -598,17 +616,17 @@ function renderCheckout(){
           <input type="radio" name="delivery" ${coDelivery==='standard'?'checked':''} readonly/>
           <div class="co-del-info">
             <div class="co-del-name">شحن عادي</div>
-            <div class="co-del-sub">3 – 5 أيام عمل · أرامكس</div>
+            <div class="co-del-sub">3 – 5 أيام عمل · أرامكس / SMSA</div>
           </div>
-          <div class="co-del-price">مجاني</div>
+          <div class="co-del-price">25 ر</div>
         </label>
         <label class="co-del-opt${coDelivery==='express'?' sel':''}" onclick="coDelivery='express';renderCheckout()">
           <input type="radio" name="delivery" ${coDelivery==='express'?'checked':''} readonly/>
           <div class="co-del-info">
             <div class="co-del-name">شحن سريع</div>
-            <div class="co-del-sub">1 – 2 يوم عمل · أرامكس</div>
+            <div class="co-del-sub">1 – 2 يوم عمل · أرامكس Express</div>
           </div>
-          <div class="co-del-price">25 ر</div>
+          <div class="co-del-price">45 ر</div>
         </label>
       </div>
     </div>
@@ -618,22 +636,23 @@ function renderCheckout(){
       <div class="co-sec-title">💳 طريقة الدفع</div>
       <div class="co-pay-opts">
         ${[
-          {id:'mada',icon:'💳',name:'مدى'},
-          {id:'apple',icon:'🍎',name:'Apple Pay'},
-          {id:'stc',icon:'📱',name:'STC Pay'},
-          {id:'cod',icon:'💵',name:'الدفع عند الاستلام'},
+          {id:'mada',  logo:`<div style="background:#582D82;color:#fff;padding:7px 10px;border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:900;letter-spacing:1px;min-width:54px;text-align:center">mada</div>`, name:'مدى'},
+          {id:'apple', logo:`<div style="background:#000;color:#fff;padding:6px 8px;border-radius:5px;font-size:10px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;min-width:54px;text-align:center;letter-spacing:-0.3px">&#63743; Pay</div>`, name:'Apple Pay'},
+          {id:'stc',   logo:`<div style="background:linear-gradient(135deg,#7B1760,#C030A0);color:#fff;padding:4px 6px;border-radius:5px;text-align:center;min-width:54px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:900">STC</div><div style="font-size:8px;opacity:0.85">pay</div></div>`, name:'STC Pay'},
+          {id:'cod',   logo:`<div style="background:linear-gradient(135deg,#1C6B30,#27A348);color:#fff;padding:6px 8px;border-radius:5px;font-size:8px;font-weight:700;text-align:center;min-width:54px;line-height:1.5">💵<br>نقداً</div>`, name:'عند الاستلام'},
         ].map(p=>`
           <div class="co-pay-opt${coPayment===p.id?' sel':''}" onclick="coPayment='${p.id}';renderCheckout()">
-            <div class="co-pay-icon">${p.icon}</div>
+            <div class="co-pay-icon" style="font-size:inherit;display:flex;justify-content:center">${p.logo}</div>
             <div class="co-pay-name">${p.name}</div>
           </div>`).join('')}
       </div>
+      ${paymentDetailsHtml()}
     </div>
 
     <!-- إجمالي -->
     <div class="co-section">
       <div class="trow"><span>المجموع</span><span style="font-family:'IBM Plex Mono',monospace">${sub} ر</span></div>
-      <div class="trow"><span>الشحن</span><span style="font-family:'IBM Plex Mono',monospace">${deliveryCost?deliveryCost+' ر':'مجاني'}</span></div>
+      <div class="trow"><span>الشحن</span><span style="font-family:'IBM Plex Mono',monospace">${deliveryCost} ر</span></div>
       <div class="trow"><span>الضريبة 15%</span><span style="font-family:'IBM Plex Mono',monospace">${vat} ر</span></div>
       <div class="grand-box" style="margin-top:10px">
         <span class="grand-lbl">الإجمالي</span>
@@ -646,6 +665,10 @@ function renderCheckout(){
 function submitOrder(){
   if(!coData.name.trim()){toast('⚠️ الرجاء إدخال الاسم الكامل');return;}
   if(!coData.phone.trim()||coData.phone.length<9){toast('⚠️ رقم الجوال غير صحيح');return;}
+  if(coPayment==='mada'&&coCardNum.replace(/\s/g,'').length<16){toast('⚠️ رقم البطاقة غير مكتمل');return;}
+  if(coPayment==='mada'&&coCardExp.length<4){toast('⚠️ تاريخ انتهاء البطاقة غير صحيح');return;}
+  if(coPayment==='mada'&&coCardCvv.length<3){toast('⚠️ رمز CVV غير صحيح');return;}
+  if(coPayment==='stc'&&(coStcPhone.length<10||!coStcPhone.startsWith('05'))){toast('⚠️ رقم STC Pay غير صحيح');return;}
   coStep='success';
   renderCheckout();
   document.getElementById('coPage').scrollTop=0;
@@ -653,7 +676,7 @@ function submitOrder(){
 
 function invoiceFromCheckout(no){
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const deliveryCost=coDelivery==='express'?25:0;
+  const deliveryCost=coDelivery==='express'?45:25;
   const vat=Math.round((sub+deliveryCost)*0.15);
   const tot=sub+deliveryCost+vat;
   const dt=new Date().toLocaleDateString('ar-SA');
