@@ -1534,6 +1534,41 @@ function renderDash(){
 
   html+=buildDonut();
 
+  // بطاقة تغطية التسعير
+  const allItms=CUSTODIANS.flatMap(c=>c.items);
+  const pricedItms=allItms.filter(it=>it.up&&it.up>0);
+  const unpricedCnt=allItms.length-pricedItms.length;
+  const covPct=allItms.length?Math.round(pricedItms.length/allItms.length*100):0;
+  const totalCustody=CUSTODIANS.reduce((s,c)=>s+c.custody,0);
+  const boqVariance=totalCustody-BOQ_EXCL_VAT;
+  html+=`<div style="background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="font-size:11px;font-weight:800;color:var(--green2);display:flex;align-items:center;gap:6px">
+        <span style="width:3px;height:13px;background:var(--gold);border-radius:2px;display:block;flex-shrink:0"></span>
+        تغطية التسعير في كراسة الكميات
+      </div>
+      <button onclick="switchTab('ck')" style="font-size:10px;color:var(--green);font-weight:700;background:var(--light);border:1px solid var(--border);border-radius:20px;padding:3px 10px">عرض ←</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
+      <div style="background:var(--light);border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:15px;font-weight:900;color:var(--green2)">${pricedItms.length}</div>
+        <div style="font-size:8px;color:var(--muted);margin-top:1px">بند مسعّر</div>
+      </div>
+      <div style="background:${unpricedCnt>0?'#fff7ed':'#f0fdf4'};border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:15px;font-weight:900;color:${unpricedCnt>0?'#ea580c':'#15803d'}">${unpricedCnt}</div>
+        <div style="font-size:8px;color:${unpricedCnt>0?'#c2410c':'#166534'};margin-top:1px">${unpricedCnt>0?'يحتاج تسعير':'جميعها مسعّرة'}</div>
+      </div>
+      <div style="background:${boqVariance>=0?'#f0fdf4':'#fff1f2'};border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:12px;font-weight:900;color:${boqVariance>=0?'#15803d':'#be123c'}">${boqVariance>=0?'+':''}${fmtN(boqVariance)}</div>
+        <div style="font-size:8px;color:var(--muted);margin-top:1px">فرق العهدة / BOQ</div>
+      </div>
+    </div>
+    <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden">
+      <div style="height:100%;width:${covPct}%;background:${covPct===100?'#22c55e':'var(--gold)'};border-radius:99px;animation:progressReveal .9s ease both"></div>
+    </div>
+    <div style="font-size:9px;color:var(--muted);margin-top:4px;text-align:left">${covPct}% من البنود مسعّرة</div>
+  </div>`;
+
   html+=`<div class="section-ttl">نسبة الصرف لكل عهدة</div>
     <div style="background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:12px;box-shadow:var(--shadow-md)">`;
   CUSTODIANS.forEach((c,i)=>{
@@ -1781,13 +1816,17 @@ function renderCk(){
   });
 
   // ملخص كراسة الكميات
+  const allItems=CUSTODIANS.flatMap(c=>c.items);
+  const pricedItems=allItems.filter(it=>it.up&&it.up>0);
+  const unpricedItems=allItems.filter(it=>!it.up||it.up===0);
+  const coveragePct=allItems.length?Math.round(pricedItems.length/allItems.length*100):0;
   const boqSummary=`
     <div style="background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
       <div style="font-size:11px;font-weight:800;color:var(--green2);margin-bottom:10px;display:flex;align-items:center;gap:6px">
         <span style="display:block;width:3px;height:13px;background:var(--gold);border-radius:2px;flex-shrink:0"></span>
         ملخص كراسة الكميات والأسعار
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
         <div style="background:var(--light);border-radius:10px;padding:8px;text-align:center">
           <div style="font-size:11px;font-weight:900;color:var(--green2)">${fmtN(BOQ_EXCL_VAT)}</div>
           <div style="font-size:8px;color:var(--muted);margin-top:2px">قبل الضريبة</div>
@@ -1800,6 +1839,16 @@ function renderCk(){
           <div style="font-size:11px;font-weight:900;color:#15803d">${fmtN(BOQ_INCL_VAT)}</div>
           <div style="font-size:8px;color:#166534;margin-top:2px">شامل الضريبة</div>
         </div>
+      </div>
+      <div style="border-top:1px solid var(--light);padding-top:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:10px;font-weight:700;color:var(--sub)">تغطية التسعير</span>
+          <span style="font-size:10px;font-weight:800;color:${coveragePct===100?'#15803d':coveragePct>70?'var(--green2)':'#ea580c'}">${pricedItems.length}/${allItems.length} بند · ${coveragePct}%</span>
+        </div>
+        <div style="height:6px;background:var(--border);border-radius:99px;overflow:hidden">
+          <div style="height:100%;width:${coveragePct}%;background:${coveragePct===100?'#22c55e':'var(--gold)'};border-radius:99px;animation:progressReveal .8s ease both"></div>
+        </div>
+        ${unpricedItems.length>0?`<div style="font-size:9px;color:#ea580c;margin-top:5px;font-weight:600">⏳ ${unpricedItems.length} بند لم يُسعَّر بعد — يظهر بشارة برتقالية في القائمة</div>`:'<div style="font-size:9px;color:#15803d;margin-top:5px;font-weight:700">✅ جميع البنود مسعّرة</div>'}
       </div>
     </div>`;
 
@@ -1847,11 +1896,13 @@ function renderCk(){
       const badge=st===0?'':`<span class="ck-status-badge ck-st${st}">${st===1?'▶ جاري':'✓ مكتمل'}</span>`;
       // تفاصيل كراسة الكميات
       const hasBOQ=it.unit&&it.qty;
-      const boqRow=hasBOQ?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+      const unpriced=hasBOQ&&(!it.up||it.up===0);
+      const boqRow=hasBOQ?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;align-items:center">
         <span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">${it.unit}</span>
         <span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">الكمية: ${it.qty}</span>
         ${it.up>0?`<span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">سعر الوحدة: ${fmtN(it.up)}</span>`:''}
         ${it.total>0?`<span style="font-size:9px;background:#f0fdf4;border-radius:4px;padding:1px 6px;color:#15803d;font-weight:800">الإجمالي: ${fmtN(it.total)}</span>`:''}
+        ${unpriced?`<span style="font-size:8px;background:#fff7ed;border:1px solid #fed7aa;border-radius:4px;padding:1px 6px;color:#ea580c;font-weight:700">⏳ يحتاج تسعير</span>`:''}
       </div>`:'';
       html+=`<div class="ck-item ${stClass}" onclick="toggleCkItem('${c.id}','${it.num}')">
         <div class="ck-box ${stClass}"></div>
@@ -2280,9 +2331,27 @@ function renderLog(){
   if(!filtered.length){
     html+=`<div class="log-empty"><div class="log-empty-icon">📋</div><div style="font-size:13px;font-weight:700">لا توجد سجلات بعد</div><div style="font-size:11px;margin-top:4px">ستظهر هنا كل الأنشطة عند إضافة أو تعديل البيانات</div></div>`;
   } else {
-    filtered.forEach((l,i)=>{
+    const dayLabel=ts=>{
+      const d=new Date(ts); const now=new Date();
+      const diff=Math.floor((now-d)/86400000);
+      if(diff===0)return'اليوم';
+      if(diff===1)return'الأمس';
+      return d.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    };
+    let lastDay='';
+    let globalIdx=0;
+    filtered.forEach((l)=>{
+      const day=new Date(l.ts).toDateString();
+      if(day!==lastDay){
+        lastDay=day;
+        html+=`<div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px">
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+          <span style="font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap">${dayLabel(l.ts)}</span>
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+        </div>`;
+      }
       const t=LOG_TYPES[l.type]||{icon:'📌',label:l.type,color:'#6b7280'};
-      html+=`<div class="log-entry" style="animation-delay:${Math.min(i,10)*0.04}s">
+      html+=`<div class="log-entry" style="animation-delay:${Math.min(globalIdx++,10)*0.04}s">
         <div class="log-icon">${t.icon}</div>
         <div class="log-body">
           <div class="log-action">${t.label}</div>
