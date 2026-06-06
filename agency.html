@@ -18,12 +18,14 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 .cart-btn{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:8px;border:1px solid rgba(201,168,76,0.25);background:rgba(201,168,76,0.06);color:#C9A84C;font-family:'Alexandria',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;position:relative}
 .cart-btn:hover{border-color:rgba(201,168,76,0.5);background:rgba(201,168,76,0.12)}
 .cart-count{position:absolute;top:-7px;right:-7px;background:#C9A84C;color:#06040C;border-radius:50%;width:19px;height:19px;font-size:0.58rem;font-weight:900;display:none;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace}
-.hero{text-align:center;padding:56px 24px 40px}
+.hero{text-align:center;padding:52px 24px 36px}
 .hero-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;color:rgba(201,168,76,0.40);letter-spacing:0.55em;text-transform:uppercase;margin-bottom:14px}
 .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,7vw,3.4rem);color:#F0E6D0;line-height:1.1;margin-bottom:10px}
 .hero-title em{color:#C9A84C;font-style:italic}
 .hero-desc{font-size:0.85rem;color:rgba(237,224,200,0.38);max-width:360px;margin:0 auto 22px;line-height:1.75}
 .divider{width:72px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.45),transparent);margin:0 auto}
+
+/* ── FILTERS ── */
 .filters{padding:0 16px 14px;max-width:860px;margin:0 auto}
 .search-box{position:relative;margin-bottom:11px}
 .search-icon{position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;opacity:0.35;width:16px;height:16px;color:#C9A84C}
@@ -35,6 +37,18 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 .chip:hover{border-color:rgba(255,255,255,0.20);color:rgba(255,255,255,0.60)}
 .chip.ag{border-color:rgba(201,168,76,0.55);background:rgba(201,168,76,0.10);color:#E8C870;font-weight:700}
 .chip.ap{border-color:rgba(160,120,220,0.55);background:rgba(160,120,220,0.10);color:#c8a0f0;font-weight:700}
+.chip.ab{border-color:rgba(80,180,120,0.55);background:rgba(80,180,120,0.10);color:#80e0b0;font-weight:700}
+
+/* ── BATCH SELECTOR ── */
+.batch-bar{display:flex;gap:0;border:1px solid rgba(201,168,76,0.18);border-radius:14px;overflow:hidden;margin-bottom:10px}
+.batch-opt{flex:1;padding:9px 4px;text-align:center;cursor:pointer;transition:all 0.18s;border:none;background:transparent;font-family:'Alexandria',sans-serif;font-size:0.72rem;font-weight:600;color:rgba(201,168,76,0.40);position:relative}
+.batch-opt+.batch-opt{border-right:1px solid rgba(201,168,76,0.12)}
+.batch-opt.sel{background:rgba(201,168,76,0.14);color:#E8C870}
+.batch-opt .bl{font-size:0.88rem;display:block;margin-bottom:2px}
+.batch-opt .bml{font-family:'IBM Plex Mono',monospace;font-size:0.48rem;color:rgba(201,168,76,0.35);display:block}
+.batch-opt.sel .bml{color:rgba(201,168,76,0.60)}
+
+/* ── GRID ── */
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(162px,1fr));gap:13px;padding:4px 16px 110px;max-width:860px;margin:0 auto}
 .pcard{background:linear-gradient(155deg,rgba(28,18,6,0.96),rgba(16,8,2,0.99));border:1px solid rgba(201,168,76,0.09);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform 0.38s cubic-bezier(0.22,1,0.36,1),box-shadow 0.38s,border-color 0.2s;position:relative;user-select:none}
 .pcard:hover{transform:perspective(600px) rotateY(8deg) rotateX(-4deg) translateY(-6px);box-shadow:16px 12px 48px rgba(0,0,0,0.72),0 0 0 1px rgba(201,168,76,0.20);border-color:rgba(201,168,76,0.22)}
@@ -52,9 +66,17 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 .bcode{display:flex;align-items:flex-end;height:22px;justify-content:center;margin-bottom:6px}
 .pcard-sep{height:1px;background:rgba(201,168,76,0.09);margin-bottom:9px}
 .pcard-price{font-family:'IBM Plex Mono',monospace;font-size:1.18rem;font-weight:700;background:linear-gradient(135deg,#E8C870,#A07830);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:2px}
-.pcard-vol{font-size:0.45rem;color:rgba(255,255,255,0.20);margin-bottom:8px}
+.pcard-size{font-size:0.48rem;color:rgba(201,168,76,0.42);margin-bottom:9px;font-family:'IBM Plex Mono',monospace}
+
+/* ── QTY ON CARD ── */
+.card-qty-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.cqbtn{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);color:#D4AF37;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0}
+.cqbtn:hover{background:rgba(201,168,76,0.15)}
+.cqnum{font-family:'IBM Plex Mono',monospace;font-size:0.92rem;color:#E8C870;min-width:22px;text-align:center;font-weight:600}
 .pcard-btn{width:100%;padding:7px 4px;border-radius:20px;cursor:pointer;font-size:0.67rem;font-weight:700;font-family:'Alexandria',sans-serif;transition:all 0.18s;border:1px solid rgba(201,168,76,0.20);background:rgba(201,168,76,0.07);color:rgba(201,168,76,0.62)}
 .pcard-btn:hover,.pcard-btn.ic{border-color:rgba(201,168,76,0.52);background:rgba(201,168,76,0.18);color:#E8C870}
+
+/* ── CART ── */
 .overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
 .sheet{background:#08050F;border-top:1px solid rgba(201,168,76,0.18);border-radius:24px 24px 0 0;padding:18px 17px 44px;width:100%;max-width:480px;max-height:86vh;overflow-y:auto}
@@ -112,6 +134,9 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 </section>
 
 <div class="filters">
+  <!-- BATCH SIZE SELECTOR -->
+  <div class="batch-bar" id="batchBar"></div>
+
   <div class="search-box">
     <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
     <input class="search-inp" id="si" placeholder="ابحث عن عطر..." oninput="render()"/>
@@ -123,6 +148,7 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 <div class="pgrid" id="grid"></div>
 <div class="no-results" id="nr" style="display:none">🔍<br><br>لا توجد عطور مطابقة</div>
 
+<!-- CART OVERLAY -->
 <div class="overlay" id="ov" onclick="if(event.target===this)closeCart()">
   <div class="sheet">
     <div class="handle"></div>
@@ -138,6 +164,7 @@ body{background-image:radial-gradient(ellipse 120% 50% at 50% -8%,rgba(180,110,1
 <div class="toast" id="toast"></div>
 
 <script>
+// ── DATA ───────────────────────────────────────────────────────────────────
 const P=[
   {id:'layali',name:'ليالي الرياض',icon:'🌙',season:'شتاء',gender:'للجنسين',price:185,top:18,mid:52,base:30,stab:'طويل الأمد'},
   {id:'taif',name:'سر الطائف',icon:'🌹',season:'ربيع',gender:'نسائي',price:145,top:28,mid:45,base:27,stab:'متوسط'},
@@ -151,22 +178,51 @@ const P=[
   {id:'yasmin',name:'ليلة الياسمين',icon:'🌺',season:'ربيع',gender:'نسائي',price:140,top:42,mid:43,base:15,stab:'خفيف'},
 ];
 
-let cart=[],sf='الكل',gf='الكل';
+// ── BATCH SIZES ─────────────────────────────────────────────────────────────
+const BATCH={
+  quarter:{label:'ربع تولة',ml:'2.9 مل',factor:0.30},
+  half:   {label:'نص تولة', ml:'5.8 مل',factor:0.55},
+  tola:   {label:'تولة',    ml:'11.6 مل',factor:1.0},
+};
+
+// ── STATE ───────────────────────────────────────────────────────────────────
+let cart=[], sf='الكل', gf='الكل', batch='quarter';
+// cardQty: per-card quantity before adding to cart
+const cardQty={};
+P.forEach(p=>cardQty[p.id]=1);
+
 const SI=['الكل','صيف','شتاء','ربيع','خريف','مناسبات'];
 const GI=['الكل','رجالي','نسائي','للجنسين'];
 const SE={صيف:'🌞',شتاء:'❄️',ربيع:'🌸',خريف:'🍂',مناسبات:'✨',الكل:'🔎'};
 const GE={'رجالي':'👔','نسائي':'💐','للجنسين':'🤝','الكل':'👥'};
 
+function calcPrice(basePrice){
+  return Math.max(5, Math.ceil(basePrice * BATCH[batch].factor / 5)*5);
+}
+
+// ── BARCODE ─────────────────────────────────────────────────────────────────
 function bc(seed){
   const h=n=>{let x=n;x=((x>>16)^x)*0x45d9f3b;x=((x>>16)^x)*0x45d9f3b;return((x>>16)^x)>>>0;};
   return Array.from({length:36},(_,i)=>{const v=h(seed*37+i);return{w:(v%3)+1,d:!!(v&4)};});
 }
 
+// ── BATCH BAR ────────────────────────────────────────────────────────────────
+function renderBatch(){
+  document.getElementById('batchBar').innerHTML=Object.entries(BATCH).map(([k,v])=>`
+    <button class="batch-opt${batch===k?' sel':''}" onclick="setBatch('${k}')">
+      <span class="bl">${v.label}</span>
+      <span class="bml">${v.ml}</span>
+    </button>`).join('');
+}
+function setBatch(k){batch=k;renderBatch();render();}
+
+// ── FILTER CHIPS ─────────────────────────────────────────────────────────────
 function chips(){
   document.getElementById('sc').innerHTML=SI.map(s=>`<button class="chip${sf===s?' ag':''}" onclick="sf='${s}';chips();render()">${SE[s]} ${s}</button>`).join('');
   document.getElementById('gc').innerHTML=GI.map(g=>`<button class="chip${gf===g?' ap':''}" onclick="gf='${g}';chips();render()">${GE[g]} ${g}</button>`).join('');
 }
 
+// ── RENDER GRID ───────────────────────────────────────────────────────────────
 function render(){
   const q=(document.getElementById('si').value||'').trim().toLowerCase();
   const f=P.filter(p=>(sf==='الكل'||p.season===sf)&&(gf==='الكل'||p.gender===gf)&&(!q||p.name.includes(q)));
@@ -175,10 +231,12 @@ function render(){
   if(!f.length){g.innerHTML='';nr.style.display='block';return;}
   nr.style.display='none';
   g.innerHTML=f.map(p=>{
-    const ic=cart.find(i=>i.id===p.id);
+    const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
+    const price=calcPrice(p.price);
+    const qty=cardQty[p.id]||1;
     const s=p.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
     const bars=bc(s).map(b=>`<div style="width:${b.w}px;height:${b.d?'100%':'55%'};background:${b.d?'rgba(201,168,76,0.80)':'transparent'};align-self:flex-end"></div>`).join('');
-    return`<div class="pcard" onclick="add('${p.id}')">
+    return`<div class="pcard">
 <div class="pcard-bar"></div>
 <div class="pcard-body">
 <div class="pcard-badge">${p.season}</div>
@@ -189,21 +247,41 @@ function render(){
 <div class="pcard-meta">${p.gender} · ${p.stab}</div>
 <div class="bcode">${bars}</div>
 <div class="pcard-sep"></div>
-<div class="pcard-price">${p.price}<span style="font-size:0.56rem;opacity:0.6"> ر</span></div>
-<div class="pcard-vol">50 مل · EDP</div>
-<button class="pcard-btn${ic?' ic':''}" onclick="event.stopPropagation();add('${p.id}')">${ic?`✓ في السلة (${ic.qty})`:'+ أضف للسلة'}</button>
+<div class="pcard-price">${price}<span style="font-size:0.56rem;opacity:0.6"> ر</span></div>
+<div class="pcard-size">${BATCH[batch].label} · ${BATCH[batch].ml}</div>
+<div class="card-qty-row">
+  <button class="cqbtn" onclick="cqChange('${p.id}',-1)">−</button>
+  <span class="cqnum" id="cq_${p.id}">${qty}</span>
+  <button class="cqbtn" onclick="cqChange('${p.id}',1)">+</button>
+</div>
+<button class="pcard-btn${ic?' ic':''}" onclick="add('${p.id}')">
+  ${ic?`✓ في السلة (${ic.qty})`:'+ أضف للسلة'}
+</button>
 </div></div>`;
   }).join('');
 }
 
+function cqChange(id,d){
+  cardQty[id]=Math.max(1,Math.min(99,(cardQty[id]||1)+d));
+  const el=document.getElementById('cq_'+id);
+  if(el)el.textContent=cardQty[id];
+}
+
+// ── CART ──────────────────────────────────────────────────────────────────────
 function add(id){
   const p=P.find(x=>x.id===id);if(!p)return;
-  const ex=cart.find(i=>i.id===id);
-  if(ex)ex.qty++;else cart.push({id,name:p.name,icon:p.icon,price:p.price,season:p.season,gender:p.gender,qty:1});
-  syncUI();render();toast(`🛒 ${p.name} أُضيف للسلة`);
+  const price=calcPrice(p.price);
+  const qty=cardQty[id]||1;
+  const key=id+'_'+batch;
+  const ex=cart.find(i=>i.key===key);
+  if(ex)ex.qty+=qty;
+  else cart.push({key,id,name:p.name,icon:p.icon,price,season:p.season,gender:p.gender,batch,batchLabel:BATCH[batch].label,batchMl:BATCH[batch].ml,qty});
+  cardQty[id]=1; // reset card qty
+  syncUI();render();toast(`🛒 ${qty > 1?qty+'× ':''}${p.name} (${BATCH[batch].label}) أُضيف للسلة`);
 }
-function rm(id){cart=cart.filter(i=>i.id!==id);syncUI();render();renderSheet();}
-function uqty(id,d){const i=cart.find(x=>x.id===id);if(i){i.qty=Math.max(1,i.qty+d);syncUI();renderSheet();}}
+
+function rm(key){cart=cart.filter(i=>i.key!==key);syncUI();render();renderSheet();}
+function uqty(key,d){const i=cart.find(x=>x.key===key);if(i){i.qty=Math.max(1,i.qty+d);syncUI();renderSheet();}}
 function clearCart(){cart=[];syncUI();render();renderSheet();}
 function openCart(){document.getElementById('ov').classList.add('open');renderSheet();}
 function closeCart(){document.getElementById('ov').classList.remove('open');}
@@ -220,9 +298,19 @@ function renderSheet(){
   if(!cart.length){ci.innerHTML='<div class="empty-cart">🛒<br><br>السلة فارغة</div>';ct.innerHTML='';return;}
   ci.innerHTML=cart.map(i=>`<div class="crow">
 <div class="crow-ic">${i.icon}</div>
-<div class="crow-info"><div class="crow-name">${i.name}</div><div class="crow-meta">${i.season} · ${i.gender} · 50 مل</div></div>
-<div class="qty"><button class="qbtn" onclick="uqty('${i.id}',-1)">−</button><span class="qnum">${i.qty}</span><button class="qbtn" onclick="uqty('${i.id}',1)">+</button></div>
-<div class="crow-pr"><div class="crow-total">${i.price*i.qty}<span style="font-size:0.53rem;opacity:0.6"> ر</span></div><button class="crow-rm" onclick="rm('${i.id}')">✕ حذف</button></div>
+<div class="crow-info">
+  <div class="crow-name">${i.name}</div>
+  <div class="crow-meta">${i.batchLabel} · ${i.batchMl} · ${i.season}</div>
+</div>
+<div class="qty">
+  <button class="qbtn" onclick="uqty('${i.key}',-1)">−</button>
+  <span class="qnum">${i.qty}</span>
+  <button class="qbtn" onclick="uqty('${i.key}',1)">+</button>
+</div>
+<div class="crow-pr">
+  <div class="crow-total">${i.price*i.qty}<span style="font-size:0.53rem;opacity:0.6"> ر</span></div>
+  <button class="crow-rm" onclick="rm('${i.key}')">✕ حذف</button>
+</div>
 </div>`).join('');
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const vat=Math.round(sub*0.15);
@@ -236,21 +324,23 @@ function renderSheet(){
 </div>`;
 }
 
+// ── INVOICE ───────────────────────────────────────────────────────────────────
 function invoice(){
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const vat=Math.round(sub*0.15);
   const tot=sub+vat;
   const no='DW-'+Math.floor(100000+Math.random()*900000);
   const dt=new Date().toLocaleDateString('ar-SA');
-  const rows=cart.map(i=>`<tr><td>${i.icon} ${i.name}</td><td align="center">${i.qty}</td><td align="left">${i.price}</td><td align="left" style="font-weight:700">${i.price*i.qty}</td></tr>`).join('');
-  const w=window.open('','_blank','width=420,height=680');
+  const rows=cart.map(i=>`<tr><td>${i.icon} ${i.name}<br><span style="font-size:9px;color:#888">${i.batchLabel} · ${i.batchMl}</span></td><td align="center">${i.qty}</td><td align="left">${i.price}</td><td align="left" style="font-weight:700">${i.price*i.qty}</td></tr>`).join('');
+  const w=window.open('','_blank','width=420,height=700');
   w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 22px;font-size:12px;max-width:360px;margin:0 auto}.h{text-align:center;border-bottom:2px dashed #333;padding-bottom:14px;margin-bottom:14px}.bn{font-size:20px;font-weight:900;letter-spacing:3px}.bs{font-size:9px;letter-spacing:6px;color:#666;margin-top:3px}table{width:100%;border-collapse:collapse;margin:10px 0}th{font-size:10px;border-bottom:1px dashed #ccc;padding:4px 0;text-align:right}td{padding:6px 0;font-size:11px;border-bottom:1px solid #f0f0f0;text-align:right}.tot{border-top:2px dashed #333;padding-top:10px;margin-top:4px}.tr{display:flex;justify-content:space-between;padding:3px 0;font-size:11px}.grand{font-size:15px;font-weight:900;border-top:1px dashed #333;padding-top:8px;margin-top:4px}.ft{text-align:center;border-top:2px dashed #333;padding-top:12px;margin-top:14px;font-size:9px;color:#666;line-height:1.9}</style></head><body><div class="h"><div class="bn">ATELIER DHAWI</div><div class="bs">PRIVATE OUD LABORATORY</div><div style="margin-top:9px;font-size:10px">فاتورة رقم: ${no}</div><div style="font-size:10px">التاريخ: ${dt}</div><div style="font-size:9px;color:#888;margin-top:2px">الرقم الضريبي: 300XXXXXXXXX</div></div><table><thead><tr><th>المنتج</th><th align="center">الكمية</th><th align="left">السعر</th><th align="left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table><div class="tot"><div class="tr"><span>المجموع</span><span>${sub} ر.س</span></div><div class="tr"><span>ضريبة 15%</span><span>${vat} ر.س</span></div><div class="tr grand"><span>الإجمالي</span><span>${tot} ر.س</span></div></div><div class="ft">★ ★ ★ ★ ★<br>شكراً لتعاملكم معنا<br>Atelier Dhawi · Private Oud Lab</div><script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }
 
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('s');setTimeout(()=>t.classList.remove('s'),2200);}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('s');setTimeout(()=>t.classList.remove('s'),2400);}
 
-chips();render();
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderBatch();chips();render();
 </script>
 </body>
 </html>
