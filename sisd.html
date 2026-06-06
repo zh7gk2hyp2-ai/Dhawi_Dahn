@@ -920,7 +920,10 @@ textarea.form-input{resize:none;line-height:1.6;}
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────
-const TOTAL_BUDGET = 680000;
+const TOTAL_BUDGET   = 680000;   // الميزانية المعتمدة (شاملة أثاث وأجهزة)
+const BOQ_EXCL_VAT   = 372893;   // إجمالي كراسة الكميات قبل الضريبة
+const BOQ_VAT        = 55934;    // ضريبة القيمة المضافة 15%
+const BOQ_INCL_VAT   = 428827;   // الإجمالي الكلي شامل الضريبة
 
 // فريق العمل — الأرقام السرية قابلة للتعديل هنا
 const USERS = [
@@ -930,84 +933,124 @@ const USERS = [
   {id:'u4', name:'ضاوي مناحي القثامي',   short:'ضاوي',     custId:'c4', pin:'4444', avatar:'📷',   color:'#e11d48'},
 ];
 
+// ─ البيانات مستخرجة من كراسة الكميات والأسعار (Numbers) ─
+// الإجمالي قبل الضريبة: 372,893 ر.س | مع ضريبة 15%: 428,827 ر.س
 const CUSTODIANS = [
   {
     id:'c1', num:1,
-    phase:'الصيانة العامة للمبنى',
-    scope:'أعمال الهدم واللياسة والدهانات والعزل والأسقف',
-    custody:150000, color:'#2563eb', bg:'#eff6ff', tc:'#1d4ed8',
+    phase:'الأعمال المعمارية — الأساسية',
+    scope:'الهدم واللياسة والدهانات والعزل والأسقف والأرضيات',
+    custody:178645, color:'#2563eb', bg:'#eff6ff', tc:'#1d4ed8',
+    boqTotal:178645,
     items:[
-      {num:'1.1', text:'أعمال الهدم والإزالة والمباني'},
-      {num:'1.2', text:'أعمال اللياسة الداخلية'},
-      {num:'1.3', text:'أعمال الدهانات'},
-      {num:'1.4', text:'أعمال العزل المائي'},
-      {num:'1.5', text:'أعمال الأسقف المستعارة (جبس)'},
+      {num:'1',  text:'أعمال التفكيك والهدم ونقل الأنقاض',                   unit:'مقطوعية', qty:1,    up:10000, total:10000},
+      {num:'2',  text:'أعمال المباني (بلوك إسمنتي 15سم)',                     unit:'م²',       qty:210,  up:55,    total:11550},
+      {num:'3',  text:'اللياسة الداخلية',                                      unit:'م²',       qty:1150, up:17,    total:19550},
+      {num:'4',  text:'الدهانات الداخلية للحوائط',                             unit:'م²',       qty:1850, up:21,    total:38850},
+      {num:'5',  text:'الدهانات الداخلية للأسقف المكشوفة',                     unit:'م²',       qty:120,  up:21,    total:2520},
+      {num:'6',  text:'العزل المائي للحمامات والمطابخ',                        unit:'م²',       qty:110,  up:60,    total:6600},
+      {num:'7',  text:'قواطيع HPL لدورات المياه',                              unit:'م²',       qty:40,   up:150,   total:6000},
+      {num:'8',  text:'أبواب HPL لدورات المياه',                               unit:'عدد',      qty:10,   up:1200,  total:12000},
+      {num:'9',  text:'الأسقف المستعارة (جبس بورد) للمكاتب',                  unit:'م²',       qty:360,  up:65,    total:23400},
+      {num:'10', text:'الأسقف المستعارة (ألمنيوم) للحمامات والمطابخ',         unit:'م²',       qty:65,   up:65,    total:4225},
+      {num:'11', text:'فتحات صيانة الأسقف المستعارة',                          unit:'عدد',      qty:30,   up:100,   total:3000},
+      {num:'12', text:'سيراميك أرضيات الحمامات والمطابخ',                      unit:'م²',       qty:110,  up:50,    total:5500},
+      {num:'13', text:'سيراميك حوائط الحمامات والمطابخ',                       unit:'م²',       qty:150,  up:50,    total:7500},
+      {num:'14', text:'أرضيات بورسلان للمساحة العامة',                         unit:'م²',       qty:430,  up:65,    total:27950},
+      {num:'15', text:'سجاد المصلى',                                            unit:'م²',       qty:80,   up:0,     total:0},
+      {num:'16', text:'أرضيات مرتفعة (غرف تحكم/سيرفرات)',                     unit:'م²',       qty:25,   up:0,     total:0},
     ]
   },
   {
     id:'c2', num:2,
-    phase:'صيانة وتطوير التجهيزات',
-    scope:'الأبواب والزجاج والسيراميك والأرضيات والديكور',
-    custody:200000, color:'#7c3aed', bg:'#f5f3ff', tc:'#5b21b6',
+    phase:'الأعمال المعمارية — التشطيبات',
+    scope:'القواطيع والأبواب والزجاج والستائر والديكور والإرشادية',
+    custody:94540, color:'#7c3aed', bg:'#f5f3ff', tc:'#5b21b6',
+    boqTotal:94540,
     items:[
-      {num:'2.1', text:'أعمال الأبواب للمكاتب والحمامات ودورات المياه'},
-      {num:'2.2', text:'الأعمال الزجاجية'},
-      {num:'2.3', text:'أعمال الدواليب المطبخ'},
-      {num:'2.4', text:'أعمال السيراميك'},
-      {num:'2.5', text:'أعمال السجاد والموكيت'},
-      {num:'2.6', text:'أعمال الأرضيات المرتفعة'},
-      {num:'2.7', text:'أعمال الستائر'},
-      {num:'2.8', text:'أعمال الديكورات الخشبية والورقية'},
-      {num:'2.9', text:'أعمال اللوحات الإرشادية'},
+      {num:'17', text:'قواطيع جبسية عازلة',                                    unit:'م²',  qty:140, up:130,  total:18200},
+      {num:'18', text:'قواطيع زجاج سيكوريت 12مم',                             unit:'م²',  qty:20,  up:230,  total:4600},
+      {num:'19', text:'أبواب زجاج سيكوريت ضلفة واحدة',                        unit:'عدد', qty:4,   up:1500, total:6000},
+      {num:'20', text:'أبواب زجاج سيكوريت ضلفتين',                            unit:'عدد', qty:2,   up:3000, total:6000},
+      {num:'21', text:'أبواب خشبية للمكاتب المغلقة',                           unit:'عدد', qty:16,  up:1000, total:16000},
+      {num:'22', text:'ستائر رول يدوية',                                        unit:'م²',  qty:12,  up:150,  total:1800},
+      {num:'23', text:'ستائر رول كهربائية (قاعة الاجتماعات)',                  unit:'م²',  qty:18,  up:500,  total:9000},
+      {num:'24', text:'تكسيات خشبية ديكورية',                                  unit:'م²',  qty:65,  up:100,  total:6500},
+      {num:'25', text:'ورق جدران (Wallpaper)',                                  unit:'م²',  qty:180, up:60,   total:10800},
+      {num:'26', text:'نعلات حوائط ديكورية',                                   unit:'م.ط', qty:120, up:12,   total:1440},
+      {num:'27', text:'دواليب مطبخ خدمة',                                      unit:'م.ط', qty:6,   up:600,  total:3600},
+      {num:'28', text:'مرايات ديكورية مع إضاءة',                               unit:'م²',  qty:45,  up:200,  total:9000},
+      {num:'29', text:'مرايا دورات المياه',                                     unit:'م²',  qty:10,  up:160,  total:1600},
+      {num:'30', text:'لوحات إرشادية (Signage)',                                unit:'عدد', qty:20,  up:0,    total:0},
     ]
   },
   {
     id:'c3', num:3,
-    phase:'الأعمال الصحية',
-    scope:'دورات المياه وغرف الخدمات المشتركة وملحقاتها',
-    custody:100000, color:'#0891b2', bg:'#e0f7fa', tc:'#0e7490',
+    phase:'الأعمال الميكانيكية',
+    scope:'دورات المياه والمطابخ والتكييف وأنظمة الإطفاء',
+    custody:17320, color:'#0891b2', bg:'#e0f7fa', tc:'#0e7490',
+    boqTotal:17320,
     items:[
-      {num:'3.1', text:'توريد وتركيب المراحيض وأطقم دورات المياه'},
-      {num:'3.2', text:'أحواض الغسيل المعلقة'},
-      {num:'3.3', text:'مجموعات أحواض الكاونتر'},
-      {num:'3.4', text:'سخانات المياه الكهربائية'},
-      {num:'3.5', text:'مراوح التهوية'},
-      {num:'3.6', text:'رشاشات الإطفاء (نظام كامل)'},
-      {num:'3.7', text:'مجاري هواء التكييف (duct)'},
-      {num:'3.8', text:'مجاري طرد الهواء'},
-      {num:'3.9', text:'أعمال السباكة والصرف الصحي'},
+      {num:'1', text:'مرحاض غربي (C.W) كامل التركيب والتوصيل',                unit:'عدد',   qty:14, up:280,  total:3920},
+      {num:'2', text:'حوض غسيل أيدي معلق كامل التركيب',                        unit:'عدد',   qty:8,  up:500,  total:4000},
+      {num:'3', text:'مجموعة أحواض على كاونتر رخام (طقم كامل)',               unit:'عدد',   qty:3,  up:2000, total:6000},
+      {num:'4', text:'حوض غسيل ستانلس للمطبخ الخدمي',                         unit:'عدد',   qty:2,  up:600,  total:1200},
+      {num:'5', text:'مراوح تهوية 50 CFM',                                      unit:'عدد',   qty:4,  up:100,  total:400},
+      {num:'6', text:'سخان مياه كهربائي 50 لتر',                               unit:'عدد',   qty:6,  up:300,  total:1800},
+      {num:'7', text:'نظام رشاشات إطفاء حريق (ربط بالشبكة القائمة)',           unit:'نظام',  qty:1,  up:0,    total:0},
+      {num:'8', text:'نظام مجاري هواء التكييف (ربط بالوحدات القائمة)',         unit:'نظام',  qty:1,  up:0,    total:0},
+      {num:'9', text:'نظام مجاري طرد الهواء',                                   unit:'نظام',  qty:1,  up:0,    total:0},
     ]
   },
   {
     id:'c4', num:4,
-    phase:'الأعمال الكهربائية وملحقاتها',
-    scope:'الإنارة والإنذار والتوصيلات والشبكات',
-    custody:200000, color:'#d97706', bg:'#fffbeb', tc:'#b45309',
+    phase:'الأعمال الكهربائية',
+    scope:'إنذار الحريق والطاقة والإنارة (LED) وإنارة الطوارئ',
+    custody:82000, color:'#d97706', bg:'#fffbeb', tc:'#b45309',
+    boqTotal:81990,
     items:[
-      {num:'4.1', text:'نظام إنذار الحريق الكامل'},
-      {num:'4.2', text:'العلب الأرضية (طاقة + داتا)'},
-      {num:'4.3', text:'مخارج الكهرباء والمفاتيح'},
-      {num:'4.4', text:'منظومة الإنارة الوظيفية (LED)'},
-      {num:'4.5', text:'إنارة الطوارئ والـ EXIT'},
-      {num:'4.6', text:'شبكة البيانات والفايبر'},
-      {num:'4.7', text:'كابينة التوزيع الكهربائية'},
-      {num:'4.8', text:'نظام التحكم بالدخول (Access Control)'},
-      {num:'4.9', text:'شاشات العرض وملحقاتها'},
+      {num:'1',  text:'حساس دخان معنون (Addressable)',                          unit:'عدد',   qty:25,  up:250, total:6250},
+      {num:'2',  text:'حساس حرارة معنون',                                       unit:'عدد',   qty:4,   up:0,   total:0},
+      {num:'3',  text:'كاسر زجاجي معنون',                                       unit:'عدد',   qty:12,  up:0,   total:0},
+      {num:'4',  text:'جرس حريق معنون',                                         unit:'عدد',   qty:12,  up:0,   total:0},
+      {num:'5',  text:'لوحة إنذار حريق 4 زون معنونة',                          unit:'عدد',   qty:1,   up:0,   total:0},
+      {num:'6',  text:'تعديل لوحات التحكم الكهربائية القائمة',                  unit:'مقطوعية',qty:2,  up:0,   total:0},
+      {num:'7',  text:'علبة أرضية (طاقة + داتا)',                               unit:'عدد',   qty:60,  up:270, total:16200},
+      {num:'8',  text:'مخرج فيش مزدوج SO3',                                     unit:'عدد',   qty:70,  up:200, total:14000},
+      {num:'9',  text:'مخرج كهرباء مفرد (Access)',                              unit:'عدد',   qty:21,  up:200, total:4200},
+      {num:'10', text:'مفتاح 32A للسخانات الكهربائية',                          unit:'عدد',   qty:10,  up:200, total:2000},
+      {num:'11', text:'مخرج فيش مفرد SO1',                                      unit:'عدد',   qty:5,   up:200, total:1000},
+      {num:'12', text:'مفتاح إنارة أحادي',                                      unit:'عدد',   qty:22,  up:200, total:4400},
+      {num:'13', text:'مفتاح إنارة زوجي اتجاهين',                               unit:'عدد',   qty:25,  up:200, total:5000},
+      {num:'14', text:'مفتاح إنارة ثلاثي',                                      unit:'عدد',   qty:3,   up:200, total:600},
+      {num:'15', text:'كشاف ليد Ø14سم / 50واط',                                unit:'عدد',   qty:140, up:50,  total:7000},
+      {num:'16', text:'سبوت لايت Ø7سم / 5واط',                                 unit:'عدد',   qty:11,  up:50,  total:550},
+      {num:'17', text:'شريط ليد للمرايا والكاونترات',                           unit:'م.ط',   qty:13,  up:400, total:5200},
+      {num:'18', text:'إنارة طولية Linear',                                      unit:'م.ط',   qty:31,  up:40,  total:1240},
+      {num:'19', text:'سبوت أسود زوجي',                                         unit:'عدد',   qty:90,  up:50,  total:4500},
+      {num:'20', text:'تراكات إنارة مغناطيسية',                                 unit:'م.ط',   qty:30,  up:200, total:6000},
+      {num:'21', text:'كشافات EXIT لإضاءة الطوارئ',                            unit:'عدد',   qty:11,  up:350, total:3850},
     ]
   },
   {
     id:'c5', num:5,
-    phase:'الكاميرات وأنظمة المراقبة',
-    scope:'كاميرات IP وجهاز التسجيل وشاشة المراقبة والتمديدات',
+    phase:'الأنظمة الذكية والشبكات',
+    scope:'شبكة البيانات والكاميرات والتحكم بالدخول والشاشات',
     custody:30000, color:'#e11d48', bg:'#fff1f2', tc:'#be123c',
+    boqTotal:0,
     items:[
-      {num:'5.1', text:'كاميرات IP (8 ميغابيكسل)'},
-      {num:'5.2', text:'جهاز تسجيل NVR'},
-      {num:'5.3', text:'شاشة المراقبة'},
-      {num:'5.4', text:'الكابلات والتمديدات (UTP Cat6)'},
-      {num:'5.5', text:'أقواس وحوامل الكاميرات'},
-      {num:'5.6', text:'برمجة وضبط منظومة المراقبة'},
-      {num:'5.7', text:'اختبار وتسليم النظام'},
+      {num:'22', text:'مواسير تمديد كابلات HDMI',                              unit:'م.ط', qty:100, up:0, total:0},
+      {num:'23', text:'مخرج بيانات WiFi/Data',                                  unit:'عدد', qty:12,  up:0, total:0},
+      {num:'24', text:'مخارج HDMI في الجدران',                                  unit:'عدد', qty:6,   up:0, total:0},
+      {num:'25', text:'كابل فايبر 12 لايت (ربط غرفة السيرفر)',                 unit:'م.ط', qty:200, up:0, total:0},
+      {num:'26', text:'مخرج UTP Cat6 للكاميرات (تمديد مسبق)',                  unit:'عدد', qty:19,  up:0, total:0},
+      {num:'27', text:'مخرج UTP Cat6a للأبواب الذكية',                         unit:'عدد', qty:21,  up:0, total:0},
+      {num:'28', text:'كابينة توزيع شبكة 42U',                                  unit:'عدد', qty:1,   up:0, total:0},
+      {num:'29', text:'باتش بانل 48 بورت Cat6a',                                unit:'عدد', qty:1,   up:0, total:0},
+      {num:'30', text:'سويتش 48 بورت PoE (Cisco)',                              unit:'عدد', qty:1,   up:0, total:0},
+      {num:'31', text:'لوحة تحكم قارئ كروت',                                    unit:'عدد', qty:1,   up:0, total:0},
+      {num:'32', text:'لوحة تحكم نظام التحكم بالدخول',                         unit:'عدد', qty:1,   up:0, total:0},
+      {num:'33', text:'لاقطات مغناطيسية للأبواب الذكية',                       unit:'عدد', qty:4,   up:0, total:0},
     ]
   }
 ];
@@ -1733,11 +1776,35 @@ function renderCk(){
     filterHtml+=`<span class="filter-chip ${isSel?'sel':''}" style="${isSel?`border-color:${c.color};background:${c.color};color:#fff`:''}" onclick="setCkFilter('${c.id}')">${c.num}</span>`;
   });
 
+  // ملخص كراسة الكميات
+  const boqSummary=`
+    <div style="background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
+      <div style="font-size:11px;font-weight:800;color:var(--green2);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+        <span style="display:block;width:3px;height:13px;background:var(--gold);border-radius:2px;flex-shrink:0"></span>
+        ملخص كراسة الكميات والأسعار
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div style="background:var(--light);border-radius:10px;padding:8px;text-align:center">
+          <div style="font-size:11px;font-weight:900;color:var(--green2)">${fmtN(BOQ_EXCL_VAT)}</div>
+          <div style="font-size:8px;color:var(--muted);margin-top:2px">قبل الضريبة</div>
+        </div>
+        <div style="background:#fef9c3;border-radius:10px;padding:8px;text-align:center">
+          <div style="font-size:11px;font-weight:900;color:#854d0e">${fmtN(BOQ_VAT)}</div>
+          <div style="font-size:8px;color:#78350f;margin-top:2px">ضريبة 15%</div>
+        </div>
+        <div style="background:#f0fdf4;border-radius:10px;padding:8px;text-align:center">
+          <div style="font-size:11px;font-weight:900;color:#15803d">${fmtN(BOQ_INCL_VAT)}</div>
+          <div style="font-size:8px;color:#166534;margin-top:2px">شامل الضريبة</div>
+        </div>
+      </div>
+    </div>`;
+
   let html=`
     <div class="ck-intro">
-      <strong>📋 خطة بنود التنفيذ — المراحل الرسمية</strong>
+      <strong>📋 كراسة بنود التنفيذ — المراحل الرسمية</strong>
       اضغط مرة: جاري التنفيذ ▶ · اضغط مرتين: مكتمل ✓ · اضغط ثلاثاً: إعادة تعيين
     </div>
+    ${boqSummary}
     <div class="ck-filter">${filterHtml}</div>`;
 
   const showC=filterAll?CUSTODIANS:CUSTODIANS.filter(c=>c.id===ckFilter);
@@ -1747,6 +1814,7 @@ function renderCk(){
     const inProg=states.filter(s=>s===1).length;
     const total=c.items.length;
     const p=total>0?Math.round(done/total*100):0;
+    const boqLbl=c.boqTotal>0?`<span style="font-size:9px;font-weight:700;color:${c.tc};opacity:.7">${fmtN(c.boqTotal)} ر.س</span>`:'';
 
     html+=`<div class="ck-card">
       <div class="phase-header" style="background:${c.bg}">
@@ -1754,6 +1822,7 @@ function renderCk(){
         <div style="flex:1;min-width:0">
           <div class="phase-name" style="color:${c.tc}">${c.phase} — ${escH(custName(c.id))}</div>
           <div class="phase-scope">${c.scope}</div>
+          ${boqLbl}
         </div>
         <div class="phase-prog" style="color:${c.tc}">${done}/${total}</div>
       </div>
@@ -1772,11 +1841,22 @@ function renderCk(){
       const rawSt=ckState[key]; const st=(rawSt===1||rawSt===2)?rawSt:0;
       const stClass=st===0?'':st===1?'s1':'s2';
       const badge=st===0?'':`<span class="ck-status-badge ck-st${st}">${st===1?'▶ جاري':'✓ مكتمل'}</span>`;
+      // تفاصيل كراسة الكميات
+      const hasBOQ=it.unit&&it.qty;
+      const boqRow=hasBOQ?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+        <span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">${it.unit}</span>
+        <span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">الكمية: ${it.qty}</span>
+        ${it.up>0?`<span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">سعر الوحدة: ${fmtN(it.up)}</span>`:''}
+        ${it.total>0?`<span style="font-size:9px;background:#f0fdf4;border-radius:4px;padding:1px 6px;color:#15803d;font-weight:800">الإجمالي: ${fmtN(it.total)}</span>`:''}
+      </div>`:'';
       html+=`<div class="ck-item ${stClass}" onclick="toggleCkItem('${c.id}','${it.num}')">
         <div class="ck-box ${stClass}"></div>
-        <div class="ck-item-content">
-          <div class="ck-item-num">${it.num}</div>
-          <div class="ck-text">${escH(it.text)}</div>
+        <div class="ck-item-content" style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="ck-item-num">${it.num}</div>
+            <div class="ck-text">${escH(it.text)}</div>
+          </div>
+          ${boqRow}
         </div>
         ${badge}
       </div>`;
