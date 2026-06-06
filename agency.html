@@ -151,11 +151,13 @@ body {
 .pcard-price { font-family:'IBM Plex Mono',monospace; font-size:1.25rem; font-weight:700; background:linear-gradient(135deg,#F0C840,#D4A843,#C06020); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:2px; }
 .pcard-size { font-size:0.48rem; color:rgba(212,168,67,0.50); margin-bottom:10px; font-family:'IBM Plex Mono',monospace; }
 .card-qty-row { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:9px; }
-.cqbtn { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(212,168,67,0.25); color:#D4A843; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.18s; flex-shrink:0; backdrop-filter:blur(4px); }
+.cqbtn { width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(212,168,67,0.25); color:#D4A843; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.18s; flex-shrink:0; backdrop-filter:blur(4px); }
 .cqbtn:hover { background:rgba(212,168,67,0.20); box-shadow:0 0 12px rgba(212,168,67,0.30); }
-.cqnum { font-family:'IBM Plex Mono',monospace; font-size:0.95rem; color:#F0C840; min-width:22px; text-align:center; font-weight:700; }
+.cqnum { font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:#F0C840; min-width:22px; text-align:center; font-weight:700; }
 .pcard-btn { width:100%; padding:8px 4px; border-radius:20px; cursor:pointer; font-size:0.70rem; font-weight:700; font-family:'Alexandria',sans-serif; transition:all 0.22s; border:1px solid rgba(212,168,67,0.25); background:rgba(212,168,67,0.08); color:rgba(212,168,67,0.65); backdrop-filter:blur(4px); }
 .pcard-btn:hover, .pcard-btn.ic { border-color:rgba(212,168,67,0.60); background:rgba(212,168,67,0.20); color:#F0C840; box-shadow:0 0 16px rgba(212,168,67,0.25); }
+.pcard-oos { opacity:0.45; pointer-events:none; }
+.pcard-oos-badge { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px); border-radius:24px; color:rgba(255,255,255,0.70); font-size:0.78rem; font-weight:700; z-index:2; }
 
 /* CART / OVERLAYS — glassmorphism */
 .overlay { position:fixed; inset:0; z-index:300; background:rgba(4,2,14,0.85); backdrop-filter:blur(14px); display:none; align-items:flex-end; justify-content:center; }
@@ -357,6 +359,21 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
+// ── CART PERSISTENCE ─────────────────────────────────────────────────────────
+function _saveCart(){try{localStorage.setItem('dw_cart',JSON.stringify(cart))}catch(e){}}
+function _loadCart(){try{return JSON.parse(localStorage.getItem('dw_cart')||'[]')}catch(e){return[]}}
+
+// ── STOCK ────────────────────────────────────────────────────────────────────
+const _DEF_STOCK=20;
+function _getStock(id){try{const s=JSON.parse(localStorage.getItem('dw_stock')||'{}');return s[id]??_DEF_STOCK;}catch(e){return _DEF_STOCK;}}
+function _setStock(id,n){try{const s=JSON.parse(localStorage.getItem('dw_stock')||'{}');s[id]=Math.max(0,n);localStorage.setItem('dw_stock',JSON.stringify(s));}catch(e){}}
+function _decrStock(id,qty){_setStock(id,_getStock(id)-qty);}
+
+// ── CARD VALIDATION ───────────────────────────────────────────────────────────
+function luhn(n){const d=n.replace(/\D/g,'').split('').reverse().map(Number);return d.length>=16&&d.reduce((s,x,i)=>{if(i%2===1){x*=2;if(x>9)x-=9;}return s+x;},0)%10===0;}
+function validExpiry(v){if(!/^\d{2}\/\d{2}$/.test(v))return false;const[mm,yy]=v.split('/').map(Number);if(mm<1||mm>12)return false;const n=new Date(),ey=2000+yy;return ey>n.getFullYear()||(ey===n.getFullYear()&&mm>=n.getMonth()+1);}
+function fmtCardNum(v){return v.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim();}
+
 // ── DATA ───────────────────────────────────────────────────────────────────
 const P=[
   {id:'layali',name:'ليالي الرياض',icon:'🌙',season:'شتاء',gender:'للجنسين',price:185,top:18,mid:52,base:30,stab:'طويل الأمد',
@@ -389,7 +406,7 @@ const BATCH={
 };
 
 // ── STATE ───────────────────────────────────────────────────────────────────
-let cart=[], sf='الكل', gf='الكل', batch='quarter';
+let cart=_loadCart(), sf='الكل', gf='الكل', batch='quarter';
 // cardQty: per-card quantity before adding to cart
 const cardQty={};
 P.forEach(p=>cardQty[p.id]=1);
@@ -435,12 +452,15 @@ function render(){
   nr.style.display='none';
   g.innerHTML=f.map(p=>{
     const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
+    const stock=_getStock(p.id);
+    const oos=stock<=0;
     const price=calcPrice(p.price);
     const qty=cardQty[p.id]||1;
     const s=p.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
     const bars=bc(s).map(b=>`<div style="width:${b.w}px;height:${b.d?'100%':'55%'};background:${b.d?'rgba(201,168,76,0.80)':'transparent'};align-self:flex-end"></div>`).join('');
-    return`<div class="pcard" onclick="openProductModal('${p.id}')">
+    return`<div class="pcard${oos?' pcard-oos':''}" onclick="openProductModal('${p.id}')">
 <div class="pcard-bar"></div>
+${oos?'<div class="pcard-oos-badge">نفذ المخزون</div>':''}
 <div class="pcard-body">
 <div class="pcard-badge">${p.season}</div>
 <div class="pcard-icon">${p.icon}</div>
@@ -459,7 +479,7 @@ ${p.desc?`<div style="font-size:0.54rem;color:rgba(220,185,100,0.72);line-height
   <button class="cqbtn" onclick="event.stopPropagation();cqChange('${p.id}',1)">+</button>
 </div>
 <button class="pcard-btn${ic?' ic':''}" onclick="event.stopPropagation();add('${p.id}')">
-  ${ic?`✓ في السلة (${ic.qty})`:'+ أضف للسلة'}
+  ${ic?`✓ في السلة (${ic.qty})`:oos?'نفذ المخزون':'+ أضف للسلة'}
 </button>
 </div></div>`;
   }).join('');
@@ -482,11 +502,12 @@ function add(id){
   else cart.push({key,id,name:p.name,icon:p.icon,price,season:p.season,gender:p.gender,batch,batchLabel:BATCH[batch].label,batchMl:BATCH[batch].ml,qty});
   cardQty[id]=1; // reset card qty
   syncUI();render();toast(`🛒 ${qty > 1?qty+'× ':''}${p.name} (${BATCH[batch].label}) أُضيف للسلة`);
+  _saveCart();
 }
 
-function rm(key){cart=cart.filter(i=>i.key!==key);syncUI();render();renderSheet();}
-function uqty(key,d){const i=cart.find(x=>x.key===key);if(i){i.qty=Math.max(1,i.qty+d);syncUI();renderSheet();}}
-function clearCart(){cart=[];syncUI();render();renderSheet();}
+function rm(key){cart=cart.filter(i=>i.key!==key);_saveCart();syncUI();render();renderSheet();}
+function uqty(key,d){const i=cart.find(x=>x.key===key);if(i){i.qty=Math.max(1,i.qty+d);_saveCart();syncUI();renderSheet();}}
+function clearCart(){cart=[];_saveCart();syncUI();render();renderSheet();}
 function openCart(){document.getElementById('ov').classList.add('open');renderSheet();}
 function closeCart(){document.getElementById('ov').classList.remove('open');}
 
@@ -584,9 +605,9 @@ function expandedPaymentView(){
 
 function paymentDetailsHtml(){
   if(coPayment==='mada') return `<div class="card-form">
-    <div class="co-field"><label class="co-label">رقم البطاقة</label><input class="co-inp" id="f-cn" placeholder="•••• •••• •••• ••••" maxlength="19" value="${coCardNum}" oninput="coCardNum=this.value" style="direction:ltr;letter-spacing:2px"/></div>
+    <div class="co-field"><label class="co-label">رقم البطاقة</label><input class="co-inp" id="f-cn" placeholder="•••• •••• •••• ••••" maxlength="19" value="${coCardNum}" oninput="coCardNum=fmtCardNum(this.value);this.value=coCardNum" style="direction:ltr;letter-spacing:2px"/></div>
     <div class="co-row2">
-      <div class="co-field"><label class="co-label">تاريخ الانتهاء</label><input class="co-inp" id="f-ce" placeholder="MM/YY" maxlength="5" value="${coCardExp}" oninput="coCardExp=this.value" style="direction:ltr"/></div>
+      <div class="co-field"><label class="co-label">تاريخ الانتهاء</label><input class="co-inp" id="f-ce" placeholder="MM/YY" maxlength="5" value="${coCardExp}" oninput="let v=this.value.replace(/\D/g,'').slice(0,4);coCardExp=v.length>2?v.slice(0,2)+'/'+v.slice(2):v;this.value=coCardExp" style="direction:ltr"/></div>
       <div class="co-field"><label class="co-label">CVV</label><input class="co-inp" id="f-cv" placeholder="•••" maxlength="4" value="${coCardCvv}" oninput="coCardCvv=this.value" style="direction:ltr" type="password"/></div>
     </div>
     <div class="co-field"><label class="co-label">اسم حامل البطاقة</label><input class="co-inp" id="f-cname" placeholder="FULL NAME" value="${coCardName}" oninput="coCardName=this.value" style="direction:ltr;text-transform:uppercase"/></div>
@@ -743,9 +764,10 @@ function renderCheckout(){
 function submitOrder(){
   if(!coData.name.trim()){toast('⚠️ الرجاء إدخال الاسم الكامل');return;}
   if(!coData.phone.trim()||coData.phone.length<9){toast('⚠️ رقم الجوال غير صحيح');return;}
-  if(coPayment==='mada'&&coCardNum.replace(/\s/g,'').length<16){toast('⚠️ رقم البطاقة غير مكتمل');return;}
-  if(coPayment==='mada'&&coCardExp.length<4){toast('⚠️ تاريخ انتهاء البطاقة غير صحيح');return;}
+  if(coPayment==='mada'&&!luhn(coCardNum)){toast('⚠️ رقم البطاقة غير صحيح');return;}
+  if(coPayment==='mada'&&!validExpiry(coCardExp)){toast('⚠️ تاريخ الانتهاء غير صحيح (MM/YY)');return;}
   if(coPayment==='mada'&&coCardCvv.length<3){toast('⚠️ رمز CVV غير صحيح');return;}
+  if(coPayment==='mada'&&!coCardName.trim()){toast('⚠️ أدخل اسم حامل البطاقة');return;}
   if(coPayment==='stc'&&(coStcPhone.length<10||!coStcPhone.startsWith('05'))){toast('⚠️ رقم STC Pay غير صحيح');return;}
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const deliveryCost=coDelivery==='express'?45:25;
@@ -757,6 +779,7 @@ function submitOrder(){
     items:cart.map(i=>({icon:i.icon,name:i.name,batchLabel:i.batchLabel,price:i.price,qty:i.qty})),
     subtotal:sub,deliveryCost,codFee,vat,total:tot,delivery:coDelivery,payment:coPayment,status:'new'};
   try{const existing=JSON.parse(localStorage.getItem('dw_agency_orders')||'[]');existing.unshift(order);localStorage.setItem('dw_agency_orders',JSON.stringify(existing));}catch(e){}
+  cart.forEach(i=>_decrStock(i.id,i.qty));
   coStep='success';
   renderCheckout();
   document.getElementById('coPage').scrollTop=0;

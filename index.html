@@ -780,7 +780,9 @@ function daysLeft(readyDate){
 }
 
 function App(){
-  const [logged,setLogged]=useState(false);
+  const [logged,setLogged]=useState(()=>{
+  try{const s=JSON.parse(localStorage.getItem('dw_session')||'null');return !!(s&&s.exp>Date.now());}catch{return false;}
+});
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
   const [inv,setInv]=useState(()=>applyOudXxFix(applyNameFix(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))))));
@@ -898,17 +900,49 @@ function App(){
       return cleaned.length===prev.length?prev:cleaned;
     });
   },[inv]);
+  useEffect(()=>{
+    if(!logged)return;
+    const last=parseInt(localStorage.getItem('dw_last_backup')||'0');
+    if(Date.now()-last>24*3600*1000){
+      const timeout=setTimeout(()=>{
+        const data={inv,recipes,prodLog,purchases,customers,date:new Date().toISOString(),version:'dhawi_v1'};
+        const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+        a.download=`dhawi-backup-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);a.click();document.body.removeChild(a);
+        localStorage.setItem('dw_last_backup',Date.now().toString());
+        show('💾 تم تنزيل النسخة الاحتياطية تلقائياً');
+      },3000);
+      return()=>clearTimeout(timeout);
+    }
+  },[logged]);
 
   // ── low stock check ─────────────────────────────────────────
   const lowStockItems=inv.filter(i=>i.stock<i.qty*LOW_STOCK_THRESHOLD && i.qty>0);
 
+  const STORED_HASH='__init__';
+  async function checkPin(p){
+    try{
+      const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p+'_dhawi_salt'));
+      const hash=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+      const stored=localStorage.getItem('dw_pin_hash');
+      if(!stored){
+        // first run: accept '6775' and store its hash
+        if(p==='6775'){localStorage.setItem('dw_pin_hash',hash);return true;}
+        return false;
+      }
+      return hash===stored;
+    }catch{return p==='6775';}
+  }
+  function setSession(){try{localStorage.setItem('dw_session',JSON.stringify({exp:Date.now()+12*3600*1000}));}catch{}}
+  function clearSession(){try{localStorage.removeItem('dw_session');}catch{}}
   const show=(m,e=false)=>{setToast(m);setToastErr(e);setTimeout(()=>setToast(""),2800);};
   const getIng=id=>inv.find(i=>i.id===id);
   const BATCH={quarter:2.9,half:5.8,tola:11.6,ml50:50,ml100:100};
   const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",tola:"تولة",ml50:"50 مل",ml100:"100 مل"};
 
   const recipeBaseVol=r=>r.ing.reduce((s,[,a])=>s+a,0);
-  const recipeScale=r=>BATCH[batchUnit]/recipeBaseVol(r);
+  const recipeScale=r=>{const base=recipeBaseVol(r);return base>0?BATCH[batchUnit]/base:0;};
   const recipeCost=r=>{const sc=recipeScale(r);return r.ing.reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a*sc:0);},0);};
   const canMake=r=>{const sc=recipeScale(r);return r.ing.every(([id,a])=>{const ing=getIng(id);return ing&&ing.stock>=a*sc;});};
 
@@ -1280,9 +1314,9 @@ function App(){
         }}>
           <div style={{fontSize:"0.52rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.55em",textTransform:"uppercase",marginBottom:"18px",fontFamily:"'Cormorant Garamond',serif"}}>رمز الدخول</div>
           <input type="password" inputMode="numeric" placeholder="· · · ·" value={pin} autoFocus onChange={e=>setPin(e.target.value)}
-            onKeyDown={e=>{if(e.key==="Enter"){if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}}
+            onKeyDown={e=>{if(e.key==="Enter"){checkPin(pin).then(ok=>{if(ok){setSession();setLogged(true);}else show("❌ رمز خاطئ ارفع علومك",true);});}}}
             style={{background:"rgba(0,0,0,0.40)",border:"1px solid rgba(201,168,76,0.28)",borderRadius:"16px",padding:"18px",color:"#F0E6D0",textAlign:"center",fontSize:"2rem",letterSpacing:"16px",outline:"none",width:"100%",marginBottom:"16px",fontFamily:"'IBM Plex Mono',monospace",boxShadow:"inset 0 2px 12px rgba(0,0,0,0.5)",transition:"border-color 0.22s"}}/>
-          <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}>دخول المعمل</button>
+          <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{checkPin(pin).then(ok=>{if(ok){setSession();setLogged(true);}else show("❌ رمز خاطئ ارفع علومك",true);});}}>دخول المعمل</button>
         </div>
       </div>
       {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",background:toastErr?"rgba(120,20,20,0.95)":"rgba(8,5,14,0.96)",border:`1px solid ${toastErr?"rgba(180,50,50,0.6)":"rgba(201,168,76,0.5)"}`,color:toastErr?"#D88080":"#D4AF37",padding:"12px 24px",borderRadius:"30px",fontWeight:"700",backdropFilter:"blur(16px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>{toast}</div>}
@@ -1305,7 +1339,7 @@ function App(){
           <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"1.55rem",letterSpacing:"0.04em",color:"rgba(232,200,112,0.90)",lineHeight:1.1}}>Atelier Dhawi</div>
           <div className="brand-sub" style={{marginTop:"2px"}}>HERITAGE OUD LAB</div>
         </div>
-        <div style={{width:32}}/>
+        <button onClick={()=>{clearSession();setLogged(false);setPin("");}} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.10)",color:"rgba(255,255,255,0.35)",borderRadius:"8px",padding:"5px 10px",fontSize:"0.60rem",cursor:"pointer",fontFamily:"'Alexandria',sans-serif"}}>خروج</button>
       </div>
       <div className="g-line" style={{margin:"0 18px 4px"}}/>
 
