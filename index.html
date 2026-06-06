@@ -856,6 +856,7 @@ function App(){
   const [aiGenRaw,setAiGenRaw]=useState("");
   const [showAIAnalysis,setShowAIAnalysis]=useState(false);
   const [aiAnalysisText,setAiAnalysisText]=useState("");
+  const [storeOrders,setStoreOrders]=useState(()=>{try{return JSON.parse(localStorage.getItem('dw_agency_orders')||'[]')}catch(e){return[]}});
   const [aiAnalysisRecipe,setAiAnalysisRecipe]=useState(null);
   const [invSort,setInvSort]=useState("default");
   const [editRecipe,setEditRecipe]=useState(null);
@@ -884,6 +885,11 @@ function App(){
   useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
   useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
   useEffect(()=>lsSet("dw_shopcart",shopCart),[shopCart]);
+  useEffect(()=>{
+    const sync=()=>{try{setStoreOrders(JSON.parse(localStorage.getItem('dw_agency_orders')||'[]'))}catch(e){}};
+    window.addEventListener('storage',sync);
+    return()=>window.removeEventListener('storage',sync);
+  },[]);
   useEffect(()=>{
     if(inv.length===0)return;
     const invIds=new Set(inv.map(i=>i.id));
@@ -2959,20 +2965,78 @@ function App(){
         </div>
       </div>}
 
+      {tab==="orders"&&(()=>{
+        const newCount=storeOrders.filter(o=>o.status==='new').length;
+        const PAY_LABEL={mada:'مدى',apple:'Apple Pay',stc:'STC Pay',cod:'عند الاستلام'};
+        const markDone=(id)=>{const upd=storeOrders.map(o=>o.id===id?{...o,status:'done'}:o);setStoreOrders(upd);try{localStorage.setItem('dw_agency_orders',JSON.stringify(upd))}catch(e){}};
+        const deleteOrder=(id)=>{const upd=storeOrders.filter(o=>o.id!==id);setStoreOrders(upd);try{localStorage.setItem('dw_agency_orders',JSON.stringify(upd))}catch(e){}};
+        return(<div className="fade" style={{padding:"14px 14px 100px"}}>
+          <div className="section-hdr">
+            <div className="section-hdr-bar"/>
+            <span style={{fontWeight:800,fontSize:"1.05rem"}}>📦 طلبات المتجر</span>
+            {newCount>0&&<span style={{background:"#C03030",color:"#fff",borderRadius:"10px",padding:"2px 9px",fontSize:"0.60rem",fontWeight:900,marginRight:"auto"}}>{newCount} جديد</span>}
+          </div>
+          {storeOrders.length===0
+            ?<div className="glass" style={{textAlign:"center",padding:"48px 20px",color:"rgba(255,255,255,0.25)",fontSize:"0.88rem"}}>لا توجد طلبات بعد<br/><span style={{fontSize:"0.70rem",marginTop:"8px",display:"block",opacity:0.6}}>ستظهر هنا طلبات متجر agency.html تلقائياً</span></div>
+            :storeOrders.map(o=>(
+            <div key={o.id} className="glass" style={{padding:"14px",marginBottom:"10px",borderColor:o.status==='new'?"rgba(212,168,67,0.45)":"rgba(255,255,255,0.07)"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"8px"}}>
+                <div>
+                  <div style={{fontWeight:800,fontSize:"0.90rem"}}>{o.customer.name}</div>
+                  <div style={{fontSize:"0.60rem",color:"rgba(212,168,67,0.55)",marginTop:"2px",fontFamily:"monospace"}}>+966{o.customer.phone} · {o.customer.city}</div>
+                </div>
+                <div style={{display:"flex",gap:"6px",alignItems:"center"}}>
+                  {o.status==='new'
+                    ?<span style={{background:"rgba(212,168,67,0.15)",border:"1px solid rgba(212,168,67,0.45)",color:"#F0C840",borderRadius:"6px",padding:"2px 8px",fontSize:"0.55rem",fontWeight:900}}>جديد ●</span>
+                    :<span style={{color:"rgba(80,160,80,0.65)",fontSize:"0.60rem"}}>✓ مكتمل</span>}
+                </div>
+              </div>
+              <div style={{borderTop:"1px solid rgba(255,255,255,0.06)",paddingTop:"8px",marginBottom:"8px"}}>
+                {o.items.map((i,idx)=>(
+                  <div key={idx} style={{display:"flex",justifyContent:"space-between",fontSize:"0.72rem",color:"rgba(245,239,224,0.72)",marginBottom:"3px"}}>
+                    <span>{i.icon} {i.name} ({i.batchLabel}) ×{i.qty}</span>
+                    <span style={{fontFamily:"monospace"}}>{i.price*i.qty} ر</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.63rem",color:"rgba(255,255,255,0.32)",marginBottom:"3px"}}>
+                <span>الشحن: {o.delivery==='express'?'سريع · 45 ر':'عادي · 25 ر'}</span>
+                <span>الدفع: {PAY_LABEL[o.payment]||o.payment}</span>
+              </div>
+              {o.codFee>0&&<div style={{fontSize:"0.63rem",color:"rgba(255,190,80,0.65)",marginBottom:"3px"}}>رسوم الاستلام: {o.codFee} ر</div>}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:"10px",borderTop:"1px solid rgba(255,255,255,0.06)",paddingTop:"10px"}}>
+                <div style={{fontFamily:"monospace",fontSize:"1.05rem",fontWeight:700,background:"linear-gradient(135deg,#F0C840,#D4A843)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{o.total} ر.س</div>
+                <div style={{display:"flex",gap:"6px"}}>
+                  {o.status==='new'&&<button className="btn-gold" style={{padding:"6px 13px",fontSize:"0.68rem"}} onClick={()=>markDone(o.id)}>✓ تمت المعالجة</button>}
+                  <button style={{background:"rgba(180,40,40,0.12)",border:"1px solid rgba(180,40,40,0.28)",color:"rgba(220,100,100,0.70)",borderRadius:"8px",padding:"6px 10px",fontSize:"0.65rem",cursor:"pointer"}} onClick={()=>deleteOrder(o.id)}>حذف</button>
+                </div>
+              </div>
+              <div style={{fontFamily:"monospace",fontSize:"0.48rem",color:"rgba(255,255,255,0.18)",marginTop:"5px"}}>{o.id} · {new Date(o.date).toLocaleString('ar-SA')}</div>
+            </div>
+          ))}
+        </div>);
+      })()}
+
       <div className="bottom-nav">
-        {[
+        {(()=>{
+          const newOrdersCount=storeOrders.filter(o=>o.status==='new').length;
+          return[
           {id:"home",icon:"🏠",label:"الرئيسية"},
           {id:"inventory",icon:"🏺",label:"المخزون"},
           {id:"recipes",icon:"📋",label:"الوصفات"},
           {id:"customers",icon:"👥",label:"العملاء"},
+          {id:"orders",icon:"📦",label:"الطلبات",badge:newOrdersCount},
           {id:"stats",icon:"📊",label:"إحصائيات"},
-          {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
           <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);setShowCustomerStore(false);setShowCart(false);setShowRoadmap(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
-            <span className="nav-icon">{t.icon}</span>
+            <span className="nav-icon" style={{position:"relative"}}>
+              {t.icon}
+              {t.badge>0&&<span style={{position:"absolute",top:-5,right:-5,background:"#C03030",color:"#fff",borderRadius:"50%",width:15,height:15,fontSize:"0.40rem",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{t.badge}</span>}
+            </span>
             {t.label}
           </button>
-        ))}
+        ))
+        })()}
       </div>
     </div>
   );

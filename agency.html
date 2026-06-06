@@ -514,6 +514,7 @@ let coPayment='mada';
 let coData={name:'',phone:'',city:'الرياض',district:'',street:''};
 let coCardNum='', coCardExp='', coCardCvv='', coCardName='', coStcPhone='';
 let coPayExpanded=false;
+let coOrderId='';
 
 const PAY_METHODS=[
   {id:'mada',
@@ -557,7 +558,7 @@ function paymentDetailsHtml(){
   </div>`;
   if(coPayment==='apple') return `<div style="background:#000;border-radius:12px;padding:14px;text-align:center;color:#fff;font-size:0.88rem;font-weight:600;margin-top:10px;cursor:pointer;border:1px solid rgba(255,255,255,0.10)" onclick="toast('سيتم تفعيل Apple Pay عند تأكيد الطلب')"> Pay</div>`;
   if(coPayment==='stc') return `<div class="card-form"><div class="co-field"><label class="co-label">رقم جوال STC Pay</label><input class="co-inp" id="f-stc" placeholder="05XXXXXXXX" maxlength="10" value="${coStcPhone}" oninput="coStcPhone=this.value.replace(/[^0-9]/g,'')" style="direction:ltr"/></div><div class="stc-note">ستصلك رسالة تأكيد على رقم STC Pay المرتبط</div></div>`;
-  if(coPayment==='cod') return `<div class="cod-note">💵 ادفع نقداً أو بالبطاقة عند استلام طلبك<br><span style="opacity:0.7;font-size:0.62rem">لا توجد رسوم إضافية على الدفع عند الاستلام</span></div>`;
+  if(coPayment==='cod') return `<div class="cod-note">💵 ادفع نقداً أو بالبطاقة عند استلام طلبك<br><span style="opacity:0.7;font-size:0.62rem">تُضاف رسوم 15 ر.س على إجمالي طلبك</span></div>`;
   return '';
 }
 
@@ -575,12 +576,13 @@ function closeCheckout(){
 function renderCheckout(){
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const deliveryCost=coDelivery==='express'?45:25;
+  const codFee=coPayment==='cod'?15:0;
   const vat=Math.round((sub+deliveryCost)*0.15);
-  const tot=sub+deliveryCost+vat;
+  const tot=sub+deliveryCost+codFee+vat;
 
   if(coStep==='success'){
     document.getElementById('coTitle').textContent='تم الطلب ✓';
-    const no='DW-'+Math.floor(100000+Math.random()*900000);
+    const no=coOrderId;
     document.getElementById('coBody').innerHTML=`
       <div class="co-success">
         <span class="co-success-icon">✅</span>
@@ -688,6 +690,7 @@ function renderCheckout(){
     <div class="co-section">
       <div class="trow"><span>المجموع</span><span style="font-family:'IBM Plex Mono',monospace">${sub} ر</span></div>
       <div class="trow"><span>الشحن</span><span style="font-family:'IBM Plex Mono',monospace">${deliveryCost} ر</span></div>
+      ${codFee?`<div class="trow" style="color:rgba(255,190,80,0.70)"><span>رسوم الدفع عند الاستلام</span><span style="font-family:'IBM Plex Mono',monospace">15 ر</span></div>`:''}
       <div class="trow"><span>الضريبة 15%</span><span style="font-family:'IBM Plex Mono',monospace">${vat} ر</span></div>
       <div class="grand-box" style="margin-top:10px">
         <span class="grand-lbl">الإجمالي</span>
@@ -704,6 +707,16 @@ function submitOrder(){
   if(coPayment==='mada'&&coCardExp.length<4){toast('⚠️ تاريخ انتهاء البطاقة غير صحيح');return;}
   if(coPayment==='mada'&&coCardCvv.length<3){toast('⚠️ رمز CVV غير صحيح');return;}
   if(coPayment==='stc'&&(coStcPhone.length<10||!coStcPhone.startsWith('05'))){toast('⚠️ رقم STC Pay غير صحيح');return;}
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const deliveryCost=coDelivery==='express'?45:25;
+  const codFee=coPayment==='cod'?15:0;
+  const vat=Math.round((sub+deliveryCost)*0.15);
+  const tot=sub+deliveryCost+codFee+vat;
+  coOrderId='DW-'+Math.floor(100000+Math.random()*900000);
+  const order={id:coOrderId,date:new Date().toISOString(),customer:{...coData},
+    items:cart.map(i=>({icon:i.icon,name:i.name,batchLabel:i.batchLabel,price:i.price,qty:i.qty})),
+    subtotal:sub,deliveryCost,codFee,vat,total:tot,delivery:coDelivery,payment:coPayment,status:'new'};
+  try{const existing=JSON.parse(localStorage.getItem('dw_agency_orders')||'[]');existing.unshift(order);localStorage.setItem('dw_agency_orders',JSON.stringify(existing));}catch(e){}
   coStep='success';
   renderCheckout();
   document.getElementById('coPage').scrollTop=0;
@@ -712,13 +725,14 @@ function submitOrder(){
 function invoiceFromCheckout(no){
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const deliveryCost=coDelivery==='express'?45:25;
+  const codFee=coPayment==='cod'?15:0;
   const vat=Math.round((sub+deliveryCost)*0.15);
-  const tot=sub+deliveryCost+vat;
+  const tot=sub+deliveryCost+codFee+vat;
   const dt=new Date().toLocaleDateString('ar-SA');
   const rows=cart.map(i=>`<tr><td>${i.icon} ${i.name}<br><span style="font-size:9px;color:#888">${i.batchLabel} · ${i.batchMl}</span></td><td align="center">${i.qty}</td><td align="left">${i.price}</td><td align="left" style="font-weight:700">${i.price*i.qty}</td></tr>`).join('');
   const addrLine=[coData.district,coData.street,coData.city].filter(Boolean).join('، ');
   const w=window.open('','_blank','width=420,height=760');
-  w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 22px;font-size:12px;max-width:360px;margin:0 auto}.h{text-align:center;border-bottom:2px dashed #333;padding-bottom:14px;margin-bottom:14px}.bn{font-size:20px;font-weight:900;letter-spacing:3px}.bs{font-size:9px;letter-spacing:6px;color:#666;margin-top:3px}.customer{background:#f8f8f8;border:1px dashed #ccc;border-radius:6px;padding:10px;margin-bottom:12px;font-size:10px;line-height:1.8}table{width:100%;border-collapse:collapse;margin:10px 0}th{font-size:10px;border-bottom:1px dashed #ccc;padding:4px 0;text-align:right}td{padding:6px 0;font-size:11px;border-bottom:1px solid #f0f0f0;text-align:right}.tot{border-top:2px dashed #333;padding-top:10px;margin-top:4px}.tr{display:flex;justify-content:space-between;padding:3px 0;font-size:11px}.grand{font-size:15px;font-weight:900;border-top:1px dashed #333;padding-top:8px;margin-top:4px}.ft{text-align:center;border-top:2px dashed #333;padding-top:12px;margin-top:14px;font-size:9px;color:#666;line-height:1.9}</style></head><body><div class="h"><div class="bn">ATELIER DHAWI</div><div class="bs">PRIVATE OUD LABORATORY</div><div style="margin-top:9px;font-size:10px">فاتورة رقم: ${no}</div><div style="font-size:10px">التاريخ: ${dt}</div><div style="font-size:9px;color:#888;margin-top:2px">الرقم الضريبي: 300XXXXXXXXX</div></div><div class="customer"><strong>العميل:</strong> ${coData.name}<br><strong>الجوال:</strong> +966${coData.phone}<br><strong>العنوان:</strong> ${addrLine||coData.city}<br><strong>التوصيل:</strong> ${coDelivery==='express'?'سريع 1-2 يوم':'عادي 3-5 أيام'}<br><strong>الدفع:</strong> ${coPayment==='mada'?'مدى':coPayment==='apple'?'Apple Pay':coPayment==='stc'?'STC Pay':'عند الاستلام'}</div><table><thead><tr><th>المنتج</th><th align="center">الكمية</th><th align="left">السعر</th><th align="left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table><div class="tot"><div class="tr"><span>المجموع</span><span>${sub} ر.س</span></div>${deliveryCost?`<div class="tr"><span>الشحن السريع</span><span>${deliveryCost} ر.س</span></div>`:''}<div class="tr"><span>ضريبة 15%</span><span>${vat} ر.س</span></div><div class="tr grand"><span>الإجمالي</span><span>${tot} ر.س</span></div></div><div class="ft">★ ★ ★ ★ ★<br>شكراً لتعاملكم معنا<br>Atelier Dhawi · Private Oud Lab</div><script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 22px;font-size:12px;max-width:360px;margin:0 auto}.h{text-align:center;border-bottom:2px dashed #333;padding-bottom:14px;margin-bottom:14px}.bn{font-size:20px;font-weight:900;letter-spacing:3px}.bs{font-size:9px;letter-spacing:6px;color:#666;margin-top:3px}.customer{background:#f8f8f8;border:1px dashed #ccc;border-radius:6px;padding:10px;margin-bottom:12px;font-size:10px;line-height:1.8}table{width:100%;border-collapse:collapse;margin:10px 0}th{font-size:10px;border-bottom:1px dashed #ccc;padding:4px 0;text-align:right}td{padding:6px 0;font-size:11px;border-bottom:1px solid #f0f0f0;text-align:right}.tot{border-top:2px dashed #333;padding-top:10px;margin-top:4px}.tr{display:flex;justify-content:space-between;padding:3px 0;font-size:11px}.grand{font-size:15px;font-weight:900;border-top:1px dashed #333;padding-top:8px;margin-top:4px}.ft{text-align:center;border-top:2px dashed #333;padding-top:12px;margin-top:14px;font-size:9px;color:#666;line-height:1.9}</style></head><body><div class="h"><div class="bn">ATELIER DHAWI</div><div class="bs">PRIVATE OUD LABORATORY</div><div style="margin-top:9px;font-size:10px">فاتورة رقم: ${no}</div><div style="font-size:10px">التاريخ: ${dt}</div><div style="font-size:9px;color:#888;margin-top:2px">الرقم الضريبي: 300XXXXXXXXX</div></div><div class="customer"><strong>العميل:</strong> ${coData.name}<br><strong>الجوال:</strong> +966${coData.phone}<br><strong>العنوان:</strong> ${addrLine||coData.city}<br><strong>التوصيل:</strong> ${coDelivery==='express'?'سريع 1-2 يوم':'عادي 3-5 أيام'}<br><strong>الدفع:</strong> ${coPayment==='mada'?'مدى':coPayment==='apple'?'Apple Pay':coPayment==='stc'?'STC Pay':'عند الاستلام'}</div><table><thead><tr><th>المنتج</th><th align="center">الكمية</th><th align="left">السعر</th><th align="left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table><div class="tot"><div class="tr"><span>الشحن</span><span>${deliveryCost} ر.س</span></div>${codFee?`<div class="tr"><span>رسوم الاستلام</span><span>15 ر.س</span></div>`:''}<div class="tr"><span>ضريبة 15%</span><span>${vat} ر.س</span></div><div class="tr grand"><span>الإجمالي</span><span>${tot} ر.س</span></div></div><div class="ft">★ ★ ★ ★ ★<br>شكراً لتعاملكم معنا<br>Atelier Dhawi · Private Oud Lab</div><script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }
 
