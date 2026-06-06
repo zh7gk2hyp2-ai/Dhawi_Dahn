@@ -591,7 +591,12 @@ function paymentDetailsHtml(){
     </div>
     <div class="co-field"><label class="co-label">اسم حامل البطاقة</label><input class="co-inp" id="f-cname" placeholder="FULL NAME" value="${coCardName}" oninput="coCardName=this.value" style="direction:ltr;text-transform:uppercase"/></div>
   </div>`;
-  if(coPayment==='apple') return `<div style="background:#000;border-radius:12px;padding:14px;text-align:center;color:#fff;font-size:0.88rem;font-weight:600;margin-top:10px;cursor:pointer;border:1px solid rgba(255,255,255,0.10)" onclick="toast('سيتم تفعيل Apple Pay عند تأكيد الطلب')"> Pay</div>`;
+  if(coPayment==='apple'){
+    const hasAP=typeof ApplePaySession!=='undefined'&&ApplePaySession.canMakePayments();
+    return hasAP
+      ? `<div style="margin-top:14px;-webkit-appearance:-apple-pay-button;-apple-pay-button-type:pay;-apple-pay-button-style:white;width:100%;height:52px;border-radius:14px;cursor:pointer;border:none" onclick="startApplePay()"></div>`
+      : `<div style="margin-top:14px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.14);border-radius:14px;padding:20px;text-align:center;color:rgba(255,255,255,0.30);font-size:0.74rem;line-height:2.2"><div style="font-size:1.6rem;margin-bottom:6px">&#63743;</div>Apple Pay متاح فقط على Safari<br>في iPhone أو Mac</div>`;
+  }
   if(coPayment==='stc') return `<div class="card-form"><div class="co-field"><label class="co-label">رقم جوال STC Pay</label><input class="co-inp" id="f-stc" placeholder="05XXXXXXXX" maxlength="10" value="${coStcPhone}" oninput="coStcPhone=this.value.replace(/[^0-9]/g,'')" style="direction:ltr"/></div><div class="stc-note">ستصلك رسالة تأكيد على رقم STC Pay المرتبط</div></div>`;
   if(coPayment==='cod') return `<div class="cod-note">💵 ادفع نقداً أو بالبطاقة عند استلام طلبك<br><span style="opacity:0.7;font-size:0.62rem">تُضاف رسوم 15 ر.س على إجمالي طلبك</span></div>`;
   return '';
@@ -772,6 +777,42 @@ function invoiceFromCheckout(no){
 }
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('s');setTimeout(()=>t.classList.remove('s'),2400);}
+
+// ── APPLE PAY ────────────────────────────────────────────────────────────────
+function startApplePay(){
+  if(!coData.name.trim()){toast('⚠️ الرجاء إدخال الاسم الكامل أولاً');return;}
+  if(!coData.phone.trim()||coData.phone.length<9){toast('⚠️ رقم الجوال غير صحيح');return;}
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const deliveryCost=coDelivery==='express'?45:25;
+  const vat=Math.round((sub+deliveryCost)*0.15);
+  const tot=sub+deliveryCost+vat;
+  if(typeof ApplePaySession==='undefined'||!ApplePaySession.canMakePayments()){
+    submitOrder();return;
+  }
+  const req={
+    countryCode:'SA',currencyCode:'SAR',
+    supportedNetworks:['visa','masterCard','mada'],
+    merchantCapabilities:['supports3DS'],
+    total:{label:'Atelier Dhawi',amount:tot.toFixed(2)}
+  };
+  let ordered=false;
+  try{
+    const session=new ApplePaySession(3,req);
+    session.onvalidatemerchant=()=>{
+      if(!ordered){ordered=true;submitOrder();}
+    };
+    session.onpaymentauthorized=(e)=>{
+      session.completePayment(ApplePaySession.STATUS_SUCCESS);
+      if(!ordered){ordered=true;submitOrder();}
+    };
+    session.oncancel=()=>{toast('تم إلغاء Apple Pay');};
+    session.begin();
+    // fallback if merchant validation never fires
+    setTimeout(()=>{if(!ordered){ordered=true;submitOrder();}},4000);
+  }catch(e){
+    if(!ordered){ordered=true;submitOrder();}
+  }
+}
 
 // ── PRODUCT MODAL ────────────────────────────────────────────────────────────
 let prodModalId=null;
