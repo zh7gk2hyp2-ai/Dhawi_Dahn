@@ -23,11 +23,11 @@ body{
   font-family:'Alexandria',sans-serif;
   color:#EDE0C8;
   overflow-x:hidden;min-height:100vh;font-size:15px;
-  background:#06040C;
+  background:#07050F;
   background-image:
-    radial-gradient(ellipse 100% 55% at 50% -5%,rgba(180,110,18,0.09) 0%,transparent 65%),
-    radial-gradient(ellipse 60% 40% at 85% 105%,rgba(90,45,8,0.07) 0%,transparent 55%),
-    radial-gradient(ellipse 50% 35% at 5% 60%,rgba(60,30,5,0.05) 0%,transparent 50%);
+    radial-gradient(ellipse 140% 60% at 50% -10%, rgba(180,100,15,0.13) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 95% 110%, rgba(140,40,100,0.09) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 45% at 5% 65%, rgba(40,20,90,0.08) 0%, transparent 55%);
   background-attachment:fixed;
 }
 /* noise grain overlay via pseudo */
@@ -71,12 +71,17 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 
 /* ── Card System ── */
 .glass{
-  background:rgba(255,255,255,0.034);
-  border:1px solid rgba(255,255,255,0.075);
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
   border-radius:20px;padding:18px;margin-bottom:12px;
   position:relative;overflow:hidden;
   box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 20px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30);
-  transition:border-color 0.3s;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.glass:hover{
+  box-shadow: 0 8px 32px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 .glass::before{
   content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
@@ -88,7 +93,9 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
   border:1px solid rgba(201,168,76,0.22);
   border-radius:20px;padding:18px;margin-bottom:12px;
   position:relative;overflow:hidden;
-  box-shadow:0 2px 0 rgba(201,168,76,0.07) inset,0 20px 48px rgba(0,0,0,0.45);
+  box-shadow:0 2px 0 rgba(201,168,76,0.07) inset,0 20px 48px rgba(0,0,0,0.45),0 0 30px rgba(201,168,76,0.10);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
 }
 .glass-gold::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
@@ -149,11 +156,11 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 
 /* ── Buttons ── */
 .btn-gold{
-  background:linear-gradient(135deg,#B8892A 0%,#D4AF37 48%,#C09830 100%);
+  background:linear-gradient(135deg,#C9A030,#8B6010);
   color:#07050E;border:none;
   padding:14px 24px;border-radius:32px;
   font-weight:800;font-size:0.9rem;cursor:pointer;
-  box-shadow:0 6px 24px rgba(180,140,36,0.30),0 1px 3px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.25);
+  box-shadow:0 4px 16px rgba(201,168,76,0.30),0 1px 3px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.25);
   transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
   letter-spacing:0.3px;position:relative;overflow:hidden;
   font-family:'Alexandria',sans-serif;
@@ -298,6 +305,8 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   background:linear-gradient(135deg,rgba(25,80,28,0.12),rgba(6,4,12,0.96));
   border:1px solid rgba(50,130,52,0.28);border-radius:18px;padding:16px;margin-bottom:12px;
   animation:fadeUp 0.4s ease both;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
 /* ── Customer Store ── */
 .pkg-card{
@@ -355,6 +364,7 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   font-size:3.2rem;font-weight:300;letter-spacing:-0.06em;line-height:0.9;
   background:linear-gradient(135deg,#F8E898 0%,#D4AF37 40%,#9A7828 80%,#C9A84C 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 40px rgba(201,168,76,0.30));
 }
 .p-num-lg{
   font-family:'IBM Plex Mono','Courier New',monospace;
@@ -833,6 +843,7 @@ function App(){
   const [batchCounter,setBatchCounter]=useState(()=>lsGet("dw_batchnum",1));
   const [ratings,setRatings]=useState(()=>lsGet("dw_ratings",{}));
   const [showRating,setShowRating]=useState(false);
+  const [showRoadmap,setShowRoadmap]=useState(false);
   const [ratingRecId,setRatingRecId]=useState(null);
   const [ratingStars,setRatingStars]=useState(5);
   const [ratingNote,setRatingNote]=useState("");
@@ -845,6 +856,7 @@ function App(){
   const [aiGenRaw,setAiGenRaw]=useState("");
   const [showAIAnalysis,setShowAIAnalysis]=useState(false);
   const [aiAnalysisText,setAiAnalysisText]=useState("");
+  const [storeOrders,setStoreOrders]=useState(()=>{try{return JSON.parse(localStorage.getItem('dw_agency_orders')||'[]')}catch(e){return[]}});
   const [aiAnalysisRecipe,setAiAnalysisRecipe]=useState(null);
   const [invSort,setInvSort]=useState("default");
   const [editRecipe,setEditRecipe]=useState(null);
@@ -874,6 +886,11 @@ function App(){
   useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
   useEffect(()=>lsSet("dw_shopcart",shopCart),[shopCart]);
   useEffect(()=>{
+    const sync=()=>{try{setStoreOrders(JSON.parse(localStorage.getItem('dw_agency_orders')||'[]'))}catch(e){}};
+    window.addEventListener('storage',sync);
+    return()=>window.removeEventListener('storage',sync);
+  },[]);
+  useEffect(()=>{
     if(inv.length===0)return;
     const invIds=new Set(inv.map(i=>i.id));
     setShopCart(prev=>{
@@ -897,7 +914,7 @@ function App(){
 
   // ── cart & store ─────────────────────────────────────────────
   const storePrice=r=>Math.ceil(recipeCost(r)*profitMult/5)*5;
-  const addToCart=(r,e)=>{e&&e.stopPropagation();const price=storePrice(r);setCartItems(p=>{const ex=p.find(i=>i.id===r.id);return ex?p.map(i=>i.id===r.id?{...i,qty:i.qty+1}:i):[...p,{id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,stability:r.stability,price,vol:BATCH[batchUnit],batchName:BATCH_NAME[batchUnit]}];});show(`🛒 ${r.name} أُضيف للسلة`);};
+  const addToCart=(r,e)=>{e&&e.stopPropagation();const price=storePrice(r);setCartItems(p=>{const ex=p.find(i=>i.id===r.id);return ex?p.map(i=>i.id===r.id?{...i,qty:(i.qty||0)+1}:i):[...p,{id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,stability:r.stability,price,vol:BATCH[batchUnit],batchName:BATCH_NAME[batchUnit],qty:1}];});show(`🛒 ${r.name} أُضيف للسلة`);};
   const removeFromCart=id=>setCartItems(p=>p.filter(i=>i.id!==id));
   const updateQty=(id,d)=>setCartItems(p=>p.map(i=>i.id===id?{...i,qty:Math.max(1,i.qty+d)}:i));
   const cartCount=cartItems.reduce((s,i)=>s+i.qty,0);
@@ -1449,6 +1466,26 @@ function App(){
               </button>
               <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("customers")}>👥 العملاء {customers.length>0&&<span className="mono" style={{fontSize:"0.72rem",color:"#8A6830"}}>({customers.length})</span>}</button>
             </div>
+            {/* ── roadmap card ── */}
+            <div onClick={()=>setShowRoadmap(true)} style={{marginTop:"10px",background:"linear-gradient(135deg,rgba(201,168,76,0.06),rgba(120,70,200,0.06))",border:"1px solid rgba(201,168,76,0.18)",borderRadius:"16px",padding:"14px 16px",cursor:"pointer",position:"relative",overflow:"hidden"}}>
+              <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.4),rgba(120,70,200,0.3),transparent)"}}/>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div>
+                  <div style={{fontSize:"0.78rem",fontWeight:"800",color:"#E8C870",marginBottom:"3px"}}>🚀 متجر إلكتروني — خارطة الطريق</div>
+                  <div style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.30)"}}>Next.js · Supabase · Moyasar · Aramex</div>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:"3px"}}>
+                  {["①","②","③","④","⑤"].map((n,i)=><div key={i} style={{width:"28px",height:"4px",borderRadius:"2px",background:i===0?"rgba(201,168,76,0.6)":"rgba(255,255,255,0.08)"}}/>)}
+                </div>
+              </div>
+              <div style={{marginTop:"10px",display:"flex",gap:"6px",flexWrap:"wrap"}}>
+                {[{lbl:"كتالوج",done:true},{lbl:"سلة + فاتورة",done:true},{lbl:"دفع",done:false},{lbl:"شحن",done:false},{lbl:"إشعارات",done:false}].map(({lbl,done})=>(
+                  <span key={lbl} style={{fontSize:"0.58rem",padding:"2px 8px",borderRadius:"10px",background:done?"rgba(80,160,80,0.15)":"rgba(255,255,255,0.05)",border:`1px solid ${done?"rgba(80,160,80,0.35)":"rgba(255,255,255,0.08)"}`,color:done?"#80d080":"rgba(255,255,255,0.30)"}}>
+                    {done?"✓ ":""}{lbl}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>;
         })()}
 
@@ -1743,7 +1780,7 @@ function App(){
             ⚖️ اختر وصفتين للمقارنة ({compareIds.length}/2) — {compareIds.length===2?"اضغط «قارن»":"اختر وصفة ثانية"}
             <button onClick={()=>setCompareIds([])} style={{background:"none",border:"none",color:"#e08080",cursor:"pointer",marginRight:"8px",fontSize:"0.75rem"}}>✕ إلغاء</button>
           </div>}
-          {!catalogMode&&<div style={{marginBottom:"10px"}}>
+          {!catalogMode&&!showCustomerStore&&<div style={{marginBottom:"10px"}}>
             {/* search */}
             <div style={{position:"relative",marginBottom:"8px"}}>
               <span style={{position:"absolute",right:"11px",top:"50%",transform:"translateY(-50%)",fontSize:"0.85rem",opacity:0.4,pointerEvents:"none"}}>🔍</span>
@@ -1773,7 +1810,7 @@ function App(){
               {filteredRecipes.length} وصفة — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);}}>مسح الفلاتر</span>
             </div>}
           </div>}
-          {suggestedRecipe&&!catalogMode&&<div className="suggest-card">
+          {suggestedRecipe&&!catalogMode&&!showCustomerStore&&<div className="suggest-card">
             <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{flex:1}}>
@@ -1796,9 +1833,17 @@ function App(){
           {showCustomerStore&&(()=>{
             const storeRecipes=sortedRecipes.filter(r=>canMake(r)||true); // show all
             return(<div className="fade">
-              <div style={{textAlign:"center",marginBottom:"16px"}}>
-                <div style={{fontSize:"0.45rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.7em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"4px"}}>Atelier Dhawi · Private Collection</div>
-                <div style={{fontSize:"0.72rem",color:"rgba(255,255,255,0.28)"}}>اختر منتجاتك — أضفها للسلة — اطلب فاتورتك</div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"14px"}}>
+                <div>
+                  <div style={{fontSize:"0.42rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>Atelier Dhawi · Private Collection</div>
+                  <div style={{fontSize:"0.68rem",color:"rgba(255,255,255,0.28)",marginTop:"2px"}}>اختر منتجاتك وأضفها للسلة</div>
+                </div>
+                {cartCount>0
+                  ?<button className="btn-gold" style={{padding:"8px 14px",fontSize:"0.72rem",borderRadius:"20px",whiteSpace:"nowrap"}} onClick={()=>setShowCart(true)}>
+                    🛒 السلة ({cartCount}) · {cartTotal} ر
+                  </button>
+                  :<div style={{fontSize:"0.62rem",color:"rgba(201,168,76,0.30)",fontStyle:"italic"}}>السلة فارغة</div>
+                }
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px"}}>
                 {storeRecipes.map(r=>{
@@ -2803,6 +2848,69 @@ function App(){
         </div>
       </div>}
 
+      {/* ── Roadmap Overlay ── */}
+      {showRoadmap&&<div className="cart-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowRoadmap(false);}}>
+        <div className="cart-sheet" style={{maxHeight:"90vh"}}>
+          <div className="cart-sheet-handle"/>
+          <div style={{textAlign:"center",marginBottom:"20px"}}>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.35rem",color:"#E8C870",lineHeight:1}}>Atelier Dhawi</div>
+            <div style={{fontSize:"0.55rem",letterSpacing:"0.5em",color:"rgba(201,168,76,0.40)",textTransform:"uppercase",marginTop:"3px"}}>E-COMMERCE ROADMAP</div>
+          </div>
+
+          {/* phase cards */}
+          {[
+            {num:1,title:"واجهة المتجر",sub:"Frontend",icon:"🖥",done:true,stack:["Next.js 14","TypeScript","Tailwind CSS","Framer Motion"],detail:"كتالوج المنتجات 3D، سلة التسوق، صفحة الدفع، تصميم RTL أسود-ذهبي"},
+            {num:2,title:"قاعدة البيانات",sub:"Backend",icon:"🗄",done:false,stack:["Supabase","PostgreSQL","Row Level Security","Storage"],detail:"جداول: products، orders، customers، payments. صور المنتجات في Supabase Storage"},
+            {num:3,title:"بوابة الدفع",sub:"Payments",icon:"💳",done:false,stack:["Moyasar","mada","Apple Pay","Visa / Mastercard"],detail:"دفع سعودي محلي. التحويل: ريال → هللة (×100). Webhook لتأكيد الدفع تلقائياً"},
+            {num:4,title:"الشحن والتوصيل",sub:"Logistics",icon:"📦",done:false,stack:["Aramex API","Create Shipment","Track & Trace","SMS"],detail:"إنشاء شحنة تلقائي بعد الدفع. رقم التتبع → SMS للزبون عبر Twilio"},
+            {num:5,title:"الإشعارات والفواتير",sub:"Notifications",icon:"🔔",done:false,stack:["Resend Email","WhatsApp API","React PDF","Cron Jobs"],detail:"فاتورة PDF تلقائية، إشعار WhatsApp/Email عند كل تحديث للطلب"},
+          ].map(p=>(
+            <div key={p.num} style={{marginBottom:"12px",background:p.done?"rgba(80,160,80,0.06)":"rgba(201,168,76,0.04)",border:`1px solid ${p.done?"rgba(80,160,80,0.25)":"rgba(201,168,76,0.12)"}`,borderRadius:"14px",padding:"14px",position:"relative",overflow:"hidden"}}>
+              <div style={{position:"absolute",top:0,left:0,bottom:0,width:"3px",background:p.done?"linear-gradient(180deg,#68D868,#2A8028)":"linear-gradient(180deg,rgba(201,168,76,0.5),rgba(201,168,76,0.1))",borderRadius:"3px 0 0 3px"}}/>
+              <div style={{paddingRight:"8px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"8px"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+                    <span style={{fontSize:"1.3rem"}}>{p.icon}</span>
+                    <div>
+                      <div style={{fontSize:"0.82rem",fontWeight:"800",color:p.done?"#80D080":"#E8C870"}}>{p.title}</div>
+                      <div style={{fontSize:"0.52rem",letterSpacing:"0.3em",color:"rgba(255,255,255,0.25)",textTransform:"uppercase"}}>{p.sub}</div>
+                    </div>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:"4px"}}>
+                    <span style={{fontSize:"0.45rem",padding:"2px 8px",borderRadius:"10px",background:p.done?"rgba(80,160,80,0.2)":"rgba(201,168,76,0.10)",border:`1px solid ${p.done?"rgba(80,160,80,0.4)":"rgba(201,168,76,0.20)"}`,color:p.done?"#80D080":"rgba(201,168,76,0.6)",fontWeight:"700"}}>
+                      {p.done?"✓ مكتمل":"قادم"}
+                    </span>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.1rem",fontWeight:"700",color:"rgba(201,168,76,0.18)"}}>0{p.num}</span>
+                  </div>
+                </div>
+                <div style={{fontSize:"0.65rem",color:"rgba(255,255,255,0.40)",marginBottom:"8px",lineHeight:1.5}}>{p.detail}</div>
+                <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
+                  {p.stack.map(s=>(
+                    <span key={s} style={{fontSize:"0.55rem",padding:"2px 7px",borderRadius:"6px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",color:"rgba(255,255,255,0.35)",fontFamily:"'IBM Plex Mono',monospace"}}>{s}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* timeline estimate */}
+          <div style={{background:"rgba(201,168,76,0.04)",border:"1px solid rgba(201,168,76,0.12)",borderRadius:"12px",padding:"12px 14px",marginBottom:"12px"}}>
+            <div style={{fontSize:"0.70rem",fontWeight:"700",color:"rgba(201,168,76,0.60)",marginBottom:"8px"}}>⏱ الجدول الزمني المقترح</div>
+            {[["أسبوع 1–2","Next.js + Supabase + كتالوج بدون دفع"],["أسبوع 3","Moyasar sandbox + سلة + تسديد"],["أسبوع 4","Aramex + إشعارات SMS/Email"],["أسبوع 5","لوحة إدارة + تقارير مبيعات"],["أسبوع 6","اختبار شامل + إطلاق"],].map(([w,t])=>(
+              <div key={w} style={{display:"flex",gap:"10px",padding:"5px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.58rem",color:"rgba(201,168,76,0.50)",whiteSpace:"nowrap",minWidth:"68px"}}>{w}</span>
+                <span style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.35)"}}>{t}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{fontSize:"0.58rem",color:"rgba(255,255,255,0.18)",textAlign:"center",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>
+            scaffold المشروع جاهز في dhawi-store/ داخل المستودع
+          </div>
+          <button className="btn-ghost" style={{width:"100%",marginTop:"12px"}} onClick={()=>setShowRoadmap(false)}>إغلاق</button>
+        </div>
+      </div>}
+
       {/* ── Cart Overlay ── */}
       {showCart&&<div className="cart-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowCart(false);}}>
         <div className="cart-sheet">
@@ -2857,20 +2965,78 @@ function App(){
         </div>
       </div>}
 
+      {tab==="orders"&&(()=>{
+        const newCount=storeOrders.filter(o=>o.status==='new').length;
+        const PAY_LABEL={mada:'مدى',apple:'Apple Pay',stc:'STC Pay',cod:'عند الاستلام'};
+        const markDone=(id)=>{const upd=storeOrders.map(o=>o.id===id?{...o,status:'done'}:o);setStoreOrders(upd);try{localStorage.setItem('dw_agency_orders',JSON.stringify(upd))}catch(e){}};
+        const deleteOrder=(id)=>{const upd=storeOrders.filter(o=>o.id!==id);setStoreOrders(upd);try{localStorage.setItem('dw_agency_orders',JSON.stringify(upd))}catch(e){}};
+        return(<div className="fade" style={{padding:"14px 14px 100px"}}>
+          <div className="section-hdr">
+            <div className="section-hdr-bar"/>
+            <span style={{fontWeight:800,fontSize:"1.05rem"}}>📦 طلبات المتجر</span>
+            {newCount>0&&<span style={{background:"#C03030",color:"#fff",borderRadius:"10px",padding:"2px 9px",fontSize:"0.60rem",fontWeight:900,marginRight:"auto"}}>{newCount} جديد</span>}
+          </div>
+          {storeOrders.length===0
+            ?<div className="glass" style={{textAlign:"center",padding:"48px 20px",color:"rgba(255,255,255,0.25)",fontSize:"0.88rem"}}>لا توجد طلبات بعد<br/><span style={{fontSize:"0.70rem",marginTop:"8px",display:"block",opacity:0.6}}>ستظهر هنا طلبات متجر agency.html تلقائياً</span></div>
+            :storeOrders.map(o=>(
+            <div key={o.id} className="glass" style={{padding:"14px",marginBottom:"10px",borderColor:o.status==='new'?"rgba(212,168,67,0.45)":"rgba(255,255,255,0.07)"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"8px"}}>
+                <div>
+                  <div style={{fontWeight:800,fontSize:"0.90rem"}}>{o.customer.name}</div>
+                  <div style={{fontSize:"0.60rem",color:"rgba(212,168,67,0.55)",marginTop:"2px",fontFamily:"monospace"}}>+966{o.customer.phone} · {o.customer.city}</div>
+                </div>
+                <div style={{display:"flex",gap:"6px",alignItems:"center"}}>
+                  {o.status==='new'
+                    ?<span style={{background:"rgba(212,168,67,0.15)",border:"1px solid rgba(212,168,67,0.45)",color:"#F0C840",borderRadius:"6px",padding:"2px 8px",fontSize:"0.55rem",fontWeight:900}}>جديد ●</span>
+                    :<span style={{color:"rgba(80,160,80,0.65)",fontSize:"0.60rem"}}>✓ مكتمل</span>}
+                </div>
+              </div>
+              <div style={{borderTop:"1px solid rgba(255,255,255,0.06)",paddingTop:"8px",marginBottom:"8px"}}>
+                {o.items.map((i,idx)=>(
+                  <div key={idx} style={{display:"flex",justifyContent:"space-between",fontSize:"0.72rem",color:"rgba(245,239,224,0.72)",marginBottom:"3px"}}>
+                    <span>{i.icon} {i.name} ({i.batchLabel}) ×{i.qty}</span>
+                    <span style={{fontFamily:"monospace"}}>{i.price*i.qty} ر</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.63rem",color:"rgba(255,255,255,0.32)",marginBottom:"3px"}}>
+                <span>الشحن: {o.delivery==='express'?'سريع · 45 ر':'عادي · 25 ر'}</span>
+                <span>الدفع: {PAY_LABEL[o.payment]||o.payment}</span>
+              </div>
+              {o.codFee>0&&<div style={{fontSize:"0.63rem",color:"rgba(255,190,80,0.65)",marginBottom:"3px"}}>رسوم الاستلام: {o.codFee} ر</div>}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:"10px",borderTop:"1px solid rgba(255,255,255,0.06)",paddingTop:"10px"}}>
+                <div style={{fontFamily:"monospace",fontSize:"1.05rem",fontWeight:700,background:"linear-gradient(135deg,#F0C840,#D4A843)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{o.total} ر.س</div>
+                <div style={{display:"flex",gap:"6px"}}>
+                  {o.status==='new'&&<button className="btn-gold" style={{padding:"6px 13px",fontSize:"0.68rem"}} onClick={()=>markDone(o.id)}>✓ تمت المعالجة</button>}
+                  <button style={{background:"rgba(180,40,40,0.12)",border:"1px solid rgba(180,40,40,0.28)",color:"rgba(220,100,100,0.70)",borderRadius:"8px",padding:"6px 10px",fontSize:"0.65rem",cursor:"pointer"}} onClick={()=>deleteOrder(o.id)}>حذف</button>
+                </div>
+              </div>
+              <div style={{fontFamily:"monospace",fontSize:"0.48rem",color:"rgba(255,255,255,0.18)",marginTop:"5px"}}>{o.id} · {new Date(o.date).toLocaleString('ar-SA')}</div>
+            </div>
+          ))}
+        </div>);
+      })()}
+
       <div className="bottom-nav">
-        {[
+        {(()=>{
+          const newOrdersCount=storeOrders.filter(o=>o.status==='new').length;
+          return[
           {id:"home",icon:"🏠",label:"الرئيسية"},
           {id:"inventory",icon:"🏺",label:"المخزون"},
           {id:"recipes",icon:"📋",label:"الوصفات"},
           {id:"customers",icon:"👥",label:"العملاء"},
+          {id:"orders",icon:"📦",label:"الطلبات",badge:newOrdersCount},
           {id:"stats",icon:"📊",label:"إحصائيات"},
-          {id:"heritage",icon:"👑",label:"التراث"},
         ].map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);setShowCustomerStore(false);setShowCart(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
-            <span className="nav-icon">{t.icon}</span>
+          <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);setShowCustomerStore(false);setShowCart(false);setShowRoadmap(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
+            <span className="nav-icon" style={{position:"relative"}}>
+              {t.icon}
+              {t.badge>0&&<span style={{position:"absolute",top:-5,right:-5,background:"#C03030",color:"#fff",borderRadius:"50%",width:15,height:15,fontSize:"0.40rem",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{t.badge}</span>}
+            </span>
             {t.label}
           </button>
-        ))}
+        ))
+        })()}
       </div>
     </div>
   );

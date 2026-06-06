@@ -1,0 +1,270 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   CSS Custom Properties — Atelier Dhawi Theme
+   ───────────────────────────────────────────── */
+:root {
+  /* Core palette */
+  --color-gold:     #C9A84C;
+  --color-gold-dim: rgba(201, 168, 76, 0.25);
+  --color-gold-mid: rgba(201, 168, 76, 0.50);
+  --color-obsidian: #06040C;
+  --color-cream:    #EDE0C8;
+
+  /* Typography */
+  --font-display:   var(--font-display, 'Cormorant Garamond', Georgia, serif);
+  --font-body:      'Alexandria', 'Noto Sans Arabic', sans-serif;
+  --font-mono:      var(--font-mono, 'IBM Plex Mono', 'Courier New', monospace);
+
+  /* Spacing / layout */
+  --header-height: 72px;
+
+  /* Transitions */
+  --ease-gold: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ─────────────────────────────────────────────
+   Base resets & global styles
+   ───────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-obsidian);
+    color: var(--color-cream);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  /* Arabic heading styles */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+  }
+
+  /* Monospaced labels */
+  code, kbd, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Link defaults */
+  a {
+    color: var(--color-gold);
+    text-decoration: none;
+    transition: color 0.2s var(--ease-gold);
+  }
+  a:hover {
+    color: #e0c070;
+  }
+
+  /* Selection highlight */
+  ::selection {
+    background-color: rgba(201, 168, 76, 0.3);
+    color: var(--color-cream);
+  }
+
+  /* Scrollbar — webkit */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-obsidian);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(201, 168, 76, 0.35);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(201, 168, 76, 0.6);
+  }
+
+  /* Focus ring */
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Component layer — reusable design tokens
+   ───────────────────────────────────────────── */
+@layer components {
+  /* Gold divider line */
+  .divider-gold {
+    @apply w-full h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-40;
+  }
+
+  /* Section title with centered gold rule */
+  .section-title {
+    @apply font-display text-3xl text-cream text-center relative pb-4;
+  }
+  .section-title::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-[1px] bg-gold;
+  }
+
+  /* Gold outlined button */
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 rounded
+           border border-gold/50 text-gold font-body text-sm font-medium
+           bg-transparent
+           transition-all duration-300
+           hover:bg-gold/10 hover:border-gold hover:shadow-gold
+           focus-visible:ring-2 focus-visible:ring-gold/50
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  /* Solid gold button */
+  .btn-gold-solid {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 rounded
+           bg-gold text-obsidian font-body text-sm font-semibold
+           transition-all duration-300
+           hover:bg-gold-300 hover:shadow-gold-lg
+           focus-visible:ring-2 focus-visible:ring-gold/50
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  /* Dark card base */
+  .card-dark {
+    @apply bg-card-gradient border border-gold/20 rounded-lg shadow-card
+           transition-all duration-500;
+  }
+  .card-dark:hover {
+    @apply border-gold/40 shadow-card-hover;
+  }
+
+  /* Input field */
+  .input-dark {
+    @apply w-full bg-obsidian-300/60 border border-gold/25 rounded px-4 py-3
+           text-cream placeholder:text-cream/30 font-body text-sm
+           focus:outline-none focus:border-gold/60 focus:bg-obsidian-300
+           transition-all duration-200;
+  }
+
+  /* Badge */
+  .badge-season {
+    @apply inline-block px-2 py-0.5 rounded-full text-xs font-mono
+           border border-gold/30 text-gold/80 bg-gold/5;
+  }
+
+  /* Shimmer loading skeleton */
+  .skeleton {
+    @apply relative overflow-hidden bg-obsidian-300;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(201, 168, 76, 0.06) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Utility layer — one-off helpers
+   ───────────────────────────────────────────── */
+@layer utilities {
+  /* Gold text gradient */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #C9A84C 0%, #e8cc7a 50%, #C9A84C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: shimmer 4s linear infinite;
+  }
+
+  /* RTL-aware margin/padding helpers for Arabic layout */
+  .ms-auto { margin-inline-start: auto; }
+  .me-auto { margin-inline-end: auto; }
+
+  /* Prevent text selection on decorative elements */
+  .no-select {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Barcode pattern */
+  .barcode-pattern {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(201, 168, 76, 0.6) 0px,
+      rgba(201, 168, 76, 0.6) 2px,
+      transparent 2px,
+      transparent 5px,
+      rgba(201, 168, 76, 0.3) 5px,
+      rgba(201, 168, 76, 0.3) 6px,
+      transparent 6px,
+      transparent 9px,
+      rgba(201, 168, 76, 0.5) 9px,
+      rgba(201, 168, 76, 0.5) 11px,
+      transparent 11px,
+      transparent 14px
+    );
+  }
+
+  /* Glass morphism overlay */
+  .glass {
+    background: rgba(14, 11, 24, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Animations (non-Tailwind)
+   ───────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(201, 168, 76, 0.2); }
+  50%       { box-shadow: 0 0 30px rgba(201, 168, 76, 0.5); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+
+/* Cart sheet open/close */
+.cart-sheet-enter  { animation: slideInRight 0.35s var(--ease-gold) forwards; }
+.cart-sheet-exit   { animation: slideOutRight 0.3s ease-in forwards; }
+
+/* Page fade in */
+.page-enter { animation: fadeInUp 0.5s var(--ease-gold) both; }

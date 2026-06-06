@@ -167,7 +167,7 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
   background:rgba(255,255,255,.96);
   backdrop-filter:blur(20px);
   border-top:1px solid rgba(180,200,178,.5);
-  display:grid;grid-template-columns:repeat(5,1fr);
+  display:grid;grid-template-columns:repeat(4,1fr);
   padding-bottom:env(safe-area-inset-bottom);
   box-shadow:0 -4px 30px rgba(45,74,45,.1);
 }
@@ -675,9 +675,128 @@ textarea.form-input{resize:none;line-height:1.6;}
 .work-slider{width:100%;height:6px;cursor:pointer;accent-color:var(--green);margin:0;}
 .work-pct-display{font-size:15px;font-weight:900;color:var(--green2);min-width:40px;text-align:center;flex-shrink:0;}
 .slider-row{display:flex;align-items:center;gap:12px;}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{
+  position:fixed;inset:0;z-index:200;
+  background:linear-gradient(150deg,var(--green4) 0%,var(--green2) 55%,#4a6e48 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:28px 16px calc(28px + env(safe-area-inset-bottom));overflow-y:auto;
+}
+.login-logo{margin-bottom:20px;text-align:center;}
+.login-logo-sub{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:1px;margin-top:6px;font-weight:700;}
+.login-title{font-size:17px;font-weight:800;color:#fff;margin-top:8px;text-align:center;}
+.login-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:3px;text-align:center;}
+.login-users{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:380px;margin-bottom:18px;}
+.login-user-card{
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);
+  border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;
+  transition:all .2s;
+}
+.login-user-card.sel{
+  background:rgba(255,255,255,.22);border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(213,178,84,.3);
+}
+.login-avatar{font-size:26px;margin-bottom:6px;}
+.login-name{font-size:11px;font-weight:800;color:#fff;line-height:1.35;}
+.login-cust-lbl{font-size:8px;color:rgba(255,255,255,.45);margin-top:3px;}
+.login-pin-section{
+  width:100%;max-width:300px;
+  background:rgba(255,255,255,.1);border-radius:20px;
+  padding:18px 16px;border:1px solid rgba(255,255,255,.15);
+}
+.login-pin-header{font-size:11px;font-weight:700;color:rgba(255,255,255,.75);text-align:center;margin-bottom:14px;}
+.login-pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:18px;}
+.pin-dot{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.4);transition:all .15s;}
+.pin-dot.filled{background:var(--gold);border-color:var(--gold);box-shadow:0 0 8px rgba(213,178,84,.5);}
+.pin-dot.err{background:#ef4444;border-color:#ef4444;animation:shake .3s ease;}
+.login-numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.numpad-btn{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;padding:14px 0;font-size:19px;font-weight:700;
+  color:#fff;cursor:pointer;transition:all .15s;font-family:inherit;
+}
+.numpad-btn:active{background:rgba(255,255,255,.28);transform:scale(.93);}
+.login-err{font-size:11px;color:#fca5a5;text-align:center;margin-top:8px;min-height:16px;font-weight:700;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ── USER BADGE HEADER ── */
+.h-user-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;position:relative;z-index:1;}
+.h-user-badge{
+  flex:1;display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;padding:8px 12px;
+}
+.h-user-avatar{font-size:18px;flex-shrink:0;}
+.h-user-info{flex:1;min-width:0;}
+.h-user-name{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.h-user-cust{font-size:9px;color:rgba(255,255,255,.5);}
+.h-logout-btn{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  border-radius:10px;padding:7px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,.8);
+  display:flex;align-items:center;gap:5px;transition:all .2s;flex-shrink:0;
+}
+.h-logout-btn:active{background:rgba(255,255,255,.22);}
+
+/* ── AUDIT LOG TAB ── */
+.log-filter-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;-webkit-overflow-scrolling:touch;}
+.log-entry{
+  background:#fff;border-radius:var(--radius-sm);border:1px solid var(--border);
+  margin-bottom:8px;padding:12px 14px;
+  box-shadow:var(--shadow-sm);
+  display:flex;gap:10px;align-items:flex-start;
+  animation:fadeUp .3s ease both;
+}
+.log-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.log-body{flex:1;min-width:0;}
+.log-action{font-size:12px;font-weight:800;color:var(--text);}
+.log-detail{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.5;word-break:break-word;}
+.log-meta{display:flex;align-items:center;gap:7px;margin-top:5px;flex-wrap:wrap;}
+.log-user-pill{font-size:9px;font-weight:800;padding:2px 9px;border-radius:99px;color:#fff;}
+.log-ts{font-size:9px;color:var(--muted);}
+.log-empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.log-empty-icon{font-size:44px;margin-bottom:10px;}
 </style>
 </head>
 <body>
+
+<!-- ─── LOGIN SCREEN ─────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-logo">
+    <div id="login-emblem" style="width:60px;height:60px;margin:0 auto"></div>
+    <div class="login-title">مشروع تأهيل مقر سيسد</div>
+    <div class="login-logo-sub">جامعة الطائف — مركز البحوث والاستشارات</div>
+    <div class="login-sub">اختر اسمك للدخول</div>
+  </div>
+  <div class="login-users" id="login-users-grid"></div>
+  <div class="login-pin-section" id="login-pin-box" style="display:none">
+    <div class="login-pin-header" id="pin-header">أدخل الرمز السري</div>
+    <div class="login-pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="login-numpad">
+      <button class="numpad-btn" onclick="pinPress('1')">١</button>
+      <button class="numpad-btn" onclick="pinPress('2')">٢</button>
+      <button class="numpad-btn" onclick="pinPress('3')">٣</button>
+      <button class="numpad-btn" onclick="pinPress('4')">٤</button>
+      <button class="numpad-btn" onclick="pinPress('5')">٥</button>
+      <button class="numpad-btn" onclick="pinPress('6')">٦</button>
+      <button class="numpad-btn" onclick="pinPress('7')">٧</button>
+      <button class="numpad-btn" onclick="pinPress('8')">٨</button>
+      <button class="numpad-btn" onclick="pinPress('9')">٩</button>
+      <button class="numpad-btn" onclick="loginBack()">↩</button>
+      <button class="numpad-btn" onclick="pinPress('0')">٠</button>
+      <button class="numpad-btn del" onclick="pinDel()">⌫</button>
+    </div>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+<!-- ─── END LOGIN SCREEN ─────────────────────────────────────── -->
+
+<div id="app" style="display:none">
 <div id="toast"></div>
 
 <!-- Delete modal -->
@@ -787,7 +906,7 @@ textarea.form-input{resize:none;line-height:1.6;}
   <div id="tab-inv"  class="tab-pane"></div>
   <div id="tab-add"  class="tab-pane"></div>
   <div id="tab-ck"   class="tab-pane"></div>
-  <div id="tab-cfg"  class="tab-pane"></div>
+  <div id="tab-log"  class="tab-pane"></div>
 </div>
 
 <div id="tab-bar">
@@ -795,91 +914,143 @@ textarea.form-input{resize:none;line-height:1.6;}
   <button class="tab-btn" onclick="switchTab('inv')"  id="tbtn-inv"><span class="tab-icon">🧾</span><span>الفواتير</span></button>
   <button class="tab-btn" onclick="switchTab('add')"  id="tbtn-add"><span class="tab-icon">➕</span><span>إضافة</span></button>
   <button class="tab-btn" onclick="switchTab('ck')"   id="tbtn-ck"><span class="tab-icon">✅</span><span>الخطة</span></button>
-  <button class="tab-btn" onclick="switchTab('cfg')"  id="tbtn-cfg"><span class="tab-icon">⚙️</span><span>الإعدادات</span></button>
+  <button class="tab-btn" onclick="switchTab('log')"  id="tbtn-log"><span class="tab-icon">📋</span><span>السجل</span></button>
 </div>
+</div><!-- end #app -->
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────
-const TOTAL_BUDGET = 680000;
+const TOTAL_BUDGET   = 680000;   // الميزانية المعتمدة (شاملة أثاث وأجهزة)
+const BOQ_EXCL_VAT   = 372893;   // إجمالي كراسة الكميات قبل الضريبة
+const BOQ_VAT        = 55934;    // ضريبة القيمة المضافة 15%
+const BOQ_INCL_VAT   = 428827;   // الإجمالي الكلي شامل الضريبة
 
+// فريق العمل — الأرقام السرية قابلة للتعديل هنا
+const USERS = [
+  {id:'u1', name:'د. فؤاد عمر جعماني',  short:'د. فؤاد',  custId:'c1', pin:'1111', avatar:'👨‍💼', color:'#2563eb'},
+  {id:'u2', name:'فهد مساعد المالكي',    short:'فهد',      custId:'c2', pin:'2222', avatar:'👷',   color:'#7c3aed'},
+  {id:'u3', name:'خالد دهيران الفهمي',   short:'خالد',     custId:'c3', pin:'3333', avatar:'⚙️',   color:'#0891b2'},
+  {id:'u4', name:'ضاوي مناحي القثامي',   short:'ضاوي',     custId:'c4', pin:'4444', avatar:'📷',   color:'#e11d48'},
+];
+
+// ─ البيانات مستخرجة من كراسة الكميات والأسعار (Numbers) ─
+// الإجمالي قبل الضريبة: 372,893 ر.س | مع ضريبة 15%: 428,827 ر.س
 const CUSTODIANS = [
   {
     id:'c1', num:1,
-    phase:'الصيانة العامة للمبنى',
-    scope:'أعمال الهدم واللياسة والدهانات والعزل والأسقف',
-    custody:150000, color:'#2563eb', bg:'#eff6ff', tc:'#1d4ed8',
+    phase:'الأعمال المعمارية — الأساسية',
+    scope:'الهدم واللياسة والدهانات والعزل والأسقف والأرضيات',
+    custody:178645, color:'#2563eb', bg:'#eff6ff', tc:'#1d4ed8',
+    boqTotal:178645,
     items:[
-      {num:'1.1', text:'أعمال الهدم والإزالة والمباني'},
-      {num:'1.2', text:'أعمال اللياسة الداخلية'},
-      {num:'1.3', text:'أعمال الدهانات'},
-      {num:'1.4', text:'أعمال العزل المائي'},
-      {num:'1.5', text:'أعمال الأسقف المستعارة (جبس)'},
+      {num:'1',  text:'أعمال التفكيك والهدم ونقل الأنقاض',                   unit:'مقطوعية', qty:1,    up:10000, total:10000},
+      {num:'2',  text:'أعمال المباني (بلوك إسمنتي 15سم)',                     unit:'م²',       qty:210,  up:55,    total:11550},
+      {num:'3',  text:'اللياسة الداخلية',                                      unit:'م²',       qty:1150, up:17,    total:19550},
+      {num:'4',  text:'الدهانات الداخلية للحوائط',                             unit:'م²',       qty:1850, up:21,    total:38850},
+      {num:'5',  text:'الدهانات الداخلية للأسقف المكشوفة',                     unit:'م²',       qty:120,  up:21,    total:2520},
+      {num:'6',  text:'العزل المائي للحمامات والمطابخ',                        unit:'م²',       qty:110,  up:60,    total:6600},
+      {num:'7',  text:'قواطيع HPL لدورات المياه',                              unit:'م²',       qty:40,   up:150,   total:6000},
+      {num:'8',  text:'أبواب HPL لدورات المياه',                               unit:'عدد',      qty:10,   up:1200,  total:12000},
+      {num:'9',  text:'الأسقف المستعارة (جبس بورد) للمكاتب',                  unit:'م²',       qty:360,  up:65,    total:23400},
+      {num:'10', text:'الأسقف المستعارة (ألمنيوم) للحمامات والمطابخ',         unit:'م²',       qty:65,   up:65,    total:4225},
+      {num:'11', text:'فتحات صيانة الأسقف المستعارة',                          unit:'عدد',      qty:30,   up:100,   total:3000},
+      {num:'12', text:'سيراميك أرضيات الحمامات والمطابخ',                      unit:'م²',       qty:110,  up:50,    total:5500},
+      {num:'13', text:'سيراميك حوائط الحمامات والمطابخ',                       unit:'م²',       qty:150,  up:50,    total:7500},
+      {num:'14', text:'أرضيات بورسلان للمساحة العامة',                         unit:'م²',       qty:430,  up:65,    total:27950},
+      {num:'15', text:'سجاد المصلى',                                            unit:'م²',       qty:80,   up:0,     total:0},
+      {num:'16', text:'أرضيات مرتفعة (غرف تحكم/سيرفرات)',                     unit:'م²',       qty:25,   up:0,     total:0},
     ]
   },
   {
     id:'c2', num:2,
-    phase:'صيانة وتطوير التجهيزات',
-    scope:'الأبواب والزجاج والسيراميك والأرضيات والديكور',
-    custody:200000, color:'#7c3aed', bg:'#f5f3ff', tc:'#5b21b6',
+    phase:'الأعمال المعمارية — التشطيبات',
+    scope:'القواطيع والأبواب والزجاج والستائر والديكور والإرشادية',
+    custody:94540, color:'#7c3aed', bg:'#f5f3ff', tc:'#5b21b6',
+    boqTotal:94540,
     items:[
-      {num:'2.1', text:'أعمال الأبواب للمكاتب والحمامات ودورات المياه'},
-      {num:'2.2', text:'الأعمال الزجاجية'},
-      {num:'2.3', text:'أعمال الدواليب المطبخ'},
-      {num:'2.4', text:'أعمال السيراميك'},
-      {num:'2.5', text:'أعمال السجاد والموكيت'},
-      {num:'2.6', text:'أعمال الأرضيات المرتفعة'},
-      {num:'2.7', text:'أعمال الستائر'},
-      {num:'2.8', text:'أعمال الديكورات الخشبية والورقية'},
-      {num:'2.9', text:'أعمال اللوحات الإرشادية'},
+      {num:'17', text:'قواطيع جبسية عازلة',                                    unit:'م²',  qty:140, up:130,  total:18200},
+      {num:'18', text:'قواطيع زجاج سيكوريت 12مم',                             unit:'م²',  qty:20,  up:230,  total:4600},
+      {num:'19', text:'أبواب زجاج سيكوريت ضلفة واحدة',                        unit:'عدد', qty:4,   up:1500, total:6000},
+      {num:'20', text:'أبواب زجاج سيكوريت ضلفتين',                            unit:'عدد', qty:2,   up:3000, total:6000},
+      {num:'21', text:'أبواب خشبية للمكاتب المغلقة',                           unit:'عدد', qty:16,  up:1000, total:16000},
+      {num:'22', text:'ستائر رول يدوية',                                        unit:'م²',  qty:12,  up:150,  total:1800},
+      {num:'23', text:'ستائر رول كهربائية (قاعة الاجتماعات)',                  unit:'م²',  qty:18,  up:500,  total:9000},
+      {num:'24', text:'تكسيات خشبية ديكورية',                                  unit:'م²',  qty:65,  up:100,  total:6500},
+      {num:'25', text:'ورق جدران (Wallpaper)',                                  unit:'م²',  qty:180, up:60,   total:10800},
+      {num:'26', text:'نعلات حوائط ديكورية',                                   unit:'م.ط', qty:120, up:12,   total:1440},
+      {num:'27', text:'دواليب مطبخ خدمة',                                      unit:'م.ط', qty:6,   up:600,  total:3600},
+      {num:'28', text:'مرايات ديكورية مع إضاءة',                               unit:'م²',  qty:45,  up:200,  total:9000},
+      {num:'29', text:'مرايا دورات المياه',                                     unit:'م²',  qty:10,  up:160,  total:1600},
+      {num:'30', text:'لوحات إرشادية (Signage)',                                unit:'عدد', qty:20,  up:0,    total:0},
     ]
   },
   {
     id:'c3', num:3,
-    phase:'الأعمال الصحية',
-    scope:'دورات المياه وغرف الخدمات المشتركة وملحقاتها',
-    custody:100000, color:'#0891b2', bg:'#e0f7fa', tc:'#0e7490',
+    phase:'الأعمال الميكانيكية',
+    scope:'دورات المياه والمطابخ والتكييف وأنظمة الإطفاء',
+    custody:17320, color:'#0891b2', bg:'#e0f7fa', tc:'#0e7490',
+    boqTotal:17320,
     items:[
-      {num:'3.1', text:'توريد وتركيب المراحيض وأطقم دورات المياه'},
-      {num:'3.2', text:'أحواض الغسيل المعلقة'},
-      {num:'3.3', text:'مجموعات أحواض الكاونتر'},
-      {num:'3.4', text:'سخانات المياه الكهربائية'},
-      {num:'3.5', text:'مراوح التهوية'},
-      {num:'3.6', text:'رشاشات الإطفاء (نظام كامل)'},
-      {num:'3.7', text:'مجاري هواء التكييف (duct)'},
-      {num:'3.8', text:'مجاري طرد الهواء'},
-      {num:'3.9', text:'أعمال السباكة والصرف الصحي'},
+      {num:'1', text:'مرحاض غربي (C.W) كامل التركيب والتوصيل',                unit:'عدد',   qty:14, up:280,  total:3920},
+      {num:'2', text:'حوض غسيل أيدي معلق كامل التركيب',                        unit:'عدد',   qty:8,  up:500,  total:4000},
+      {num:'3', text:'مجموعة أحواض على كاونتر رخام (طقم كامل)',               unit:'عدد',   qty:3,  up:2000, total:6000},
+      {num:'4', text:'حوض غسيل ستانلس للمطبخ الخدمي',                         unit:'عدد',   qty:2,  up:600,  total:1200},
+      {num:'5', text:'مراوح تهوية 50 CFM',                                      unit:'عدد',   qty:4,  up:100,  total:400},
+      {num:'6', text:'سخان مياه كهربائي 50 لتر',                               unit:'عدد',   qty:6,  up:300,  total:1800},
+      {num:'7', text:'نظام رشاشات إطفاء حريق (ربط بالشبكة القائمة)',           unit:'نظام',  qty:1,  up:0,    total:0},
+      {num:'8', text:'نظام مجاري هواء التكييف (ربط بالوحدات القائمة)',         unit:'نظام',  qty:1,  up:0,    total:0},
+      {num:'9', text:'نظام مجاري طرد الهواء',                                   unit:'نظام',  qty:1,  up:0,    total:0},
     ]
   },
   {
     id:'c4', num:4,
-    phase:'الأعمال الكهربائية وملحقاتها',
-    scope:'الإنارة والإنذار والتوصيلات والشبكات',
-    custody:200000, color:'#d97706', bg:'#fffbeb', tc:'#b45309',
+    phase:'الأعمال الكهربائية',
+    scope:'إنذار الحريق والطاقة والإنارة (LED) وإنارة الطوارئ',
+    custody:82000, color:'#d97706', bg:'#fffbeb', tc:'#b45309',
+    boqTotal:81990,
     items:[
-      {num:'4.1', text:'نظام إنذار الحريق الكامل'},
-      {num:'4.2', text:'العلب الأرضية (طاقة + داتا)'},
-      {num:'4.3', text:'مخارج الكهرباء والمفاتيح'},
-      {num:'4.4', text:'منظومة الإنارة الوظيفية (LED)'},
-      {num:'4.5', text:'إنارة الطوارئ والـ EXIT'},
-      {num:'4.6', text:'شبكة البيانات والفايبر'},
-      {num:'4.7', text:'كابينة التوزيع الكهربائية'},
-      {num:'4.8', text:'نظام التحكم بالدخول (Access Control)'},
-      {num:'4.9', text:'شاشات العرض وملحقاتها'},
+      {num:'1',  text:'حساس دخان معنون (Addressable)',                          unit:'عدد',   qty:25,  up:250, total:6250},
+      {num:'2',  text:'حساس حرارة معنون',                                       unit:'عدد',   qty:4,   up:0,   total:0},
+      {num:'3',  text:'كاسر زجاجي معنون',                                       unit:'عدد',   qty:12,  up:0,   total:0},
+      {num:'4',  text:'جرس حريق معنون',                                         unit:'عدد',   qty:12,  up:0,   total:0},
+      {num:'5',  text:'لوحة إنذار حريق 4 زون معنونة',                          unit:'عدد',   qty:1,   up:0,   total:0},
+      {num:'6',  text:'تعديل لوحات التحكم الكهربائية القائمة',                  unit:'مقطوعية',qty:2,  up:0,   total:0},
+      {num:'7',  text:'علبة أرضية (طاقة + داتا)',                               unit:'عدد',   qty:60,  up:270, total:16200},
+      {num:'8',  text:'مخرج فيش مزدوج SO3',                                     unit:'عدد',   qty:70,  up:200, total:14000},
+      {num:'9',  text:'مخرج كهرباء مفرد (Access)',                              unit:'عدد',   qty:21,  up:200, total:4200},
+      {num:'10', text:'مفتاح 32A للسخانات الكهربائية',                          unit:'عدد',   qty:10,  up:200, total:2000},
+      {num:'11', text:'مخرج فيش مفرد SO1',                                      unit:'عدد',   qty:5,   up:200, total:1000},
+      {num:'12', text:'مفتاح إنارة أحادي',                                      unit:'عدد',   qty:22,  up:200, total:4400},
+      {num:'13', text:'مفتاح إنارة زوجي اتجاهين',                               unit:'عدد',   qty:25,  up:200, total:5000},
+      {num:'14', text:'مفتاح إنارة ثلاثي',                                      unit:'عدد',   qty:3,   up:200, total:600},
+      {num:'15', text:'كشاف ليد Ø14سم / 50واط',                                unit:'عدد',   qty:140, up:50,  total:7000},
+      {num:'16', text:'سبوت لايت Ø7سم / 5واط',                                 unit:'عدد',   qty:11,  up:50,  total:550},
+      {num:'17', text:'شريط ليد للمرايا والكاونترات',                           unit:'م.ط',   qty:13,  up:400, total:5200},
+      {num:'18', text:'إنارة طولية Linear',                                      unit:'م.ط',   qty:31,  up:40,  total:1240},
+      {num:'19', text:'سبوت أسود زوجي',                                         unit:'عدد',   qty:90,  up:50,  total:4500},
+      {num:'20', text:'تراكات إنارة مغناطيسية',                                 unit:'م.ط',   qty:30,  up:200, total:6000},
+      {num:'21', text:'كشافات EXIT لإضاءة الطوارئ',                            unit:'عدد',   qty:11,  up:350, total:3850},
     ]
   },
   {
     id:'c5', num:5,
-    phase:'الكاميرات وأنظمة المراقبة',
-    scope:'كاميرات IP وجهاز التسجيل وشاشة المراقبة والتمديدات',
+    phase:'الأنظمة الذكية والشبكات',
+    scope:'شبكة البيانات والكاميرات والتحكم بالدخول والشاشات',
     custody:30000, color:'#e11d48', bg:'#fff1f2', tc:'#be123c',
+    boqTotal:0,
     items:[
-      {num:'5.1', text:'كاميرات IP (8 ميغابيكسل)'},
-      {num:'5.2', text:'جهاز تسجيل NVR'},
-      {num:'5.3', text:'شاشة المراقبة'},
-      {num:'5.4', text:'الكابلات والتمديدات (UTP Cat6)'},
-      {num:'5.5', text:'أقواس وحوامل الكاميرات'},
-      {num:'5.6', text:'برمجة وضبط منظومة المراقبة'},
-      {num:'5.7', text:'اختبار وتسليم النظام'},
+      {num:'22', text:'مواسير تمديد كابلات HDMI',                              unit:'م.ط', qty:100, up:0, total:0},
+      {num:'23', text:'مخرج بيانات WiFi/Data',                                  unit:'عدد', qty:12,  up:0, total:0},
+      {num:'24', text:'مخارج HDMI في الجدران',                                  unit:'عدد', qty:6,   up:0, total:0},
+      {num:'25', text:'كابل فايبر 12 لايت (ربط غرفة السيرفر)',                 unit:'م.ط', qty:200, up:0, total:0},
+      {num:'26', text:'مخرج UTP Cat6 للكاميرات (تمديد مسبق)',                  unit:'عدد', qty:19,  up:0, total:0},
+      {num:'27', text:'مخرج UTP Cat6a للأبواب الذكية',                         unit:'عدد', qty:21,  up:0, total:0},
+      {num:'28', text:'كابينة توزيع شبكة 42U',                                  unit:'عدد', qty:1,   up:0, total:0},
+      {num:'29', text:'باتش بانل 48 بورت Cat6a',                                unit:'عدد', qty:1,   up:0, total:0},
+      {num:'30', text:'سويتش 48 بورت PoE (Cisco)',                              unit:'عدد', qty:1,   up:0, total:0},
+      {num:'31', text:'لوحة تحكم قارئ كروت',                                    unit:'عدد', qty:1,   up:0, total:0},
+      {num:'32', text:'لوحة تحكم نظام التحكم بالدخول',                         unit:'عدد', qty:1,   up:0, total:0},
+      {num:'33', text:'لاقطات مغناطيسية للأبواب الذكية',                       unit:'عدد', qty:4,   up:0, total:0},
     ]
   }
 ];
@@ -938,6 +1109,7 @@ function sanitizeMeta(o){
 let expenses  = sanitizeExp(safeJSON(localStorage.getItem('sisd-exp'), []));
 let ckState   = safeJSON(localStorage.getItem('sisd-ck'),  {});
 let custMeta  = sanitizeMeta(safeJSON(localStorage.getItem('sisd-meta'), {}));
+let auditLog  = safeJSON(localStorage.getItem('sisd-log'), []);
 let expanded  = {};
 let delTarget = null, nameTarget = null;
 let curTab    = 'dash', ckFilter='all';
@@ -945,9 +1117,35 @@ let invStatusFilter='all', invSearch='', invCustFilter='all', invMode='list';
 let expandedSup={};
 let formState = {custId:'c1', payType:'mq', item:'', selItem:'', invoiceStatus:'pending', workPct:0, workStart:'', workEnd:''};
 
+// المستخدم الحالي من الجلسة
+let currentUser = null;
+(function(){
+  const sid = sessionStorage.getItem('sisd-uid');
+  if(sid) currentUser = USERS.find(u=>u.id===sid)||null;
+})();
+
 function save()    {localStorage.setItem('sisd-exp',  JSON.stringify(expenses)); pushToCloud();}
 function saveCk()  {localStorage.setItem('sisd-ck',   JSON.stringify(ckState));  pushToCloud();}
 function saveMeta(){localStorage.setItem('sisd-meta', JSON.stringify(custMeta)); pushToCloud();}
+function saveLog() {
+  // الاحتفاظ بآخر 500 سجل فقط
+  if(auditLog.length>500) auditLog=auditLog.slice(0,500);
+  localStorage.setItem('sisd-log', JSON.stringify(auditLog));
+  pushToCloud();
+}
+
+function logAction(type, details){
+  if(!currentUser) return;
+  auditLog.unshift({
+    id: Date.now().toString()+Math.random().toString(36).slice(2,6),
+    userId: currentUser.id,
+    userName: currentUser.name,
+    userColor: currentUser.color,
+    type, details,
+    ts: new Date().toISOString()
+  });
+  saveLog();
+}
 
 // ── UTILS ──────────────────────────────────────────────────────────────
 const fmtN   = n => (+n||0).toLocaleString('en-US');
@@ -983,7 +1181,7 @@ function switchTab(id){
   if(id==='add') renderAdd();
   if(id==='inv') renderInv();
   if(id==='ck')  renderCk();
-  if(id==='cfg') renderCfg();
+  if(id==='log') renderLog();
 }
 
 // ── SUPPLIER STATS ────────────────────────────────────────────────────────
@@ -1176,6 +1374,8 @@ const EMBLEM_SVG=`<svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/
 function renderHeader(){
   const spent=totalSpent(); const left=TOTAL_BUDGET-spent;
   const p=pct(spent,TOTAL_BUDGET); const bc=barCls(p);
+  const u=currentUser;
+  const custLbl=u?( CUSTODIANS.find(c=>c.id===u.custId)?.phase||'' ):'';
   document.getElementById('header').innerHTML=`
     <div class="h-emblem-row">
       <div class="h-emblem">${EMBLEM_SVG}</div>
@@ -1185,6 +1385,17 @@ function renderHeader(){
       </div>
       <button class="h-share-btn" onclick="openShare()">📤 تقرير</button>
     </div>
+    ${u?`<div class="h-user-row">
+      <div class="h-user-badge">
+        <span class="h-user-avatar">${u.avatar}</span>
+        <div class="h-user-info">
+          <div class="h-user-name">${escH(u.name)}</div>
+          <div class="h-user-cust">${escH(custLbl)}</div>
+        </div>
+      </div>
+      <button class="h-logout-btn" onclick="doLogout()">🚪 خروج</button>
+    </div>`:''}
+
     <div class="h-title-row">
       <div class="h-title">إدارة العهدة <span id="sync-badge" class="sync-badge" style="display:none"></span></div>
     </div>
@@ -1542,11 +1753,14 @@ function submitExpense(){
   if(!item){showToast('أدخل اسم البند أو العمل','err');return;}
   if(!sup){showToast('أدخل اسم المورد','err');return;}
   if(!amt||amt<=0){showToast('أدخل مبلغاً صحيحاً','err');return;}
-  expenses.unshift({
+  const newExp={
     id:Date.now().toString(),custId:formState.custId,payType:formState.payType,
     item,supplier:sup,amount:amt,date,ref,notes,
-    invoiceStatus:formState.invoiceStatus,workPct,workStart,workEnd
-  });
+    invoiceStatus:formState.invoiceStatus,workPct,workStart,workEnd,
+    addedBy:currentUser?currentUser.id:''
+  };
+  expenses.unshift(newExp);
+  logAction('add_expense',`${item} — ${fmtN(amt)} ر.س — ${sup}`);
   save(); renderAll(); showToast('✅ تم تسجيل الفاتورة بنجاح');
   formState.item=''; formState.selItem=''; formState.workPct=0; formState.workStart=''; formState.workEnd='';
   setTimeout(()=>switchTab('dash'),1800);
@@ -1562,11 +1776,35 @@ function renderCk(){
     filterHtml+=`<span class="filter-chip ${isSel?'sel':''}" style="${isSel?`border-color:${c.color};background:${c.color};color:#fff`:''}" onclick="setCkFilter('${c.id}')">${c.num}</span>`;
   });
 
+  // ملخص كراسة الكميات
+  const boqSummary=`
+    <div style="background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
+      <div style="font-size:11px;font-weight:800;color:var(--green2);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+        <span style="display:block;width:3px;height:13px;background:var(--gold);border-radius:2px;flex-shrink:0"></span>
+        ملخص كراسة الكميات والأسعار
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div style="background:var(--light);border-radius:10px;padding:8px;text-align:center">
+          <div style="font-size:11px;font-weight:900;color:var(--green2)">${fmtN(BOQ_EXCL_VAT)}</div>
+          <div style="font-size:8px;color:var(--muted);margin-top:2px">قبل الضريبة</div>
+        </div>
+        <div style="background:#fef9c3;border-radius:10px;padding:8px;text-align:center">
+          <div style="font-size:11px;font-weight:900;color:#854d0e">${fmtN(BOQ_VAT)}</div>
+          <div style="font-size:8px;color:#78350f;margin-top:2px">ضريبة 15%</div>
+        </div>
+        <div style="background:#f0fdf4;border-radius:10px;padding:8px;text-align:center">
+          <div style="font-size:11px;font-weight:900;color:#15803d">${fmtN(BOQ_INCL_VAT)}</div>
+          <div style="font-size:8px;color:#166534;margin-top:2px">شامل الضريبة</div>
+        </div>
+      </div>
+    </div>`;
+
   let html=`
     <div class="ck-intro">
-      <strong>📋 خطة بنود التنفيذ — المراحل الرسمية</strong>
+      <strong>📋 كراسة بنود التنفيذ — المراحل الرسمية</strong>
       اضغط مرة: جاري التنفيذ ▶ · اضغط مرتين: مكتمل ✓ · اضغط ثلاثاً: إعادة تعيين
     </div>
+    ${boqSummary}
     <div class="ck-filter">${filterHtml}</div>`;
 
   const showC=filterAll?CUSTODIANS:CUSTODIANS.filter(c=>c.id===ckFilter);
@@ -1576,6 +1814,7 @@ function renderCk(){
     const inProg=states.filter(s=>s===1).length;
     const total=c.items.length;
     const p=total>0?Math.round(done/total*100):0;
+    const boqLbl=c.boqTotal>0?`<span style="font-size:9px;font-weight:700;color:${c.tc};opacity:.7">${fmtN(c.boqTotal)} ر.س</span>`:'';
 
     html+=`<div class="ck-card">
       <div class="phase-header" style="background:${c.bg}">
@@ -1583,6 +1822,7 @@ function renderCk(){
         <div style="flex:1;min-width:0">
           <div class="phase-name" style="color:${c.tc}">${c.phase} — ${escH(custName(c.id))}</div>
           <div class="phase-scope">${c.scope}</div>
+          ${boqLbl}
         </div>
         <div class="phase-prog" style="color:${c.tc}">${done}/${total}</div>
       </div>
@@ -1601,11 +1841,22 @@ function renderCk(){
       const rawSt=ckState[key]; const st=(rawSt===1||rawSt===2)?rawSt:0;
       const stClass=st===0?'':st===1?'s1':'s2';
       const badge=st===0?'':`<span class="ck-status-badge ck-st${st}">${st===1?'▶ جاري':'✓ مكتمل'}</span>`;
+      // تفاصيل كراسة الكميات
+      const hasBOQ=it.unit&&it.qty;
+      const boqRow=hasBOQ?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+        <span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">${it.unit}</span>
+        <span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">الكمية: ${it.qty}</span>
+        ${it.up>0?`<span style="font-size:9px;background:var(--light);border-radius:4px;padding:1px 6px;color:var(--sub);font-weight:600">سعر الوحدة: ${fmtN(it.up)}</span>`:''}
+        ${it.total>0?`<span style="font-size:9px;background:#f0fdf4;border-radius:4px;padding:1px 6px;color:#15803d;font-weight:800">الإجمالي: ${fmtN(it.total)}</span>`:''}
+      </div>`:'';
       html+=`<div class="ck-item ${stClass}" onclick="toggleCkItem('${c.id}','${it.num}')">
         <div class="ck-box ${stClass}"></div>
-        <div class="ck-item-content">
-          <div class="ck-item-num">${it.num}</div>
-          <div class="ck-text">${escH(it.text)}</div>
+        <div class="ck-item-content" style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="ck-item-num">${it.num}</div>
+            <div class="ck-text">${escH(it.text)}</div>
+          </div>
+          ${boqRow}
         </div>
         ${badge}
       </div>`;
@@ -1629,7 +1880,12 @@ function renderCk(){
 function setCkFilter(f){ckFilter=f;renderCk();}
 function toggleCkItem(custId,num){
   const key=`${custId}::${num}`;
-  ckState[key]=((ckState[key]||0)+1)%3;
+  const newSt=((ckState[key]||0)+1)%3;
+  ckState[key]=newSt;
+  const c=CUSTODIANS.find(x=>x.id===custId);
+  const it=c?.items.find(x=>x.num===num);
+  const stLbl=['⭕ إعادة تعيين','▶ جاري التنفيذ','✓ مكتمل'][newSt];
+  if(it) logAction('update_ck',`${stLbl} — ${it.text} (${c.phase})`);
   saveCk(); renderCk();
 }
 
@@ -1637,6 +1893,8 @@ function toggleCkItem(custId,num){
 function openDel(id){delTarget=id;document.getElementById('del-ov').classList.add('open');}
 function confirmDelete(){
   if(!delTarget)return;
+  const e=expenses.find(x=>x.id===delTarget);
+  if(e) logAction('delete_expense',`${e.item} — ${fmtN(e.amount)} ر.س — ${e.supplier}`);
   expenses=expenses.filter(e=>e.id!==delTarget);
   save(); closeModal('del-ov'); renderAll(); showToast('🗑️ تم حذف السجل');
 }
@@ -1660,6 +1918,7 @@ function saveName(){
   if(!custMeta[nameTarget])custMeta[nameTarget]={};
   custMeta[nameTarget].name=name;
   custMeta[nameTarget].contract=contract;
+  logAction('update_meta',`تحديث بيانات: ${custById(nameTarget)?.phase||nameTarget}`);
   saveMeta(); closeModal('name-ov'); renderAll();
   showToast('✅ تم حفظ بيانات العهداء');
 }
@@ -1760,6 +2019,7 @@ function saveEdit(){
   if(!amt||amt<=0){showToast('أدخل مبلغاً صحيحاً','err');return;}
   expenses[idx]={...expenses[idx],item,supplier:sup,amount:amt,date,ref,notes,
     invoiceStatus:editInvoiceStatus,workPct,workStart,workEnd};
+  logAction('edit_expense',`${item} — ${fmtN(amt)} ر.س — ${sup}`);
   save(); closeModal('edit-ov'); renderAll();
   if(curTab==='inv')renderInv();
   showToast('✅ تم تعديل الفاتورة');
@@ -1813,8 +2073,9 @@ function confirmClearAll(){document.getElementById('clr-ov').classList.add('open
 function doClearAll(){
   expenses=[]; ckState={}; custMeta={};
   save(); saveCk(); saveMeta();
+  logAction('delete_expense','🗑️ تم حذف جميع البيانات');
   closeModal('clr-ov'); renderAll();
-  if(curTab==='inv')renderInv(); if(curTab==='ck')renderCk(); if(curTab==='cfg')renderCfg();
+  if(curTab==='inv')renderInv(); if(curTab==='ck')renderCk(); if(curTab==='log')renderLog();
   showToast('🗑️ تم حذف كل البيانات');
 }
 
@@ -1842,21 +2103,6 @@ function updateSyncBadge(){
   if(fbSyncing){el.textContent='🔄';el.style.color='#d5b254';}
   else if(fbSyncOk){el.textContent='🟢';el.style.color='#22c55e';}
   else{el.textContent='🔴';el.style.color='#ef4444';}
-  const cs=document.getElementById('cfg-sync-status'); if(!cs)return;
-  if(fbSyncing){
-    cs.innerHTML='🟡 جاري الاتصال…';
-    cs.style.background='#fef9c3';cs.style.color='#854d0e';
-  } else if(fbSyncOk){
-    cs.innerHTML='🟢 متصل — يتزامن تلقائياً';
-    cs.style.background='#f0fdf4';cs.style.color='#15803d';
-  } else {
-    const retryIn=fbRetryCount>0?` (إعادة تلقائية بعد ${Math.min(30,fbRetryCount*10)} ث)`:'';
-    cs.innerHTML='🔴 خطأ في الاتصال'+(fbLastErr?`<br><small style="font-weight:400;font-size:10px">${escH(fbLastErr)}</small>`:'')
-      +`<br><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
-        <button onclick="fbRetryCount=0;clearTimeout(fbRetryTimer);initFirebase()" style="padding:5px 12px;border-radius:6px;border:1px solid #fca5a5;background:#fff;color:#dc2626;font-size:11px;cursor:pointer;font-family:inherit">🔄 إعادة المحاولة</button>
-      </div>${retryIn?`<div style="font-size:10px;color:#9a3412;margin-top:4px">${retryIn}</div>`:''}`;
-    cs.style.background='#fef2f2';cs.style.color='#991b1b';
-  }
 }
 
 function loadScript(src){
@@ -1901,12 +2147,10 @@ async function loadFromCloud(){
   if(!fbDb)return;
   let snap;
   try{
-    // try server first with 10s timeout
     const p=fbDb.collection('sisd').doc('data').get();
     const timeout=new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),10000));
     snap=await Promise.race([p,timeout]);
   }catch(serverErr){
-    // fall back to local cache if server unreachable
     try{
       snap=await fbDb.collection('sisd').doc('data').get({source:'cache'});
       if(snap.exists)showToast('📦 تم التحميل من الكاش المحلي','info');
@@ -1917,9 +2161,11 @@ async function loadFromCloud(){
   if(d.expenses)expenses=sanitizeExp(d.expenses);
   if(d.ckState)ckState=d.ckState;
   if(d.custMeta)custMeta=sanitizeMeta(d.custMeta);
+  if(Array.isArray(d.auditLog))auditLog=d.auditLog;
   localStorage.setItem('sisd-exp',JSON.stringify(expenses));
   localStorage.setItem('sisd-ck',JSON.stringify(ckState));
   localStorage.setItem('sisd-meta',JSON.stringify(custMeta));
+  localStorage.setItem('sisd-log',JSON.stringify(auditLog));
   renderAll();
 }
 
@@ -1933,9 +2179,11 @@ function listenCloud(){
       expenses=incoming;
       if(d.ckState)ckState=d.ckState;
       if(d.custMeta)custMeta=sanitizeMeta(d.custMeta);
+      if(Array.isArray(d.auditLog))auditLog=d.auditLog;
       localStorage.setItem('sisd-exp',JSON.stringify(expenses));
       localStorage.setItem('sisd-ck',JSON.stringify(ckState));
       localStorage.setItem('sisd-meta',JSON.stringify(custMeta));
+      localStorage.setItem('sisd-log',JSON.stringify(auditLog));
       renderAll();
       showToast('🔄 تمت المزامنة','info');
     }
@@ -1951,12 +2199,12 @@ function pushToCloud(){
       fbSyncing=true; updateSyncBadge();
       await fbDb.collection('sisd').doc('data').set({
         expenses,ckState,custMeta,
+        auditLog:auditLog.slice(0,200),
         updatedAt:firebase.firestore.FieldValue.serverTimestamp()
       });
       fbSyncing=false; fbSyncOk=true; updateSyncBadge();
     }catch(e){
       fbSyncing=false; fbSyncOk=false; updateSyncBadge();
-      // retry push after reconnect
       if(!fbRetryTimer) fbRetryTimer=setTimeout(()=>{ if(!fbSyncOk) initFirebase(); },10000);
     }
   },1500);
@@ -1965,52 +2213,175 @@ function pushToCloud(){
 // auto-reconnect when network comes back online
 window.addEventListener('online',()=>{ if(!fbSyncOk&&!fbSyncing){ fbRetryCount=0; initFirebase(); } });
 
-// ── SETTINGS TAB ──────────────────────────────────────────────────────────
-const APP_URL='https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/sisd.html';
-function renderCfg(){
-  const waLink='https://wa.me/?text='+encodeURIComponent('تطبيق إدارة عهدة مشروع تأهيل مقر سيسد: '+APP_URL);
-  document.getElementById('tab-cfg').innerHTML=`
-    <div style="background:linear-gradient(135deg,var(--green2),var(--green));border-radius:var(--radius);padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(77,112,76,.2)">
-      <div style="width:40px;height:40px;flex-shrink:0">${EMBLEM_SVG}</div>
-      <div>
-        <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:.8px">جامعة الطائف — مركز البحوث والاستشارات</div>
-        <div style="font-size:12px;font-weight:800;color:var(--gold);margin-top:2px">مشروع تأهيل وصيانة مقر سيسد</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:2px">الإصدار 2.0 · إدارة العهدة</div>
-      </div>
-    </div>
+// ── AUDIT LOG TAB ─────────────────────────────────────────────────────────
+const LOG_TYPES={
+  'add_expense':   {icon:'➕',label:'إضافة فاتورة',  color:'#22c55e'},
+  'edit_expense':  {icon:'✏️',label:'تعديل فاتورة', color:'#3b82f6'},
+  'delete_expense':{icon:'🗑️',label:'حذف',          color:'#ef4444'},
+  'update_ck':     {icon:'✅',label:'تحديث الخطة',   color:'#8b5cf6'},
+  'update_meta':   {icon:'👤',label:'تحديث البيانات',color:'#f59e0b'},
+  'login':         {icon:'🔐',label:'تسجيل دخول',    color:'#0891b2'},
+  'logout':        {icon:'🚪',label:'تسجيل خروج',    color:'#6b7280'},
+};
 
-    <div class="cfg-card">
-      <div class="cfg-title">📤 مشاركة التطبيق</div>
-      <p class="cfg-sub">شارك رابط التطبيق مع باقي أعضاء الفريق — يعمل على أي جهاز بدون تثبيت</p>
-      <div class="cfg-url">${escH(APP_URL)}</div>
-      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <button class="cfg-btn" onclick="copyAppUrl()">📋 نسخ الرابط</button>
-        <a class="cfg-btn cfg-btn-wa" href="${escH(waLink)}" target="_blank" rel="noopener noreferrer">💬 إرسال واتساب</a>
-      </div>
-    </div>
+let logUserFilter='all';
 
-    <div class="cfg-card">
-      <div class="cfg-title">💾 النسخ الاحتياطي والتصدير</div>
-      <p class="cfg-sub">صدّر كل بياناتك أو استعدها من ملف، أو نزّلها كجدول إكسل</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="cfg-btn" onclick="exportJSON()">📥 تصدير JSON</button>
-        <button class="cfg-btn" onclick="importJSON()">📤 استيراد JSON</button>
-        <button class="cfg-btn" onclick="exportCSV()">📊 Excel (CSV)</button>
-      </div>
-    </div>
-
-    <div class="cfg-card">
-      <div class="cfg-title">☁️ المزامنة السحابية</div>
-      <p class="cfg-sub">البيانات تُزامَن تلقائياً مع Firebase في الوقت الفعلي بين جميع أجهزة الفريق</p>
-      <div class="fb-ok-badge" id="cfg-sync-status">🟡 جاري الاتصال…</div>
-    </div>
-
-  `;
-  updateSyncBadge();
+function fmtTs(iso){
+  try{
+    const d=new Date(iso);
+    const diff=Math.floor((Date.now()-d)/1000);
+    if(diff<60) return 'الآن';
+    if(diff<3600) return `منذ ${Math.floor(diff/60)} د`;
+    if(diff<86400) return `منذ ${Math.floor(diff/3600)} س`;
+    return d.toLocaleDateString('ar-SA',{day:'numeric',month:'short',year:'2-digit'})+' '+
+           d.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){return iso;}
 }
-function copyAppUrl(){
-  if(navigator.clipboard){navigator.clipboard.writeText(APP_URL).then(()=>showToast('✅ تم نسخ الرابط'));}
-  else{const ta=document.createElement('textarea');ta.value=APP_URL;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('✅ تم نسخ الرابط');}
+
+function renderLog(){
+  const filtered=logUserFilter==='all'?auditLog:auditLog.filter(l=>l.userId===logUserFilter);
+  const userBtns=`<span class="filter-chip ${logUserFilter==='all'?'sel':''}" onclick="setLogFilter('all')">الكل</span>`+
+    USERS.map(u=>`<span class="filter-chip ${logUserFilter===u.id?'sel':''}"
+      style="${logUserFilter===u.id?`background:${u.color};border-color:${u.color};color:#fff`:''}"
+      onclick="setLogFilter('${u.id}')">${escH(u.short)}</span>`).join('');
+
+  let html=`
+    <div style="background:linear-gradient(135deg,var(--green2),var(--green));border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow-lg)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:.8px">سجل التتبع</div>
+          <div style="font-size:14px;font-weight:800;color:#fff">📋 كل الأنشطة</div>
+        </div>
+        <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:8px 14px;text-align:center">
+          <div style="font-size:20px;font-weight:900;color:var(--gold)">${auditLog.length}</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.6);margin-top:1px">إجمالي السجلات</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${USERS.map(u=>{
+          const cnt=auditLog.filter(l=>l.userId===u.id).length;
+          return`<div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:5px 10px;display:flex;align-items:center;gap:6px">
+            <span style="font-size:14px">${u.avatar}</span>
+            <div>
+              <div style="font-size:9px;font-weight:800;color:#fff">${escH(u.short)}</div>
+              <div style="font-size:8px;color:rgba(255,255,255,.5)">${cnt} نشاط</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="log-filter-row">${userBtns}</div>`;
+
+  if(!filtered.length){
+    html+=`<div class="log-empty"><div class="log-empty-icon">📋</div><div style="font-size:13px;font-weight:700">لا توجد سجلات بعد</div><div style="font-size:11px;margin-top:4px">ستظهر هنا كل الأنشطة عند إضافة أو تعديل البيانات</div></div>`;
+  } else {
+    filtered.forEach((l,i)=>{
+      const t=LOG_TYPES[l.type]||{icon:'📌',label:l.type,color:'#6b7280'};
+      html+=`<div class="log-entry" style="animation-delay:${Math.min(i,10)*0.04}s">
+        <div class="log-icon">${t.icon}</div>
+        <div class="log-body">
+          <div class="log-action">${t.label}</div>
+          <div class="log-detail">${escH(l.details||'')}</div>
+          <div class="log-meta">
+            <span class="log-user-pill" style="background:${l.userColor||'#6b7280'}">${escH(l.userName||'')}</span>
+            <span class="log-ts">🕐 ${fmtTs(l.ts)}</span>
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+  document.getElementById('tab-log').innerHTML=html;
+}
+function setLogFilter(f){logUserFilter=f;renderLog();}
+
+// ── LOGIN / LOGOUT ─────────────────────────────────────────────────────────
+let pinBuffer='', pinUser=null;
+
+function initLogin(){
+  // شعار صفحة الدخول
+  const el=document.getElementById('login-emblem');
+  if(el)el.innerHTML=EMBLEM_SVG;
+  // بطاقات المستخدمين
+  const grid=document.getElementById('login-users-grid');
+  if(!grid)return;
+  grid.innerHTML=USERS.map(u=>`
+    <div class="login-user-card" onclick="selectLoginUser('${u.id}')" id="luc-${u.id}">
+      <div class="login-avatar">${u.avatar}</div>
+      <div class="login-name">${escH(u.name)}</div>
+      <div class="login-cust-lbl">${escH(CUSTODIANS.find(c=>c.id===u.custId)?.phase||'')}</div>
+    </div>`).join('');
+  // إذا كان مسجلاً دخوله من قبل — أظهر التطبيق مباشرة
+  if(currentUser){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='';
+  }
+}
+
+function selectLoginUser(uid){
+  pinUser=USERS.find(u=>u.id===uid); if(!pinUser)return;
+  pinBuffer='';
+  document.querySelectorAll('.login-user-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('luc-'+uid).classList.add('sel');
+  document.getElementById('pin-header').textContent='أدخل رمزك السري — '+escH(pinUser.short);
+  document.getElementById('login-err').textContent='';
+  document.getElementById('login-pin-box').style.display='';
+  updatePinDots();
+}
+
+function pinPress(digit){
+  if(!pinUser||pinBuffer.length>=4)return;
+  pinBuffer+=digit;
+  updatePinDots();
+  if(pinBuffer.length===4) setTimeout(checkPin,200);
+}
+
+function pinDel(){
+  pinBuffer=pinBuffer.slice(0,-1);
+  updatePinDots();
+  document.getElementById('login-err').textContent='';
+}
+
+function updatePinDots(){
+  for(let i=0;i<4;i++){
+    const d=document.getElementById('pd'+i);
+    if(d){ d.className='pin-dot'+(i<pinBuffer.length?' filled':''); }
+  }
+}
+
+function checkPin(){
+  if(!pinUser)return;
+  if(pinBuffer===pinUser.pin){
+    currentUser=pinUser;
+    sessionStorage.setItem('sisd-uid',currentUser.id);
+    logAction('login',`دخل إلى التطبيق`);
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='';
+    renderAll(); renderAdd();
+  } else {
+    // رمز خاطئ — اهتزاز واضح
+    for(let i=0;i<4;i++){
+      const d=document.getElementById('pd'+i);
+      if(d){d.className='pin-dot err';}
+    }
+    document.getElementById('login-err').textContent='رمز خاطئ، حاول مجدداً';
+    setTimeout(()=>{pinBuffer='';updatePinDots();},600);
+  }
+}
+
+function loginBack(){
+  pinUser=null; pinBuffer='';
+  document.getElementById('login-pin-box').style.display='none';
+  document.getElementById('login-err').textContent='';
+  document.querySelectorAll('.login-user-card').forEach(c=>c.classList.remove('sel'));
+}
+
+function doLogout(){
+  logAction('logout','خرج من التطبيق');
+  currentUser=null;
+  sessionStorage.removeItem('sisd-uid');
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='';
+  loginBack();
 }
 
 // ── RENDER ALL ────────────────────────────────────────────────────────────
@@ -2018,7 +2389,7 @@ function renderAll(){
   renderHeader(); renderAlerts(); renderDash();
   if(curTab==='inv') renderInv();
   if(curTab==='ck')  renderCk();
-  if(curTab==='cfg') renderCfg();
+  if(curTab==='log') renderLog();
   updateSyncBadge();
 }
 
@@ -2036,8 +2407,8 @@ document.addEventListener('click',function(e){
 },{passive:true});
 
 // ── INIT ──────────────────────────────────────────────────────────────────
-renderAll();
-renderAdd();
+initLogin();
+if(currentUser){ renderAll(); renderAdd(); }
 initFirebase();
 </script>
 </body>

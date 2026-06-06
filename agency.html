@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#08061A"/>
+<title>أتيلييه ضاوي — متجر العطور الفاخرة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;font-family:'Alexandria',sans-serif;color:#F5EFE0;overflow-x:hidden}
+
+/* Animated background with floating color orbs */
+body {
+  background: #08061A;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+.bg-orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: floatOrb 12s ease-in-out infinite; }
+.orb1 { width: 500px; height: 500px; background: rgba(195,115,20,0.22); top: -150px; right: -100px; animation-delay: 0s; }
+.orb2 { width: 400px; height: 400px; background: rgba(180,50,110,0.18); top: 40%; left: -120px; animation-delay: -4s; }
+.orb3 { width: 350px; height: 350px; background: rgba(80,30,160,0.16); bottom: 10%; right: -80px; animation-delay: -8s; }
+.orb4 { width: 300px; height: 300px; background: rgba(20,120,130,0.14); bottom: 40%; left: 40%; animation-delay: -6s; }
+@keyframes floatOrb {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(40px,-60px) scale(1.1); }
+  66% { transform: translate(-30px,40px) scale(0.95); }
+}
+
+/* All content above orbs */
+.site-header, .hero, .filters, .pgrid, .no-results { position: relative; z-index: 1; }
+
+/* Header — deep frosted glass */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,6,26,0.75);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(212,168,67,0.15);
+  padding: 0 20px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+/* Shimmer line on header bottom */
+.site-header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,67,0.5), rgba(200,72,128,0.3), transparent);
+}
+
+/* Brand */
+.brand-name { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.55rem; color:#D4A843; line-height:1; }
+.brand-sub { font-family:'IBM Plex Mono',monospace; font-size:0.42rem; color:rgba(212,168,67,0.42); letter-spacing:0.5em; text-transform:uppercase; margin-top:2px; }
+
+/* Cart button — gold glass */
+.cart-btn {
+  display:flex; align-items:center; gap:7px; padding:9px 18px; border-radius:10px;
+  border: 1px solid rgba(212,168,67,0.35);
+  background: rgba(212,168,67,0.08);
+  color: #D4A843; font-size:0.80rem; font-weight:700; cursor:pointer;
+  transition: all 0.25s; position:relative;
+  backdrop-filter: blur(8px);
+}
+.cart-btn:hover { border-color:rgba(212,168,67,0.65); background:rgba(212,168,67,0.16); transform:translateY(-1px); box-shadow: 0 4px 20px rgba(212,168,67,0.25); }
+.cart-count { position:absolute; top:-8px; right:-8px; background:linear-gradient(135deg,#D4A843,#A07830); color:#06040C; border-radius:50%; width:20px; height:20px; font-size:0.58rem; font-weight:900; display:none; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; box-shadow:0 2px 8px rgba(212,168,67,0.5); }
+
+/* HERO */
+.hero { text-align:center; padding:70px 24px 50px; }
+.hero-eyebrow { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; color:rgba(212,168,67,0.50); letter-spacing:0.6em; text-transform:uppercase; margin-bottom:18px; }
+.hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.8rem,9vw,4.5rem); line-height:1.05; margin-bottom:14px; }
+.hero-title .t1 { color:#F5EFE0; display:block; }
+.hero-title .t2 { color:transparent; background:linear-gradient(135deg,#D4A843 20%,#E87090 50%,#9060D0 80%); -webkit-background-clip:text; background-clip:text; display:block; font-style:italic; }
+.hero-desc { font-size:0.88rem; color:rgba(245,239,224,0.40); max-width:380px; margin:0 auto 28px; line-height:1.8; }
+.hero-divider { width:90px; height:1px; background:linear-gradient(90deg,transparent,#D4A843,rgba(200,72,128,0.6),transparent); margin:0 auto; }
+
+/* FILTERS */
+.filters { padding:0 16px 16px; max-width:860px; margin:0 auto; }
+
+/* BATCH selector — jewel pill style */
+.batch-bar { display:flex; gap:8px; margin-bottom:12px; }
+.batch-opt { flex:1; padding:10px 6px; text-align:center; cursor:pointer; transition:all 0.22s; border-radius:12px; font-family:'Alexandria',sans-serif; font-size:0.72rem; font-weight:700; border: 1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.04); color:rgba(245,239,224,0.50); backdrop-filter:blur(6px); }
+.batch-opt:hover { border-color:rgba(212,168,67,0.35); color:rgba(245,239,224,0.80); }
+.batch-opt.sel { background:linear-gradient(135deg,rgba(212,168,67,0.25),rgba(200,72,128,0.15)); border-color:rgba(212,168,67,0.60); color:#F0C840; box-shadow: 0 0 20px rgba(212,168,67,0.20); }
+.batch-opt .bl { font-size:0.80rem; display:block; margin-bottom:2px; }
+.batch-opt .bml { font-family:'IBM Plex Mono',monospace; font-size:0.46rem; color:inherit; opacity:0.65; display:block; }
+
+/* Search */
+.search-box { position:relative; margin-bottom:12px; }
+.search-icon { position:absolute; right:14px; top:50%; transform:translateY(-50%); pointer-events:none; opacity:0.35; width:16px; height:16px; color:#D4A843; }
+.search-inp { width:100%; padding:11px 42px 11px 14px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10); border-radius:12px; color:#F5EFE0; font-family:'Alexandria',sans-serif; font-size:0.84rem; outline:none; direction:rtl; transition:all 0.22s; backdrop-filter:blur(8px); }
+.search-inp:focus { border-color:rgba(212,168,67,0.50); background:rgba(255,255,255,0.08); box-shadow:0 0 20px rgba(212,168,67,0.10); }
+.search-inp::placeholder { color:rgba(255,255,255,0.20); }
+
+/* Filter chips */
+.chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+.chip { padding:5px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.04); color:rgba(245,239,224,0.42); font-size:0.70rem; cursor:pointer; transition:all 0.20s; font-family:'Alexandria',sans-serif; white-space:nowrap; backdrop-filter:blur(4px); }
+.chip:hover { border-color:rgba(212,168,67,0.30); color:rgba(245,239,224,0.75); }
+.chip.ag { border-color:rgba(212,168,67,0.60); background:rgba(212,168,67,0.12); color:#F0C840; font-weight:700; box-shadow:0 0 12px rgba(212,168,67,0.15); }
+.chip.ap { border-color:rgba(160,80,220,0.60); background:rgba(160,80,220,0.12); color:#C090F8; font-weight:700; box-shadow:0 0 12px rgba(160,80,220,0.15); }
+.chip.ab { border-color:rgba(80,180,120,0.55); background:rgba(80,180,120,0.10); color:#80e0b0; font-weight:700; }
+
+/* PRODUCT GRID */
+.pgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(168px,1fr)); gap:16px; padding:4px 16px 120px; max-width:860px; margin:0 auto; }
+
+/* PRODUCT CARD — glassmorphism + 3D */
+.pcard {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.42s cubic-bezier(0.22,1,0.36,1), box-shadow 0.42s, border-color 0.25s;
+  position: relative;
+  user-select: none;
+}
+.pcard::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  pointer-events: none; border-radius: 24px;
+}
+.pcard:hover {
+  transform: perspective(700px) rotateY(12deg) rotateX(-6deg) translateY(-10px) scale(1.02);
+  box-shadow:
+    20px 20px 60px rgba(0,0,0,0.60),
+    0 0 30px rgba(212,168,67,0.25),
+    -4px -4px 20px rgba(200,72,128,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.20);
+  border-color: rgba(212,168,67,0.40);
+}
+
+/* Card top shimmer bar */
+.pcard-bar { height:4px; background:linear-gradient(90deg,rgba(212,168,67,0),rgba(212,168,67,0.70),rgba(200,72,128,0.50),rgba(212,168,67,0)); }
+
+.pcard-body { padding:14px 12px 12px; text-align:center; }
+.pcard-badge { position:absolute; top:14px; right:11px; font-size:0.48rem; padding:3px 8px; border-radius:8px; background:rgba(212,168,67,0.18); border:1px solid rgba(212,168,67,0.45); color:rgba(240,200,64,0.95); font-family:'IBM Plex Mono',monospace; font-weight:700; backdrop-filter:blur(4px); }
+.pcard-icon { font-size:3rem; filter:drop-shadow(0 8px 24px rgba(212,168,67,0.35)); margin:8px 0 6px; display:block; }
+.pcard-brand { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.37rem; color:rgba(212,168,67,0.38); letter-spacing:0.4em; text-transform:uppercase; margin-bottom:5px; }
+.pcard-name { font-size:0.88rem; font-weight:800; color:#F5EFE0; line-height:1.2; margin-bottom:7px; text-shadow:0 1px 8px rgba(0,0,0,0.5); }
+.lbar { display:flex; height:4px; border-radius:3px; overflow:hidden; gap:1px; margin-bottom:8px; }
+.lt { background:rgba(240,200,64,0.80); border-radius:3px 0 0 3px; }
+.lm { background:rgba(200,80,160,0.70); }
+.lb { background:rgba(160,100,40,0.70); border-radius:0 3px 3px 0; }
+.pcard-meta { font-size:0.52rem; color:rgba(245,239,224,0.55); margin-bottom:4px; font-weight:600; }
+.pcard-desc { font-size:0.50rem; color:rgba(212,168,67,0.62); line-height:1.65; margin-bottom:8px; direction:rtl; }
+.bcode { display:flex; align-items:flex-end; height:22px; justify-content:center; margin-bottom:7px; }
+.pcard-sep { height:1px; background:linear-gradient(90deg,transparent,rgba(212,168,67,0.25),transparent); margin-bottom:10px; }
+.pcard-price { font-family:'IBM Plex Mono',monospace; font-size:1.25rem; font-weight:700; background:linear-gradient(135deg,#F0C840,#D4A843,#C06020); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:2px; }
+.pcard-size { font-size:0.48rem; color:rgba(212,168,67,0.50); margin-bottom:10px; font-family:'IBM Plex Mono',monospace; }
+.card-qty-row { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:9px; }
+.cqbtn { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(212,168,67,0.25); color:#D4A843; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.18s; flex-shrink:0; backdrop-filter:blur(4px); }
+.cqbtn:hover { background:rgba(212,168,67,0.20); box-shadow:0 0 12px rgba(212,168,67,0.30); }
+.cqnum { font-family:'IBM Plex Mono',monospace; font-size:0.95rem; color:#F0C840; min-width:22px; text-align:center; font-weight:700; }
+.pcard-btn { width:100%; padding:8px 4px; border-radius:20px; cursor:pointer; font-size:0.70rem; font-weight:700; font-family:'Alexandria',sans-serif; transition:all 0.22s; border:1px solid rgba(212,168,67,0.25); background:rgba(212,168,67,0.08); color:rgba(212,168,67,0.65); backdrop-filter:blur(4px); }
+.pcard-btn:hover, .pcard-btn.ic { border-color:rgba(212,168,67,0.60); background:rgba(212,168,67,0.20); color:#F0C840; box-shadow:0 0 16px rgba(212,168,67,0.25); }
+
+/* CART / OVERLAYS — glassmorphism */
+.overlay { position:fixed; inset:0; z-index:300; background:rgba(4,2,14,0.85); backdrop-filter:blur(14px); display:none; align-items:flex-end; justify-content:center; }
+.overlay.open { display:flex; }
+.sheet { background:rgba(12,8,30,0.92); backdrop-filter:blur(30px); border-top:1px solid rgba(212,168,67,0.22); border-radius:28px 28px 0 0; padding:20px 18px 48px; width:100%; max-width:500px; max-height:88vh; overflow-y:auto; }
+.handle { width:40px; height:4px; background:rgba(255,255,255,0.12); border-radius:2px; margin:0 auto 18px; }
+.sheet-title { font-size:1.08rem; font-weight:800; color:#D4A843; }
+.sheet-sub { font-size:0.60rem; color:rgba(255,255,255,0.30); margin-top:2px; }
+.sheet-hdr { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px; }
+.clr-btn { background:rgba(200,50,50,0.12); border:1px solid rgba(200,80,80,0.28); color:rgba(220,110,110,0.75); border-radius:8px; padding:5px 13px; font-size:0.68rem; cursor:pointer; font-family:'Alexandria',sans-serif; transition:all 0.18s; }
+.crow { display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.crow-ic { font-size:1.7rem; flex-shrink:0; }
+.crow-info { flex:1; min-width:0; }
+.crow-name { font-size:0.82rem; font-weight:700; color:#F5EFE0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.crow-meta { font-size:0.58rem; color:rgba(212,168,67,0.50); margin-top:2px; }
+.qty { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.qbtn { width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,0.06); border:1px solid rgba(212,168,67,0.20); color:#D4A843; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.18s; }
+.qbtn:hover { background:rgba(212,168,67,0.18); }
+.qnum { font-family:'IBM Plex Mono',monospace; font-size:0.88rem; color:#F0C840; min-width:18px; text-align:center; }
+.crow-pr { min-width:55px; text-align:left; flex-shrink:0; }
+.crow-total { font-family:'IBM Plex Mono',monospace; font-size:0.85rem; font-weight:700; color:#F0C840; }
+.crow-rm { background:none; border:none; color:rgba(220,90,90,0.50); cursor:pointer; font-size:0.63rem; padding:0; margin-top:2px; display:block; font-family:'Alexandria',sans-serif; }
+.totals-box { border-top:1px solid rgba(212,168,67,0.16); margin-top:14px; padding-top:14px; }
+.trow { display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.72rem; color:rgba(255,255,255,0.34); }
+.grand-box { display:flex; justify-content:space-between; align-items:baseline; background:rgba(212,168,67,0.07); border:1px solid rgba(212,168,67,0.25); border-radius:14px; padding:12px 16px; margin:12px 0 16px; box-shadow:0 0 20px rgba(212,168,67,0.10); }
+.grand-lbl { font-size:0.78rem; color:rgba(212,168,67,0.75); }
+.grand-val { font-family:'IBM Plex Mono',monospace; font-size:1.28rem; font-weight:700; color:#F0C840; }
+.btn-g { width:100%; padding:14px; border-radius:14px; background:linear-gradient(135deg,#C9A030,#8B6010); color:#05040A; font-family:'Alexandria',sans-serif; font-size:0.90rem; font-weight:800; border:none; cursor:pointer; transition:all 0.22s; box-shadow:0 4px 20px rgba(212,168,67,0.30); }
+.btn-g:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(212,168,67,0.45); }
+.btn-gh { width:100%; padding:12px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.10); color:rgba(255,255,255,0.42); font-family:'Alexandria',sans-serif; font-size:0.82rem; cursor:pointer; margin-top:8px; transition:all 0.20s; backdrop-filter:blur(6px); }
+.btn-gh:hover { border-color:rgba(255,255,255,0.25); color:rgba(255,255,255,0.70); }
+.empty-cart { text-align:center; padding:42px; color:rgba(255,255,255,0.22); font-size:0.90rem; }
+.toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(18px); background:rgba(12,8,30,0.95); border:1px solid rgba(212,168,67,0.40); border-radius:14px; padding:10px 20px; font-size:0.78rem; color:#F0C840; white-space:nowrap; opacity:0; transition:all 0.28s; z-index:500; pointer-events:none; backdrop-filter:blur(16px); box-shadow:0 4px 24px rgba(212,168,67,0.20); }
+.toast.s { opacity:1; transform:translateX(-50%) translateY(0); }
+.no-results { text-align:center; padding:60px 24px; color:rgba(255,255,255,0.20); position:relative; z-index:1; }
+
+/* CHECKOUT PAGE */
+.co-page { position:fixed; inset:0; z-index:400; background:#08061A; overflow-y:auto; transform:translateX(-100%); transition:transform 0.35s cubic-bezier(0.22,1,0.36,1); }
+.co-page.open { transform:translateX(0); }
+.co-header { position:sticky; top:0; z-index:10; background:rgba(8,6,26,0.95); backdrop-filter:blur(16px); border-bottom:1px solid rgba(212,168,67,0.12); padding:0 18px; height:58px; display:flex; align-items:center; gap:12px; }
+.co-back { background:none; border:1px solid rgba(255,255,255,0.10); color:rgba(255,255,255,0.55); border-radius:8px; padding:6px 12px; cursor:pointer; font-size:0.78rem; font-family:'Alexandria',sans-serif; transition:all 0.18s; }
+.co-back:hover { border-color:rgba(212,168,67,0.4); color:#F0C840; }
+.co-title { font-size:0.92rem; font-weight:700; color:#D4A843; flex:1; }
+.co-body { padding:18px 18px 80px; max-width:500px; margin:0 auto; }
+.co-section { background:rgba(255,255,255,0.04); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.10); border-radius:16px; padding:16px; margin-bottom:14px; }
+.co-sec-title { font-size:0.75rem; font-weight:800; color:rgba(212,168,67,0.75); margin-bottom:12px; letter-spacing:0.03em; }
+.co-field { margin-bottom:12px; }
+.co-label { font-size:0.65rem; color:rgba(245,239,224,0.50); margin-bottom:5px; display:block; font-weight:600; }
+.co-inp { width:100%; padding:11px 13px; background:rgba(255,255,255,0.05); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.10); border-radius:10px; color:#F5EFE0; font-family:'Alexandria',sans-serif; font-size:0.84rem; outline:none; direction:rtl; transition:border-color 0.2s; }
+.co-inp:focus { border-color:rgba(212,168,67,0.45); }
+.co-inp::placeholder { color:rgba(255,255,255,0.20); }
+.co-phone-wrap { display:flex; gap:8px; }
+.co-prefix { padding:11px 13px; background:rgba(212,168,67,0.08); border:1px solid rgba(212,168,67,0.20); border-radius:10px; color:rgba(212,168,67,0.70); font-family:'IBM Plex Mono',monospace; font-size:0.84rem; white-space:nowrap; direction:ltr; }
+.co-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.co-select { width:100%; padding:11px 13px; background:rgba(255,255,255,0.05); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.10); border-radius:10px; color:#F5EFE0; font-family:'Alexandria',sans-serif; font-size:0.84rem; outline:none; direction:rtl; cursor:pointer; appearance:none; -webkit-appearance:none; }
+.co-select:focus { border-color:rgba(212,168,67,0.45); }
+/* delivery options */
+.co-delivery-opts { display:flex; flex-direction:column; gap:8px; }
+.co-del-opt { display:flex; align-items:center; gap:12px; padding:12px 14px; border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.18s; }
+.co-del-opt.sel { border-color:rgba(212,168,67,0.50); background:rgba(212,168,67,0.08); }
+.co-del-opt input { accent-color:#D4A843; width:16px; height:16px; flex-shrink:0; }
+.co-del-info { flex:1; }
+.co-del-name { font-size:0.80rem; font-weight:700; color:#F5EFE0; }
+.co-del-sub { font-size:0.60rem; color:rgba(255,255,255,0.35); margin-top:2px; }
+.co-del-price { font-family:'IBM Plex Mono',monospace; font-size:0.80rem; font-weight:700; color:#F0C840; white-space:nowrap; }
+/* payment options */
+.co-pay-opts { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.co-pay-opt { display:flex; flex-direction:column; align-items:center; gap:5px; padding:12px 8px; border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.18s; text-align:center; }
+.co-pay-opt.sel { border-color:rgba(212,168,67,0.55); background:rgba(212,168,67,0.10); }
+.co-pay-icon { font-size:1.4rem; }
+.co-pay-name { font-size:0.64rem; font-weight:700; color:rgba(245,239,224,0.70); }
+.co-pay-opt.sel .co-pay-name { color:#F0C840; }
+/* order summary in checkout */
+.co-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.co-item-ic { font-size:1.5rem; flex-shrink:0; }
+.co-item-info { flex:1; min-width:0; }
+.co-item-name { font-size:0.78rem; font-weight:700; color:#F5EFE0; }
+.co-item-meta { font-size:0.56rem; color:rgba(212,168,67,0.50); margin-top:1px; }
+.co-item-pr { font-family:'IBM Plex Mono',monospace; font-size:0.80rem; font-weight:700; color:#F0C840; white-space:nowrap; }
+/* success */
+.co-success { text-align:center; padding:60px 24px; }
+.co-success-icon { font-size:4rem; margin-bottom:16px; display:block; }
+.co-success-title { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.8rem; color:#F0C840; margin-bottom:8px; }
+.co-success-sub { font-size:0.80rem; color:rgba(245,239,224,0.45); line-height:1.7; max-width:280px; margin:0 auto; }
+.co-order-no { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:rgba(212,168,67,0.55); margin-top:12px; letter-spacing:0.1em; }
+.card-form { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; margin-top:10px; }
+.cod-note { background:rgba(27,104,48,0.10); border:1px solid rgba(39,163,72,0.25); border-radius:10px; padding:12px 14px; margin-top:10px; font-size:0.74rem; color:rgba(80,210,100,0.85); line-height:1.75; text-align:center; }
+.stc-note { font-size:0.62rem; color:rgba(255,255,255,0.28); margin-top:5px; }
+/* Expanded payment card */
+.pay-expanded { position:relative; background:rgba(14,10,34,0.98); backdrop-filter:blur(28px); border:1px solid rgba(212,168,67,0.30); border-radius:20px; padding:22px 18px 18px; animation:payExpand 0.28s cubic-bezier(0.22,1,0.36,1); }
+@keyframes payExpand { from{opacity:0;transform:scale(0.90) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.pay-exp-close { position:absolute; top:12px; left:12px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14); color:rgba(255,255,255,0.60); border-radius:50%; width:34px; height:34px; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; transition:all 0.18s; }
+.pay-exp-close:hover { background:rgba(220,60,60,0.20); border-color:rgba(220,60,60,0.50); color:#FF6060; }
+.pay-exp-logo { display:flex; justify-content:center; margin-bottom:14px; margin-top:6px; }
+.pay-exp-name { text-align:center; font-size:1.08rem; font-weight:800; color:#F5EFE0; margin-bottom:4px; }
+.pay-exp-desc { text-align:center; font-size:0.62rem; color:rgba(255,255,255,0.32); margin-bottom:14px; }
+</style>
+</head>
+<body>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<div class="bg-orb orb3"></div>
+<div class="bg-orb orb4"></div>
+
+<header class="site-header">
+  <div>
+    <div class="brand-name">Atelier Dhawi</div>
+    <div class="brand-sub">Private Oud Collection</div>
+  </div>
+  <button class="cart-btn" id="cartBtn" onclick="openCart()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.836l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+    السلة
+    <span class="cart-count" id="cc">0</span>
+  </button>
+</header>
+
+<section class="hero">
+  <p class="hero-eyebrow">— Collection Exclusive —</p>
+  <h1 class="hero-title">
+    <span class="t1">كوليكشن</span>
+    <span class="t2">ضاوي</span>
+  </h1>
+  <p class="hero-desc">تركيبات عطرية فاخرة من أجود مواد العود العربي والشرقي — لكل لحظة حكاية.</p>
+  <div class="hero-divider"></div>
+</section>
+
+<div class="filters">
+  <!-- BATCH SIZE SELECTOR -->
+  <div class="batch-bar" id="batchBar"></div>
+
+  <div class="search-box">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+    <input class="search-inp" id="si" placeholder="ابحث عن عطر..." oninput="render()"/>
+  </div>
+  <div class="chips" id="sc"></div>
+  <div class="chips" id="gc"></div>
+</div>
+
+<div class="pgrid" id="grid"></div>
+<div class="no-results" id="nr" style="display:none">🔍<br><br>لا توجد عطور مطابقة</div>
+
+<!-- CHECKOUT PAGE -->
+<div class="co-page" id="coPage">
+  <div class="co-header">
+    <button class="co-back" onclick="closeCheckout()">← رجوع</button>
+    <div class="co-title" id="coTitle">تفاصيل الطلب</div>
+  </div>
+  <div class="co-body" id="coBody"></div>
+</div>
+
+<!-- CART OVERLAY -->
+<div class="overlay" id="ov" onclick="if(event.target===this)closeCart()">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-hdr">
+      <div><div class="sheet-title">🛒 السلة</div><div class="sheet-sub" id="csub">0 منتج</div></div>
+      <button class="clr-btn" onclick="clearCart()">مسح الكل</button>
+    </div>
+    <div id="ci"></div>
+    <div id="ct"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ───────────────────────────────────────────────────────────────────
+const P=[
+  {id:'layali',name:'ليالي الرياض',icon:'🌙',season:'شتاء',gender:'للجنسين',price:185,top:18,mid:52,base:30,stab:'طويل الأمد',
+   desc:'دهن عود كمبودي · ورد · خشب الصندل · مسك'},
+  {id:'taif',name:'سر الطائف',icon:'🌹',season:'ربيع',gender:'نسائي',price:145,top:28,mid:45,base:27,stab:'متوسط',
+   desc:'ورد الطائف · دهن عود هندي · مسك · خشب الصندل'},
+  {id:'malaki',name:'الملكي الفاخر',icon:'❄️',season:'شتاء',gender:'رجالي',price:220,top:12,mid:38,base:50,stab:'طويل جداً',
+   desc:'دهن عود كمبودي · عنبر · جاوي · خشب الصندل'},
+  {id:'khashab',name:'خشب الليل',icon:'🌿',season:'خريف',gender:'رجالي',price:195,top:10,mid:42,base:48,stab:'طويل الأمد',
+   desc:'دهن عود هندي · نجيل · جاوي · عنبر'},
+  {id:'ward',name:'ورد الصفاء',icon:'🌸',season:'ربيع',gender:'نسائي',price:155,top:35,mid:48,base:17,stab:'متوسط',
+   desc:'ورد الطائف · زعفران · مسك'},
+  {id:'amber',name:'عنبر السلطان',icon:'✨',season:'مناسبات',gender:'للجنسين',price:250,top:15,mid:40,base:45,stab:'طويل جداً',
+   desc:'عنبر · دهن عود · مسك · جاوي'},
+  {id:'bkhoor',name:'بخور الليالي',icon:'🕌',season:'مناسبات',gender:'للجنسين',price:170,top:20,mid:45,base:35,stab:'طويل الأمد',
+   desc:'دهن عود · جاوي · خشب الصندل · توابل'},
+  {id:'nakheel',name:'نخيل الذهب',icon:'🌴',season:'صيف',gender:'للجنسين',price:135,top:40,mid:38,base:22,stab:'خفيف',
+   desc:'زعفران · مسك · خشب الصندل'},
+  {id:'fajr',name:'فجر الرياض',icon:'🌅',season:'صيف',gender:'رجالي',price:160,top:30,mid:42,base:28,stab:'متوسط',
+   desc:'دهن عود هندي · هيل · زعفران · خشب الصندل'},
+  {id:'yasmin',name:'ليلة الياسمين',icon:'🌺',season:'ربيع',gender:'نسائي',price:140,top:42,mid:43,base:15,stab:'خفيف',
+   desc:'ورد · مسك · جاوي'},
+];
+
+// ── BATCH SIZES ─────────────────────────────────────────────────────────────
+const BATCH={
+  quarter:{label:'ربع تولة',ml:'2.9 مل',factor:0.30},
+  half:   {label:'نص تولة', ml:'5.8 مل',factor:0.55},
+  tola:   {label:'تولة',    ml:'11.6 مل',factor:1.0},
+};
+
+// ── STATE ───────────────────────────────────────────────────────────────────
+let cart=[], sf='الكل', gf='الكل', batch='quarter';
+// cardQty: per-card quantity before adding to cart
+const cardQty={};
+P.forEach(p=>cardQty[p.id]=1);
+
+const SI=['الكل','صيف','شتاء','ربيع','خريف','مناسبات'];
+const GI=['الكل','رجالي','نسائي','للجنسين'];
+const SE={صيف:'🌞',شتاء:'❄️',ربيع:'🌸',خريف:'🍂',مناسبات:'✨',الكل:'🔎'};
+const GE={'رجالي':'👔','نسائي':'💐','للجنسين':'🤝','الكل':'👥'};
+
+function calcPrice(basePrice){
+  return Math.max(5, Math.ceil(basePrice * BATCH[batch].factor / 5)*5);
+}
+
+// ── BARCODE ─────────────────────────────────────────────────────────────────
+function bc(seed){
+  const h=n=>{let x=n;x=((x>>16)^x)*0x45d9f3b;x=((x>>16)^x)*0x45d9f3b;return((x>>16)^x)>>>0;};
+  return Array.from({length:36},(_,i)=>{const v=h(seed*37+i);return{w:(v%3)+1,d:!!(v&4)};});
+}
+
+// ── BATCH BAR ────────────────────────────────────────────────────────────────
+function renderBatch(){
+  document.getElementById('batchBar').innerHTML=Object.entries(BATCH).map(([k,v])=>`
+    <button class="batch-opt${batch===k?' sel':''}" onclick="setBatch('${k}')">
+      <span class="bl">${v.label}</span>
+      <span class="bml">${v.ml}</span>
+    </button>`).join('');
+}
+function setBatch(k){batch=k;renderBatch();render();}
+
+// ── FILTER CHIPS ─────────────────────────────────────────────────────────────
+function chips(){
+  document.getElementById('sc').innerHTML=SI.map(s=>`<button class="chip${sf===s?' ag':''}" onclick="sf='${s}';chips();render()">${SE[s]} ${s}</button>`).join('');
+  document.getElementById('gc').innerHTML=GI.map(g=>`<button class="chip${gf===g?' ap':''}" onclick="gf='${g}';chips();render()">${GE[g]} ${g}</button>`).join('');
+}
+
+// ── RENDER GRID ───────────────────────────────────────────────────────────────
+function render(){
+  const q=(document.getElementById('si').value||'').trim().toLowerCase();
+  const f=P.filter(p=>(sf==='الكل'||p.season===sf)&&(gf==='الكل'||p.gender===gf)&&(!q||p.name.includes(q)));
+  const g=document.getElementById('grid');
+  const nr=document.getElementById('nr');
+  if(!f.length){g.innerHTML='';nr.style.display='block';return;}
+  nr.style.display='none';
+  g.innerHTML=f.map(p=>{
+    const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
+    const price=calcPrice(p.price);
+    const qty=cardQty[p.id]||1;
+    const s=p.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+    const bars=bc(s).map(b=>`<div style="width:${b.w}px;height:${b.d?'100%':'55%'};background:${b.d?'rgba(201,168,76,0.80)':'transparent'};align-self:flex-end"></div>`).join('');
+    return`<div class="pcard">
+<div class="pcard-bar"></div>
+<div class="pcard-body">
+<div class="pcard-badge">${p.season}</div>
+<div class="pcard-icon">${p.icon}</div>
+<div class="pcard-brand">ATELIER DHAWI</div>
+<div class="pcard-name">${p.name}</div>
+<div class="lbar"><div class="lt" style="flex:${p.top||0.1}"></div><div class="lm" style="flex:${p.mid||0.1}"></div><div class="lb" style="flex:${p.base||0.1}"></div></div>
+<div class="pcard-meta">${p.gender} · ${p.stab}</div>
+${p.desc?`<div style="font-size:0.54rem;color:rgba(220,185,100,0.72);line-height:1.65;margin-bottom:7px;direction:rtl">${p.desc}</div>`:''}
+<div class="bcode">${bars}</div>
+<div class="pcard-sep"></div>
+<div class="pcard-price">${price}<span style="font-size:0.56rem;opacity:0.6"> ر</span></div>
+<div class="pcard-size">${BATCH[batch].label} · ${BATCH[batch].ml}</div>
+<div class="card-qty-row">
+  <button class="cqbtn" onclick="cqChange('${p.id}',-1)">−</button>
+  <span class="cqnum" id="cq_${p.id}">${qty}</span>
+  <button class="cqbtn" onclick="cqChange('${p.id}',1)">+</button>
+</div>
+<button class="pcard-btn${ic?' ic':''}" onclick="add('${p.id}')">
+  ${ic?`✓ في السلة (${ic.qty})`:'+ أضف للسلة'}
+</button>
+</div></div>`;
+  }).join('');
+}
+
+function cqChange(id,d){
+  cardQty[id]=Math.max(1,Math.min(99,(cardQty[id]||1)+d));
+  const el=document.getElementById('cq_'+id);
+  if(el)el.textContent=cardQty[id];
+}
+
+// ── CART ──────────────────────────────────────────────────────────────────────
+function add(id){
+  const p=P.find(x=>x.id===id);if(!p)return;
+  const price=calcPrice(p.price);
+  const qty=cardQty[id]||1;
+  const key=id+'_'+batch;
+  const ex=cart.find(i=>i.key===key);
+  if(ex)ex.qty+=qty;
+  else cart.push({key,id,name:p.name,icon:p.icon,price,season:p.season,gender:p.gender,batch,batchLabel:BATCH[batch].label,batchMl:BATCH[batch].ml,qty});
+  cardQty[id]=1; // reset card qty
+  syncUI();render();toast(`🛒 ${qty > 1?qty+'× ':''}${p.name} (${BATCH[batch].label}) أُضيف للسلة`);
+}
+
+function rm(key){cart=cart.filter(i=>i.key!==key);syncUI();render();renderSheet();}
+function uqty(key,d){const i=cart.find(x=>x.key===key);if(i){i.qty=Math.max(1,i.qty+d);syncUI();renderSheet();}}
+function clearCart(){cart=[];syncUI();render();renderSheet();}
+function openCart(){document.getElementById('ov').classList.add('open');renderSheet();}
+function closeCart(){document.getElementById('ov').classList.remove('open');}
+
+function syncUI(){
+  const n=cart.reduce((s,i)=>s+i.qty,0);
+  const cc=document.getElementById('cc');
+  cc.textContent=n;cc.style.display=n?'flex':'none';
+  document.getElementById('csub').textContent=n+' منتج';
+}
+
+function renderSheet(){
+  const ci=document.getElementById('ci'),ct=document.getElementById('ct');
+  if(!cart.length){ci.innerHTML='<div class="empty-cart">🛒<br><br>السلة فارغة</div>';ct.innerHTML='';return;}
+  ci.innerHTML=cart.map(i=>`<div class="crow">
+<div class="crow-ic">${i.icon}</div>
+<div class="crow-info">
+  <div class="crow-name">${i.name}</div>
+  <div class="crow-meta">${i.batchLabel} · ${i.batchMl} · ${i.season}</div>
+</div>
+<div class="qty">
+  <button class="qbtn" onclick="uqty('${i.key}',-1)">−</button>
+  <span class="qnum">${i.qty}</span>
+  <button class="qbtn" onclick="uqty('${i.key}',1)">+</button>
+</div>
+<div class="crow-pr">
+  <div class="crow-total">${i.price*i.qty}<span style="font-size:0.53rem;opacity:0.6"> ر</span></div>
+  <button class="crow-rm" onclick="rm('${i.key}')">✕ حذف</button>
+</div>
+</div>`).join('');
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const vat=Math.round(sub*0.15);
+  const tot=sub+vat;
+  ct.innerHTML=`<div class="totals-box">
+<div class="trow"><span>المجموع</span><span style="font-family:'IBM Plex Mono',monospace">${sub} ر</span></div>
+<div class="trow"><span>ضريبة القيمة المضافة 15%</span><span style="font-family:'IBM Plex Mono',monospace">${vat} ر</span></div>
+<div class="grand-box"><span class="grand-lbl">الإجمالي شامل الضريبة</span><span class="grand-val">${tot}<span style="font-size:0.60rem;opacity:0.7"> ر</span></span></div>
+<button class="btn-g" onclick="closeCart();openCheckout()">🛍 إتمام الطلب</button>
+<button class="btn-gh" style="margin-top:5px" onclick="closeCart()">متابعة التسوق</button>
+</div>`;
+}
+
+// ── INVOICE ───────────────────────────────────────────────────────────────────
+function invoice(){
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const vat=Math.round(sub*0.15);
+  const tot=sub+vat;
+  const no='DW-'+Math.floor(100000+Math.random()*900000);
+  const dt=new Date().toLocaleDateString('ar-SA');
+  const rows=cart.map(i=>`<tr><td>${i.icon} ${i.name}<br><span style="font-size:9px;color:#888">${i.batchLabel} · ${i.batchMl}</span></td><td align="center">${i.qty}</td><td align="left">${i.price}</td><td align="left" style="font-weight:700">${i.price*i.qty}</td></tr>`).join('');
+  const w=window.open('','_blank','width=420,height=700');
+  w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 22px;font-size:12px;max-width:360px;margin:0 auto}.h{text-align:center;border-bottom:2px dashed #333;padding-bottom:14px;margin-bottom:14px}.bn{font-size:20px;font-weight:900;letter-spacing:3px}.bs{font-size:9px;letter-spacing:6px;color:#666;margin-top:3px}table{width:100%;border-collapse:collapse;margin:10px 0}th{font-size:10px;border-bottom:1px dashed #ccc;padding:4px 0;text-align:right}td{padding:6px 0;font-size:11px;border-bottom:1px solid #f0f0f0;text-align:right}.tot{border-top:2px dashed #333;padding-top:10px;margin-top:4px}.tr{display:flex;justify-content:space-between;padding:3px 0;font-size:11px}.grand{font-size:15px;font-weight:900;border-top:1px dashed #333;padding-top:8px;margin-top:4px}.ft{text-align:center;border-top:2px dashed #333;padding-top:12px;margin-top:14px;font-size:9px;color:#666;line-height:1.9}</style></head><body><div class="h"><div class="bn">ATELIER DHAWI</div><div class="bs">PRIVATE OUD LABORATORY</div><div style="margin-top:9px;font-size:10px">فاتورة رقم: ${no}</div><div style="font-size:10px">التاريخ: ${dt}</div><div style="font-size:9px;color:#888;margin-top:2px">الرقم الضريبي: 300XXXXXXXXX</div></div><table><thead><tr><th>المنتج</th><th align="center">الكمية</th><th align="left">السعر</th><th align="left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table><div class="tot"><div class="tr"><span>المجموع</span><span>${sub} ر.س</span></div><div class="tr"><span>ضريبة 15%</span><span>${vat} ر.س</span></div><div class="tr grand"><span>الإجمالي</span><span>${tot} ر.س</span></div></div><div class="ft">★ ★ ★ ★ ★<br>شكراً لتعاملكم معنا<br>Atelier Dhawi · Private Oud Lab</div><script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+// ── CHECKOUT ──────────────────────────────────────────────────────────────────
+const CITIES=['الرياض','جدة','مكة المكرمة','المدينة المنورة','الدمام','الخبر','الظهران','الطائف','تبوك','أبها','بريدة','حائل','نجران','جازان','الأحساء','القطيف','ينبع','عرعر','سكاكا','الجبيل'];
+let coStep='info'; // info | success
+let coDelivery='standard';
+let coPayment='mada';
+let coData={name:'',phone:'',city:'الرياض',district:'',street:''};
+let coCardNum='', coCardExp='', coCardCvv='', coCardName='', coStcPhone='';
+let coPayExpanded=false;
+let coOrderId='';
+
+const PAY_METHODS=[
+  {id:'mada',
+   logo:`<div style="background:#582D82;color:#fff;padding:7px 10px;border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:900;letter-spacing:1px;min-width:54px;text-align:center">mada</div>`,
+   logoLg:`<div style="background:#582D82;color:#fff;padding:18px 36px;border-radius:12px;font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:900;letter-spacing:3px">mada</div>`,
+   name:'مدى', desc:'بطاقات مدى السعودية'},
+  {id:'apple',
+   logo:`<div style="background:#000;color:#fff;padding:6px 8px;border-radius:5px;font-size:10px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;min-width:54px;text-align:center;letter-spacing:-0.3px">&#63743; Pay</div>`,
+   logoLg:`<div style="background:#000;color:#fff;padding:18px 36px;border-radius:12px;font-size:26px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:-0.5px">&#63743; Pay</div>`,
+   name:'Apple Pay', desc:'ادفع بسرعة وأمان مع Apple Pay'},
+  {id:'stc',
+   logo:`<div style="background:linear-gradient(135deg,#7B1760,#C030A0);color:#fff;padding:4px 6px;border-radius:5px;text-align:center;min-width:54px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:900">STC</div><div style="font-size:8px;opacity:0.85">pay</div></div>`,
+   logoLg:`<div style="background:linear-gradient(135deg,#7B1760,#C030A0);color:#fff;padding:18px 36px;border-radius:12px;text-align:center"><div style="font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:900">STC</div><div style="font-size:14px;opacity:0.90;margin-top:2px">pay</div></div>`,
+   name:'STC Pay', desc:'ادفع من محفظة STC Pay'},
+  {id:'cod',
+   logo:`<div style="background:linear-gradient(135deg,#1C6B30,#27A348);color:#fff;padding:6px 8px;border-radius:5px;font-size:8px;font-weight:700;text-align:center;min-width:54px;line-height:1.5">💵<br>نقداً</div>`,
+   logoLg:`<div style="background:linear-gradient(135deg,#1C6B30,#27A348);color:#fff;padding:18px 36px;border-radius:12px;text-align:center"><div style="font-size:42px">💵</div><div style="font-size:15px;font-weight:700;margin-top:8px">الدفع نقداً</div></div>`,
+   name:'عند الاستلام', desc:'ادفع نقداً أو بالبطاقة عند استلام طلبك'},
+];
+
+function expandedPaymentView(){
+  const m=PAY_METHODS.find(p=>p.id===coPayment);
+  if(!m) return '';
+  return `<div class="pay-expanded">
+    <button class="pay-exp-close" onclick="coPayExpanded=false;renderCheckout()">✕</button>
+    <div class="pay-exp-logo">${m.logoLg}</div>
+    <div class="pay-exp-name">${m.name}</div>
+    <div class="pay-exp-desc">${m.desc}</div>
+    ${paymentDetailsHtml()}
+  </div>`;
+}
+
+function paymentDetailsHtml(){
+  if(coPayment==='mada') return `<div class="card-form">
+    <div class="co-field"><label class="co-label">رقم البطاقة</label><input class="co-inp" id="f-cn" placeholder="•••• •••• •••• ••••" maxlength="19" value="${coCardNum}" oninput="coCardNum=this.value" style="direction:ltr;letter-spacing:2px"/></div>
+    <div class="co-row2">
+      <div class="co-field"><label class="co-label">تاريخ الانتهاء</label><input class="co-inp" id="f-ce" placeholder="MM/YY" maxlength="5" value="${coCardExp}" oninput="coCardExp=this.value" style="direction:ltr"/></div>
+      <div class="co-field"><label class="co-label">CVV</label><input class="co-inp" id="f-cv" placeholder="•••" maxlength="4" value="${coCardCvv}" oninput="coCardCvv=this.value" style="direction:ltr" type="password"/></div>
+    </div>
+    <div class="co-field"><label class="co-label">اسم حامل البطاقة</label><input class="co-inp" id="f-cname" placeholder="FULL NAME" value="${coCardName}" oninput="coCardName=this.value" style="direction:ltr;text-transform:uppercase"/></div>
+  </div>`;
+  if(coPayment==='apple') return `<div style="background:#000;border-radius:12px;padding:14px;text-align:center;color:#fff;font-size:0.88rem;font-weight:600;margin-top:10px;cursor:pointer;border:1px solid rgba(255,255,255,0.10)" onclick="toast('سيتم تفعيل Apple Pay عند تأكيد الطلب')"> Pay</div>`;
+  if(coPayment==='stc') return `<div class="card-form"><div class="co-field"><label class="co-label">رقم جوال STC Pay</label><input class="co-inp" id="f-stc" placeholder="05XXXXXXXX" maxlength="10" value="${coStcPhone}" oninput="coStcPhone=this.value.replace(/[^0-9]/g,'')" style="direction:ltr"/></div><div class="stc-note">ستصلك رسالة تأكيد على رقم STC Pay المرتبط</div></div>`;
+  if(coPayment==='cod') return `<div class="cod-note">💵 ادفع نقداً أو بالبطاقة عند استلام طلبك<br><span style="opacity:0.7;font-size:0.62rem">تُضاف رسوم 15 ر.س على إجمالي طلبك</span></div>`;
+  return '';
+}
+
+function openCheckout(){
+  if(!cart.length){toast('السلة فارغة');return;}
+  coStep='info';
+  coPayExpanded=false;
+  document.getElementById('coPage').classList.add('open');
+  renderCheckout();
+}
+function closeCheckout(){
+  document.getElementById('coPage').classList.remove('open');
+}
+
+function renderCheckout(){
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const deliveryCost=coDelivery==='express'?45:25;
+  const codFee=coPayment==='cod'?15:0;
+  const vat=Math.round((sub+deliveryCost)*0.15);
+  const tot=sub+deliveryCost+codFee+vat;
+
+  if(coStep==='success'){
+    document.getElementById('coTitle').textContent='تم الطلب ✓';
+    const no=coOrderId;
+    document.getElementById('coBody').innerHTML=`
+      <div class="co-success">
+        <span class="co-success-icon">✅</span>
+        <div class="co-success-title">شكراً ${coData.name||'لك'}!</div>
+        <div class="co-success-sub">تم استلام طلبك بنجاح. سيتم التواصل معك على الرقم ${coData.phone?'+966'+coData.phone:''} لتأكيد الطلب وتحديد موعد التوصيل.</div>
+        <div class="co-order-no">${no}</div>
+        <div style="margin-top:32px;display:flex;flex-direction:column;gap:10px">
+          <button class="btn-g" onclick="cart=[];syncUI();closeCheckout();render()">العودة للمتجر</button>
+          <button class="btn-gh" onclick="invoiceFromCheckout('${no}')">🧾 طباعة الفاتورة</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('coTitle').textContent='تفاصيل الطلب';
+  document.getElementById('coBody').innerHTML=`
+
+    <!-- ملخص الطلب -->
+    <div class="co-section">
+      <div class="co-sec-title">📦 ملخص الطلب</div>
+      ${cart.map(i=>`
+        <div class="co-item">
+          <div class="co-item-ic">${i.icon}</div>
+          <div class="co-item-info">
+            <div class="co-item-name">${i.name}</div>
+            <div class="co-item-meta">${i.batchLabel} · ${i.batchMl} · الكمية: ${i.qty}</div>
+          </div>
+          <div class="co-item-pr">${i.price*i.qty} ر</div>
+        </div>`).join('')}
+    </div>
+
+    <!-- بيانات العميل -->
+    <div class="co-section">
+      <div class="co-sec-title">👤 بيانات العميل</div>
+      <div class="co-field">
+        <label class="co-label">الاسم الكامل *</label>
+        <input class="co-inp" id="f-name" placeholder="مثال: محمد عبدالله الأحمد" value="${coData.name}" oninput="coData.name=this.value"/>
+      </div>
+      <div class="co-field">
+        <label class="co-label">رقم الجوال *</label>
+        <div class="co-phone-wrap">
+          <div class="co-prefix">+966</div>
+          <input class="co-inp" id="f-phone" placeholder="5XXXXXXXX" value="${coData.phone}" maxlength="9" oninput="coData.phone=this.value.replace(/[^0-9]/g,'')" style="direction:ltr"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- عنوان التوصيل -->
+    <div class="co-section">
+      <div class="co-sec-title">📍 عنوان التوصيل</div>
+      <div class="co-field">
+        <label class="co-label">المدينة *</label>
+        <select class="co-select" id="f-city" onchange="coData.city=this.value">
+          ${CITIES.map(c=>`<option value="${c}"${coData.city===c?' selected':''}>${c}</option>`).join('')}
+        </select>
+      </div>
+      <div class="co-row2">
+        <div class="co-field">
+          <label class="co-label">الحي</label>
+          <input class="co-inp" id="f-district" placeholder="اسم الحي" value="${coData.district}" oninput="coData.district=this.value"/>
+        </div>
+        <div class="co-field">
+          <label class="co-label">الشارع</label>
+          <input class="co-inp" id="f-street" placeholder="اسم الشارع" value="${coData.street}" oninput="coData.street=this.value"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- طريقة التوصيل -->
+    <div class="co-section">
+      <div class="co-sec-title">🚚 طريقة التوصيل</div>
+      <div class="co-delivery-opts">
+        <label class="co-del-opt${coDelivery==='standard'?' sel':''}" onclick="coDelivery='standard';renderCheckout()">
+          <input type="radio" name="delivery" ${coDelivery==='standard'?'checked':''} readonly/>
+          <div class="co-del-info">
+            <div class="co-del-name">شحن عادي</div>
+            <div class="co-del-sub">3 – 5 أيام عمل · أرامكس / SMSA</div>
+          </div>
+          <div class="co-del-price">25 ر</div>
+        </label>
+        <label class="co-del-opt${coDelivery==='express'?' sel':''}" onclick="coDelivery='express';renderCheckout()">
+          <input type="radio" name="delivery" ${coDelivery==='express'?'checked':''} readonly/>
+          <div class="co-del-info">
+            <div class="co-del-name">شحن سريع</div>
+            <div class="co-del-sub">1 – 2 يوم عمل · أرامكس Express</div>
+          </div>
+          <div class="co-del-price">45 ر</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- طريقة الدفع -->
+    <div class="co-section">
+      <div class="co-sec-title">💳 طريقة الدفع</div>
+      ${coPayExpanded ? expandedPaymentView() : `<div class="co-pay-opts">
+        ${PAY_METHODS.map(p=>`
+          <div class="co-pay-opt${coPayment===p.id?' sel':''}" onclick="coPayment='${p.id}';coPayExpanded=true;renderCheckout()">
+            <div class="co-pay-icon" style="font-size:inherit;display:flex;justify-content:center">${p.logo}</div>
+            <div class="co-pay-name">${p.name}</div>
+          </div>`).join('')}
+      </div>`}
+    </div>
+
+    <!-- إجمالي -->
+    <div class="co-section">
+      <div class="trow"><span>المجموع</span><span style="font-family:'IBM Plex Mono',monospace">${sub} ر</span></div>
+      <div class="trow"><span>الشحن</span><span style="font-family:'IBM Plex Mono',monospace">${deliveryCost} ر</span></div>
+      ${codFee?`<div class="trow" style="color:rgba(255,190,80,0.70)"><span>رسوم الدفع عند الاستلام</span><span style="font-family:'IBM Plex Mono',monospace">15 ر</span></div>`:''}
+      <div class="trow"><span>الضريبة 15%</span><span style="font-family:'IBM Plex Mono',monospace">${vat} ر</span></div>
+      <div class="grand-box" style="margin-top:10px">
+        <span class="grand-lbl">الإجمالي</span>
+        <span class="grand-val">${tot}<span style="font-size:0.60rem;opacity:0.7"> ر</span></span>
+      </div>
+      <button class="btn-g" onclick="submitOrder()">تأكيد الطلب ←</button>
+    </div>`;
+}
+
+function submitOrder(){
+  if(!coData.name.trim()){toast('⚠️ الرجاء إدخال الاسم الكامل');return;}
+  if(!coData.phone.trim()||coData.phone.length<9){toast('⚠️ رقم الجوال غير صحيح');return;}
+  if(coPayment==='mada'&&coCardNum.replace(/\s/g,'').length<16){toast('⚠️ رقم البطاقة غير مكتمل');return;}
+  if(coPayment==='mada'&&coCardExp.length<4){toast('⚠️ تاريخ انتهاء البطاقة غير صحيح');return;}
+  if(coPayment==='mada'&&coCardCvv.length<3){toast('⚠️ رمز CVV غير صحيح');return;}
+  if(coPayment==='stc'&&(coStcPhone.length<10||!coStcPhone.startsWith('05'))){toast('⚠️ رقم STC Pay غير صحيح');return;}
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const deliveryCost=coDelivery==='express'?45:25;
+  const codFee=coPayment==='cod'?15:0;
+  const vat=Math.round((sub+deliveryCost)*0.15);
+  const tot=sub+deliveryCost+codFee+vat;
+  coOrderId='DW-'+Math.floor(100000+Math.random()*900000);
+  const order={id:coOrderId,date:new Date().toISOString(),customer:{...coData},
+    items:cart.map(i=>({icon:i.icon,name:i.name,batchLabel:i.batchLabel,price:i.price,qty:i.qty})),
+    subtotal:sub,deliveryCost,codFee,vat,total:tot,delivery:coDelivery,payment:coPayment,status:'new'};
+  try{const existing=JSON.parse(localStorage.getItem('dw_agency_orders')||'[]');existing.unshift(order);localStorage.setItem('dw_agency_orders',JSON.stringify(existing));}catch(e){}
+  coStep='success';
+  renderCheckout();
+  document.getElementById('coPage').scrollTop=0;
+}
+
+function invoiceFromCheckout(no){
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const deliveryCost=coDelivery==='express'?45:25;
+  const codFee=coPayment==='cod'?15:0;
+  const vat=Math.round((sub+deliveryCost)*0.15);
+  const tot=sub+deliveryCost+codFee+vat;
+  const dt=new Date().toLocaleDateString('ar-SA');
+  const rows=cart.map(i=>`<tr><td>${i.icon} ${i.name}<br><span style="font-size:9px;color:#888">${i.batchLabel} · ${i.batchMl}</span></td><td align="center">${i.qty}</td><td align="left">${i.price}</td><td align="left" style="font-weight:700">${i.price*i.qty}</td></tr>`).join('');
+  const addrLine=[coData.district,coData.street,coData.city].filter(Boolean).join('، ');
+  const w=window.open('','_blank','width=420,height=760');
+  w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 22px;font-size:12px;max-width:360px;margin:0 auto}.h{text-align:center;border-bottom:2px dashed #333;padding-bottom:14px;margin-bottom:14px}.bn{font-size:20px;font-weight:900;letter-spacing:3px}.bs{font-size:9px;letter-spacing:6px;color:#666;margin-top:3px}.customer{background:#f8f8f8;border:1px dashed #ccc;border-radius:6px;padding:10px;margin-bottom:12px;font-size:10px;line-height:1.8}table{width:100%;border-collapse:collapse;margin:10px 0}th{font-size:10px;border-bottom:1px dashed #ccc;padding:4px 0;text-align:right}td{padding:6px 0;font-size:11px;border-bottom:1px solid #f0f0f0;text-align:right}.tot{border-top:2px dashed #333;padding-top:10px;margin-top:4px}.tr{display:flex;justify-content:space-between;padding:3px 0;font-size:11px}.grand{font-size:15px;font-weight:900;border-top:1px dashed #333;padding-top:8px;margin-top:4px}.ft{text-align:center;border-top:2px dashed #333;padding-top:12px;margin-top:14px;font-size:9px;color:#666;line-height:1.9}</style></head><body><div class="h"><div class="bn">ATELIER DHAWI</div><div class="bs">PRIVATE OUD LABORATORY</div><div style="margin-top:9px;font-size:10px">فاتورة رقم: ${no}</div><div style="font-size:10px">التاريخ: ${dt}</div><div style="font-size:9px;color:#888;margin-top:2px">الرقم الضريبي: 300XXXXXXXXX</div></div><div class="customer"><strong>العميل:</strong> ${coData.name}<br><strong>الجوال:</strong> +966${coData.phone}<br><strong>العنوان:</strong> ${addrLine||coData.city}<br><strong>التوصيل:</strong> ${coDelivery==='express'?'سريع 1-2 يوم':'عادي 3-5 أيام'}<br><strong>الدفع:</strong> ${coPayment==='mada'?'مدى':coPayment==='apple'?'Apple Pay':coPayment==='stc'?'STC Pay':'عند الاستلام'}</div><table><thead><tr><th>المنتج</th><th align="center">الكمية</th><th align="left">السعر</th><th align="left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table><div class="tot"><div class="tr"><span>الشحن</span><span>${deliveryCost} ر.س</span></div>${codFee?`<div class="tr"><span>رسوم الاستلام</span><span>15 ر.س</span></div>`:''}<div class="tr"><span>ضريبة 15%</span><span>${vat} ر.س</span></div><div class="tr grand"><span>الإجمالي</span><span>${tot} ر.س</span></div></div><div class="ft">★ ★ ★ ★ ★<br>شكراً لتعاملكم معنا<br>Atelier Dhawi · Private Oud Lab</div><script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('s');setTimeout(()=>t.classList.remove('s'),2400);}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderBatch();chips();render();
+</script>
+</body>
+</html>
