@@ -154,7 +154,7 @@ const supabase = (() => {
       if (!_defaultClient) {
         _defaultClient = createBrowserClient();
       }
-      return (_defaultClient as Record<string | symbol, unknown>)[prop];
+      return (_defaultClient as unknown as Record<string | symbol, unknown>)[prop];
     },
   });
 })();
