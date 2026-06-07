@@ -485,23 +485,7 @@ const PENDING_RECIPES=[
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
-  // Bulkaroma Order #15403 only — old orders covered by STOCK_FIX stk_fix_02
-  {id:"amber_oud",qty:25,cost:0},{id:"benzyl",qty:50,cost:0},
-  {id:"cmp121",qty:100,cost:0},{id:"sandal_indi",qty:500,cost:0},
-  {id:"crimson",qty:1000,cost:0},{id:"artessence",qty:200,cost:0},
-  {id:"black_agar",qty:50,cost:0},{id:"vetiver",qty:100,cost:0},
-  {id:"patchouli",qty:100,cost:0},{id:"cardamom",qty:50,cost:0},
-  {id:"pea",qty:1000,cost:0},{id:"ambermor",qty:200,cost:0},
-  {id:"civettone",qty:5,cost:0},{id:"metal_made",qty:1000,cost:0},
-  {id:"cmp173",qty:100,cost:0},{id:"oud_synth",qty:100,cost:0},
-  {id:"benzoin_b",qty:1000,cost:0},{id:"oud_royal",qty:100,cost:0},
-  {id:"pretty_oud",qty:50,cost:0},{id:"oliffac",qty:5,cost:0},
-  {id:"cmp91",qty:200,cost:0},{id:"sleek_oud",qty:100,cost:0},
-  {id:"cashmeran",qty:500,cost:0},{id:"benzoin_a",qty:200,cost:0},
-  {id:"tonquitone",qty:10,cost:0},{id:"iso_e",qty:1000,cost:0},
-  {id:"safraleine",qty:100,cost:0},{id:"cmp90",qty:100,cost:0},
-  {id:"white_oudh",qty:25,cost:0},{id:"wild_petal",qty:100,cost:0},
-  {id:"labdanum",qty:200,cost:0},
+  // #15403 = customs relabeling only — no new stock quantities
 ];
 
 const RAW=[
@@ -619,30 +603,32 @@ function applyPendingPurchases(inv){
   return [...map.values()];
 }
 const STOCK_FIX_VERSION="stk_fix_02";
-// Hard-resets stock to correct absolute totals (all orders combined).
-// Fixes re-application doubling that occurs on each PENDING_PURCHASES version bump.
+// Hard-resets stock to correct values — #15403 was customs relabeling only,
+// no new quantities. Restores stk_fix_01 Bulkaroma values + fixes Luxodor doubling.
 const STOCK_FIX=[
-  // Bulkaroma totals (Orders 1+2 + Order #15403)
-  {id:"labdanum",qty:400,cost:61},{id:"benzoin_a",qty:400,cost:58},
-  {id:"benzoin_b",qty:2000,cost:121},{id:"benzyl",qty:100,cost:14},
-  {id:"safraleine",qty:200,cost:284},{id:"vetiver",qty:200,cost:281},
-  {id:"crimson",qty:2000,cost:372},{id:"cardamom",qty:100,cost:187},
-  {id:"cmp121",qty:200,cost:67},{id:"metal_made",qty:2000,cost:338},
-  {id:"artessence",qty:400,cost:283},{id:"iso_e",qty:2000,cost:317},
-  {id:"sandal_indi",qty:1000,cost:228},{id:"oud_synth",qty:200,cost:387},
-  {id:"black_agar",qty:100,cost:237},{id:"cmp91",qty:400,cost:185},
-  {id:"cmp90",qty:200,cost:88},{id:"cmp173",qty:200,cost:71},
-  {id:"pretty_oud",qty:100,cost:140},{id:"pea",qty:2000,cost:264},
-  {id:"wild_petal",qty:200,cost:38},{id:"amber_oud",qty:50,cost:10},
-  {id:"white_oudh",qty:50,cost:10},{id:"tonquitone",qty:20,cost:27},
-  {id:"cashmeran",qty:1000,cost:445},{id:"patchouli",qty:200,cost:114},
-  {id:"ambermor",qty:300,cost:360},{id:"oliffac",qty:10,cost:30},
-  // Luxodor Order (correct to physical ordered qty only)
+  // Bulkaroma (Orders 1+2 only — same as stk_fix_01)
+  {id:"labdanum",qty:200,cost:61},{id:"benzoin_a",qty:200,cost:58},
+  {id:"benzoin_b",qty:1000,cost:121},{id:"benzyl",qty:50,cost:14},
+  {id:"safraleine",qty:100,cost:284},{id:"vetiver",qty:100,cost:281},
+  {id:"crimson",qty:1000,cost:372},{id:"cardamom",qty:50,cost:187},
+  {id:"cmp121",qty:100,cost:67},{id:"metal_made",qty:1000,cost:338},
+  {id:"artessence",qty:200,cost:283},{id:"iso_e",qty:1000,cost:317},
+  {id:"sandal_indi",qty:500,cost:228},{id:"oud_synth",qty:100,cost:387},
+  {id:"black_agar",qty:50,cost:237},{id:"cmp91",qty:200,cost:185},
+  {id:"cmp90",qty:100,cost:88},{id:"cmp173",qty:100,cost:71},
+  {id:"pretty_oud",qty:50,cost:140},{id:"pea",qty:1000,cost:264},
+  {id:"wild_petal",qty:100,cost:38},{id:"amber_oud",qty:25,cost:10},
+  {id:"white_oudh",qty:25,cost:10},{id:"tonquitone",qty:10,cost:27},
+  {id:"cashmeran",qty:500,cost:445},{id:"patchouli",qty:100,cost:114},
+  {id:"ambermor",qty:100,cost:360},{id:"oliffac",qty:5,cost:30},
+  // Luxodor Order (correct to physical ordered qty — was doubled by blk_lux_02)
   {id:"lux_symphony",qty:100,cost:176},{id:"lux_hindi_sweety",qty:100,cost:300},
   {id:"lux_exclusif",qty:100,cost:158},{id:"lux_cambodi",qty:100,cost:300},
   {id:"lux_hindi",qty:100,cost:300},{id:"lux_black",qty:100,cost:300},
   {id:"lux_fixative",qty:100,cost:83},{id:"lux_greatness",qty:100,cost:161},
   {id:"lux_afternoon",qty:100,cost:98},
+  // #15403-only items (civettone/sleek_oud were already in stock)
+  {id:"civettone",qty:5,cost:260},{id:"sleek_oud",qty:100,cost:380},
 ];
 function applyStockFix(inv){
   if(lsGet("dw_sf_ver","")===STOCK_FIX_VERSION)return inv;
