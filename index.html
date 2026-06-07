@@ -403,7 +403,7 @@ const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
-const PENDING_RECIPES_VERSION="rec_21";
+const PENDING_RECIPES_VERSION="rec_22";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
@@ -482,47 +482,48 @@ const PENDING_RECIPES=[
    desc:"قمة: زعفران+هيل | قلب: Sleek Oud+آرتيسانس+Black Agar | قاعدة: فيتيفير+صندل+لبدانوم | معاصر خليجي للجنسين",
    ing:[["sleek_oud",8],["artessence",3],["black_agar",1.5],["cmp90",2],["sandal_indi",6],["vetiver",1.5],["labdanum",1.5],["benzoin_b",2.5],["ambermor",1.5],["safraleine",0.4],["cashmeran",1.2],["cardamom",0.5],["iso_e",0.3],["dpg",4]],
    steps:["ذب في بيكر 60°: لبدانوم 1.5جم + بنزوين B سايل 2.5مل — قضيب مغناطيسي 15 دقيقة حتى يذوب اللبدانوم","أطفئ واترك يبرد لـ 45°، أضف DPG 4مل","على تحريك بارد: أضف Sleek Oud 8مل (Bulkaroma) — العمود الرئيسي، ناعم وعصري وقابل للارتداء يومياً","أضف Artessence 3مل (Biolandes) — يُعطي الـ Sleek Oud عمقاً طبيعياً وطابعاً خليجياً لا يوجد بدونه","أضف Black Agar Givco 1.5مل — يُشرق التركيبة بفرانكنسنس-عنبر أنيق ويوازن الثقل","أضف CMP90 2مل (Bulkaroma) — لمسة توابل خليجية تُكمل هوية الخلطة","أضف Vetiver 1.5مل + Cardamom 0.5مل — دخان جذور + هيل خفيف يمنحان الطابع الخليجي","أضف Sandalwood INDI 5مل + Ambermor شمعي 1.5جم (⚠️ أذبه على 50° أولاً) — الجسم الخشبي الكريمي المستدام","سرنجة رئيسية: Safraleine 0.4مل (جيفودان) + Cashmeran 0.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): عنبر 2000 1مل (شرفان) + مسك متسلق 0.5مل (الحميدي) + شمامة 0.5جم (الحميدي)","عتّق 7-10 أيام — أسرع نضجاً من الأثقل، بعد أسبوع تكون جاهزة للاستخدام"]},
-  // ── وصفات بسيطة (rec_21) — مقادير لـ100مل، تُحسب تلقائياً للأحجام 8/12/50/100مل ─────────
-  {id:"s_cambodi",name:"كمبودي خالص",icon:"🟤",season:"للجنسين",gender:"للجنسين",stability:"24 ساعة",
-   desc:"Lux Cambodi نقي — مثبت + DPG فقط. وصفة بسيطة تظهر الكمبودي بكل جلالته",
-   ing:[["lux_cambodi",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG أولاً ← أضف Lux Fixative ← أضف Lux Cambodi — قضيب مغناطيسي دقيقتين","انقل للزجاجة فوراً ← لا تسخين — هذه الوصفة تُبنى بارداً"]},
-  {id:"s_hindi_sweety",name:"هندي حلو خالص",icon:"🟡",season:"للجنسين",gender:"للجنسين",stability:"24 ساعة",
-   desc:"Lux Hindi Sweety نقي — هندي ذهبي حلو. وصفة بسيطة بلا إضافات",
-   ing:[["lux_hindi_sweety",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG ← Lux Fixative ← Hindi Sweety — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
-  {id:"s_hindi",name:"هندي خالص",icon:"🟠",season:"للجنسين",gender:"للجنسين",stability:"24 ساعة",
-   desc:"Lux Hindi نقي — هندي كلاسيكي مركّز. وصفة بسيطة",
-   ing:[["lux_hindi",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Hindi — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
-  {id:"s_black",name:"عود أسود خالص",icon:"⚫",season:"مناسبات",gender:"رجالي",stability:"24+ ساعة",
-   desc:"Lux Black نقي — عود أسود داكن بلا تعقيد. وصفة بسيطة",
-   ing:[["lux_black",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Black — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
-  {id:"s_sleek",name:"سليك عود خالص",icon:"🪶",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",
-   desc:"Sleek Oud Bulkaroma نقي — عود ناعم معاصر خالص. وصفة بسيطة",
-   ing:[["sleek_oud",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG ← Lux Fixative ← Sleek Oud — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
-  {id:"s_rose",name:"ورد بري خالص",icon:"🌸",season:"صيف",gender:"نسائي",stability:"16 ساعة",
-   desc:"Wild Petal + PEA Bulkaroma — ورد بلا تدخل. PEA هو الكحول الحامل الطبيعي هنا",
-   ing:[["wild_petal",50],["pea",40],["lux_fixative",10]],
-   steps:["بيكر بارد: PEA (الكحول الحامل) أولاً ← أضف Wild Petal — هذان يشكّلان الورد الكامل","أضف Lux Fixative ← قضيب دقيقتين ← انقل للزجاجة فوراً"]},
-  {id:"s_symphony",name:"سيمفوني خالص",icon:"🎵",season:"صيف",gender:"للجنسين",stability:"20 ساعة",
-   desc:"Lux Symphony نقي — زعفران→ورد بلغاري+غراس→عود أسام+كاكاو. وصفة بسيطة",
-   ing:[["lux_symphony",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Symphony — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
-  {id:"s_afternoon",name:"أفترنون خالص",icon:"🌅",season:"صيف",gender:"للجنسين",stability:"18 ساعة",
-   desc:"Lux Afternoon نقي — برتقال صقلي→مندارين+بيرغامو→زنجبيل+عنبر. وصفة بسيطة",
-   ing:[["lux_afternoon",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Afternoon — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
-  {id:"s_greatness",name:"عظمة خالص",icon:"👑",season:"مناسبات",gender:"رجالي",stability:"24 ساعة",
-   desc:"Lux Greatness نقي — عظمة بلا تعديل. وصفة بسيطة",
-   ing:[["lux_greatness",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Greatness — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
-  {id:"s_exclusif",name:"إكسكلوسيف خالص",icon:"✨",season:"مناسبات",gender:"للجنسين",stability:"24 ساعة",
-   desc:"Lux Exclusif نقي — Exclusif مركّز بلا تعديل. وصفة بسيطة",
-   ing:[["lux_exclusif",80],["lux_fixative",12],["dpg",8]],
-   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Exclusif — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
+  // ── عطور مستوحاة (rec_22) — Bulkaroma | 20% عطر + 5% مثبت + 75% DPG ──────────────────────
+  // النسب المتعارف عليها: EDP 15-20% | مواد قوية (سافرالين/آيسو) تُخفَّض لـ5-10%
+  {id:"s_ins_sleek",name:"سليك عود",icon:"🪶",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",inspired:true,
+   desc:"Sleek Oud Bulkaroma — عود ناعم معاصر | 20% زيت + 5% مثبت + 75% DPG",
+   ing:[["sleek_oud",20],["cashmeran",5],["dpg",75]],
+   steps:["بيكر بارد: DPG 75مل أولاً ← Cashmeran 5مل (مثبت مسكي خشبي) ← Sleek Oud 20مل — قضيب دقيقتين","انقل للزجاجة فوراً ← بارد كاملاً"]},
+  {id:"s_ins_rose",name:"ورد بري",icon:"🌸",season:"صيف",gender:"نسائي",stability:"14 ساعة",inspired:true,
+   desc:"Wild Petal 236A Bulkaroma — ورد طبيعي | 20% + 5% مثبت + PEA كحامل طبيعي",
+   ing:[["wild_petal",20],["lux_fixative",5],["pea",75]],
+   steps:["بيكر بارد: PEA 75مل (الكحول الحامل الوردي) ← Lux Fixative 5مل ← Wild Petal 20مل — قضيب دقيقتين","انقل للزجاجة فوراً ← بارد كاملاً"]},
+  {id:"s_ins_artessence",name:"آرتيسانس عود طبيعي",icon:"🌿",season:"مناسبات",gender:"رجالي",stability:"24+ ساعة",inspired:true,
+   desc:"Artessence Biolandes — عود طبيعي المنشأ | 20% + بنزوين B 5% + 75% DPG",
+   ing:[["artessence",20],["benzoin_b",5],["dpg",75]],
+   steps:["بيكر بارد: DPG 75مل ← Benzoin B سايل 5مل (راتنج بلسمي) ← Artessence 20مل — قضيب دقيقتين","انقل للزجاجة فوراً"]},
+  {id:"s_ins_vetiver",name:"فيتيفير أرضي",icon:"🌾",season:"شتاء",gender:"رجالي",stability:"24 ساعة",inspired:true,
+   desc:"Vetiver EO Bulkaroma — فيتيفير نجيل هندي طبيعي | 15% (زيت أساسي قوي) + 5% + 80% DPG",
+   ing:[["vetiver",15],["cashmeran",5],["dpg",80]],
+   steps:["بيكر بارد: DPG 80مل ← Cashmeran 5مل ← Vetiver EO 15مل (قوي — لا تتجاوز 15%) — قضيب دقيقتين","انقل للزجاجة فوراً"]},
+  {id:"s_ins_patchouli",name:"باتشولي سومطرة",icon:"🍃",season:"خريف",gender:"للجنسين",stability:"24 ساعة",inspired:true,
+   desc:"Patchouli Sumatra Bulkaroma — باتشولي ترابي أرضي | 15% + 5% + 80% DPG",
+   ing:[["patchouli",15],["cashmeran",5],["dpg",80]],
+   steps:["بيكر بارد: DPG 80مل ← Cashmeran 5مل ← Patchouli 15مل — قضيب دقيقتين","انقل للزجاجة فوراً"]},
+  {id:"s_ins_sandal",name:"صندل هندي",icon:"🪵",season:"للجنسين",gender:"للجنسين",stability:"20 ساعة",inspired:true,
+   desc:"Sandalwood INDI Bulkaroma — صندل كريمي دافئ | 25% (خفيف يتحمل نسبة أعلى) + 5% + 70% DPG",
+   ing:[["sandal_indi",25],["lux_fixative",5],["dpg",70]],
+   steps:["بيكر بارد: DPG 70مل ← Lux Fixative 5مل ← Sandalwood INDI 25مل — قضيب دقيقتين","انقل للزجاجة فوراً"]},
+  {id:"s_ins_saffron",name:"زعفران جيفودان",icon:"🌺",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",inspired:true,
+   desc:"Safraleine Givaudan — زعفران جلدي قوي | 5% فقط (قوة استثنائية) + Cashmeran 5% + 90% DPG",
+   ing:[["safraleine",5],["cashmeran",5],["dpg",90]],
+   steps:["بيكر بارد: DPG 90مل ← Cashmeran 5مل ← Safraleine 5مل ⚠️ (قوي جداً — لا تزد) — قضيب دقيقة واحدة فقط","انقل للزجاجة فوراً — تمدد قوي جداً على البشرة"]},
+  {id:"s_ins_cmp121",name:"CMP121 معاصر",icon:"💫",season:"صيف",gender:"للجنسين",stability:"18 ساعة",inspired:true,
+   desc:"CMP 121 Contemporary Bulkaroma — أناقة عصرية | 20% + 5% + 75% DPG",
+   ing:[["cmp121",20],["lux_fixative",5],["dpg",75]],
+   steps:["بيكر بارد: DPG 75مل ← Lux Fixative 5مل ← CMP121 20مل — قضيب دقيقتين","انقل للزجاجة فوراً"]},
+  {id:"s_ins_crimson",name:"كريمسون فير",icon:"🔴",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",inspired:true,
+   desc:"Crimson Fair Bulkaroma — فاكهي مخملي | 20% + 5% + 75% DPG",
+   ing:[["crimson",20],["lux_fixative",5],["dpg",75]],
+   steps:["بيكر بارد: DPG 75مل ← Lux Fixative 5مل ← Crimson Fair 20مل — قضيب دقيقتين","انقل للزجاجة فوراً"]},
+  {id:"s_ins_metal",name:"ميتال ميد",icon:"⚙️",season:"صيف",gender:"رجالي",stability:"16 ساعة",inspired:true,
+   desc:"Metal Made Bulkaroma — توقيع معدني حديث | 20% + 5% + 75% DPG",
+   ing:[["metal_made",20],["cashmeran",5],["dpg",75]],
+   steps:["بيكر بارد: DPG 75مل ← Cashmeran 5مل ← Metal Made 20مل — قضيب دقيقتين","انقل للزجاجة فوراً"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -835,6 +836,7 @@ function App(){
   const [mixAmt,setMixAmt]=useState(3);
   const [showPurchaseForm,setShowPurchaseForm]=useState(false);
   const [readyFilter,setReadyFilter]=useState(false);
+  const [inspiredFilter,setInspiredFilter]=useState(false);
   const [recipeSearch,setRecipeSearch]=useState("");
   const [recipeSeasonF,setRecipeSeasonF]=useState("الكل");
   const [recipeGenderF,setRecipeGenderF]=useState("الكل");
@@ -1315,6 +1317,7 @@ function App(){
     if(recipeSeasonF!=="الكل")f=f.filter(r=>r.season===recipeSeasonF);
     if(recipeGenderF!=="الكل")f=f.filter(r=>r.gender===recipeGenderF);
     if(readyFilter)f=f.filter(r=>canMake(r));
+    if(inspiredFilter)f=f.filter(r=>r.inspired===true);
     return f;
   })();
   const _m=new Date().getMonth();
@@ -1872,8 +1875,11 @@ function App(){
             <button onClick={()=>setReadyFilter(f=>!f)} style={{width:"100%",padding:"6px",background:readyFilter?"rgba(80,160,80,0.2)":"rgba(255,255,255,0.03)",border:`1px solid ${readyFilter?"rgba(80,160,80,0.5)":"rgba(255,255,255,0.08)"}`,color:readyFilter?"#80c080":"rgba(255,255,255,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
               {readyFilter?"✅ جاهز للإنتاج — اضغط للكل":"⚗️ عرض الجاهز للإنتاج فقط"}
             </button>
-            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter)&&<div style={{marginTop:"5px",fontSize:"0.65rem",color:"rgba(232,200,112,0.5)",textAlign:"center"}}>
-              {filteredRecipes.length} وصفة — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);}}>مسح الفلاتر</span>
+            <button onClick={()=>setInspiredFilter(f=>!f)} style={{width:"100%",padding:"6px",marginTop:"5px",background:inspiredFilter?"rgba(180,120,255,0.2)":"rgba(255,255,255,0.03)",border:`1px solid ${inspiredFilter?"rgba(180,120,255,0.5)":"rgba(255,255,255,0.08)"}`,color:inspiredFilter?"#c890f8":"rgba(255,255,255,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
+              {inspiredFilter?"🌟 العطور المستوحاة — اضغط للكل":"🌟 عرض العطور المستوحاة فقط"}
+            </button>
+            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter||inspiredFilter)&&<div style={{marginTop:"5px",fontSize:"0.65rem",color:"rgba(232,200,112,0.5)",textAlign:"center"}}>
+              {filteredRecipes.length} وصفة — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);setInspiredFilter(false);}}>مسح الفلاتر</span>
             </div>}
           </div>}
           {suggestedRecipe&&!catalogMode&&!showCustomerStore&&<div className="suggest-card">
