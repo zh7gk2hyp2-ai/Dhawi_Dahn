@@ -403,7 +403,7 @@ const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
-const PENDING_RECIPES_VERSION="rec_20";
+const PENDING_RECIPES_VERSION="rec_21";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
@@ -481,7 +481,48 @@ const PENDING_RECIPES=[
   {id:"sleek_oud_modern",name:"العود الناعم المعاصر",icon:"💎",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",
    desc:"قمة: زعفران+هيل | قلب: Sleek Oud+آرتيسانس+Black Agar | قاعدة: فيتيفير+صندل+لبدانوم | معاصر خليجي للجنسين",
    ing:[["sleek_oud",8],["artessence",3],["black_agar",1.5],["cmp90",2],["sandal_indi",6],["vetiver",1.5],["labdanum",1.5],["benzoin_b",2.5],["ambermor",1.5],["safraleine",0.4],["cashmeran",1.2],["cardamom",0.5],["iso_e",0.3],["dpg",4]],
-   steps:["ذب في بيكر 60°: لبدانوم 1.5جم + بنزوين B سايل 2.5مل — قضيب مغناطيسي 15 دقيقة حتى يذوب اللبدانوم","أطفئ واترك يبرد لـ 45°، أضف DPG 4مل","على تحريك بارد: أضف Sleek Oud 8مل (Bulkaroma) — العمود الرئيسي، ناعم وعصري وقابل للارتداء يومياً","أضف Artessence 3مل (Biolandes) — يُعطي الـ Sleek Oud عمقاً طبيعياً وطابعاً خليجياً لا يوجد بدونه","أضف Black Agar Givco 1.5مل — يُشرق التركيبة بفرانكنسنس-عنبر أنيق ويوازن الثقل","أضف CMP90 2مل (Bulkaroma) — لمسة توابل خليجية تُكمل هوية الخلطة","أضف Vetiver 1.5مل + Cardamom 0.5مل — دخان جذور + هيل خفيف يمنحان الطابع الخليجي","أضف Sandalwood INDI 5مل + Ambermor شمعي 1.5جم (⚠️ أذبه على 50° أولاً) — الجسم الخشبي الكريمي المستدام","سرنجة رئيسية: Safraleine 0.4مل (جيفودان) + Cashmeran 0.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): عنبر 2000 1مل (شرفان) + مسك متسلق 0.5مل (الحميدي) + شمامة 0.5جم (الحميدي)","عتّق 7-10 أيام — أسرع نضجاً من الأثقل، بعد أسبوع تكون جاهزة للاستخدام"]}
+   steps:["ذب في بيكر 60°: لبدانوم 1.5جم + بنزوين B سايل 2.5مل — قضيب مغناطيسي 15 دقيقة حتى يذوب اللبدانوم","أطفئ واترك يبرد لـ 45°، أضف DPG 4مل","على تحريك بارد: أضف Sleek Oud 8مل (Bulkaroma) — العمود الرئيسي، ناعم وعصري وقابل للارتداء يومياً","أضف Artessence 3مل (Biolandes) — يُعطي الـ Sleek Oud عمقاً طبيعياً وطابعاً خليجياً لا يوجد بدونه","أضف Black Agar Givco 1.5مل — يُشرق التركيبة بفرانكنسنس-عنبر أنيق ويوازن الثقل","أضف CMP90 2مل (Bulkaroma) — لمسة توابل خليجية تُكمل هوية الخلطة","أضف Vetiver 1.5مل + Cardamom 0.5مل — دخان جذور + هيل خفيف يمنحان الطابع الخليجي","أضف Sandalwood INDI 5مل + Ambermor شمعي 1.5جم (⚠️ أذبه على 50° أولاً) — الجسم الخشبي الكريمي المستدام","سرنجة رئيسية: Safraleine 0.4مل (جيفودان) + Cashmeran 0.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): عنبر 2000 1مل (شرفان) + مسك متسلق 0.5مل (الحميدي) + شمامة 0.5جم (الحميدي)","عتّق 7-10 أيام — أسرع نضجاً من الأثقل، بعد أسبوع تكون جاهزة للاستخدام"]},
+  // ── وصفات بسيطة (rec_21) — مقادير لـ100مل، تُحسب تلقائياً للأحجام 8/12/50/100مل ─────────
+  {id:"s_cambodi",name:"كمبودي خالص",icon:"🟤",season:"للجنسين",gender:"للجنسين",stability:"24 ساعة",
+   desc:"Lux Cambodi نقي — مثبت + DPG فقط. وصفة بسيطة تظهر الكمبودي بكل جلالته",
+   ing:[["lux_cambodi",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG أولاً ← أضف Lux Fixative ← أضف Lux Cambodi — قضيب مغناطيسي دقيقتين","انقل للزجاجة فوراً ← لا تسخين — هذه الوصفة تُبنى بارداً"]},
+  {id:"s_hindi_sweety",name:"هندي حلو خالص",icon:"🟡",season:"للجنسين",gender:"للجنسين",stability:"24 ساعة",
+   desc:"Lux Hindi Sweety نقي — هندي ذهبي حلو. وصفة بسيطة بلا إضافات",
+   ing:[["lux_hindi_sweety",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG ← Lux Fixative ← Hindi Sweety — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
+  {id:"s_hindi",name:"هندي خالص",icon:"🟠",season:"للجنسين",gender:"للجنسين",stability:"24 ساعة",
+   desc:"Lux Hindi نقي — هندي كلاسيكي مركّز. وصفة بسيطة",
+   ing:[["lux_hindi",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Hindi — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
+  {id:"s_black",name:"عود أسود خالص",icon:"⚫",season:"مناسبات",gender:"رجالي",stability:"24+ ساعة",
+   desc:"Lux Black نقي — عود أسود داكن بلا تعقيد. وصفة بسيطة",
+   ing:[["lux_black",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Black — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
+  {id:"s_sleek",name:"سليك عود خالص",icon:"🪶",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",
+   desc:"Sleek Oud Bulkaroma نقي — عود ناعم معاصر خالص. وصفة بسيطة",
+   ing:[["sleek_oud",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG ← Lux Fixative ← Sleek Oud — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
+  {id:"s_rose",name:"ورد بري خالص",icon:"🌸",season:"صيف",gender:"نسائي",stability:"16 ساعة",
+   desc:"Wild Petal + PEA Bulkaroma — ورد بلا تدخل. PEA هو الكحول الحامل الطبيعي هنا",
+   ing:[["wild_petal",50],["pea",40],["lux_fixative",10]],
+   steps:["بيكر بارد: PEA (الكحول الحامل) أولاً ← أضف Wild Petal — هذان يشكّلان الورد الكامل","أضف Lux Fixative ← قضيب دقيقتين ← انقل للزجاجة فوراً"]},
+  {id:"s_symphony",name:"سيمفوني خالص",icon:"🎵",season:"صيف",gender:"للجنسين",stability:"20 ساعة",
+   desc:"Lux Symphony نقي — زعفران→ورد بلغاري+غراس→عود أسام+كاكاو. وصفة بسيطة",
+   ing:[["lux_symphony",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Symphony — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
+  {id:"s_afternoon",name:"أفترنون خالص",icon:"🌅",season:"صيف",gender:"للجنسين",stability:"18 ساعة",
+   desc:"Lux Afternoon نقي — برتقال صقلي→مندارين+بيرغامو→زنجبيل+عنبر. وصفة بسيطة",
+   ing:[["lux_afternoon",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Afternoon — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
+  {id:"s_greatness",name:"عظمة خالص",icon:"👑",season:"مناسبات",gender:"رجالي",stability:"24 ساعة",
+   desc:"Lux Greatness نقي — عظمة بلا تعديل. وصفة بسيطة",
+   ing:[["lux_greatness",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Greatness — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
+  {id:"s_exclusif",name:"إكسكلوسيف خالص",icon:"✨",season:"مناسبات",gender:"للجنسين",stability:"24 ساعة",
+   desc:"Lux Exclusif نقي — Exclusif مركّز بلا تعديل. وصفة بسيطة",
+   ing:[["lux_exclusif",80],["lux_fixative",12],["dpg",8]],
+   steps:["بيكر بارد: DPG ← Lux Fixative ← Lux Exclusif — قضيب دقيقتين","انقل للزجاجة فوراً ← لا تسخين"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -925,8 +966,8 @@ function App(){
   function clearSession(){try{localStorage.removeItem('dw_session');}catch{}}
   const show=(m,e=false)=>{setToast(m);setToastErr(e);setTimeout(()=>setToast(""),2800);};
   const getIng=id=>inv.find(i=>i.id===id);
-  const BATCH={quarter:2.9,half:5.8,tola:11.6,ml50:50,ml100:100};
-  const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",tola:"تولة",ml50:"50 مل",ml100:"100 مل"};
+  const BATCH={quarter:2.9,half:5.8,ml8:8,tola:11.6,ml12:12,ml50:50,ml100:100};
+  const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",ml8:"8 مل",tola:"تولة",ml12:"12 مل",ml50:"50 مل",ml100:"100 مل"};
 
   const recipeBaseVol=r=>r.ing.reduce((s,[,a])=>s+a,0);
   const recipeScale=r=>{const base=recipeBaseVol(r);return base>0?BATCH[batchUnit]/base:0;};
