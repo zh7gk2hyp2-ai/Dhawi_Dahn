@@ -670,7 +670,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-09-xs04";
+const APP_BUILD="2026-06-09-xs05";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -744,10 +744,11 @@ function applyExtraStock(inv){
   lsSet("dw_xs_ver",EXTRA_STOCK_VERSION);
   return [...map.values()];
 }
-// rd_01: deduct 4 produced batches (50ml each) — Bulkaroma only
+// rd_02: deduct 4 produced batches (50ml each) — all suppliers
 // دهن الوردة الطائفية + دهن الشيوخ + سر الطائف + عسل العود
-const RECIPE_DEDUCT_VERSION="rd_01";
+const RECIPE_DEDUCT_VERSION="rd_02";
 const RECIPE_DEDUCT=[
+  // Bulkaroma
   {id:"wild_petal",qty:9.50},
   {id:"pea",qty:2.38},
   {id:"artessence",qty:13.11},
@@ -767,6 +768,15 @@ const RECIPE_DEDUCT=[
   {id:"cardamom",qty:0.36},
   {id:"civettone",qty:0.30},
   {id:"benzyl",qty:1.83},
+  // Luxodor
+  {id:"lux_cambodi",qty:4.75},
+  {id:"lux_fixative",qty:9.31},
+  // محلي
+  {id:"dpg",qty:18.62},
+  {id:"jojoba",qty:4.75},
+  // صناعتي
+  {id:"blend1",qty:38.18},
+  {id:"blend2",qty:32.83},
 ];
 function applyRecipeDeduct(inv){
   if(lsGet("dw_rd_ver","")===RECIPE_DEDUCT_VERSION)return inv;
