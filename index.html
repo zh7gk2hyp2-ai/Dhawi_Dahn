@@ -671,13 +671,13 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-09-xs07";
+const APP_BUILD="2026-06-09-xs08";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
     localStorage.removeItem("dw_build");
     // clear only version keys so apply-functions re-run on next load
-    ["dw_nm_ver","dw_pr_ver","dw_xs_ver","dw_sf_ver","dw_rd_ver","dw_ir_ver"].forEach(k=>localStorage.removeItem(k));
+    ["dw_nm_ver","dw_pr_ver","dw_xs_ver","dw_sf_ver","dw_rd_ver","dw_ir_ver","dw_rc_ver"].forEach(k=>localStorage.removeItem(k));
     localStorage.setItem("dw_build",APP_BUILD);
   } else if(!stored){
     localStorage.setItem("dw_build",APP_BUILD);
@@ -865,6 +865,15 @@ function applyPendingRecipes(recipes){
   lsSet("dw_pr_ver",PENDING_RECIPES_VERSION);
   return [...map.values()];
 }
+// rc_01: strip deleted ingredient IDs from every stored recipe
+const RECIPE_CLEANUP_VERSION="rc_01";
+const RECIPE_IDS_REMOVE=["lux_hindi_sweety","lux_hindi","benzoin_a"];
+function applyRecipeCleanup(recipes){
+  if(lsGet("dw_rc_ver","")===RECIPE_CLEANUP_VERSION)return recipes;
+  const cleaned=recipes.map(r=>({...r,ing:r.ing.filter(([id])=>!RECIPE_IDS_REMOVE.includes(id))}));
+  lsSet("dw_rc_ver",RECIPE_CLEANUP_VERSION);
+  return cleaned;
+}
 const OUD_XX_VERSION="oud_xx_01";
 function applyOudXxFix(inv){
   if(lsGet("dw_oudxx_ver","")===OUD_XX_VERSION)return inv;
@@ -923,7 +932,7 @@ function App(){
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
   const [inv,setInv]=useState(()=>applyOudXxFix(applyNameFix(applyInventoryRemove(applyRecipeDeduct(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv())))))))));
-  const [recipes,setRecipes]=useState(()=>applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES)));
+  const [recipes,setRecipes]=useState(()=>applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES))));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
   const [search,setSearch]=useState("");
