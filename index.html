@@ -403,7 +403,7 @@ const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
-const PENDING_RECIPES_VERSION="rec_28";
+const PENDING_RECIPES_VERSION="rec_29";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
@@ -438,8 +438,8 @@ const PENDING_RECIPES=[
   // ── وصفات مُحدَّثة (rec_09) ───────────────────────────────────
   {id:"pure_gold",name:"دهن عود بيور جولد",icon:"✨",season:"مناسبات",gender:"للجنسين",stability:"3 أسابيع",
    desc:"قمة: زعفران+زهري | قلب: كمبودي+هندي+آرتيسانس | قاعدة: صندل+لبدانوم+باتشولي | ~52 ريال/50مل",
-   ing:[["safraleine",0.5],["wild_petal",2.5],["pea",2],["lux_cambodi",5],["lux_hindi",4],["pretty_oud",2],["benzoin_b",1.5],["artessence",4],["sandal_indi",5],["patchouli",2],["labdanum",2],["ambermor",2],["lux_fixative",3],["cashmeran",1.8],["iso_e",0.4],["dpg",3]],
-   steps:["⚡ رابط الورد (20 دق مسبقاً): Wild Petal 2.5مل + Benzoin B سايل 1مل في كوب — أغلق 20 دقيقة","SH-2 + بيكر 250مل: Labdanum 2جم + Benzoin B سايل 0.5مل (المتبقي) + Ambermor شمعي 2جم (⚠️ أذبه على 50° أولاً) + DPG على 60° (18-20دق) ← برّد لـ 40°","أضف: Oud Cambodi + Oud Hindi + Artessence + Pretty Oud","أضف: Sandalwood + Patchouli","أضف خليط الورد المُعدّ (Wild Petal + Benzoin B) ← ثم PEA 2مل فقط ⚠️","أضف: Safraleine 0.5مل (جيفودان — قوي جداً لا تتجاوز! | 💡 للدقة: 5مل من محلول 10% = 0.1مل + 0.9مل DPG)","سرنجة: Lux Fixative 3مل + Cashmeran 1.8مل + ISO E 0.4مل + مسك رمان 1مل (ثانوي — اختياري، شرفان) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","انقل لزجاجة 100مل + قضيب ← عتّق 3-4 أسابيع (SH-2 بلا حرارة) | حرّك الزجاجة برفق كل 2-3 أيام"]},
+   ing:[["safraleine",0.5],["wild_petal",2.5],["pea",2],["lux_cambodi",5],["lux_hindi_sweety",4],["pretty_oud",2],["benzoin_b",1.5],["artessence",4],["sandal_indi",5],["patchouli",2],["labdanum",2],["ambermor",2],["lux_fixative",3],["cashmeran",1.8],["iso_e",0.4],["dpg",3]],
+   steps:["⚡ رابط الورد (20 دق مسبقاً): Wild Petal 2.5مل + Benzoin B سايل 1مل في كوب — أغلق 20 دقيقة","SH-2 + بيكر 250مل: Labdanum 2جم + Benzoin B سايل 0.5مل (المتبقي) + Ambermor شمعي 2جم (⚠️ أذبه على 50° أولاً) + DPG على 60° (18-20دق) ← برّد لـ 40°","أضف: Oud Cambodi + Oud Hindi Sweety + Artessence + Pretty Oud","أضف: Sandalwood + Patchouli","أضف خليط الورد المُعدّ (Wild Petal + Benzoin B) ← ثم PEA 2مل فقط ⚠️","أضف: Safraleine 0.5مل (جيفودان — قوي جداً لا تتجاوز! | 💡 للدقة: 5مل من محلول 10% = 0.1مل + 0.9مل DPG)","سرنجة: Lux Fixative 3مل + Cashmeran 1.8مل + ISO E 0.4مل + مسك رمان 1مل (ثانوي — اختياري، شرفان) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","انقل لزجاجة 100مل + قضيب ← عتّق 3-4 أسابيع (SH-2 بلا حرارة) | حرّك الزجاجة برفق كل 2-3 أيام"]},
   {id:"black_eyes_w",name:"مخلط العيون السود النسائي",icon:"🖤",season:"صيف",gender:"نسائي",stability:"26 ساعة",
    desc:"قمة: برتقال صقلي+زعفران+بتلات | قلب: ورد بلغاري+غراس+مندارين+باتشولي | قاعدة: عود أسام+كاكاو+زنجبيل+عنبر | نيش نسائي",
    ing:[["pea",2],["wild_petal",4],["lux_symphony",2],["lux_afternoon",2],["cmp121",2],["patchouli",1.5],["benzoin_b",4],["cashmeran",1],["tonquitone",0.5],["ambermor",1.5],["lux_fixative",3],["dpg",3],["jojoba",5]],
@@ -450,16 +450,16 @@ const PENDING_RECIPES=[
    steps:["SH-2 + بيكر 100مل: Labdanum 1.5جم + Benzoin B سايل 1مل + DPG على 60° (15-20دق) ← برّد لـ 40°","أضف: Hindi Sweety 6مل + Black Oud 3مل + Artessence 3مل","أضف: Safraleine 1مل (جيفودان — بتدريج، هذا المعدل الأعلى | 💡 للدقة: 10مل من محلول 10% = 0.1مل + 0.9مل DPG) + Sandalwood 4مل + Lux Fixative 3مل + Ambermor شمعي 1.5جم (⚠️ أذبه على 50° أولاً)","أضف: Pretty Oud 3مل — العمق الزهري العودي من Luxodor","سرنجة: Tonquitone 1مل + Cashmeran 1.2مل + ISO E 0.3مل + ورد الطائف 2مل (ثانوي — اختياري، شرفان) + شمامة 0.5مل (ثانوي — اختياري، الحميدي)","⚠️ عتّق 3 أسابيع — الزعفران+الهندي يحتاجان وقتاً ليصير الزعفران جزءاً من شخصية الخلطة لا رائحة منفصلة | حرّك الزجاجة برفق كل 2-3 أيام"]},
   {id:"vetiver",name:"الفيتيفير الأسود",icon:"🌑",season:"شتاء",gender:"رجالي",stability:"36 ساعة",
    desc:"قمة: عود اصطناعي | قلب: فيتيفير+باتشولي+CMP91 | قاعدة: عود أسود+لبدانوم+بنزوين | أعمق وأثبت خلطة",
-   ing:[["vetiver",3],["lux_black",5],["lux_hindi",4],["oud_synth",2],["labdanum",2],["patchouli",3],["cmp91",2],["sandal_indi",4],["ambermor",1.5],["lux_fixative",3],["benzoin_b",1.5],["cashmeran",1.5],["iso_e",0.3],["dpg",3]],
-   steps:["SH-2 + بيكر 250مل: Labdanum 2جم + Benzoin B سايل 1.5مل + DPG على 60° (20-25دق) ← برّد لـ 40°","أضف: Black Oud 5مل + Hindi 4مل + Oud Synth 2مل","أضف: Vetiver 3مل + Patchouli 3مل + CMP91 2مل","أضف: Sandalwood 4مل + Ambermor شمعي 1.5جم (⚠️ أذبه على 50° أولاً) + Lux Fixative 3مل","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل + شمامة 0.5مل (ثانوي — اختياري، الحميدي) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","⚠️ عتّق 3-4 أسابيع — فيتيفير+باتشولي يحتاجان شهراً ليصير الثقل فخامة؛ لا تتسرّع في الحكم | حرّك الزجاجة برفق كل 2-3 أيام"]},
+   ing:[["vetiver",3],["lux_black",5],["lux_hindi_sweety",4],["oud_synth",2],["labdanum",2],["patchouli",3],["cmp91",2],["sandal_indi",4],["ambermor",1.5],["lux_fixative",3],["benzoin_b",1.5],["cashmeran",1.5],["iso_e",0.3],["dpg",3]],
+   steps:["SH-2 + بيكر 250مل: Labdanum 2جم + Benzoin B سايل 1.5مل + DPG على 60° (20-25دق) ← برّد لـ 40°","أضف: Black Oud 5مل + Hindi Sweety 4مل + Oud Synth 2مل","أضف: Vetiver 3مل + Patchouli 3مل + CMP91 2مل","أضف: Sandalwood 4مل + Ambermor شمعي 1.5جم (⚠️ أذبه على 50° أولاً) + Lux Fixative 3مل","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل + شمامة 0.5مل (ثانوي — اختياري، الحميدي) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","⚠️ عتّق 3-4 أسابيع — فيتيفير+باتشولي يحتاجان شهراً ليصير الثقل فخامة؛ لا تتسرّع في الحكم | حرّك الزجاجة برفق كل 2-3 أيام"]},
   {id:"cardamom",name:"الهيل والبخور",icon:"☕",season:"مناسبات",gender:"رجالي",stability:"26 ساعة",
    desc:"قمة: هيل+بهارات | قلب: عود+بخور أسود+باتشولي | قاعدة: لبدانوم+بنزوين+عنبر | هوية سعودية خالصة",
    ing:[["cardamom",2],["cmp90",3],["oud_synth",2],["artessence",4],["black_agar",1.5],["benzoin_b",2],["labdanum",1.5],["patchouli",1],["sandal_indi",3],["ambermor",2],["lux_fixative",3],["cashmeran",1.5],["iso_e",0.3],["dpg",2]],
    steps:["SH-2 + بيكر 250مل: Benzoin B سايل 2مل + Labdanum 1.5جم + DPG على 60° (20-25دق) ← برّد لـ 40°","أضف: Artessence 4مل + Black Agar 1.5مل + Oud Synth 2مل","أضف: Cardamom 2مل (هذه وصفة الهيل — المعدل الأعلى المقصود) + CMP90 3مل","أضف: Patchouli 1مل + Sandalwood 3مل + Ambermor شمعي 2جم (⚠️ أذبه على 50° أولاً) + Lux Fixative 3مل","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل + عنبر 2000 1مل (ثانوي — اختياري، شرفان) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","⚠️ عتّق 3-4 أسابيع — الهيل يحتاج وقتاً ليتحوّل من 'هيل مُسيطر' إلى 'هوية سعودية' ناعمة متوازنة | حرّك الزجاجة برفق كل 2-3 أيام"]},
   {id:"civet",name:"الحيواني الملكي",icon:"🦁",season:"مناسبات",gender:"رجالي",stability:"48+ ساعة",
    desc:"قمة: عود أسود حيواني | قلب: آرتيسانس+سيفيتون+باتشولي | قاعدة: لبدانوم+بنزوين+فيتيفير | أقوى خلطة نيش",
-   ing:[["lux_black",5],["lux_hindi",4],["artessence",4],["black_agar",1.5],["labdanum",2],["patchouli",0.5],["sandal_indi",4],["benzoin_b",2],["ambermor",1.5],["lux_fixative",3],["civettone",0.3],["vetiver",1],["cashmeran",1.5],["iso_e",0.3],["dpg",3]],
-   steps:["SH-2 + بيكر 250مل: Labdanum 2جم + Benzoin B سايل 2مل + DPG على 60° (20-25دق) ← برّد لـ 40°","أضف: Black Oud 5مل + Hindi 4مل + Artessence 4مل + Black Agar 1.5مل","أضف: Patchouli 0.5مل + Sandalwood 4مل + Ambermor شمعي 1.5جم (⚠️ أذبه على 50° أولاً) + Lux Fixative 3مل","أضف: Vetiver 1مل","سرنجة: Civettone 0.3مل ⚠️ (لا تتجاوز — الحيواني الحقيقي | 💡 3مل محلول 10%: 0.1مل Civettone + 0.9مل DPG — قياس دقيق بدلاً من قطرة مباشرة)","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل + مسك رمان 0.5مل (ثانوي — اختياري، شرفان) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","⚠️ عتّق 4-6 أسابيع — سيفيتون+فيتيفير يحتاجان 40+ يوماً ليتحوّلا من 'حيواني خام' إلى 'ملكي نادر' | حرّك الزجاجة برفق كل 2-3 أيام | اختياري: دورة حرارة (40° ساعة ← ثلاجة 4 ساعات × 3) تسرّع الاندماج"]},
+   ing:[["lux_black",5],["lux_hindi_sweety",4],["artessence",4],["black_agar",1.5],["labdanum",2],["patchouli",0.5],["sandal_indi",4],["benzoin_b",2],["ambermor",1.5],["lux_fixative",3],["civettone",0.3],["vetiver",1],["cashmeran",1.5],["iso_e",0.3],["dpg",3]],
+   steps:["SH-2 + بيكر 250مل: Labdanum 2جم + Benzoin B سايل 2مل + DPG على 60° (20-25دق) ← برّد لـ 40°","أضف: Black Oud 5مل + Hindi Sweety 4مل + Artessence 4مل + Black Agar 1.5مل","أضف: Patchouli 0.5مل + Sandalwood 4مل + Ambermor شمعي 1.5جم (⚠️ أذبه على 50° أولاً) + Lux Fixative 3مل","أضف: Vetiver 1مل","سرنجة: Civettone 0.3مل ⚠️ (لا تتجاوز — الحيواني الحقيقي | 💡 3مل محلول 10%: 0.1مل Civettone + 0.9مل DPG — قياس دقيق بدلاً من قطرة مباشرة)","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل + مسك رمان 0.5مل (ثانوي — اختياري، شرفان) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","⚠️ عتّق 4-6 أسابيع — سيفيتون+فيتيفير يحتاجان 40+ يوماً ليتحوّلا من 'حيواني خام' إلى 'ملكي نادر' | حرّك الزجاجة برفق كل 2-3 أيام | اختياري: دورة حرارة (40° ساعة ← ثلاجة 4 ساعات × 3) تسرّع الاندماج"]},
   // ── وصفات جديدة (rec_12) ────────────────────────────────────
   {id:"summer",name:"صيف الطائف",icon:"🌹",season:"صيف",gender:"للجنسين",stability:"20 ساعة",
    desc:"قمة: زعفران+ورد الطائف+بتلات | قلب: ورد بلغاري+غراس+كمبودي | قاعدة: عود أسام+كاكاو+صندل | صيفي خفيف",
@@ -567,7 +567,7 @@ const PENDING_PURCHASES=[
   // Luxodor Order (free shipping, prices in SAR)
   {id:"lux_symphony",qty:100,cost:176},{id:"lux_hindi_sweety",qty:100,cost:300},
   {id:"lux_exclusif",qty:100,cost:158},{id:"lux_cambodi",qty:100,cost:300},
-  {id:"lux_hindi",qty:100,cost:300},{id:"lux_black",qty:100,cost:300},
+  {id:"lux_black",qty:100,cost:300},
   {id:"lux_fixative",qty:100,cost:83},{id:"lux_greatness",qty:100,cost:161},
   {id:"lux_afternoon",qty:100,cost:98},
 ];
@@ -588,7 +588,6 @@ const RAW=[
   ["oud_royal","Royal Oud (دهن عود ملكي)","الحميدي","عود",280,35,"مل"],
   ["lux_cambodi","Oud Cambodi (عود كمبودي)","Luxodor","عود",300,100,"مل"],
   ["lux_hindi_sweety","Oud Hindi Sweety (عود هندي سويتي)","Luxodor","عود",300,100,"مل"],
-  ["lux_hindi","Oud Hindi (عود هندي)","Luxodor","عود",300,100,"مل"],
   ["lux_black","Black Oud (عود أسود)","Luxodor","عود",300,100,"مل"],
   ["lux_fixative","Luxodor Fixative (مثبت لوكسودور)","Luxodor","مثبت",83,100,"مل"],
   ["lux_greatness","Oud for Greatness (عود فور غريتنيس)","Luxodor","مستوحى",161,100,"مل"],
@@ -646,8 +645,8 @@ function buildInv(){
 
 const INITIAL_RECIPES=[
   {id:"royal",name:"الملكي الفاخر",icon:"❄️",season:"شتاء",gender:"رجالي",stability:"24 ساعة",desc:"عود داكن عميق مع صندل ولبدانوم",
-   ing:[["artessence",4],["lux_black",3],["oud_synth",1.5],["black_agar",1],["sandal_indi",3],["ambermor",1],["lux_fixative",3],["labdanum",1.5],["lux_cambodi",3],["lux_hindi_sweety",2],["lux_hindi",2],["pretty_oud",1.5],["lux_greatness",1.5],["lux_exclusif",1],["cmp90",1],["patchouli",1.5],["benzoin_b",2],["tonquitone",0.5],["wild_petal",2.5],["cashmeran",1.5],["iso_e",0.3],["dpg",3]],
-   steps:["SH-2 + بيكر 250مل: Labdanum + Benzoin B + DPG على 60° (15-20دق) ← برّد لـ 40°","أضف: Artessence + Black Oud + Oud Synth + Black Agar","أضف: Sandalwood + Ambermor + Lux Fixative","أضف: Cambodi + Hindi Sweety + Hindi + Pretty Oud","أضف: Greatness + Exclusif + CMP90 + Patchouli","أضف: Benzoin B + Tonquitone + Wild Petal + مسك رمان","سرنجة: Cashmeran 0.8مل + ISO E 0.3مل + شمامة 0.5مل (ثانوي) + فانيلا 0.5مل (ثانوي) + مسك متسلق 0.5مل (ثانوي) ⚠️","انقل لزجاجة 100مل + قضيب ← أحكم الغطاء ← عتّق 7 أيام (SH-2 بلا حرارة)"]},
+   ing:[["artessence",4],["lux_black",3],["oud_synth",1.5],["black_agar",1],["sandal_indi",3],["ambermor",1],["lux_fixative",3],["labdanum",1.5],["lux_cambodi",3],["lux_hindi_sweety",4],["pretty_oud",1.5],["lux_greatness",1.5],["lux_exclusif",1],["cmp90",1],["patchouli",1.5],["benzoin_b",2],["tonquitone",0.5],["wild_petal",2.5],["cashmeran",1.5],["iso_e",0.3],["dpg",3]],
+   steps:["SH-2 + بيكر 250مل: Labdanum + Benzoin B + DPG على 60° (15-20دق) ← برّد لـ 40°","أضف: Artessence + Black Oud + Oud Synth + Black Agar","أضف: Sandalwood + Ambermor + Lux Fixative","أضف: Cambodi + Hindi Sweety 4مل + Pretty Oud","أضف: Greatness + Exclusif + CMP90 + Patchouli","أضف: Benzoin B + Tonquitone + Wild Petal + مسك رمان","سرنجة: Cashmeran 0.8مل + ISO E 0.3مل + شمامة 0.5مل (ثانوي) + فانيلا 0.5مل (ثانوي) + مسك متسلق 0.5مل (ثانوي) ⚠️","انقل لزجاجة 100مل + قضيب ← أحكم الغطاء ← عتّق 7 أيام (SH-2 بلا حرارة)"]},
   {id:"summer",name:"صيف الطائف",icon:"🌹",season:"صيف",gender:"للجنسين",stability:"12 ساعة",desc:"قمة: زعفران+ورد الطائف+بتلات | قلب: ورد بلغاري+غراس+كمبودي | قاعدة: عود أسام+كاكاو+صندل | صيفي خفيف",
    ing:[["lux_cambodi",6],["white_oudh",2],["artessence",2],["pretty_oud",3],["wild_petal",3.5],["pea",3],["cmp91",2],["amber_oud",1],["lux_symphony",2],["sandal_indi",3],["lux_fixative",2],["ambermor",2.5],["tonquitone",1],["benzoin_b",1.5],["cashmeran",0.3],["iso_e",0.2],["dpg",5],["jojoba",5]],
    steps:["بيكر 250مل على SH-2 (بلا حرارة): DPG + جوجوبا","أضف: Cambodi + White Oudh + Artessence","أضف: Sandalwood + Lux Fixative + Ambermor","أضف: Pretty Oud + CMP91 + Amber Oud + ورد الطائف","أضف: Wild Petal + PEA","أضف: Symphony 2مل (زعفران→ورد بلغاري+غراس→عود أسام+كاكاو)","أضف: Benzoin B + مسك رمان + Tonquitone","سرنجة: Cashmeran 0.3مل + ISO E 0.2مل + فانيلا 0.5مل (ثانوي — تكمّل الكاكاو)","انقل لزجاجة 100مل + قضيب ← عتّق 5 أيام (SH-2 بلا حرارة)"]},
@@ -658,13 +657,13 @@ const INITIAL_RECIPES=[
    ing:[["maracuja",8],["lux_cambodi",5],["white_oudh",2],["wild_petal",2],["pea",1.5],["sandal_indi",3],["ambermor",2.5],["lux_fixative",2],["benzoin_b",2],["cashmeran",1],["iso_e",0.2],["dpg",4],["jojoba",3]],
    steps:["بيكر 250مل على SH-2 (بلا حرارة): DPG + جوجوبا + Sandalwood","أضف: Maracuja + Cambodi + White Oudh","أضف: Lux Fixative + Ambermor","أضف: Wild Petal + PEA","أضف: Benzoin B + مسك رمان","سرنجة: Cashmeran 0.3مل + ISO E 0.2مل + فانيلا 0.5مل (ثانوي)","انقل لزجاجة 100مل + قضيب ← عتّق 5 أيام (SH-2 بلا حرارة)"]},
   {id:"vetiver",name:"الفيتيفير الأسود",icon:"🌑",season:"شتاء",gender:"رجالي",stability:"24 ساعة",desc:"قمة: عود اصطناعي | قلب: فيتيفير+باتشولي+CMP91 | قاعدة: عود أسود+لبدانوم+بنزوين | أعمق وأثبت خلطة",
-   ing:[["vetiver",3],["lux_black",5],["lux_hindi",4],["oud_synth",2],["labdanum",2],["patchouli",3],["cmp91",2],["sandal_indi",4],["ambermor",1.5],["lux_fixative",2],["benzoin_b",1.5],["cashmeran",1.5],["iso_e",0.3],["dpg",4]],
+   ing:[["vetiver",3],["lux_black",5],["lux_hindi_sweety",4],["oud_synth",2],["labdanum",2],["patchouli",3],["cmp91",2],["sandal_indi",4],["ambermor",1.5],["lux_fixative",2],["benzoin_b",1.5],["cashmeran",1.5],["iso_e",0.3],["dpg",4]],
    steps:["SH-2 + بيكر 250مل: Labdanum + Benzoin B سايل + DPG على 60° (20-25دق) ← برّد لـ 40°","أضف: Black Oud + Hindi + Oud Synth","أضف: Vetiver + Patchouli + CMP91","أضف: Sandalwood + Ambermor + Lux Fixative","سرنجة: Cashmeran 0.8مل + ISO E 0.3مل + شمامة 0.5مل (ثانوي) + مسك متسلق 0.5مل (ثانوي)","انقل لزجاجة 100مل + قضيب ← أحكم الغطاء ← عتّق 7 أيام (SH-2 بلا حرارة)"]},
   {id:"cardamom",name:"الهيل والبخور",icon:"☕",season:"مناسبات",gender:"رجالي",stability:"18 ساعة",desc:"قمة: هيل+بهارات | قلب: عود+بخور أسود+باتشولي | قاعدة: لبدانوم+بنزوين+عنبر | هوية سعودية خالصة",
    ing:[["cardamom",2],["cmp90",3],["oud_synth",2],["artessence",4],["black_agar",1.5],["benzoin_b",2],["labdanum",1.5],["patchouli",1],["sandal_indi",3],["ambermor",2.5],["lux_fixative",2],["cashmeran",1.5],["iso_e",0.3],["dpg",3]],
    steps:["SH-2 + بيكر 250مل: Benzoin B سايل + Labdanum + DPG على 60° (20-25دق) ← برّد لـ 40°","أضف: Artessence + Black Agar + Oud Synth","أضف: Cardamom + CMP90","أضف: Patchouli + Sandalwood + Ambermor + Lux Fixative","أضف: عنبر 2000","سرنجة: Cashmeran 0.8مل + ISO E 0.3مل + مسك متسلق 0.5مل (ثانوي)","انقل لزجاجة 100مل + قضيب ← أحكم الغطاء ← عتّق 7 أيام (SH-2 بلا حرارة)"]},
   {id:"civet",name:"الحيواني الملكي",icon:"🦁",season:"مناسبات",gender:"رجالي",stability:"48 ساعة",desc:"قمة: عود أسود حيواني | قلب: آرتيسانس+سيفيتون+باتشولي | قاعدة: لبدانوم+بنزوين+فيتيفير | أقوى خلطة نيش",
-   ing:[["lux_black",5],["lux_hindi",4],["artessence",4],["black_agar",1.5],["labdanum",2],["patchouli",0.5],["sandal_indi",4],["benzoin_b",2],["ambermor",1.5],["lux_fixative",2],["civettone",0.3],["vetiver",1],["cashmeran",1.5],["iso_e",0.3],["dpg",4]],
+   ing:[["lux_black",5],["lux_hindi_sweety",4],["artessence",4],["black_agar",1.5],["labdanum",2],["patchouli",0.5],["sandal_indi",4],["benzoin_b",2],["ambermor",1.5],["lux_fixative",2],["civettone",0.3],["vetiver",1],["cashmeran",1.5],["iso_e",0.3],["dpg",4]],
    steps:["SH-2 + بيكر 250مل: Labdanum + Benzoin B سايل + DPG على 60° (20-25دق) ← برّد لـ 40°","أضف: Black Oud + Hindi + Artessence + Black Agar","أضف: Patchouli + Sandalwood + Ambermor + Lux Fixative","أضف: Vetiver + مسك رمان","سرنجة: Civettone 0.3مل ⚠️ (لا تتجاوز — Fragrantica: هذا المعيار العالمي)","سرنجة: Cashmeran 0.8مل + ISO E 0.3مل + مسك متسلق 0.5مل (ثانوي)","انقل لزجاجة 100مل + قضيب ← أحكم الغطاء ← عتّق 10 أيام (SH-2 بلا حرارة)"]},
 ];
 
@@ -734,7 +733,6 @@ const NAME_FIX={
   "oud_royal":"Royal Oud (دهن عود ملكي)",
   "lux_cambodi":"Oud Cambodi (عود كمبودي)",
   "lux_hindi_sweety":"Oud Hindi Sweety (عود هندي سويتي)",
-  "lux_hindi":"Oud Hindi (عود هندي)",
   "lux_black":"Black Oud (عود أسود)",
   "lux_fixative":"Luxodor Fixative (مثبت لوكسودور)",
   "lux_greatness":"Oud for Greatness (عود فور غريتنيس)",
@@ -822,7 +820,7 @@ function fmtDate(iso){
 
 // ─── notes classification (Top / Middle / Base) ─────────────────
 const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi','lux_hindi_sweety','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_hindi_sweety','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone']);
 const NOTES_CARRIER=new Set(['dpg','jojoba','benzyl']); // diluents — excluded from layer ratio
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 // scale a number and format it cleanly
