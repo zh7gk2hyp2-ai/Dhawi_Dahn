@@ -627,8 +627,8 @@ const RAW=[
   ["sleek_oud","Sleek Oud (سليك عود)","Bulkaroma","مستوحى",380,100,"جم"],
   ["jojoba","Jojoba Oil (زيت جوجوبا)","محلي","حامل",60,50,"مل"],
   ["dpg","DPG Dipropylene Glycol (ديوبي)","محلي","حامل",40,200,"مل"],
-  ["blend1","الخلطة الأولى (95مل)","صناعتي","خلطة",300,95,"مل"],
-  ["blend2","الخلطة الثانية (48مل)","صناعتي","خلطة",300,70,"مل"],
+  ["blend1","Blend No.1 (الخلطة الأولى)","صناعتي","خلطة",300,95,"مل"],
+  ["blend2","Blend No.2 (الخلطة الثانية)","صناعتي","خلطة",300,70,"مل"],
 ];
 
 const bulkTotalQty=RAW.filter(r=>r[2]==="Bulkaroma").reduce((s,r)=>s+r[5],0);
@@ -716,7 +716,7 @@ function applyStockFix(inv){
   lsSet("dw_sf_ver",STOCK_FIX_VERSION);
   return [...map.values()];
 }
-const NAME_FIX_VERSION="nm_fix_01";
+const NAME_FIX_VERSION="nm_fix_02";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
   "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
@@ -772,6 +772,8 @@ const NAME_FIX={
   "sleek_oud":"Sleek Oud (سليك عود)",
   "jojoba":"Jojoba Oil (زيت جوجوبا)",
   "dpg":"DPG Dipropylene Glycol (ديوبي)",
+  "blend1":"Blend No.1 (الخلطة الأولى)",
+  "blend2":"Blend No.2 (الخلطة الثانية)",
 };
 function applyNameFix(inv){
   if(lsGet("dw_nm_ver","")===NAME_FIX_VERSION)return inv;
