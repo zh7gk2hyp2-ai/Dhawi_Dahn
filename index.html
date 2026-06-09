@@ -633,7 +633,7 @@ const RAW=[
 
 const bulkTotalQty=RAW.filter(r=>r[2]==="Bulkaroma").reduce((s,r)=>s+r[5],0);
 
-const STOCK_OVERRIDES={musk_climb:60};
+const STOCK_OVERRIDES={musk_climb:70};
 function buildInv(){
   return RAW.map(([id,name,brand,cat,price,qty,unit])=>{
     const ship=brand==="Bulkaroma"?(SHIPPING_BULK*qty/bulkTotalQty):0;
@@ -714,6 +714,19 @@ function applyStockFix(inv){
     }
   });
   lsSet("dw_sf_ver",STOCK_FIX_VERSION);
+  return [...map.values()];
+}
+const EXTRA_STOCK_VERSION="xs_01";
+const EXTRA_STOCK=[
+  {id:"vanilla",qty:80,cost:100},
+  {id:"dpg",qty:2980,cost:150},
+  {id:"jojoba",qty:200,cost:240},
+];
+function applyExtraStock(inv){
+  if(lsGet("dw_xs_ver","")===EXTRA_STOCK_VERSION)return inv;
+  const map=new Map(inv.map(i=>[i.id,{...i}]));
+  EXTRA_STOCK.forEach(f=>{if(map.has(f.id)){const i=map.get(f.id);map.set(f.id,{...i,qty:f.qty,stock:f.qty,price:f.cost,unitCost:f.qty>0?f.cost/f.qty:0});}});
+  lsSet("dw_xs_ver",EXTRA_STOCK_VERSION);
   return [...map.values()];
 }
 const NAME_FIX_VERSION="nm_fix_02";
@@ -845,7 +858,7 @@ function App(){
   const [logged,setLogged]=useState(false);
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
-  const [inv,setInv]=useState(()=>applyOudXxFix(applyNameFix(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))))));
+  const [inv,setInv]=useState(()=>applyOudXxFix(applyNameFix(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv())))))));
   const [recipes,setRecipes]=useState(()=>applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES)));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
