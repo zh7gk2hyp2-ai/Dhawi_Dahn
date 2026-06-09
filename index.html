@@ -551,7 +551,7 @@ const PENDING_RECIPES=[
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
   // Bulkaroma Order 1 (shipping ₹4500=198 SAR, 4005g total)
-  {id:"labdanum",qty:200,cost:61},{id:"benzoin_a",qty:200,cost:58},
+  {id:"labdanum",qty:200,cost:61},
   {id:"benzoin_b",qty:1000,cost:121},{id:"benzyl",qty:50,cost:14},
   {id:"safraleine",qty:100,cost:284},{id:"vetiver",qty:100,cost:281},
   {id:"crimson",qty:1000,cost:372},{id:"cardamom",qty:50,cost:187},
@@ -616,7 +616,6 @@ const RAW=[
   ["ambermor","Ambermor EX (أمبيرمور إكس)","Bulkaroma","مثبت",174,50,"جم"],
   ["oliffac","Oud Oliffac (عود أوليفاك)","Bulkaroma","عود",30,5,"جم"],
   ["labdanum","Labdanum Absolute (لاذان مطلق)","Bulkaroma","مثبت",280,200,"جم"],
-  ["benzoin_a","Benzoin Absolute A (راتنج الجاوي A)","Bulkaroma","مثبت",250,200,"جم"],
   ["benzoin_b","Resinoid Benzoin B (راتنج الجاوي B)","Bulkaroma","مثبت",200,1000,"جم"],
   ["benzyl","Benzyl Benzoate (بنزيل بنزوات)","Bulkaroma","حامل",80,50,"جم"],
   ["safraleine","Safraleine (سافرالين — زعفران جيفودان)","Bulkaroma","مضخم",140,100,"جم"],
@@ -671,13 +670,13 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-09-xs01";
+const APP_BUILD="2026-06-09-xs02";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
     localStorage.removeItem("dw_build");
     // clear only version keys so apply-functions re-run on next load
-    ["dw_nm_ver","dw_pr_ver","dw_xs_ver"].forEach(k=>localStorage.removeItem(k));
+    ["dw_nm_ver","dw_pr_ver","dw_xs_ver","dw_sf_ver"].forEach(k=>localStorage.removeItem(k));
     localStorage.setItem("dw_build",APP_BUILD);
   } else if(!stored){
     localStorage.setItem("dw_build",APP_BUILD);
@@ -701,11 +700,11 @@ function applyPendingPurchases(inv){
   lsSet("dw_pp_ver",PENDING_PURCHASES_VERSION);
   return [...map.values()];
 }
-const STOCK_FIX_VERSION="stk_fix_01";
+const STOCK_FIX_VERSION="stk_fix_02";
 // Corrects doubled Bulkaroma quantities — RAW baseline was old used-up stock;
 // only the PENDING order quantities are physically present.
 const STOCK_FIX=[
-  {id:"labdanum",qty:200,cost:61},{id:"benzoin_a",qty:200,cost:58},
+  {id:"labdanum",qty:200,cost:61},
   {id:"benzoin_b",qty:1000,cost:121},{id:"benzyl",qty:50,cost:14},
   {id:"safraleine",qty:100,cost:284},{id:"vetiver",qty:100,cost:281},
   {id:"crimson",qty:1000,cost:372},{id:"cardamom",qty:50,cost:187},
@@ -745,7 +744,7 @@ function applyExtraStock(inv){
   lsSet("dw_xs_ver",EXTRA_STOCK_VERSION);
   return [...map.values()];
 }
-const NAME_FIX_VERSION="nm_fix_02";
+const NAME_FIX_VERSION="nm_fix_03";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
   "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
@@ -787,7 +786,6 @@ const NAME_FIX={
   "ambermor":"Ambermor EX (أمبيرمور إكس)",
   "oliffac":"Oud Oliffac (عود أوليفاك)",
   "labdanum":"Labdanum Absolute (لاذان مطلق)",
-  "benzoin_a":"Benzoin Absolute A (راتنج الجاوي A)",
   "benzoin_b":"Resinoid Benzoin B (راتنج الجاوي B)",
   "benzyl":"Benzyl Benzoate (بنزيل بنزوات)",
   "safraleine":"Safraleine (سافرالين — زعفران جيفودان)",
