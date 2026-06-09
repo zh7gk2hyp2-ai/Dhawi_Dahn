@@ -670,13 +670,13 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-09-xs03";
+const APP_BUILD="2026-06-09-xs04";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
     localStorage.removeItem("dw_build");
     // clear only version keys so apply-functions re-run on next load
-    ["dw_nm_ver","dw_pr_ver","dw_xs_ver","dw_sf_ver"].forEach(k=>localStorage.removeItem(k));
+    ["dw_nm_ver","dw_pr_ver","dw_xs_ver","dw_sf_ver","dw_rd_ver"].forEach(k=>localStorage.removeItem(k));
     localStorage.setItem("dw_build",APP_BUILD);
   } else if(!stored){
     localStorage.setItem("dw_build",APP_BUILD);
@@ -742,6 +742,37 @@ function applyExtraStock(inv){
   const map=new Map(inv.map(i=>[i.id,{...i}]));
   EXTRA_STOCK.forEach(f=>{if(map.has(f.id)){const i=map.get(f.id);map.set(f.id,{...i,qty:f.qty,stock:f.qty,price:f.cost,unitCost:f.qty>0?f.cost/f.qty:0});}});
   lsSet("dw_xs_ver",EXTRA_STOCK_VERSION);
+  return [...map.values()];
+}
+// rd_01: deduct 4 produced batches (50ml each) — Bulkaroma only
+// دهن الوردة الطائفية + دهن الشيوخ + سر الطائف + عسل العود
+const RECIPE_DEDUCT_VERSION="rd_01";
+const RECIPE_DEDUCT=[
+  {id:"wild_petal",qty:9.50},
+  {id:"pea",qty:2.38},
+  {id:"artessence",qty:13.11},
+  {id:"sandal_indi",qty:16.54},
+  {id:"labdanum",qty:7.68},
+  {id:"benzoin_b",qty:8.11},
+  {id:"tonquitone",qty:1.73},
+  {id:"ambermor",qty:6.59},
+  {id:"safraleine",qty:0.96},
+  {id:"cashmeran",qty:5.20},
+  {id:"iso_e",qty:1.21},
+  {id:"oud_synth",qty:4.77},
+  {id:"black_agar",qty:1.19},
+  {id:"cmp90",qty:3.58},
+  {id:"vetiver",qty:2.93},
+  {id:"patchouli",qty:3.62},
+  {id:"cardamom",qty:0.36},
+  {id:"civettone",qty:0.30},
+  {id:"benzyl",qty:1.83},
+];
+function applyRecipeDeduct(inv){
+  if(lsGet("dw_rd_ver","")===RECIPE_DEDUCT_VERSION)return inv;
+  const map=new Map(inv.map(i=>[i.id,{...i}]));
+  RECIPE_DEDUCT.forEach(f=>{if(map.has(f.id)){const i=map.get(f.id);map.set(f.id,{...i,stock:Math.max(0,i.stock-f.qty)});}});
+  lsSet("dw_rd_ver",RECIPE_DEDUCT_VERSION);
   return [...map.values()];
 }
 const NAME_FIX_VERSION="nm_fix_04";
@@ -872,7 +903,7 @@ function App(){
   const [logged,setLogged]=useState(false);
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
-  const [inv,setInv]=useState(()=>applyOudXxFix(applyNameFix(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv())))))));
+  const [inv,setInv]=useState(()=>applyOudXxFix(applyNameFix(applyRecipeDeduct(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))))))));
   const [recipes,setRecipes]=useState(()=>applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES)));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
