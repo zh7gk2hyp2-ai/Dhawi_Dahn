@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-10-luxodor"/>
+<meta name="app-version" content="2026-06-10-rec35"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -409,7 +409,7 @@ const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
-const PENDING_RECIPES_VERSION="rec_34";
+const PENDING_RECIPES_VERSION="rec_35";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
@@ -579,6 +579,11 @@ const PENDING_RECIPES=[
    desc:"Existence Amouage (مستوحى) — زهري راقٍ بتوقيع عودي | 15%+5%+5%+75% IPA 99.9%",
    ing:[["lux_existence",15],["artessence",5],["iso_e",5],["ipa",75]],
    steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Artessence 5مل ← ISO E Super 5مل ← Existence 15مل — قضيب 30 ثانية","أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم","⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض بعيداً عن الوجه | 💡 عيّنة 10مل: اصنع 50مل فقط (نصف الكميات) — Existence 7.5مل + Artessence 2.5مل + ISO E 2.5مل + IPA 37.5مل"]},
+  // ── rec_35: الدخان الكمبودي — يُوظّف أوليفاك (Givaudan) المخزّن ─────────────
+  {id:"r_oliffac",name:"الدخان الكمبودي",icon:"🌫️",season:"مناسبات",gender:"رجالي",stability:"48+ ساعة",
+   desc:"توقيع دخاني أصيل — Oliffac Givaudan × Lux Cambodi | الدخان العودي الفاخر للمجالس الكبرى",
+   ing:[["lux_cambodi",30],["artessence",20],["oliffac",2],["iso_e",10],["sandal_indi",15],["labdanum",8],["benzoin_b",6],["vetiver",4],["cashmeran",2],["ambermor",2],["lux_fixative",1]],
+   steps:["⚡ بري-بلند الدخان (12 ساعة مسبقاً — الخطوة الجوهرية): في زجاجة 10مل محكمة: Lux Cambodi 5مل + Artessence 3مل + Oliffac Givaudan 2مل (⚠️ المخزون 5جم فقط — كن دقيقاً) — أغلق وضع في بارد مظلم | الدمج الثلاثي يُوحّد الدخان والكمبودي والعود الطبيعي في شخصية لا تتحقق بالإضافة المنفصلة","ذب في بيكر 60° مع قضيب مغناطيسي: لبدانوم 8جم + بنزوين B 6مل — 20 دقيقة حتى يذوب اللبدانوم تماماً ← اترك يبرد لـ 45°","أضف ISO E Super 10مل ← Sandal Hindi 15مل ← Vetiver EO 4مل ← Ambermor شمعي 2جم (⚠️ أذبه على 50° أولاً — 30 دق للتفعيل)","أضف Cashmeran 2مل ← Lux Fixative 1مل — حرّك دائرياً ببطء","أضف خليط بري-بلند الدخان (Cambodi + Artessence + Oliffac من الخطوة 1) بالكامل دفعة واحدة ← حرّك 5 دقائق دائرياً ببطء","أضف باقي Lux Cambodi (25مل) ← حرّك 3 دقائق إضافية — لا تفرط في الخلط","انقل لزجاجة داكنة محكمة — عتّق 14 يوم أدنى | الدخان يتحوّل ويتكشّف في الأسبوع الثالث | 💡 نقطتان على الرقبة + المعصم تكفي 48+ ساعة | ⚠️ 5جم أوليفاك = دفعتان فقط — صنّع بعناية"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -724,10 +729,14 @@ const INITIAL_RECIPES=[
    desc:"Existence Amouage (مستوحى) | 15%+5%+5%+75% IPA 99.9%",
    ing:[["lux_existence",15],["artessence",5],["iso_e",5],["ipa",75]],
    steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Artessence ← ISO E ← Existence ← IPA 75مل","أغلق 24 ساعة في بارد مظلم | ⚠️ للثياب والهواء | عيّنة 10مل: اصنع 50مل (نصف الكميات)"]},
+  {id:"r_oliffac",name:"الدخان الكمبودي",icon:"🌫️",season:"مناسبات",gender:"رجالي",stability:"48+ ساعة",
+   desc:"توقيع دخاني أصيل — Oliffac Givaudan × Lux Cambodi | الدخان العودي الفاخر للمجالس الكبرى",
+   ing:[["lux_cambodi",30],["artessence",20],["oliffac",2],["iso_e",10],["sandal_indi",15],["labdanum",8],["benzoin_b",6],["vetiver",4],["cashmeran",2],["ambermor",2],["lux_fixative",1]],
+   steps:["⚡ بري-بلند الدخان (12 ساعة مسبقاً — الخطوة الجوهرية): في زجاجة 10مل محكمة: Lux Cambodi 5مل + Artessence 3مل + Oliffac Givaudan 2مل (⚠️ المخزون 5جم فقط — كن دقيقاً) — أغلق وضع في بارد مظلم | الدمج الثلاثي يُوحّد الدخان والكمبودي والعود الطبيعي في شخصية لا تتحقق بالإضافة المنفصلة","ذب في بيكر 60° مع قضيب مغناطيسي: لبدانوم 8جم + بنزوين B 6مل — 20 دقيقة حتى يذوب اللبدانوم تماماً ← اترك يبرد لـ 45°","أضف ISO E Super 10مل ← Sandal Hindi 15مل ← Vetiver EO 4مل ← Ambermor شمعي 2جم (⚠️ أذبه على 50° أولاً — 30 دق للتفعيل)","أضف Cashmeran 2مل ← Lux Fixative 1مل — حرّك دائرياً ببطء","أضف خليط بري-بلند الدخان (Cambodi + Artessence + Oliffac من الخطوة 1) بالكامل دفعة واحدة ← حرّك 5 دقائق دائرياً ببطء","أضف باقي Lux Cambodi (25مل) ← حرّك 3 دقائق إضافية — لا تفرط في الخلط","انقل لزجاجة داكنة محكمة — عتّق 14 يوم أدنى | الدخان يتحوّل ويتكشّف في الأسبوع الثالث | 💡 نقطتان على الرقبة + المعصم تكفي 48+ ساعة | ⚠️ 5جم أوليفاك = دفعتان فقط — صنّع بعناية"]},
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-10-luxodor";
+const APP_BUILD="2026-06-10-rec35";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
