@@ -797,7 +797,11 @@ const INVENTORY_ADD_ITEMS=[
 function applyInventoryAdd(inv){
   if(lsGet("dw_ia_ver","")===INVENTORY_ADD_VERSION)return inv;
   const existingIds=new Set(inv.map(i=>i.id));
-  const toAdd=INVENTORY_ADD_ITEMS.filter(item=>!existingIds.has(item.id)).map(item=>({...item,origQty:item.qty,lowStock:false}));
+  const toAdd=INVENTORY_ADD_ITEMS.filter(item=>!existingIds.has(item.id)).map(item=>{
+    const ship=item.brand==="Bulkaroma"?(SHIPPING_BULK*item.qty/bulkTotalQty):0;
+    const unitCost=item.qty>0?(item.price+ship)/item.qty:0;
+    return {...item,stock:item.qty,ship,unitCost};
+  });
   lsSet("dw_ia_ver",INVENTORY_ADD_VERSION);
   return [...inv,...toAdd];
 }
