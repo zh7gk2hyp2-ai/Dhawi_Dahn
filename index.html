@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-09-xs11"/>
+<meta name="app-version" content="2026-06-09-xs12"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -675,7 +675,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-09-xs11";
+const APP_BUILD="2026-06-09-xs12";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -737,7 +737,7 @@ function applyStockFix(inv){
   lsSet("dw_sf_ver",STOCK_FIX_VERSION);
   return [...map.values()];
 }
-const EXTRA_STOCK_VERSION="xs_01";
+const EXTRA_STOCK_VERSION="xs_02";
 const EXTRA_STOCK=[
   {id:"vanilla",qty:80,cost:100},
   {id:"dpg",qty:2980,cost:150},
@@ -747,7 +747,7 @@ const EXTRA_STOCK=[
 function applyExtraStock(inv){
   if(lsGet("dw_xs_ver","")===EXTRA_STOCK_VERSION)return inv;
   const map=new Map(inv.map(i=>[i.id,{...i}]));
-  EXTRA_STOCK.forEach(f=>{if(map.has(f.id)){const i=map.get(f.id);map.set(f.id,{...i,qty:f.qty,stock:f.qty,price:f.cost,unitCost:f.qty>0?f.cost/f.qty:0});}});
+  EXTRA_STOCK.forEach(f=>{if(map.has(f.id)){const i=map.get(f.id);const ship=i.brand==="Bulkaroma"?(SHIPPING_BULK*f.qty/bulkTotalQty):0;map.set(f.id,{...i,qty:f.qty,stock:f.qty,price:f.cost,ship,unitCost:f.qty>0?(f.cost+ship)/f.qty:0});}});
   lsSet("dw_xs_ver",EXTRA_STOCK_VERSION);
   return [...map.values()];
 }
@@ -1361,7 +1361,7 @@ function App(){
   })();
 
   // ── stats ────────────────────────────────────────────────────
-  const totalInvValue=inv.reduce((s,i)=>s+(i.price+i.ship),0);
+  const totalInvValue=inv.reduce((s,i)=>s+(i.price+(i.ship||0)),0);
   const totalProduced=prodLog.length;
   const totalSold=prodLog.filter(e=>e.sold).length;
   const totalRevenue=prodLog.filter(e=>e.sold&&e.sellPrice).reduce((s,e)=>s+e.sellPrice,0);
@@ -1369,7 +1369,7 @@ function App(){
   const netProfit=totalRevenue-totalCostOfSold;
   const recipeFreq=prodLog.reduce((acc,e)=>{acc[e.recipeName]=(acc[e.recipeName]||0)+1;return acc;},{});
   const topRecipe=Object.entries(recipeFreq).sort((a,b)=>b[1]-a[1])[0];
-  const totalPurchaseSpend=purchases.reduce((s,p)=>s+p.price,0);
+  const totalPurchaseSpend=purchases.reduce((s,p)=>s+(p.price||0),0);
 
   // ── monthly profit report ───────────────────────────────────
   const MONTH_NAMES=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
@@ -2412,6 +2412,19 @@ function App(){
           <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"16px"}}>
             <div style={{width:"3px",height:"22px",background:"linear-gradient(180deg,#E8C460,#9E7828)",borderRadius:"2px",flexShrink:0}}/>
             <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"800",letterSpacing:"-0.01em"}}>الإحصائيات</h2>
+          </div>
+
+          {/* ── backup card ── */}
+          <div className="glass-gold" style={{marginBottom:"14px",padding:"14px 14px 12px",borderRadius:"16px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"10px"}}>
+              <span style={{fontSize:"1.1rem"}}>💾</span>
+              <span style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700"}}>النسخة الاحتياطية</span>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px"}}>
+              <button className="btn-gold" onClick={exportData} style={{padding:"13px 10px",fontSize:"0.82rem",fontWeight:"700",letterSpacing:"-0.01em"}}>📤 حفظ نسخة احتياطية</button>
+              <button className="btn-ghost" onClick={()=>importRef.current.click()} style={{padding:"13px 10px",fontSize:"0.82rem",fontWeight:"700",border:"1px solid rgba(212,175,55,0.5)"}}>📥 تحميل نسخة</button>
+            </div>
+            <p style={{fontSize:"0.65rem",color:"#8a6830",marginTop:"9px",lineHeight:"1.65",marginBottom:0}}>البيانات تُحفظ تلقائياً في المتصفح — صدّر نسخة احتياطية لحمايتها عند تحديث التطبيق أو تغيير الجهاز</p>
           </div>
 
           {totalProduced===0&&<div className="glass-gold" style={{textAlign:"center",padding:"28px 20px",marginBottom:"16px",position:"relative",overflow:"hidden"}}>
