@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-11-rec36"/>
+<meta name="app-version" content="2026-06-11-rec37"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -409,7 +409,7 @@ const SHIPPING_BULK=2000;
 const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
-const PENDING_RECIPES_VERSION="rec_36";
+const PENDING_RECIPES_VERSION="rec_37";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
@@ -601,6 +601,23 @@ const PENDING_RECIPES=[
    desc:"عود هندي ترابي حيواني من Luxodor — أصالة الشرق القديم | الورد يُروّض الحيواني ويُوازنه",
    ing:[["lux_hindi",35],["artessence",25],["wild_petal",8],["iso_e",12],["sandal_indi",8],["labdanum",5],["benzoin_b",4],["cashmeran",3]],
    steps:["⚡ بري-بلند الهندي (24 ساعة مسبقاً — ضروري): في زجاجة 10مل: Oud Hindi 6مل + Artessence 4مل + Wild Petal 2مل — الورد يُروّض الحدة الحيوانية من الساعة الأولى (النسبة الكلاسيكية 2:1 عود:ورد) | الدمج المسبق يُوحّد الطيوف في شخصية متوازنة","ذب في بيكر 60°: لبدانوم 5جم + بنزوين B 4مل — 20 دقيقة ← اترك يبرد لـ 40°","على تحريك بارد: أضف ISO E Super 12مل ← Wild Petal 6مل (الباقي) ← Sandal Hindi 8مل ← Cashmeran 3مل ← خليط بري-بلند","أضف Artessence الباقي (21مل) + Oud Hindi الباقي (29مل) — حرّك 5 دقائق","انقل لزجاجة داكنة محكمة — عتّق 21 يوم لا أقل | ⚠️ الحكم قبل 3 أسابيع ظلم للعطر | 💡 نقطة واحدة تكفي — أقوى من الخام"]},
+  // ── rec_37: تحسين الوصفات المُنتَجة — بري-بلند + عتق صحيح + عنبرمور + فيتيفير ──
+  {id:"royal",name:"الملكي الفاخر",icon:"❄️",season:"شتاء",gender:"رجالي",stability:"48+ ساعة",
+   desc:"قمة: عود ثلاثي مُعتَّق | قلب: كمبودي+Greatness+Exclusif | قاعدة: صندل+لبدانوم+عنبرمور مُعزَّز | نيش خليجي فاخر",
+   ing:[["artessence",4],["lux_black",3],["oud_synth",1.5],["black_agar",1],["sandal_indi",3],["ambermor",2],["lux_fixative",3],["labdanum",1.5],["lux_cambodi",3],["pretty_oud",1.5],["lux_greatness",1.5],["lux_exclusif",1],["cmp90",1],["patchouli",1.5],["benzoin_b",2],["tonquitone",0.5],["wild_petal",2.5],["cashmeran",1.5],["iso_e",0.3],["dpg",3]],
+   steps:["⚡ بري-بلند العود (12 ساعة مسبقاً): في زجاجة 10مل: Artessence 4مل + Oud Synth 1.5مل + ISO E 0.3مل — أغلق في بارد مظلم — الثلاثي يُوحّد الطابع العودي الداكن قبل التقائه بالراتنجات","SH-2 + بيكر 100مل: Labdanum 1.5جم + Benzoin B 2مل + DPG 3مل على 60° (15-20دق) ← برّد لـ 40°","أضف: Black Oud 3مل + Black Agar 1مل — الهيكل الأسود الداكن","أضف خليط بري-بلند (Artessence + Oud Synth + ISO E) بالكامل دفعة واحدة — حرّك دائرياً 3 دقائق","أضف: Cambodi 3مل + Pretty Oud 1.5مل — العمق الزهري العودي من Luxodor","أضف: Greatness 1.5مل + Exclusif 1مل + CMP90 1مل — الهوية الفاخرة","أضف: Sandalwood 3مل + Ambermor شمعي 2جم (⚠️ أذبه على 50° أولاً — 30 دق للتفعيل) + Lux Fixative 3مل — الثالوث المُثبِّت الكامل","أضف: Patchouli 1.5مل + Wild Petal 2.5مل + Tonquitone 0.5مل","سرنجة: Cashmeran 1.5مل + مسك رمان 0.5مل (ثانوي — اختياري، شرفان) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","⚠️ عتّق 28 يوماً — الثلاثي العودي + Luxodor يحتاجان شهراً | اختياري: دورة حرارة (40° ساعة ← ثلاجة 4 ساعات × 3) | أسبوع 1 في 25-30° | حرّك برفق كل 2-3 أيام | 💡 بشرة رطبة بالجوجوبا للثبات الأقصى"]},
+  {id:"r_blend2_fixed",name:"عسل العود",icon:"🍯",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
+   desc:"الخلطة الثانية — كمبودي حلو معمّق ومؤرَّض. الحلاوة الزائدة موزونة بالفيتيفير والباتشولي",
+   ing:[["blend2",48],["labdanum",3.5],["benzoin_b",3],["ambermor",1.5],["benzyl",1.5],["patchouli",1.5],["vetiver",1.1],["sandal_indi",5],["cashmeran",1.5],["tonquitone",0.5],["lux_fixative",2],["dpg",6],["iso_e",0.3]],
+   steps:["ضع في بيكر على الجهاز: لبدانوم 3.5جم + بنزوين B سايل 3مل + عنبرمور شمعي 1.5جم (⚠️ يذوب مع الحرارة) + بنزيل 1.5مل","اضبط الحرارة على 60° + قضيب مغناطيسي، حرّك 20 دقيقة حتى يصير سائلاً صافياً","أطفئ واترك يبرد لـ 40°","على تحريك بارد: أضف DPG 6مل أولاً","أضف الخلطة الثانية (48مل) وحرّك 5 دقائق","الخطوة الأهم: أضف Patchouli 1.5مل + Vetiver 1.1مل — هذان يسحبان الحلاوة الطافية لأسفل ويعطيانها عمقاً","أضف Sandalwood INDI 5مل + Lux Fixative 2مل + Cashmeran 1.5مل + Tonquitone 0.5مل — الصندل يحمل، LF يُرسّخ، Cashmeran مسك خشبي (Bulkaroma)، Tonquitone جسر الكومارين لذيل عميق","سرنجة: ISO E Super 0.3مل + شمامة 0.5جم (ثانوي — اختياري، الحميدي) + مسك متسلق 0.5مل (ثانوي — اختياري، الحميدي)","⚠️ عتّق 3 أسابيع — الفيتيفير+الباتشولي يحتاجان الوقت | 💡 الأسبوع الأول: حمام ماء 38° مدة ساعتين يومياً ثلاثة أيام متتالية — يُسرّع تأريض الحلاوة ويُخفّف الزعل الأول | أسبوع 1 في 25-30° يُعجّل الاندماج | حرّك برفق كل 2-3 أيام | 💡 للثبات الأقصى: بشرة رطبة بالجوجوبا"]},
+  {id:"summer",name:"صيف الطائف",icon:"🌹",season:"صيف",gender:"للجنسين",stability:"28 ساعة",
+   desc:"قمة: زعفران+ورد الطائف+بتلات | قلب: ورد بلغاري+غراس+كمبودي | قاعدة: عود أسام+كاكاو+صندل | صيفي خفيف",
+   ing:[["lux_cambodi",6],["white_oudh",2],["artessence",2],["pretty_oud",3],["wild_petal",4],["pea",2],["cmp91",2],["amber_oud",1],["lux_symphony",2],["sandal_indi",3],["labdanum",1.5],["lux_fixative",3],["ambermor",2],["tonquitone",1],["benzoin_b",2],["cashmeran",1.5],["iso_e",0.2],["dpg",6],["jojoba",5]],
+   steps:["⚡ قبل البدء: رابط الورد: Wild Petal 4مل + Benzoin B 2مل في كوب — أغلق 20 دق | في كوب صغير: أذب لبدانوم 1.5جم في 50° مع 1مل DPG — اترك يبرد تماماً","بيكر 250مل على SH-2 (بلا حرارة): DPG 5مل + جوجوبا 5مل","أضف: Cambodi 6مل + White Oudh 2مل + Artessence 2مل","أضف: Sandalwood 3مل + Lux Fixative 3مل + محلول اللبدانوم المُبرَّد + Ambermor شمعي 2جم (⚠️ أذبه على 50° — 30 دق للتفعيل)","أضف: Pretty Oud 3مل + CMP91 2مل + Amber Oud 1مل","أضف خليط الورد المُعدّ (Wild Petal + Benzoin B) ← ثم PEA 2مل فقط ⚠️ (لا تزد — تعطي معدنية حادة)","أضف: Symphony 2مل (زعفران→ورد بلغاري+غراس→عود أسام+كاكاو)","أضف: Tonquitone 1مل + Cashmeran 1.5مل","سرنجة: ISO E 0.2مل + ورد الطائف 1.5مل (ثانوي — اختياري، شرفان) + مسك رمان 1مل (ثانوي — اختياري، شرفان) + عود XX 2مل (ثانوي — اختياري، شرفان)","⚠️ عتّق 3 أسابيع — اللبدانوم+الكمبودي+الورد يحتاجون 21 يوماً ليتوحّدوا | 💡 حمام ماء 38° × ساعتين يومياً × 3 أيام في الأسبوع الأول — يُسرّع اندماج PEA مع Wild Petal ويُلطّف الحدة المعدنية | حرّك برفق كل 2-3 أيام | ضع جوجوبا على البشرة أولاً للثبات الأقصى"]},
+  {id:"taif_rose_oud",name:"دهن الوردة الطائفية",icon:"🌹",season:"ربيع",gender:"نسائي",stability:"40 ساعة",
+   desc:"قمة: سافرالين+بتلات برية | قلب: Wild Petal+آرتيسانس خفيف | قاعدة: صندل+بنزوين+تونكيتون | نسائي أصيل — Wild Petal أولاً، PEA خفيفة",
+   ing:[["wild_petal",8],["pea",1],["artessence",2],["lux_cambodi",4],["sandal_indi",5],["labdanum",2],["benzoin_b",4],["tonquitone",1],["ambermor",2],["safraleine",0.3],["lux_fixative",3],["cashmeran",1.5],["iso_e",0.3],["dpg",4.5],["jojoba",4]],
+   steps:["⚡ قبل البدء: رابط الورد: Wild Petal 8مل + Benzoin B 4مل في كوب — أغلق 20 دق | في كوب صغير: أذب لبدانوم 2جم في 50° مع 1.5مل DPG — اترك يبرد تماماً (اللبدانوم يُضاعف ثبات الورد على الجلد)","في بيكر بارد: DPG 3مل + Jojoba 4مل — الحاملان الحريريان للدهن الأنثوي","أضف Lux Cambodi 4مل — قاعدة عودية ناعمة تحمل الورد وتمنحه عمقاً شرقياً خفيفاً","أضف Artessence 2مل (Biolandes) — جرعة خفيفة من العود الطبيعي تُعطي الورد هيبة دون طغيان","أضف Sandalwood INDI 5مل — الصندل الأفضل لحمل الورد، يلفّه بجسم كريمي دافئ","أضف خليط الورد المُعدّ (Wild Petal + Benzoin B) من الخطوة الأولى ← ثم PEA 1مل فقط ⚠️ (لا تزد — تعطي معدنية حادة)","أضف محلول اللبدانوم المُبرَّد + Ambermor شمعي 2جم (⚠️ أذبه على 50° — 30 دق للتفعيل) + Lux Fixative 3مل + Tonquitone 1مل — الرباعي الراتنجي المُثبِّت الكامل","سرنجة: Safraleine 0.3مل (جيفودان | 💡 3مل محلول 10%: 0.1مل+0.9مل DPG للدقة) + Cashmeran 1.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1.5مل (شرفان) + مسك رمان 1مل (شرفان)","⚠️ عتّق 3 أسابيع | أسبوع 1: 25-30° | 💡 أسبوع 2: حمام ماء 38° × ساعتين × 3 أيام — الورد يتفتّح بالحرارة الخفيفة في منتصف العتق | حرّك برفق كل 2-3 أيام | بشرة رطبة بالجوجوبا تُضاعف الثبات"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -753,7 +770,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-11-rec36";
+const APP_BUILD="2026-06-11-rec37";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
