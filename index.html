@@ -3209,7 +3209,6 @@ function App(){
               <button className="btn-ghost" onClick={exportData} style={{padding:"10px",fontSize:"0.78rem"}}>📤 تصدير</button>
               <button className="btn-ghost" onClick={()=>importRef.current.click()} style={{padding:"10px",fontSize:"0.78rem"}}>📥 استيراد</button>
             </div>
-            <input ref={importRef} type="file" accept=".json" style={{display:"none"}} onChange={importData}/>
             <p style={{fontSize:"0.67rem",color:"#6A4820",marginTop:"10px",lineHeight:"1.7"}}>يُحفظ تلقائياً في المتصفح — صدّر نسخة احتياطية للحماية من الضياع</p>
           </div>
 
@@ -3614,6 +3613,9 @@ function App(){
           ))}
         </div>);
       })()}
+
+      {/* hidden file input — always mounted so importRef works from any tab */}
+      <input ref={importRef} type="file" accept=".json" style={{display:"none"}} onChange={importData}/>
 
       <div className="bottom-nav">
         {(()=>{
