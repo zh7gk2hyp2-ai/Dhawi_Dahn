@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-15-rec42"/>
+<meta name="app-version" content="2026-06-15-rec43"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -857,7 +857,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-15-rec42";
+const APP_BUILD="2026-06-15-rec43";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -2127,6 +2127,89 @@ function App(){
 
         {/* ══════════════ RECIPES ══════════════ */}
         {tab==="recipes"&&!selectedRecipe&&!showAddRec&&!showCompare&&!showMixer&&<div className="fade">
+
+          {/* ── DASHBOARD ───────────────────────────────────── */}
+          {!catalogMode&&!showCustomerStore&&(()=>{
+            const heroRecs=recipes.filter(r=>r.hero);
+            const publishedRecs=recipes.filter(r=>r.published);
+            const totalInvValue=inv.reduce((s,i)=>s+(i.qty||0)*(i.unitCost||0),0);
+            const lowStockCount=inv.filter(i=>i.qty>0&&i.qty<(i.origQty||i.qty)*0.2).length;
+            const totalRevPotential=heroRecs.reduce((s,r)=>s+(r.price_sar||0),0);
+            const DCARD={background:"rgba(18,14,28,0.85)",border:"1px solid rgba(201,168,76,0.14)",borderRadius:"14px",padding:"14px 12px",textAlign:"center",backdropFilter:"blur(16px)"};
+            return(
+            <div style={{marginBottom:"16px"}}>
+              {/* ── شريط العنوان ── */}
+              <div style={{display:"flex",alignItems:"center",gap:"10px",marginBottom:"14px"}}>
+                <div style={{width:"3px",height:"28px",background:"linear-gradient(180deg,#C9A84C,transparent)",borderRadius:"2px",flexShrink:0}}/>
+                <div>
+                  <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.15rem",color:"#E8C870",lineHeight:1}}>لوحة التحكم</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.48rem",letterSpacing:"0.22em",color:"rgba(201,168,76,0.35)",marginTop:"2px"}}>LAB CONTROL · ATELIER DHAWI</div>
+                </div>
+              </div>
+              {/* ── الأرقام الرئيسية ── */}
+              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"8px",marginBottom:"10px"}}>
+                {[
+                  {icon:"📋",val:recipes.length,lbl:"الوصفات",color:"#E8C870"},
+                  {icon:"🌐",val:publishedRecs.length,lbl:"منشور",color:"#25d366"},
+                  {icon:"★", val:heroRecs.length,lbl:"هيرو",color:"#C9A84C"},
+                  {icon:"⚠️",val:lowStockCount,lbl:"مخزون منخفض",color:lowStockCount>0?"#ff7070":"#25d366"},
+                ].map(s=>(
+                  <div key={s.lbl} style={DCARD}>
+                    <div style={{fontSize:"1rem",marginBottom:"3px"}}>{s.icon}</div>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.4rem",fontWeight:"700",color:s.color,lineHeight:1}}>{s.val}</div>
+                    <div style={{fontSize:"0.58rem",color:"rgba(237,224,200,0.40)",marginTop:"3px",fontFamily:"'Alexandria',sans-serif"}}>{s.lbl}</div>
+                  </div>
+                ))}
+              </div>
+              {/* ── قيمة المخزون + أعلى المنتجات ── */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"10px"}}>
+                <div style={DCARD}>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.50rem",letterSpacing:"0.18em",color:"rgba(201,168,76,0.45)",marginBottom:"8px",textAlign:"right"}}>قيمة المخزون</div>
+                  <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.7rem",color:"#E8C870",lineHeight:1}}>{totalInvValue.toFixed(0)}</div>
+                  <div style={{fontSize:"0.60rem",color:"rgba(237,224,200,0.30)",marginTop:"3px"}}>ريال سعودي</div>
+                </div>
+                <div style={DCARD}>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.50rem",letterSpacing:"0.18em",color:"rgba(201,168,76,0.45)",marginBottom:"8px",textAlign:"right"}}>أعلى الأسعار</div>
+                  {heroRecs.sort((a,b)=>(b.price_sar||0)-(a.price_sar||0)).slice(0,3).map(r=>(
+                    <div key={r.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"4px"}}>
+                      <span style={{fontSize:"0.68rem",color:"rgba(237,224,200,0.60)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"70px"}}>{r.name}</span>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.68rem",color:"#C9A84C",flexShrink:0}}>{r.price_sar}ر</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* ── حاسبة التكاليف السريعة ── */}
+              {heroRecs.length>0&&(()=>{
+                const r=heroRecs[0];
+                const cost=recipeCost(r);
+                const mlCost=cost/(r.ing||[]).reduce((s,[,a])=>s+a,0)||0;
+                return(
+                <div style={{...DCARD,textAlign:"right"}}>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.50rem",letterSpacing:"0.15em",color:"rgba(201,168,76,0.45)",marginBottom:"10px"}}>حاسبة التكلفة — {r.name}</div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"5px"}}>
+                    {[{l:"12مل",ml:12},{l:"30مل",ml:30},{l:"50مل",ml:50},{l:"100مل",ml:100}].map(({l,ml})=>{
+                      const c=(mlCost*ml).toFixed(0);
+                      const sell=(mlCost*ml*3.5).toFixed(0);
+                      return(
+                      <div key={l} style={{background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.10)",borderRadius:"8px",padding:"8px 4px",textAlign:"center"}}>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.58rem",color:"rgba(212,168,67,0.50)",marginBottom:"4px"}}>{l}</div>
+                        <div style={{fontSize:"0.60rem",color:"rgba(237,224,200,0.35)"}}>تكلفة: {c}ر</div>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.72rem",color:"#E8C870",fontWeight:"700",marginTop:"2px"}}>{sell}ر</div>
+                        <div style={{fontSize:"0.52rem",color:"rgba(37,211,102,0.55)",marginTop:"1px"}}>×3.5</div>
+                      </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{fontSize:"0.60rem",color:"rgba(237,224,200,0.28)",marginTop:"8px",textAlign:"center"}}>
+                    💡 اضغط على أي وصفة لرؤية حاسبة كاملة
+                  </div>
+                </div>
+                );
+              })()}
+            </div>
+            );
+          })()}
+
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
             <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700"}}>{showCustomerStore?"🛍 متجر الزبائن":catalogMode?"كتالوج العطور":`الوصفات (${recipes.length})`}</h2>
             <div style={{display:"flex",gap:"5px",flexWrap:"wrap",justifyContent:"flex-end"}}>
