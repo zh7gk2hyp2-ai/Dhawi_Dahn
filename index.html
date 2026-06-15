@@ -410,7 +410,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_46";
+const PENDING_RECIPES_VERSION="rec_47";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
@@ -857,7 +857,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-15-rec46";
+const APP_BUILD="2026-06-15-rec47";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1075,7 +1075,7 @@ function applyPendingRecipes(recipes){
   const map=new Map(recipes.map(r=>[r.id,r]));
   PENDING_RECIPES.forEach(r=>{
     const ex=map.get(r.id);
-    map.set(r.id,ex?{...r,published:ex.published,story:ex.story||r.story}:r);
+    map.set(r.id,ex?{...r,published:ex.published,story:ex.story||r.story,price_sar:ex.price_sar>0?ex.price_sar:(r.price_sar||0),hero:ex.hero!==undefined?ex.hero:r.hero}:r);
   });
   lsSet("dw_pr_ver",PENDING_RECIPES_VERSION);
   return [...map.values()];
@@ -1263,14 +1263,18 @@ function App(){
   useEffect(()=>lsSet("dw_batchinsp",batchInspUnit),[batchInspUnit]);
   useEffect(()=>{
     const prices={};
-    recipes.filter(r=>r.hero&&r.price_sar>0).forEach(r=>{
-      const base=r.ing.reduce((s,[,a])=>s+a,0)||11.6;
-      const cpm=r.ing.reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a:0);},0)/base;
-      const mk=n=>Math.max(5,Math.ceil(cpm*profitMult*n/5)*5);
-      prices[r.id]={quarter:mk(2.9),half:mk(5.8),tola:mk(11.6),costPerMl:+cpm.toFixed(3)};
+    recipes.filter(r=>r.price_sar>0).forEach(r=>{
+      const t=r.price_sar;
+      // store prices derived from manually-set price_sar (the market price the user wants)
+      // profitMult used only in lab cost calculator, not for store display
+      prices[r.id]={
+        quarter:Math.max(5,Math.ceil(t*2.9/11.6/5)*5),
+        half:Math.max(5,Math.ceil(t*5.8/11.6/5)*5),
+        tola:t
+      };
     });
     lsSet("dw_store_prices",prices);
-  },[recipes,inv,profitMult]);
+  },[recipes]);
   useEffect(()=>lsSet("dw_shopcart",shopCart),[shopCart]);
   useEffect(()=>{
     const sync=()=>{try{setStoreOrders(JSON.parse(localStorage.getItem('dw_agency_orders')||'[]'))}catch(e){}};
@@ -1328,7 +1332,7 @@ function App(){
     .ftr{text-align:center;margin-top:20px;padding-top:14px;border-top:1px dashed #aaa;font-size:9px;color:#777;letter-spacing:2px;line-height:1.9}
     .stars{color:#C9A84C;font-size:15px;letter-spacing:4px}</style></head><body>
     <div class="hdr"><div class="brand">ATELIER DHAWI</div><div class="sub">دهن العود الفاخر</div><div style="font-size:10px;margin-top:6px;color:#444">${dateStr}</div></div>
-    <div class="meta"><span>فاتورة: ${invNo}</span><span>ضريبة: 300000000000003</span></div>
+    <div class="meta"><span>فاتورة: ${invNo}</span></div>
     <table><thead><tr><th style="text-align:right">المنتج</th><th>ك</th><th style="text-align:left">السعر</th><th style="text-align:left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="tot">
       <div class="tot-row"><span>المجموع</span><span>${cartTotal} ر</span></div>
