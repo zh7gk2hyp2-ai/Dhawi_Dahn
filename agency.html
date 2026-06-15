@@ -391,29 +391,67 @@ function luhn(n){const d=n.replace(/\D/g,'').split('').reverse().map(Number);ret
 function validExpiry(v){if(!/^\d{2}\/\d{2}$/.test(v))return false;const[mm,yy]=v.split('/').map(Number);if(mm<1||mm>12)return false;const n=new Date(),ey=2000+yy;return ey>n.getFullYear()||(ey===n.getFullYear()&&mm>=n.getMonth()+1);}
 function fmtCardNum(v){return v.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim();}
 
-// ── DATA ───────────────────────────────────────────────────────────────────
-const P=[
-  {id:'layali',name:'ليالي الرياض',icon:'🌙',season:'شتاء',gender:'للجنسين',price:185,top:18,mid:52,base:30,stab:'طويل الأمد',
-   desc:'دهن عود كمبودي · ورد · خشب الصندل · مسك'},
-  {id:'taif',name:'سر الطائف',icon:'🌹',season:'ربيع',gender:'نسائي',price:145,top:28,mid:45,base:27,stab:'متوسط',
-   desc:'ورد الطائف · دهن عود هندي · مسك · خشب الصندل'},
-  {id:'malaki',name:'الملكي الفاخر',icon:'❄️',season:'شتاء',gender:'رجالي',price:220,top:12,mid:38,base:50,stab:'طويل جداً',
-   desc:'دهن عود كمبودي · عنبر · جاوي · خشب الصندل'},
-  {id:'khashab',name:'خشب الليل',icon:'🌿',season:'خريف',gender:'رجالي',price:195,top:10,mid:42,base:48,stab:'طويل الأمد',
-   desc:'دهن عود هندي · نجيل · جاوي · عنبر'},
-  {id:'ward',name:'ورد الصفاء',icon:'🌸',season:'ربيع',gender:'نسائي',price:155,top:35,mid:48,base:17,stab:'متوسط',
-   desc:'ورد الطائف · زعفران · مسك'},
-  {id:'amber',name:'عنبر السلطان',icon:'✨',season:'مناسبات',gender:'للجنسين',price:250,top:15,mid:40,base:45,stab:'طويل جداً',
-   desc:'عنبر · دهن عود · مسك · جاوي'},
-  {id:'bkhoor',name:'بخور الليالي',icon:'🕌',season:'مناسبات',gender:'للجنسين',price:170,top:20,mid:45,base:35,stab:'طويل الأمد',
-   desc:'دهن عود · جاوي · خشب الصندل · توابل'},
-  {id:'nakheel',name:'نخيل الذهب',icon:'🌴',season:'صيف',gender:'للجنسين',price:135,top:40,mid:38,base:22,stab:'خفيف',
-   desc:'زعفران · مسك · خشب الصندل'},
-  {id:'fajr',name:'فجر الرياض',icon:'🌅',season:'صيف',gender:'رجالي',price:160,top:30,mid:42,base:28,stab:'متوسط',
-   desc:'دهن عود هندي · هيل · زعفران · خشب الصندل'},
-  {id:'yasmin',name:'ليلة الياسمين',icon:'🌺',season:'ربيع',gender:'نسائي',price:140,top:42,mid:43,base:15,stab:'خفيف',
-   desc:'ورد · مسك · جاوي'},
+// ── TIER CALC (same as lab) ──────────────────────────────────────────────
+const TOP_IDS=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e']);
+const MID_IDS=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone']);
+const CARRIER_IDS=new Set(['dpg','jojoba','benzyl']);
+function calcTiers(ing){
+  if(!ing||!ing.length)return{top:0,mid:0,base:0};
+  const ni=ing.filter(([id])=>!CARRIER_IDS.has(id));
+  const tot=ni.reduce((s,[,a])=>s+a,0)||1;
+  const tp=ni.filter(([id])=>TOP_IDS.has(id)).reduce((s,[,a])=>s+a,0);
+  const mp=ni.filter(([id])=>MID_IDS.has(id)).reduce((s,[,a])=>s+a,0);
+  const t=Math.round(tp/tot*100),m=Math.round(mp/tot*100);
+  return{top:t,mid:m,base:100-t-m};
+}
+
+// ── LOAD FROM LAB localStorage (index.html همدان) ──────────────────────
+function loadFromLab(){
+  try{
+    const raw=localStorage.getItem('dw_recipes');
+    if(!raw)return null;
+    const recs=JSON.parse(raw).filter(r=>r.published&&r.price_sar>0);
+    if(!recs.length)return null;
+    return recs.map(r=>{const t=calcTiers(r.ing||[]);return{
+      id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,
+      price:r.price_sar,stab:r.stability,story:r.story||'',desc:r.desc||'',
+      top:t.top,mid:t.mid,base:t.base
+    };});
+  }catch(e){return null;}
+}
+
+// ── DATA (static fallback — يُستبدل بمحتوى المعمل عند التوفر) ─────────
+const P_STATIC=[
+  {id:'r_hindi_soul',name:'الروح الهندية',icon:'🔥',season:'شتاء',gender:'رجالي',price:220,
+   top:2,mid:55,base:43,stab:'طويل جداً · 40 ساعة',
+   story:'مستوحى من أعماق غابات الأسام الهندية، حيث يجمع الهواء بين أنفاس الخشب المعتّق وحرارة الأرض البكر. قلبه آرتيسانس حيواني أصيل يُعبّر عن فخر الرجل الخليجي وثقته بنفسه. مثبت العنبرمور يبقيه على الثياب أربعين ساعة.',
+   desc:'آرتيسانس هندي · عود سينث · عود أسود · فيتيفير · لبدانوم · صندل هندي · عنبرمور'},
+  {id:'r_nasmat_malook',name:'نسمة الملوك',icon:'🏆',season:'شتاء',gender:'رجالي',price:240,
+   top:21,mid:43,base:36,stab:'طويل جداً · 40 ساعة',
+   story:'تاج المجموعة وخلاصة فن العطار — عود وورد طائفي وزعفران وعنبر وهيل في مزيج يستحق المناسبات الكبرى. لا يُصنع لكل يوم؛ يُصنع للأعياد والأفراح وعقود الأعمال. أطول وصفة في المجموعة في الثبات — أربعون ساعة من الكرامة والحضور.',
+   desc:'هندي+كمبودي · ورد طائفي · زعفران · عنبر · هيل · عود أسود · لبدانوم'},
+  {id:'r_malaki',name:'الملكي',icon:'👑',season:'مناسبات',gender:'رجالي',price:250,
+   top:16,mid:51,base:33,stab:'طويل الأمد · 38 ساعة',
+   story:'ثلاث شخصيات عودية في تركيبة واحدة — الهند في قوّتها، والكمبودي في حريره، والسليك في أناقته المعاصرة. يُقدَّم في مناسبات الفرح والفخر، حيث يصنع صاحبه أثراً لا يُنسى في كل مجلس. خزينة العطار الخاصة في زجاجة واحدة.',
+   desc:'هندي+كمبودي+سليك · ورد زعفراني · عود أسود · لبدانوم · صندل هندي · عنبرمور'},
+  {id:'r_nasmat_bakhoor',name:'نسمة البخور',icon:'🕌',season:'شتاء',gender:'رجالي',price:200,
+   top:9,mid:58,base:33,stab:'طويل الأمد · 38 ساعة',
+   story:'الهيل السعودي والزعفران الفارسي يفتحان طريق الروائح قبل أن يستلم العود الهندي الأصيل الزمام. مستوحى من بخور المجالس الكبرى في الرياض والقصيم، يُعيد الهوية العربية إلى قلب العطر. شتوي خالص يعيش على الثياب ثمانية وثلاثين ساعة.',
+   desc:'هندي+سينث · هيل · زعفران · لبدانوم · صندل هندي · عنبرمور'},
+  {id:'r_cambodi_nights',name:'ليالي الكمبودي',icon:'🌙',season:'صيف',gender:'للجنسين',price:190,
+   top:21,mid:46,base:33,stab:'متوسط · 34 ساعة',
+   story:'إلهام من جوهر عود كمبودي فاخر تحت ليلٍ صيفي هادئ، تصاحبه بتلات الورد البرية والزعفران الخليجي. يفتح القلبَ بالخفّة قبل أن يستقر في الصندل الكريمي الدافئ. عطر النهار والأصدقاء — خفيف بما يكفي للسيارة، عميق بما يكفي للمجلس.',
+   desc:'عود كمبودي · بتلات ورد · زعفران · صندل هندي · عنبرمور'},
+  {id:'r_nasmat_ward',name:'نسمة الورد',icon:'🌸',season:'صيف',gender:'للجنسين',price:175,
+   top:28,mid:42,base:30,stab:'متوسط · 30 ساعة',
+   story:'تستيقظ مع ورد الطائف في فجر صيفي ناعم، ثم تنضج مع الكمبودي الذي يمنح الورد عمقاً وهوية خليجية. عطر يلائم كل صباح ومنتصف النهار، للرجل والمرأة على حدٍّ سواء. رائحة البيت والطمأنينة في جيبك.',
+   desc:'عود كمبودي · ورد طائفي · زعفران · صندل هندي · عنبرمور'},
+  {id:'r_nasmat_sayf',name:'نسمة الصيف',icon:'🌴',season:'صيف',gender:'للجنسين',price:165,
+   top:15,mid:57,base:28,stab:'خفيف · 28 ساعة',
+   story:'روح استوائية خليجية — حيث الماراكويا الطازجة تلتقي بسليك عود ناعم في مزيج لم تشمّه الجزيرة من قبل. مناسب للأجواء الحارة والرحلات الصيفية، يبقى خفيفاً دون أن يفقد بصمته. جرأة معاصرة بأصول عريقة.',
+   desc:'عود كمبودي · ماراكويا استوائي · سليك عود · ورد · صندل هندي'},
 ];
+const P=loadFromLab()||P_STATIC;
 
 // ── BATCH SIZES ─────────────────────────────────────────────────────────────
 const BATCH={
@@ -428,10 +466,10 @@ let cart=_loadCart(), sf='الكل', gf='الكل', batch='quarter';
 const cardQty={};
 P.forEach(p=>cardQty[p.id]=1);
 
-const SI=['الكل','صيف','شتاء','ربيع','خريف','مناسبات'];
-const GI=['الكل','رجالي','نسائي','للجنسين'];
-const SE={صيف:'🌞',شتاء:'❄️',ربيع:'🌸',خريف:'🍂',مناسبات:'✨',الكل:'🔎'};
-const GE={'رجالي':'👔','نسائي':'💐','للجنسين':'🤝','الكل':'👥'};
+const SI=['الكل','صيف','شتاء','مناسبات'];
+const GI=['الكل','رجالي','للجنسين'];
+const SE={صيف:'🌞',شتاء:'❄️',مناسبات:'✨',الكل:'🔎'};
+const GE={'رجالي':'👔','للجنسين':'🤝','الكل':'👥'};
 
 function calcPrice(basePrice){
   return Math.max(5, Math.ceil(basePrice * BATCH[batch].factor / 5)*5);
@@ -890,7 +928,8 @@ function renderProductModal(){
         <div style="flex:${p.base||0.1};background:rgba(160,100,40,0.70);border-radius:0 4px 4px 0"></div>
       </div>
       <div class="prod-modal-lbar-labels"><span>قمة ${p.top}%</span><span>قلب ${p.mid}%</span><span>قاعدة ${p.base}%</span></div>
-      ${p.desc?`<div class="prod-modal-desc">${p.desc}</div>`:''}
+      ${p.story?`<div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.88rem;color:rgba(240,220,160,0.82);line-height:2;margin-bottom:14px;text-align:right;padding:0 4px">${p.story}</div>`:''}
+      ${p.desc?`<div class="prod-modal-desc" style="opacity:0.65">${p.desc}</div>`:''}
       <div class="prod-modal-sep"></div>
       <div class="prod-modal-price">${price}<span style="font-size:1rem;opacity:0.6;-webkit-text-fill-color:rgba(212,168,67,0.6)"> ر</span></div>
       <div class="prod-modal-size">${BATCH[batch].label} · ${BATCH[batch].ml}</div>
