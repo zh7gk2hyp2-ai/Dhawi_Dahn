@@ -949,7 +949,7 @@ function loadFromLab(){
     const prodLog=JSON.parse(localStorage.getItem('dw_prodlog')||'[]');
     const activeBatchIds=new Set(prodLog.filter(e=>!e.sold&&e.readyDate).map(e=>e.recipeId));
     const storePrices=JSON.parse(localStorage.getItem('dw_store_prices')||'{}');
-    const allPub=JSON.parse(raw).filter(r=>r.published&&r.price_sar>0);
+    const allRecipes=JSON.parse(raw).filter(r=>r.price_sar>0);
     const mapRec=r=>{
       const t=calcTiers(r.ing||[]);
       const sp=storePrices[r.id];
@@ -965,8 +965,8 @@ function loadFromLab(){
       };
     };
     return{
-      produced:allPub.filter(r=>activeBatchIds.has(r.id)).map(mapRec),
-      all:allPub.map(mapRec)
+      produced:allRecipes.filter(r=>activeBatchIds.has(r.id)).map(mapRec),
+      all:allRecipes.filter(r=>r.published||activeBatchIds.has(r.id)).map(mapRec)
     };
   }catch(e){return null;}
 }
@@ -1478,7 +1478,7 @@ function closeProdModal(){
 
 function renderProductModal(){
   if(!prodModalId)return;
-  const p=P.find(x=>x.id===prodModalId);
+  const p=P.find(x=>x.id===prodModalId)||P_ALL.find(x=>x.id===prodModalId);
   if(!p)return;
   const price=calcPrice(p);
   const qty=cardQty[p.id]||1;
@@ -1567,11 +1567,11 @@ const FINDER_QS=[
 
 // map family → recipe id
 const FAMILY_MAP={
-  royal:['r_malaki','r_nasmat_malook'],
-  animalic:['r_hindi_soul','r_nasmat_malook'],
-  smoky:['r_nasmat_bakhoor'],
-  floral:['r_nasmat_ward','r_cambodi_nights'],
-  light:['r_nasmat_sayf','r_cambodi_nights']
+  royal:['royal','sheikhs_oud','r_hindi_soul'],
+  animalic:['r_hindi_soul','sheikhs_oud','royal'],
+  smoky:['sheikhs_oud','royal','r_hindi_soul'],
+  floral:['taif_rose_oud','summer','r_blend2_fixed'],
+  light:['summer','taif_rose_oud','r_blend2_fixed']
 };
 
 let finderOpen=false,finderStep=0,finderAnswers={};
@@ -1614,27 +1614,34 @@ function finderAnswer(qid,val,weights){
 function showFinderResult(){
   const scores=finderAnswer._scores||{};
   const topFamily=Object.entries(scores).sort(([,a],[,b])=>b-a)[0]?.[0]||'royal';
-  const recs=(FAMILY_MAP[topFamily]||FAMILY_MAP.royal)
+  let recs=(FAMILY_MAP[topFamily]||FAMILY_MAP.royal)
     .map(id=>P_ALL.find(p=>p.id===id)).filter(Boolean).slice(0,2);
+  if(!recs.length)recs=P_ALL.slice(0,2);
   document.getElementById('finderQuestion').innerHTML='';
   const prog=document.getElementById('finderProgress');
   prog.innerHTML=FINDER_QS.map(()=>`<div class="finder-prog-dot done"></div>`).join('');
   const rc=document.getElementById('finderResultCards');
-  rc.innerHTML=recs.map(p=>`
-    <div class="finder-rec-card" ${p.hasStock?`onclick="openProductModal('${p.id}')"`:''} style="cursor:${p.hasStock?'pointer':'default'}">
-      <span style="font-size:1.5rem">${p.icon}</span>
-      <div style="flex:1">
-        <div style="font-size:0.82rem;font-weight:700;color:#F5EFE0">${p.name}</div>
-        <div style="font-size:0.60rem;color:rgba(212,168,67,0.55);margin-top:2px">${p.gender} · ${p.stab}</div>
-        ${!p.hasStock?'<div style="font-size:0.58rem;color:rgba(255,160,50,0.80);margin-top:2px">⏳ يُنتج خصيصاً لك عند الطلب</div>':''}
-      </div>
-      <div style="text-align:right">
-        ${p.hasStock
-          ?`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.80rem;color:#F0C840;font-weight:700">${calcPrice(p)} ر</div><div style="font-size:0.52rem;color:rgba(212,168,67,0.42);margin-top:1px">${BATCH[batch].label}</div>`
-          :`<a href="https://wa.me/966503716775?text=${encodeURIComponent(`مرحبا، أريد طلب مسبق لعطر: ${p.icon} ${p.name}`)}" target="_blank" onclick="event.stopPropagation()" style="display:inline-block;background:rgba(37,211,102,0.14);border:1px solid rgba(37,211,102,0.38);color:#25d366;border-radius:8px;padding:5px 12px;font-size:0.65rem;font-weight:700;text-decoration:none;white-space:nowrap;font-family:'Alexandria',sans-serif">💚 اطلبه الآن</a>`
-        }
-      </div>
-    </div>`).join('');
+  if(!recs.length){
+    rc.innerHTML='<div style="text-align:center;color:rgba(245,239,224,0.45);font-size:0.82rem;padding:20px">لا توجد عطور متاحة حالياً</div>';
+  }else{
+    rc.innerHTML=recs.map(function(p){
+      const waMsg=encodeURIComponent('مرحبا، أريد طلب مسبق لعطر: '+p.icon+' '+p.name);
+      return '<div class="finder-rec-card" '+(p.hasStock?'onclick="openProductModal(\''+p.id+'\')"':'')+' style="cursor:'+(p.hasStock?'pointer':'default')+'">'+
+        '<span style="font-size:1.5rem">'+p.icon+'</span>'+
+        '<div style="flex:1">'+
+          '<div style="font-size:0.82rem;font-weight:700;color:#F5EFE0">'+p.name+'</div>'+
+          '<div style="font-size:0.60rem;color:rgba(212,168,67,0.55);margin-top:2px">'+p.gender+' · '+p.stab+'</div>'+
+          (!p.hasStock?'<div style="font-size:0.58rem;color:rgba(255,160,50,0.80);margin-top:2px">⏳ يُنتج خصيصاً لك عند الطلب</div>':'')+
+        '</div>'+
+        '<div style="text-align:right">'+
+          (p.hasStock
+            ?'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:0.80rem;color:#F0C840;font-weight:700">'+calcPrice(p)+' ر</div><div style="font-size:0.52rem;color:rgba(212,168,67,0.42);margin-top:1px">'+BATCH[batch].label+'</div>'
+            :'<a href="https://wa.me/966503716775?text='+waMsg+'" target="_blank" onclick="event.stopPropagation()" style="display:inline-block;background:rgba(37,211,102,0.14);border:1px solid rgba(37,211,102,0.38);color:#25d366;border-radius:8px;padding:5px 12px;font-size:0.65rem;font-weight:700;text-decoration:none;white-space:nowrap;font-family:\'Alexandria\',sans-serif">💚 اطلبه الآن</a>'
+          )+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
   document.getElementById('finderResult').classList.add('show');
 }
 
