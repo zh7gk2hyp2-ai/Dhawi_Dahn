@@ -654,9 +654,103 @@ body {
 .prod-modal-addbtn { width:100%; padding:14px; border-radius:16px; cursor:pointer; font-size:0.92rem; font-weight:800; font-family:'Alexandria',sans-serif; transition:all 0.22s; border:1px solid rgba(212,168,67,0.40); background:rgba(212,168,67,0.12); color:#F0C840; backdrop-filter:blur(4px); }
 .prod-modal-addbtn:hover { background:linear-gradient(135deg,rgba(201,160,48,0.32),rgba(180,100,20,0.22)); border-color:rgba(212,168,67,0.70); box-shadow:0 0 22px rgba(212,168,67,0.28); }
 .prod-modal-addbtn.ic { background:linear-gradient(135deg,rgba(50,180,80,0.20),rgba(30,120,50,0.15)); border-color:rgba(80,200,100,0.50); color:#80e0a0; }
+
+/* ══ LUXURY ANIMATION SYSTEM ══ */
+/* Hero cinematic entrance */
+@keyframes heroReveal {
+  0%   { opacity:0; transform:translateY(32px); filter:blur(8px); }
+  100% { opacity:1; transform:translateY(0);    filter:blur(0); }
+}
+@keyframes heroGlow {
+  0%,100% { text-shadow:0 0 40px rgba(201,168,76,0.0); }
+  50%     { text-shadow:0 0 80px rgba(201,168,76,0.35), 0 0 120px rgba(201,168,76,0.15); }
+}
+@keyframes shimmerSlide {
+  0%   { transform:translateX(-100%) skewX(-15deg); }
+  100% { transform:translateX(300%) skewX(-15deg); }
+}
+@keyframes cardRise {
+  0%   { opacity:0; transform:translateY(40px) scale(0.96); }
+  100% { opacity:1; transform:translateY(0)    scale(1); }
+}
+@keyframes goldPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(212,168,67,0); }
+  50%     { box-shadow: 0 0 0 6px rgba(212,168,67,0.08), 0 0 40px rgba(212,168,67,0.12); }
+}
+@keyframes floatIcon {
+  0%,100% { transform:translateY(0) scale(1); filter:drop-shadow(0 8px 24px rgba(212,168,67,0.35)); }
+  50%     { transform:translateY(-6px) scale(1.04); filter:drop-shadow(0 16px 32px rgba(212,168,67,0.55)); }
+}
+@keyframes notesReveal {
+  0%   { opacity:0; max-height:0; transform:translateY(-8px); }
+  100% { opacity:1; max-height:200px; transform:translateY(0); }
+}
+@keyframes scanLine {
+  0%   { top:-2px; }
+  100% { top:100%; }
+}
+
+/* Hero animated elements */
+.hero-eyebrow  { animation: heroReveal 1.1s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+.hero-title    { animation: heroReveal 1.2s cubic-bezier(0.22,1,0.36,1) 0.25s both; }
+.hero-title .t2{ animation: heroGlow 4s ease-in-out 2s infinite; }
+.hero-desc     { animation: heroReveal 1.1s cubic-bezier(0.22,1,0.36,1) 0.45s both; }
+.hero-actions  { animation: heroReveal 1.1s cubic-bezier(0.22,1,0.36,1) 0.60s both; }
+.hero-stats    { animation: heroReveal 1.1s cubic-bezier(0.22,1,0.36,1) 0.75s both; }
+
+/* Card scroll reveal */
+.pcard.lux-reveal { animation: cardRise 0.65s cubic-bezier(0.22,1,0.36,1) both; }
+.pcard { animation: goldPulse 6s ease-in-out infinite; }
+
+/* Enhanced card icon float on hover */
+.pcard:hover .pcard-icon { animation: floatIcon 2s ease-in-out infinite; }
+
+/* Shimmer overlay on card hover */
+.pcard::after {
+  content:'';
+  position:absolute; inset:0; border-radius:24px;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.09) 50%,transparent 70%);
+  opacity:0; transition:opacity 0.3s;
+  pointer-events:none; overflow:hidden;
+}
+.pcard:hover::after { opacity:1; animation:shimmerSlide 0.7s ease forwards; }
+
+/* Finder card reveal */
+.finder-card { transition:box-shadow 0.4s; }
+.finder-card:has(.finder-body.open) { box-shadow:0 0 60px rgba(212,168,67,0.12), 0 0 120px rgba(200,72,128,0.06); }
+
+/* Section headings slide in */
+.section-hdr { opacity:0; transform:translateX(20px); transition:opacity 0.7s ease, transform 0.7s ease; }
+.section-hdr.in-view { opacity:1; transform:translateX(0); }
+
+/* Layering pairs subtle entrance */
+.layering-pair { transition:box-shadow 0.35s, border-color 0.35s, transform 0.35s; }
+.layering-pair:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(200,72,128,0.18); border-color:rgba(200,72,128,0.45); }
+
+/* Notes reveal animation in modal */
+.notes-layer { overflow:hidden; }
+.notes-layer.reveal-top  { animation:notesReveal 0.5s 0.1s cubic-bezier(0.22,1,0.36,1) both; }
+.notes-layer.reveal-mid  { animation:notesReveal 0.5s 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+.notes-layer.reveal-base { animation:notesReveal 0.5s 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* Ambient particle canvas */
+#lux-canvas { position:fixed; inset:0; pointer-events:none; z-index:0; opacity:0.55; }
+
+/* CTA button glow pulse */
+.hero-cta-primary { animation:goldPulse 3s ease-in-out infinite; }
+.hero-cta-primary:hover { animation:none; }
+
+/* Smooth scroll */
+html { scroll-behavior:smooth; }
+
+/* Prefers-reduced-motion: turn off */
+@media (prefers-reduced-motion:reduce) {
+  *, ::before, ::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+}
 </style>
 </head>
 <body>
+<canvas id="lux-canvas" aria-hidden="true"></canvas>
 <div class="bg-orb orb1"></div>
 <div class="bg-orb orb2"></div>
 <div class="bg-orb orb3"></div>
@@ -1584,6 +1678,7 @@ function toggleFinder(){
 }
 
 function renderFinderStep(){
+  if(finderStep===0){finderAnswer._scores={};finderAnswers={};}
   const q=FINDER_QS[finderStep];
   const prog=document.getElementById('finderProgress');
   prog.innerHTML=FINDER_QS.map((_,i)=>`<div class="finder-prog-dot${i<finderStep?' done':i===finderStep?' active':''}"></div>`).join('');
@@ -1601,8 +1696,8 @@ function renderFinderStep(){
 
 function finderAnswer(qid,val,weights){
   finderAnswers[qid]=val;
-  // accumulate scores
   if(!finderAnswer._scores)finderAnswer._scores={};
+  // replace previous score for this question (not accumulate)
   Object.entries(weights).forEach(([f,pts])=>{
     finderAnswer._scores[f]=(finderAnswer._scores[f]||0)+pts;
   });
@@ -1654,6 +1749,104 @@ function restartFinder(){
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 renderBatch();chips();render();
+</script>
+
+<script>
+// ══ LUXURY AMBIENT PARTICLE SYSTEM ══
+(function(){
+  const cv=document.getElementById('lux-canvas');
+  if(!cv)return;
+  const ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  const COLORS=['rgba(212,168,67,', 'rgba(200,72,128,', 'rgba(140,90,220,', 'rgba(245,220,120,'];
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize,{passive:true});
+
+  for(let i=0;i<55;i++){
+    const c=COLORS[i%COLORS.length];
+    pts.push({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-0.5)*0.18, vy:(Math.random()-0.5)*0.22,
+      r:Math.random()*1.6+0.4,
+      o:Math.random()*0.35+0.08,
+      color:c,
+      flicker:Math.random()*Math.PI*2,
+      speed:Math.random()*0.015+0.008
+    });
+  }
+
+  let raf,last=0;
+  function draw(ts){
+    const dt=Math.min(ts-last,50);last=ts;
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      p.flicker+=p.speed;
+      if(p.x<-4)p.x=W+4; if(p.x>W+4)p.x=-4;
+      if(p.y<-4)p.y=H+4; if(p.y>H+4)p.y=-4;
+      const alpha=(p.o*(0.65+0.35*Math.sin(p.flicker))).toFixed(3);
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color+alpha+')';
+      ctx.fill();
+    });
+    raf=requestAnimationFrame(draw);
+  }
+  function startPtcl(){raf=requestAnimationFrame(draw);}
+  function stopPtcl(){cancelAnimationFrame(raf);}
+  // Pause when tab hidden to save CPU
+  document.addEventListener('visibilitychange',()=>document.hidden?stopPtcl():startPtcl());
+  startPtcl();
+})();
+
+// ══ SCROLL-TRIGGERED CARD REVEAL ══
+(function(){
+  if(!window.IntersectionObserver)return;
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('lux-reveal');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -30px 0px'});
+
+  function observeCards(){
+    document.querySelectorAll('.pcard:not(.lux-reveal)').forEach((c,i)=>{
+      c.style.animationDelay=(i%4*0.08)+'s';
+      io.observe(c);
+    });
+    // Section headings
+    document.querySelectorAll('.section-hdr').forEach(el=>{
+      const sio=new IntersectionObserver(([e])=>{
+        if(e.isIntersecting){el.classList.add('in-view');sio.disconnect();}
+      },{threshold:0.3});
+      sio.observe(el);
+    });
+  }
+  // Run on initial render and after re-render
+  observeCards();
+  // Re-observe after grid renders (MutationObserver on grid)
+  const grid=document.getElementById('grid');
+  if(grid){
+    new MutationObserver(observeCards).observe(grid,{childList:true});
+  }
+})();
+
+// ══ PRODUCT MODAL ENTRANCE ══
+// Animate lbar when modal opens
+const _origOpenPM=typeof openProductModal==='function'?openProductModal:null;
+if(_origOpenPM){
+  window.openProductModal=function(id){
+    _origOpenPM(id);
+    requestAnimationFrame(()=>{
+      const bar=document.querySelector('.prod-modal-lbar');
+      if(bar){bar.style.animation='none';void bar.offsetWidth;bar.style.animation='cardRise 0.6s cubic-bezier(0.22,1,0.36,1) 0.15s both';}
+      const name=document.querySelector('.prod-modal-name');
+      if(name){name.style.animation='none';void name.offsetWidth;name.style.animation='heroReveal 0.5s cubic-bezier(0.22,1,0.36,1) 0.05s both';}
+    });
+  };
+}
 </script>
 </body>
 </html>
