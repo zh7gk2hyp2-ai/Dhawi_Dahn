@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-15-rec41"/>
+<meta name="app-version" content="2026-06-15-rec42"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -857,7 +857,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-15-rec41";
+const APP_BUILD="2026-06-15-rec42";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1165,6 +1165,7 @@ function App(){
   const [mixAmt,setMixAmt]=useState(3);
   const [showPurchaseForm,setShowPurchaseForm]=useState(false);
   const [readyFilter,setReadyFilter]=useState(false);
+  const [heroFilter,setHeroFilter]=useState(false);
   const [recipeSearch,setRecipeSearch]=useState("");
   const [recipeSeasonF,setRecipeSeasonF]=useState("الكل");
   const [recipeGenderF,setRecipeGenderF]=useState("الكل");
@@ -1438,7 +1439,7 @@ function App(){
 
   // ── favorites ──────────────────────────────────────────────────
   const toggleFav=id=>setFavoriteIds(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
-  const togglePublished=id=>{setRecipes(p=>p.map(r=>r.id!==id?r:{...r,published:!r.published}));show(recipes.find(r=>r.id===id)?.published?"🔒 أُخفي من المتجر":"🌐 نُشر في المتجر");};
+  const togglePublished=id=>{const cur=recipes.find(r=>r.id===id);const newPub=!cur?.published;setRecipes(p=>p.map(r=>r.id!==id?r:{...r,published:newPub}));setSelectedRecipe(prev=>prev&&prev.id===id?{...prev,published:newPub}:prev);show(newPub?"🌐 نُشر في المتجر":"🔒 أُخفي من المتجر");};
   const saveStory=(id,txt)=>{setRecipes(p=>p.map(r=>r.id!==id?r:{...r,story:txt.trim()}));setEditingStory(null);show("✅ حُفظت القصة");};
   const deleteRecipe=id=>{if(!window.confirm("حذف هذه الوصفة نهائياً؟ لا يمكن التراجع"))return;setRecipes(p=>p.filter(r=>r.id!==id));setSelectedRecipe(null);show("🗑️ حُذفت الوصفة");};
   const openEditRecipe=r=>{setEditRecName(r.name);setEditRecDesc(r.desc||"");setEditRecSeason(r.season||"صيف");setEditRecGender(r.gender||"للجنسين");setEditRecStab(r.stability||"");setEditRecipe(r);};
@@ -1613,6 +1614,7 @@ function App(){
     if(recipeSeasonF!=="الكل")f=f.filter(r=>r.season===recipeSeasonF);
     if(recipeGenderF!=="الكل")f=f.filter(r=>r.gender===recipeGenderF);
     if(readyFilter)f=f.filter(r=>canMake(r));
+    if(heroFilter)f=f.filter(r=>r.hero);
     return f;
   })();
   const _m=new Date().getMonth();
@@ -2170,8 +2172,12 @@ function App(){
             <button onClick={()=>setReadyFilter(f=>!f)} style={{width:"100%",padding:"6px",background:readyFilter?"rgba(80,160,80,0.2)":"rgba(255,255,255,0.03)",border:`1px solid ${readyFilter?"rgba(80,160,80,0.5)":"rgba(255,255,255,0.08)"}`,color:readyFilter?"#80c080":"rgba(255,255,255,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
               {readyFilter?"✅ جاهز للإنتاج — اضغط للكل":"⚗️ عرض الجاهز للإنتاج فقط"}
             </button>
-            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter)&&<div style={{marginTop:"5px",fontSize:"0.65rem",color:"rgba(232,200,112,0.5)",textAlign:"center"}}>
-              {filteredRecipes.length} وصفة — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);}}>مسح الفلاتر</span>
+            {/* hero/produced filter */}
+            <button onClick={()=>setHeroFilter(f=>!f)} style={{width:"100%",padding:"6px",marginTop:"4px",background:heroFilter?"rgba(232,200,112,0.15)":"rgba(255,255,255,0.03)",border:`1px solid ${heroFilter?"rgba(232,200,112,0.55)":"rgba(255,255,255,0.08)"}`,color:heroFilter?"#E8C870":"rgba(255,255,255,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
+              {heroFilter?"★ المنتجات المُنتجة — اضغط للكل":"★ عرض المُنتج فقط"}
+            </button>
+            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter||heroFilter)&&<div style={{marginTop:"5px",fontSize:"0.65rem",color:"rgba(232,200,112,0.5)",textAlign:"center"}}>
+              {filteredRecipes.length} وصفة — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);setHeroFilter(false);}}>مسح الفلاتر</span>
             </div>}
           </div>}
           {suggestedRecipe&&!catalogMode&&!showCustomerStore&&<div className="suggest-card">
