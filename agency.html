@@ -1043,24 +1043,26 @@ function loadFromLab(){
     const prodLog=JSON.parse(localStorage.getItem('dw_prodlog')||'[]');
     const activeBatchIds=new Set(prodLog.filter(e=>!e.sold&&e.readyDate).map(e=>e.recipeId));
     const storePrices=JSON.parse(localStorage.getItem('dw_store_prices')||'{}');
-    const allRecipes=JSON.parse(raw).filter(r=>r.price_sar>0);
+    const allRecipes=JSON.parse(raw);
+    const pricedRecipes=allRecipes.filter(r=>r.price_sar>0);
     const mapRec=r=>{
       const t=calcTiers(r.ing||[]);
       const sp=storePrices[r.id];
+      const basePrice=sp?sp.tola:(r.price_sar||0);
       return{
         id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,
-        price:sp?sp.tola:r.price_sar,
-        priceQ:sp?sp.quarter:Math.max(5,Math.ceil(r.price_sar*0.30/5)*5),
-        priceH:sp?sp.half:Math.max(5,Math.ceil(r.price_sar*0.55/5)*5),
-        priceT:sp?sp.tola:r.price_sar,
+        price:basePrice,
+        priceQ:sp?sp.quarter:(basePrice>0?Math.max(5,Math.ceil(basePrice*0.30/5)*5):0),
+        priceH:sp?sp.half:(basePrice>0?Math.max(5,Math.ceil(basePrice*0.55/5)*5):0),
+        priceT:basePrice,
         stab:r.stability,story:r.story||'',desc:r.desc||'',
         top:t.top,mid:t.mid,base:t.base,
         hasStock:activeBatchIds.has(r.id)
       };
     };
     return{
-      produced:allRecipes.filter(r=>activeBatchIds.has(r.id)).map(mapRec),
-      all:allRecipes.filter(r=>r.published||activeBatchIds.has(r.id)).map(mapRec)
+      produced:allRecipes.filter(r=>activeBatchIds.has(r.id)&&r.name).map(mapRec),
+      all:pricedRecipes.filter(r=>r.published||activeBatchIds.has(r.id)).map(mapRec)
     };
   }catch(e){return null;}
 }
