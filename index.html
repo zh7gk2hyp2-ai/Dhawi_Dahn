@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-15-rec43"/>
+<meta name="app-version" content="2026-06-15-rec44"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -857,7 +857,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-15-rec43";
+const APP_BUILD="2026-06-15-rec44";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1138,6 +1138,9 @@ function daysLeft(readyDate){
   if(!readyDate)return 0;
   return Math.ceil((new Date(readyDate)-new Date())/86400000);
 }
+function hasActiveBatch(prodLog,recipeId){
+  return prodLog.some(e=>e.recipeId===recipeId&&!e.sold&&e.readyDate);
+}
 
 function App(){
   const [logged,setLogged]=useState(false);
@@ -1152,8 +1155,8 @@ function App(){
   const [toast,setToast]=useState("");
   const [toastErr,setToastErr]=useState(false);
   const [selectedRecipe,setSelectedRecipe]=useState(null);
-  const [batchUnit,setBatchUnit]=useState("tola");
-  const [profitMult,setProfitMult]=useState(3);
+  const [batchUnit,setBatchUnit]=useState(()=>lsGet("dw_batchunit","quarter"));
+  const [profitMult,setProfitMult]=useState(()=>lsGet("dw_margin",3));
   const [showAddIng,setShowAddIng]=useState(false);
   const [showAddRec,setShowAddRec]=useState(false);
   const [editCostId,setEditCostId]=useState(null);
@@ -1222,6 +1225,10 @@ function App(){
   const [storeOrders,setStoreOrders]=useState(()=>{try{return JSON.parse(localStorage.getItem('dw_agency_orders')||'[]')}catch(e){return[]}});
   const [aiAnalysisRecipe,setAiAnalysisRecipe]=useState(null);
   const [invSort,setInvSort]=useState("default");
+  const [showAIStudio,setShowAIStudio]=useState(false);
+  const [aiStudioMode,setAiStudioMode]=useState("story");
+  const [aiStudioResult,setAiStudioResult]=useState("");
+  const [aiStudioRecipe,setAiStudioRecipe]=useState(null);
   const [editRecipe,setEditRecipe]=useState(null);
   const [editRecName,setEditRecName]=useState("");
   const [editRecDesc,setEditRecDesc]=useState("");
@@ -1247,6 +1254,18 @@ function App(){
   useEffect(()=>lsSet("dw_batchnum",batchCounter),[batchCounter]);
   useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
   useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
+  useEffect(()=>lsSet("dw_margin",profitMult),[profitMult]);
+  useEffect(()=>lsSet("dw_batchunit",batchUnit),[batchUnit]);
+  useEffect(()=>{
+    const prices={};
+    recipes.filter(r=>r.hero&&r.price_sar>0).forEach(r=>{
+      const base=r.ing.reduce((s,[,a])=>s+a,0)||11.6;
+      const cpm=r.ing.reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a:0);},0)/base;
+      const mk=n=>Math.max(5,Math.ceil(cpm*profitMult*n/5)*5);
+      prices[r.id]={quarter:mk(2.9),half:mk(5.8),tola:mk(11.6),costPerMl:+cpm.toFixed(3)};
+    });
+    lsSet("dw_store_prices",prices);
+  },[recipes,inv,profitMult]);
   useEffect(()=>lsSet("dw_shopcart",shopCart),[shopCart]);
   useEffect(()=>{
     const sync=()=>{try{setStoreOrders(JSON.parse(localStorage.getItem('dw_agency_orders')||'[]'))}catch(e){}};
@@ -1267,8 +1286,8 @@ function App(){
 
   const show=(m,e=false)=>{setToast(m);setToastErr(e);setTimeout(()=>setToast(""),2800);};
   const getIng=id=>inv.find(i=>i.id===id);
-  const BATCH={quarter:2.9,half:5.8,tola:11.6,ml50:50,ml100:100};
-  const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",tola:"تولة",ml50:"50 مل",ml100:"100 مل"};
+  const BATCH={quarter:2.9,half:5.8,tola:11.6};
+  const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",tola:"تولة"};
 
   const recipeBaseVol=r=>r.ing.reduce((s,[,a])=>s+a,0);
   const recipeScale=r=>BATCH[batchUnit]/recipeBaseVol(r);
@@ -1439,7 +1458,14 @@ function App(){
 
   // ── favorites ──────────────────────────────────────────────────
   const toggleFav=id=>setFavoriteIds(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
-  const togglePublished=id=>{const cur=recipes.find(r=>r.id===id);const newPub=!cur?.published;setRecipes(p=>p.map(r=>r.id!==id?r:{...r,published:newPub}));setSelectedRecipe(prev=>prev&&prev.id===id?{...prev,published:newPub}:prev);show(newPub?"🌐 نُشر في المتجر":"🔒 أُخفي من المتجر");};
+  const togglePublished=id=>{
+    const cur=recipes.find(r=>r.id===id);
+    const newPub=!cur?.published;
+    if(newPub&&!hasActiveBatch(prodLog,id)){show("⚠️ لا يمكن النشر — أنتج دفعة أولاً وسجّلها في سجل الإنتاج",true);return;}
+    setRecipes(p=>p.map(r=>r.id!==id?r:{...r,published:newPub}));
+    setSelectedRecipe(prev=>prev&&prev.id===id?{...prev,published:newPub}:prev);
+    show(newPub?"🌐 نُشر في المتجر":"🔒 أُخفي من المتجر");
+  };
   const saveStory=(id,txt)=>{setRecipes(p=>p.map(r=>r.id!==id?r:{...r,story:txt.trim()}));setEditingStory(null);show("✅ حُفظت القصة");};
   const deleteRecipe=id=>{if(!window.confirm("حذف هذه الوصفة نهائياً؟ لا يمكن التراجع"))return;setRecipes(p=>p.filter(r=>r.id!==id));setSelectedRecipe(null);show("🗑️ حُذفت الوصفة");};
   const openEditRecipe=r=>{setEditRecName(r.name);setEditRecDesc(r.desc||"");setEditRecSeason(r.season||"صيف");setEditRecGender(r.gender||"للجنسين");setEditRecStab(r.stability||"");setEditRecipe(r);};
@@ -1529,6 +1555,24 @@ function App(){
     setAiAnalysisRecipe(r);setAiAnalysisText("جارٍ التحليل...");setShowAIAnalysis(true);
     const txt=await callAI(prompt,800);
     if(txt)setAiAnalysisText(txt);else setAiAnalysisText("تعذّر التحليل — تحقق من المفتاح والاتصال");
+  };
+
+  const openAIStudio=async(r,mode)=>{
+    if(!aiKey){show("⚠️ أدخل مفتاح Claude API في تبويب التراث",true);return;}
+    setAiStudioRecipe(r);setAiStudioMode(mode);setAiStudioResult("جارٍ التوليد...");setShowAIStudio(true);
+    const ingList=r.ing.map(([id,a])=>{const ing=getIng(id);return `${ing?.name||id}(${a}مل)`;}).join("، ");
+    let prompt="";
+    if(mode==="story"){
+      prompt=`أنت خبير في كتابة القصص التسويقية لعطور دهن العود الفاخرة في السوق الخليجي.\n\nاكتب قصة تسويقية مؤثرة لعطر:\nالاسم: ${r.name} ${r.icon}\nالوصف: ${r.desc}\nالموسم: ${r.season} | الجنس: ${r.gender} | الثبات: ${r.stability}\nالمكونات: ${ingList}\n\nالقصة يجب أن:\n- تكون 3 جمل بالعربية الفصيحة الجميلة\n- تبدأ بصورة حسية (لون أو صوت أو رائحة)\n- تُذكر الطابع الرئيسي للعطر\n- تُحدّد المناسبة أو الشخصية المستهدفة\n- تكون شاعرية لكن موجزة\n\nأرجع القصة فقط بدون أي تعليق.`;
+    } else if(mode==="campaign"){
+      prompt=`أنت مدير إبداعي لعلامة ضاوي دهن العود الفاخرة.\n\nأنشئ محتوى حملة تسويقية لعطر:\nالاسم: ${r.name} ${r.icon}\nالوصف: ${r.desc}\nالموسم: ${r.season} | الجنس: ${r.gender} | السعر: ${r.price_sar||"؟"} ريال\n\nأنشئ:\n1. 🏷️ شعار رئيسي (tagline) — جملة واحدة تحفر في الذاكرة\n2. 📱 بوست انستقرام — 3-4 أسطر + 5 هاشتاقات خليجية\n3. 💬 رسالة واتساب مبيعات — محادثة طبيعية غير رسمية لا تتجاوز 4 أسطر\n4. 🎯 جملة البيع (pitch) — جملة واحدة للمقابلات والمعارض\n\nأرجع المحتوى مباشرة منسقاً.`;
+    } else if(mode==="stability"){
+      const sc=recipeScale(r);
+      const ingDetail=r.ing.map(([id,a])=>{const ing=getIng(id);const tier=noteTier(id);return `${ing?.name||id}(${NOTE_LABEL[tier]||"حامل"}، ${(a*sc).toFixed(2)}مل)`;}).join("\n");
+      prompt=`أنت خبير كيميائي في صناعة العطور.\n\nقدّر ثبات دهن عود بناءً على تركيبته:\nالاسم: ${r.name}\nالثبات المُعلَن: ${r.stability}\n\nالمكونات بالترتيب:\n${ingDetail}\n\nحلّل:\n1. ⏱️ تقدير الثبات على البشرة (ساعات)\n2. 👔 تقدير الثبات على القماش (ساعات)\n3. 🌡️ الثبات في الحر الشديد (35°+)\n4. ❄️ الثبات في البرودة (15°-)\n5. ⚗️ تقنيات لرفع الثبات 20-30% بدون تغيير الطابع\n6. 🏆 تقييم الجودة التجارية من 10\n\nأرجع تحليلاً مختصراً موثوقاً.`;
+    }
+    const txt=await callAI(prompt,1000);
+    setAiStudioResult(txt||"تعذّر التوليد — تحقق من المفتاح والاتصال");
   };
 
   // ── auto shopping list (low stock grouped by supplier) ─────────
@@ -1681,7 +1725,7 @@ function App(){
         {tab==="home"&&(()=>{
           const readyBatches=prodLog.filter(e=>!e.sold&&e.readyDate&&daysLeft(e.readyDate)<=0);
           const agingBatches=prodLog.filter(e=>!e.sold&&e.readyDate&&daysLeft(e.readyDate)>0).sort((a,b)=>daysLeft(a.readyDate)-daysLeft(b.readyDate));
-          const goTab=(t)=>{setTab(t);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);};
+          const goTab=(t)=>{setTab(t);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setShowAIStudio(false);};
           return <div className="fade">
             {/* ── hero stats ── */}
             <div className="glass-gold" style={{textAlign:"center",padding:"22px 18px 18px",marginBottom:"10px",cursor:"pointer"}} onClick={()=>goTab("inventory")}>
@@ -2574,25 +2618,33 @@ function App(){
               <button className="btn-ghost" onClick={()=>printRecipe(r)}>🖨️</button>
               <button className="btn-ghost" onClick={()=>setQrRecipe(r)}>📲</button>
               <button className="btn-ghost" onClick={()=>openRating(r)}>⭐ {ratings[r.id]?`${ratings[r.id].stars}/5`:"تقييم"}</button>
-              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0"}} onClick={()=>analyzeRecipeAI(r)}>🤖</button>
-              <button className="btn-ghost" style={favoriteIds.includes(r.id)?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>toggleFav(r.id)}>{favoriteIds.includes(r.id)?"★":"☆"} مفضلة</button>
+              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0"}} onClick={()=>analyzeRecipeAI(r)}>🤖 تحليل</button>
+              <button className="btn-ghost" style={favoriteIds.includes(r.id)?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>toggleFav(r.id)}>{favoriteIds.includes(r.id)?"★":"☆"}</button>
             </div>
+            {aiKey&&<div style={{display:"flex",gap:"5px",marginBottom:"8px"}}>
+              <button onClick={()=>openAIStudio(r,"story")} style={{flex:1,padding:"7px 4px",background:"rgba(201,168,76,0.07)",border:"1px solid rgba(201,168,76,0.25)",color:"#C9A84C",borderRadius:"10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>✍️ AI قصة</button>
+              <button onClick={()=>openAIStudio(r,"campaign")} style={{flex:1,padding:"7px 4px",background:"rgba(80,120,200,0.07)",border:"1px solid rgba(80,120,200,0.25)",color:"#90B8F0",borderRadius:"10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>📢 AI حملة</button>
+              <button onClick={()=>openAIStudio(r,"stability")} style={{flex:1,padding:"7px 4px",background:"rgba(40,180,120,0.07)",border:"1px solid rgba(40,180,120,0.25)",color:"#40C090",borderRadius:"10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>📊 AI ثبات</button>
+            </div>}
             {/* ── store controls ── */}
-            {(()=>{const dp=recipePrices[r.id]||r.price_sar||0;return(
+            {(()=>{const dp=recipePrices[r.id]||r.price_sar||0;const hasBatch=hasActiveBatch(prodLog,r.id);return(
             <div style={{display:"flex",gap:"6px",marginBottom:"8px"}}>
-              {r.hero&&dp>0&&<a href={`https://wa.me/${WHATSAPP_OWNER}?text=${encodeURIComponent(`مرحبا، أبي أطلب: ${r.icon} ${r.name}\nالحجم: 12مل\nالسعر: ${dp} ريال\nالموسم: ${r.season} — ${r.gender}`)}`} target="_blank" rel="noreferrer" style={{flex:2,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"rgba(37,211,102,0.14)",border:"1.5px solid rgba(37,211,102,0.45)",color:"#25d366",borderRadius:"12px",padding:"9px 14px",fontSize:"0.82rem",fontWeight:"700",textDecoration:"none",fontFamily:"'Alexandria',sans-serif"}}>💚 اطلب الآن — {dp} ريال</a>}
+              {r.hero&&dp>0&&hasBatch&&<a href={`https://wa.me/${WHATSAPP_OWNER}?text=${encodeURIComponent(`مرحبا، أبي أطلب: ${r.icon} ${r.name}\nالحجم: 12مل\nالسعر: ${dp} ريال\nالموسم: ${r.season} — ${r.gender}`)}`} target="_blank" rel="noreferrer" style={{flex:2,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"rgba(37,211,102,0.14)",border:"1.5px solid rgba(37,211,102,0.45)",color:"#25d366",borderRadius:"12px",padding:"9px 14px",fontSize:"0.82rem",fontWeight:"700",textDecoration:"none",fontFamily:"'Alexandria',sans-serif"}}>💚 اطلب الآن — {dp} ريال</a>}
+              {r.hero&&dp>0&&!hasBatch&&<div style={{flex:2,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"rgba(255,255,255,0.03)",border:"1px dashed rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.25)",borderRadius:"12px",padding:"9px 14px",fontSize:"0.76rem",fontFamily:"'Alexandria',sans-serif"}}>⏳ لم يُنتج بعد</div>}
               <button className="btn-ghost" style={{flex:r.hero&&dp>0?1:2,fontSize:"0.78rem"}} onClick={()=>openEditRecipe(r)}>✏️ تعديل</button>
               <button className="btn-danger" style={{flex:1,fontSize:"0.78rem"}} onClick={()=>deleteRecipe(r.id)}>🗑️ حذف</button>
             </div>);})()}
             {/* ── publish toggle + story edit ── */}
+            {(()=>{const hasBatch=hasActiveBatch(prodLog,r.id);return(
             <div style={{display:"flex",gap:"6px",marginBottom:"12px"}}>
-              <button onClick={()=>togglePublished(r.id)} style={{flex:1,padding:"9px",borderRadius:"11px",border:`1.5px solid ${r.published?"rgba(37,211,102,0.50)":"rgba(255,255,255,0.14)"}`,background:r.published?"rgba(37,211,102,0.12)":"rgba(255,255,255,0.04)",color:r.published?"#25d366":"rgba(255,255,255,0.40)",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>
-                {r.published?"🌐 ظاهر في المتجر":"🔒 مخفي من المتجر"}
+              <button onClick={()=>togglePublished(r.id)} title={!hasBatch&&!r.published?"أنتج دفعة أولاً":""}  style={{flex:1,padding:"9px",borderRadius:"11px",border:`1.5px solid ${r.published?"rgba(37,211,102,0.50)":hasBatch?"rgba(255,255,255,0.22)":"rgba(255,255,255,0.08)"}`,background:r.published?"rgba(37,211,102,0.12)":hasBatch?"rgba(255,255,255,0.04)":"rgba(255,255,255,0.02)",color:r.published?"#25d366":hasBatch?"rgba(255,255,255,0.50)":"rgba(255,255,255,0.22)",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>
+                {r.published?"🌐 ظاهر في المتجر":hasBatch?"🔒 مخفي من المتجر":"⏳ إنتج أولاً للنشر"}
               </button>
               <button onClick={()=>{setEditingStory(r.id);setStoryDraft(r.story||"");}} style={{flex:1,padding:"9px",borderRadius:"11px",border:"1px solid rgba(201,168,76,0.30)",background:"rgba(201,168,76,0.06)",color:"#C9A84C",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>
                 ✍️ {r.story?"عدّل القصة":"أضف القصة"}
               </button>
             </div>
+            );})()}
             {/* ── story editor ── */}
             {editingStory===r.id&&<div style={{background:"rgba(10,7,2,0.90)",border:"1px solid rgba(201,168,76,0.35)",borderRadius:"14px",padding:"14px",marginBottom:"12px"}}>
               <div style={{fontSize:"0.68rem",color:"rgba(201,168,76,0.60)",marginBottom:"8px",letterSpacing:"0.3px"}}>✍️ القصة التسويقية — 3 جمل (السبب + الشخصية + المناسبة)</div>
@@ -3309,6 +3361,34 @@ function App(){
           </div>}
           {!aiLoading&&<div style={{background:"rgba(0,0,0,0.3)",borderRadius:"12px",padding:"14px",fontSize:"0.8rem",lineHeight:"1.9",color:"#e5d5be",whiteSpace:"pre-wrap"}}>{aiAnalysisText}</div>}
           <button className="btn-ghost" style={{width:"100%",marginTop:"14px"}} onClick={()=>setShowAIAnalysis(false)}>إغلاق</button>
+        </div>
+      </div>}
+
+      {/* ── AI Studio modal ── */}
+      {showAIStudio&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowAIStudio(false);}}>
+        <div className="modal-sheet">
+          <div style={{display:"flex",alignItems:"center",gap:"10px",marginBottom:"14px"}}>
+            <span style={{fontSize:"1.4rem"}}>{aiStudioMode==="story"?"✍️":aiStudioMode==="campaign"?"📢":"📊"}</span>
+            <div>
+              <h3 style={{color:aiStudioMode==="story"?"#C9A84C":aiStudioMode==="campaign"?"#90B8F0":"#40C090",fontSize:"0.95rem",fontWeight:"700",margin:0}}>{aiStudioMode==="story"?"كتابة القصة التسويقية":aiStudioMode==="campaign"?"الحملة التسويقية":"تقدير الثبات العلمي"}</h3>
+              {aiStudioRecipe&&<p style={{fontSize:"0.72rem",color:"rgba(255,255,255,0.40)",margin:"2px 0 0"}}>{aiStudioRecipe.icon} {aiStudioRecipe.name}</p>}
+            </div>
+          </div>
+          {aiLoading&&<div style={{textAlign:"center",padding:"30px",color:"#90B8F0"}}>
+            <div style={{fontSize:"2.5rem",animation:"pulseGlow 1.5s ease-in-out infinite"}}>🤖</div>
+            <p style={{marginTop:"12px",fontSize:"0.85rem",color:"rgba(255,255,255,0.50)"}}>Claude يعمل...</p>
+          </div>}
+          {!aiLoading&&aiStudioResult&&<div>
+            <div style={{background:"rgba(0,0,0,0.35)",borderRadius:"14px",padding:"16px",fontSize:"0.80rem",lineHeight:"1.95",color:"#e5d5be",whiteSpace:"pre-wrap",maxHeight:"55vh",overflowY:"auto"}}>{aiStudioResult}</div>
+            {aiStudioMode==="story"&&aiStudioRecipe&&<button className="btn-gold" style={{width:"100%",marginTop:"12px"}} onClick={()=>{
+              const txt=aiStudioResult.trim();
+              setRecipes(p=>p.map(r=>r.id!==aiStudioRecipe.id?r:{...r,story:txt}));
+              setSelectedRecipe(prev=>prev&&prev.id===aiStudioRecipe.id?{...prev,story:txt}:prev);
+              setShowAIStudio(false);show("✅ حُفظت القصة من Claude AI");
+            }}>💾 حفظ القصة مباشرة</button>}
+            {aiStudioMode==="campaign"&&<button className="btn-ghost" style={{width:"100%",marginTop:"12px",borderColor:"rgba(80,120,200,0.4)",color:"#90B8F0"}} onClick={()=>{if(navigator.clipboard)navigator.clipboard.writeText(aiStudioResult).then(()=>show("📋 نُسخ المحتوى")).catch(()=>show("تعذّر النسخ",true));else show("تعذّر النسخ",true);}}>📋 نسخ المحتوى</button>}
+          </div>}
+          <button className="btn-ghost" style={{width:"100%",marginTop:"10px"}} onClick={()=>setShowAIStudio(false)}>إغلاق</button>
         </div>
       </div>}
 
