@@ -4,7 +4,20 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="theme-color" content="#08061A"/>
-<title>أتيلييه ضاوي — متجر العطور الفاخرة</title>
+<title>ضاوي دهن العود — أتيلييه العطور السعودي الفاخر</title>
+<meta name="description" content="ضاوي دهن العود — سبعة عطور حصرية من أجود مواد العود الهندي والكمبودي. ثبات يصل 40 ساعة. صناعة سعودية فاخرة تنافس العلامات العالمية."/>
+<meta name="keywords" content="دهن العود, عود سعودي, عطور فاخرة, ضاوي, عود هندي, عود كمبودي, عطر نيش"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="ضاوي دهن العود — أتيلييه العطور السعودي الفاخر"/>
+<meta property="og:description" content="سبعة عطور حصرية من أجود مواد العود الهندي والكمبودي. ثبات يصل 40 ساعة. تواصل على واتساب للطلب."/>
+<meta property="og:image" content="https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/brand_poster.jpg"/>
+<meta property="og:url" content="https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/agency"/>
+<meta property="og:locale" content="ar_SA"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="ضاوي دهن العود"/>
+<meta name="twitter:description" content="عطور دهن عود سعودية فاخرة — ثبات 40 ساعة"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/agency"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet">
@@ -65,14 +78,374 @@ body {
 .cart-btn:hover { border-color:rgba(212,168,67,0.65); background:rgba(212,168,67,0.16); transform:translateY(-1px); box-shadow: 0 4px 20px rgba(212,168,67,0.25); }
 .cart-count { position:absolute; top:-8px; right:-8px; background:linear-gradient(135deg,#D4A843,#A07830); color:#06040C; border-radius:50%; width:20px; height:20px; font-size:0.58rem; font-weight:900; display:none; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; box-shadow:0 2px 8px rgba(212,168,67,0.5); }
 
-/* HERO */
-.hero { text-align:center; padding:70px 24px 50px; }
-.hero-eyebrow { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; color:rgba(212,168,67,0.50); letter-spacing:0.6em; text-transform:uppercase; margin-bottom:18px; }
-.hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.8rem,9vw,4.5rem); line-height:1.05; margin-bottom:14px; }
-.hero-title .t1 { color:#F5EFE0; display:block; }
-.hero-title .t2 { color:transparent; background:linear-gradient(135deg,#D4A843 20%,#E87090 50%,#9060D0 80%); -webkit-background-clip:text; background-clip:text; display:block; font-style:italic; }
-.hero-desc { font-size:0.88rem; color:rgba(245,239,224,0.40); max-width:380px; margin:0 auto 28px; line-height:1.8; }
-.hero-divider { width:90px; height:1px; background:linear-gradient(90deg,transparent,#D4A843,rgba(200,72,128,0.6),transparent); margin:0 auto; }
+/* ══ HERO CINEMATIC ══ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 80px 24px 60px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 110% 60% at 50% -10%, rgba(180,100,15,0.30) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 90%, rgba(140,30,90,0.20) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.52rem; color:rgba(212,168,67,0.50);
+  letter-spacing:0.55em; text-transform:uppercase;
+  margin-bottom:22px; position:relative;
+}
+.hero-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,11vw,6.5rem);
+  line-height:1.0; margin-bottom:6px; position:relative;
+}
+.hero-title .t1 {
+  color:rgba(245,239,224,0.45);
+  display:block; font-style:italic; font-weight:300;
+  font-size:0.45em; letter-spacing:0.12em;
+  text-transform:uppercase; margin-bottom:4px;
+}
+.hero-title .t2 {
+  color:transparent;
+  background:linear-gradient(135deg,#F5E6A3 0%,#C9A84C 40%,#8A6A1E 100%);
+  -webkit-background-clip:text; background-clip:text;
+  display:block; font-weight:700; line-height:0.95;
+}
+.hero-desc {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(0.95rem,2.5vw,1.15rem);
+  color:rgba(245,239,224,0.42);
+  max-width:400px; margin:22px auto 36px; line-height:2;
+  position:relative;
+}
+.hero-actions {
+  display:flex; gap:12px; justify-content:center;
+  flex-wrap:wrap; margin-bottom:56px; position:relative;
+}
+.hero-cta-primary {
+  padding:13px 32px; border-radius:9999px;
+  background:linear-gradient(135deg,#C9A84C,#8A6A1E);
+  color:#07050F; font-family:'Alexandria',sans-serif;
+  font-weight:800; font-size:0.88rem; letter-spacing:0.04em;
+  text-decoration:none; border:none; cursor:pointer;
+  box-shadow:0 4px 24px rgba(201,168,76,0.35);
+  transition:all 0.3s ease;
+}
+.hero-cta-primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 36px rgba(201,168,76,0.50);
+}
+.hero-cta-ghost {
+  padding:13px 28px; border-radius:9999px;
+  background:transparent;
+  color:rgba(245,239,224,0.60);
+  border:1px solid rgba(212,168,67,0.28);
+  font-family:'Alexandria',sans-serif;
+  font-size:0.88rem; text-decoration:none; cursor:pointer;
+  transition:all 0.3s ease;
+}
+.hero-cta-ghost:hover {
+  background:rgba(212,168,67,0.07);
+  border-color:rgba(212,168,67,0.50);
+  color:#E8C870;
+}
+.hero-stats {
+  display:flex; align-items:center; justify-content:center;
+  gap:28px; position:relative;
+}
+.hstat-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem; color:#E8C870; line-height:1; display:block;
+}
+.hstat-lbl {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.48rem; letter-spacing:0.18em;
+  color:rgba(212,168,67,0.40); display:block; margin-top:3px;
+}
+.hstat-div {
+  width:1px; height:44px;
+  background:linear-gradient(180deg,transparent,rgba(212,168,67,0.30),transparent);
+}
+.hero-scroll {
+  position:absolute; bottom:28px; left:50%;
+  transform:translateX(-50%);
+}
+.hero-scroll-line {
+  width:1px; height:44px; margin:0 auto;
+  background:linear-gradient(180deg,rgba(212,168,67,0.6),transparent);
+  animation:scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop {
+  0%   { opacity:0; transform:scaleY(0); transform-origin:top; }
+  50%  { opacity:1; }
+  100% { opacity:0; transform:scaleY(1); transform-origin:bottom; }
+}
+.hero-divider { display:none; }
+
+/* ══ FRAGRANCE FINDER ══ */
+.finder-section {
+  max-width:860px; margin:0 auto 24px; padding:0 16px;
+  position:relative; z-index:1;
+}
+.finder-card {
+  background:rgba(14,10,30,0.85);
+  border:1px solid rgba(212,168,67,0.20);
+  border-radius:20px; overflow:hidden;
+  backdrop-filter:blur(20px);
+}
+.finder-header {
+  padding:20px 22px 16px;
+  background:linear-gradient(135deg,rgba(212,168,67,0.08),rgba(200,72,128,0.05));
+  border-bottom:1px solid rgba(212,168,67,0.12);
+  display:flex; align-items:center; gap:14px; cursor:pointer;
+}
+.finder-icon {
+  width:40px; height:40px; border-radius:12px;
+  background:linear-gradient(135deg,rgba(212,168,67,0.20),rgba(212,168,67,0.08));
+  border:1px solid rgba(212,168,67,0.28);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; flex-shrink:0;
+}
+.finder-title {
+  font-family:'Alexandria',sans-serif;
+  font-size:0.88rem; font-weight:700; color:#F0C840;
+}
+.finder-sub {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.50rem; color:rgba(212,168,67,0.40);
+  letter-spacing:0.15em; margin-top:2px;
+}
+.finder-toggle {
+  margin-right:auto; background:none; border:none;
+  color:rgba(212,168,67,0.50); font-size:0.75rem; cursor:pointer;
+  padding:4px 10px; border-radius:6px;
+  border:1px solid rgba(212,168,67,0.20);
+  font-family:'Alexandria',sans-serif;
+  transition:all 0.2s;
+}
+.finder-toggle:hover { background:rgba(212,168,67,0.08); color:#E8C870; }
+.finder-body { padding:20px 22px 22px; display:none; }
+.finder-body.open { display:block; }
+.finder-q { font-size:0.85rem; color:#F5EFE0; font-weight:700; margin-bottom:12px; }
+.finder-opts { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+.finder-opt {
+  padding:10px 12px; border-radius:12px; cursor:pointer;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.03);
+  color:rgba(245,239,224,0.55);
+  font-family:'Alexandria',sans-serif; font-size:0.75rem;
+  text-align:right; transition:all 0.2s;
+  display:flex; align-items:center; gap:8px;
+}
+.finder-opt:hover { border-color:rgba(212,168,67,0.30); color:rgba(245,239,224,0.85); }
+.finder-opt.sel {
+  border-color:rgba(212,168,67,0.55);
+  background:rgba(212,168,67,0.10);
+  color:#F0C840; font-weight:700;
+}
+.finder-progress {
+  display:flex; gap:4px; margin-bottom:16px;
+}
+.finder-prog-dot {
+  flex:1; height:3px; border-radius:2px;
+  background:rgba(255,255,255,0.08);
+  transition:all 0.3s;
+}
+.finder-prog-dot.done { background:rgba(212,168,67,0.60); }
+.finder-prog-dot.active { background:#D4A843; }
+.finder-result {
+  background:rgba(212,168,67,0.06);
+  border:1px solid rgba(212,168,67,0.20);
+  border-radius:14px; padding:16px; display:none;
+}
+.finder-result.show { display:block; }
+.finder-result-title {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:1.1rem; color:#F0C840;
+  margin-bottom:8px;
+}
+.finder-rec-card {
+  display:flex; align-items:center; gap:10px;
+  padding:10px; border-radius:10px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.06);
+  margin-bottom:8px; cursor:pointer;
+  transition:all 0.2s;
+}
+.finder-rec-card:hover {
+  border-color:rgba(212,168,67,0.30);
+  background:rgba(212,168,67,0.06);
+}
+
+/* ══ REVIEWS ══ */
+.reviews-section {
+  max-width:860px; margin:0 auto 24px; padding:0 16px;
+  position:relative; z-index:1;
+}
+.reviews-title {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:1.3rem; color:#F0C840;
+  text-align:center; margin-bottom:4px;
+}
+.reviews-sub {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.50rem; color:rgba(212,168,67,0.40);
+  letter-spacing:0.2em; text-align:center; margin-bottom:18px;
+}
+.reviews-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+@media(max-width:480px) { .reviews-grid { grid-template-columns:1fr; } }
+.review-card {
+  background:rgba(14,10,30,0.80);
+  border:1px solid rgba(212,168,67,0.12);
+  border-radius:16px; padding:16px 14px;
+  backdrop-filter:blur(16px);
+}
+.review-stars { color:#D4A843; font-size:0.75rem; margin-bottom:6px; }
+.review-text {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:0.82rem;
+  color:rgba(245,239,224,0.70); line-height:1.7;
+  margin-bottom:10px;
+}
+.review-author {
+  display:flex; align-items:center; gap:8px;
+}
+.review-avatar {
+  width:28px; height:28px; border-radius:50%;
+  background:linear-gradient(135deg,rgba(212,168,67,0.30),rgba(200,72,128,0.20));
+  border:1px solid rgba(212,168,67,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.75rem; flex-shrink:0;
+}
+.review-name {
+  font-size:0.72rem; color:rgba(245,239,224,0.55);
+  font-weight:600;
+}
+.review-product {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.48rem; color:rgba(212,168,67,0.40);
+  letter-spacing:0.1em; margin-top:1px;
+}
+
+/* ══ LAYERING STUDIO ══ */
+.layering-section {
+  max-width:860px; margin:0 auto 24px; padding:0 16px;
+  position:relative; z-index:1;
+}
+.layering-card {
+  background:rgba(14,10,30,0.85);
+  border:1px solid rgba(200,72,128,0.22);
+  border-radius:20px; padding:22px;
+  backdrop-filter:blur(20px);
+}
+.layering-title {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:1.3rem; color:#F0E6D0;
+  margin-bottom:4px;
+}
+.layering-sub {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.50rem; color:rgba(200,72,128,0.50);
+  letter-spacing:0.2em; margin-bottom:18px;
+}
+.layering-pair {
+  display:flex; align-items:center; gap:10px;
+  padding:12px; border-radius:14px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  margin-bottom:10px; cursor:pointer;
+  transition:all 0.25s;
+}
+.layering-pair:hover {
+  border-color:rgba(200,72,128,0.30);
+  background:rgba(200,72,128,0.06);
+  transform:translateX(-3px);
+}
+.layering-pair-icons { font-size:1.4rem; flex-shrink:0; }
+.layering-pair-plus {
+  font-size:0.75rem; color:rgba(200,72,128,0.50);
+  flex-shrink:0; font-weight:700;
+}
+.layering-pair-info { flex:1; }
+.layering-pair-names {
+  font-size:0.80rem; font-weight:700; color:#F5EFE0;
+  margin-bottom:3px;
+}
+.layering-pair-result {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:0.75rem;
+  color:rgba(200,72,128,0.70);
+}
+.layering-score {
+  background:rgba(200,72,128,0.12);
+  border:1px solid rgba(200,72,128,0.25);
+  border-radius:8px; padding:3px 8px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.62rem; color:rgba(200,72,128,0.80);
+  flex-shrink:0;
+}
+
+/* ══ VIP CLUB ══ */
+.vip-section {
+  max-width:860px; margin:0 auto 28px; padding:0 16px;
+  position:relative; z-index:1;
+}
+.vip-card {
+  background:linear-gradient(135deg,rgba(201,168,76,0.10),rgba(139,100,20,0.06));
+  border:1px solid rgba(212,168,67,0.28);
+  border-radius:20px; padding:28px 22px; text-align:center;
+  backdrop-filter:blur(16px); position:relative; overflow:hidden;
+}
+.vip-card::before {
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(212,168,67,0.12),transparent);
+  pointer-events:none;
+}
+.vip-title {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:1.6rem; color:#F0C840;
+  margin-bottom:4px; position:relative;
+}
+.vip-sub {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.52rem; letter-spacing:0.25em;
+  color:rgba(212,168,67,0.45); margin-bottom:18px; position:relative;
+}
+.vip-tiers {
+  display:flex; gap:8px; justify-content:center;
+  margin-bottom:22px; position:relative; flex-wrap:wrap;
+}
+.vip-tier {
+  padding:8px 14px; border-radius:20px;
+  font-size:0.68rem; font-weight:700;
+  font-family:'Alexandria',sans-serif;
+}
+.vip-tier.bronze { background:rgba(180,100,40,0.15); border:1px solid rgba(180,100,40,0.35); color:#C07840; }
+.vip-tier.silver { background:rgba(180,180,190,0.10); border:1px solid rgba(180,180,190,0.30); color:#B8B8C8; }
+.vip-tier.gold   { background:rgba(212,168,67,0.15); border:1px solid rgba(212,168,67,0.40); color:#F0C840; }
+.vip-tier.royal  { background:rgba(140,40,120,0.15); border:1px solid rgba(160,50,140,0.40); color:#D080C8; }
+.vip-join-btn {
+  padding:13px 36px; border-radius:9999px;
+  background:linear-gradient(135deg,#C9A84C,#8A6A1E);
+  color:#07050F; font-family:'Alexandria',sans-serif;
+  font-weight:800; font-size:0.88rem;
+  border:none; cursor:pointer;
+  box-shadow:0 4px 24px rgba(201,168,76,0.30);
+  transition:all 0.3s; position:relative;
+  text-decoration:none; display:inline-block;
+}
 
 /* FILTERS */
 .filters { padding:0 16px 16px; max-width:860px; margin:0 auto; }
@@ -301,17 +674,68 @@ body {
   </button>
 </header>
 
-<section class="hero">
-  <p class="hero-eyebrow">— Collection Exclusive —</p>
+<section class="hero" id="top">
+  <p class="hero-eyebrow">ATELIER DHAWI · PRIVATE OUD</p>
   <h1 class="hero-title">
-    <span class="t1">كوليكشن</span>
-    <span class="t2">ضاوي</span>
+    <span class="t1">The Art of</span>
+    <span class="t2">دهن العود</span>
   </h1>
-  <p class="hero-desc">تركيبات عطرية فاخرة من أجود مواد العود العربي والشرقي — لكل لحظة حكاية.</p>
-  <div class="hero-divider"></div>
+  <p class="hero-desc">
+    من مختبر ضاوي الخاص، سبعة عطور تُعيد تعريف
+    معنى الأصالة في زجاجة.
+  </p>
+  <div class="hero-actions">
+    <a href="#collection" class="hero-cta-primary">اكتشف المجموعة</a>
+    <a href="#finder" class="hero-cta-ghost">ابحث عن عطرك ←</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat-item">
+      <span class="hstat-num">7</span>
+      <span class="hstat-lbl">EXCLUSIVE SCENTS</span>
+    </div>
+    <div class="hstat-div"></div>
+    <div class="hstat-item">
+      <span class="hstat-num">40+</span>
+      <span class="hstat-lbl">HOURS LONGEVITY</span>
+    </div>
+    <div class="hstat-div"></div>
+    <div class="hstat-item">
+      <span class="hstat-num">100%</span>
+      <span class="hstat-lbl">PURE OUD OIL</span>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+  </div>
 </section>
 
-<div class="filters">
+<!-- FRAGRANCE FINDER -->
+<div class="finder-section" id="finder">
+  <div class="finder-card">
+    <div class="finder-header" onclick="toggleFinder()">
+      <div class="finder-icon">🔮</div>
+      <div>
+        <div class="finder-title">اكتشف عطرك المثالي</div>
+        <div class="finder-sub">FRAGRANCE FINDER · 5 QUESTIONS</div>
+      </div>
+      <button class="finder-toggle" id="finderToggleBtn">ابدأ الاختبار ↓</button>
+    </div>
+    <div class="finder-body" id="finderBody">
+      <!-- Progress -->
+      <div class="finder-progress" id="finderProgress"></div>
+      <!-- Question -->
+      <div id="finderQuestion"></div>
+      <!-- Result -->
+      <div class="finder-result" id="finderResult">
+        <div class="finder-result-title">✨ عطرك المثالي</div>
+        <div id="finderResultCards"></div>
+        <button onclick="restartFinder()" style="width:100%;margin-top:8px;padding:9px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);color:rgba(245,239,224,0.45);cursor:pointer;font-family:'Alexandria',sans-serif;font-size:0.75rem;">↺ أعد الاختبار</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="filters" id="collection">
   <!-- BATCH SIZE SELECTOR -->
   <div class="batch-bar" id="batchBar"></div>
 
@@ -325,6 +749,118 @@ body {
 
 <div class="pgrid" id="grid"></div>
 <div class="no-results" id="nr" style="display:none">🔍<br><br>لا توجد عطور مطابقة</div>
+
+<!-- REVIEWS -->
+<div class="reviews-section" id="reviews">
+  <div class="reviews-title">ماذا يقول عملاؤنا</div>
+  <div class="reviews-sub">CUSTOMER REVIEWS · ★ ★ ★ ★ ★</div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"الروح الهندية غيّرت مفهومي عن دهن العود تماماً. ثباتها أكثر من يومين على الثوب وما تراجعت. رائعة بكل معنى الكلمة."</div>
+      <div class="review-author">
+        <div class="review-avatar">م</div>
+        <div>
+          <div class="review-name">م. العمر — الرياض</div>
+          <div class="review-product">الروح الهندية</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"اشتريت نسمة الملوك لحفل زواج وكان الكل يسأل عن العطر. مستوى يجاري العلامات العالمية وبسعر معقول جداً."</div>
+      <div class="review-author">
+        <div class="review-avatar">خ</div>
+        <div>
+          <div class="review-name">خ. الشمري — جدة</div>
+          <div class="review-product">نسمة الملوك</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"الملكي من أجمل ما شممته من عطور سعودية. الزعفران والعود الكمبودي ببشرتي يخرج شيء رائع جداً. أنصح به للمناسبات."</div>
+      <div class="review-author">
+        <div class="review-avatar">ع</div>
+        <div>
+          <div class="review-name">ع. القحطاني — الدمام</div>
+          <div class="review-product">الملكي</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"ليالي الكمبودي مفاجأة غير متوقعة. خفيف ومنعش لكن مع عمق حقيقي. أصبح عطري اليومي في الصيف. شكراً ضاوي."</div>
+      <div class="review-author">
+        <div class="review-avatar">ن</div>
+        <div>
+          <div class="review-name">ن. الغامدي — الطائف</div>
+          <div class="review-product">ليالي الكمبودي</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LAYERING STUDIO -->
+<div class="layering-section" id="layering">
+  <div class="layering-card">
+    <div class="layering-title">استوديو التمازج</div>
+    <div class="layering-sub">LAYERING STUDIO · SIGNATURE COMBINATIONS</div>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.82rem;color:rgba(245,239,224,0.40);margin-bottom:16px;line-height:1.8">امزج عطرين من مجموعة ضاوي لتحصل على توقيعٍ عطري لا يشاركك فيه أحد. ضع الأثقل أولاً على بشرتك، ثم الأخف فوقه مباشرةً.</p>
+    <div class="layering-pair" onclick="openProductModal('r_hindi_soul')">
+      <div class="layering-pair-icons">🔥</div>
+      <div class="layering-pair-plus">+</div>
+      <div class="layering-pair-icons">👑</div>
+      <div class="layering-pair-info">
+        <div class="layering-pair-names">الروح الهندية + الملكي</div>
+        <div class="layering-pair-result">عود حيواني + زعفران = توقيع أمير</div>
+      </div>
+      <div class="layering-score">9.5 ★</div>
+    </div>
+    <div class="layering-pair" onclick="openProductModal('r_nasmat_bakhoor')">
+      <div class="layering-pair-icons">🕌</div>
+      <div class="layering-pair-plus">+</div>
+      <div class="layering-pair-icons">🏆</div>
+      <div class="layering-pair-info">
+        <div class="layering-pair-names">نسمة البخور + نسمة الملوك</div>
+        <div class="layering-pair-result">بخور + مسك = عطر مجلس راقٍ</div>
+      </div>
+      <div class="layering-score">9.2 ★</div>
+    </div>
+    <div class="layering-pair" onclick="openProductModal('r_cambodi_nights')">
+      <div class="layering-pair-icons">🌙</div>
+      <div class="layering-pair-plus">+</div>
+      <div class="layering-pair-icons">🌸</div>
+      <div class="layering-pair-info">
+        <div class="layering-pair-names">ليالي الكمبودي + نسمة الورد</div>
+        <div class="layering-pair-result">كمبودي + ورد طائفي = رومانسية خليجية</div>
+      </div>
+      <div class="layering-score">8.8 ★</div>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:rgba(200,72,128,0.06);border:1px solid rgba(200,72,128,0.16);border-radius:10px;font-size:0.70rem;color:rgba(200,72,128,0.65);text-align:center;">
+      💡 التمازج فن — جرّب واصنع توقيعك الخاص. أضف كلا العطرين للسلة وجرّبهما معاً.
+    </div>
+  </div>
+</div>
+
+<!-- VIP CLUB -->
+<div class="vip-section" id="vip">
+  <div class="vip-card">
+    <div class="vip-title">نادي ضاوي VIP</div>
+    <div class="vip-sub">THE DHAWI CIRCLE · EXCLUSIVE MEMBERSHIP</div>
+    <div class="vip-tiers">
+      <div class="vip-tier bronze">🥉 برونز — أول طلب</div>
+      <div class="vip-tier silver">🥈 فضي — 3 طلبات</div>
+      <div class="vip-tier gold">🥇 ذهبي — 6 طلبات</div>
+      <div class="vip-tier royal">♛ ملكي — 12 طلباً</div>
+    </div>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.82rem;color:rgba(245,239,224,0.40);margin-bottom:20px;line-height:1.8;position:relative">
+      أعضاء النادي يحصلون على أولوية في الإصدارات الجديدة، خصومات حصرية، وتجربة عطر مجانية مع كل 5 طلبات.
+    </p>
+    <a href="https://wa.me/966503716775?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D9%86%D8%B6%D9%85%D8%A7%D9%85%20%D9%84%D9%86%D8%A7%D8%AF%D9%8A%20%D8%B6%D8%A7%D9%88%D9%8A%20VIP" target="_blank" class="vip-join-btn">انضم الآن — مجاناً</a>
+  </div>
+</div>
 
 <!-- CONTACT FOOTER -->
 <section id="contact" style="margin:32px 16px 40px;padding:28px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(212,168,67,0.20);border-radius:20px;text-align:center;backdrop-filter:blur(12px);">
@@ -955,6 +1491,114 @@ function pmAdd(){
   if(!prodModalId)return;
   add(prodModalId);
   renderProductModal();
+}
+
+// ── FRAGRANCE FINDER ─────────────────────────────────────────────────────────
+const FINDER_QS=[
+  {id:"occasion",q:"متى تستخدم العطر؟",opts:[
+    {v:"daily",l:"يومي وروتين",i:"☀️",w:{light:3,floral:2}},
+    {v:"majlis",l:"مجلس وضيافة",i:"☕",w:{smoky:3,royal:2}},
+    {v:"event",l:"مناسبة خاصة",i:"👑",w:{royal:3,animalic:2}},
+    {v:"night",l:"ليل وأسمار",i:"🌙",w:{animalic:3,royal:2}}
+  ]},
+  {id:"intensity",q:"تفضل الثقيل أم الخفيف؟",opts:[
+    {v:"light",l:"خفيف ومنعش",i:"🌬️",w:{light:4,floral:2}},
+    {v:"medium",l:"متوازن",i:"⚖️",w:{floral:2,royal:2}},
+    {v:"strong",l:"ثقيل وعميق",i:"🪨",w:{royal:3,smoky:3,animalic:2}}
+  ]},
+  {id:"character",q:"أي رائحة أقرب لذوقك؟",opts:[
+    {v:"floral",l:"زهري ورقيق",i:"🌹",w:{floral:4,light:2}},
+    {v:"woody",l:"خشبي وعودي",i:"🌳",w:{royal:3,smoky:2}},
+    {v:"smoky",l:"دخاني وبخوري",i:"🔥",w:{smoky:4,royal:2}},
+    {v:"sweet",l:"حلو وعنبري",i:"🍯",w:{animalic:2,floral:2}}
+  ]},
+  {id:"season",q:"الموسم المفضل للعطر؟",opts:[
+    {v:"summer",l:"صيف",i:"🌞",w:{light:3,floral:2}},
+    {v:"winter",l:"شتاء",i:"❄️",w:{royal:3,smoky:2,animalic:2}},
+    {v:"any",l:"طول السنة",i:"🌀",w:{royal:1,light:1,floral:1}}
+  ]},
+  {id:"statement",q:"ماذا تريد عطرك أن يقول؟",opts:[
+    {v:"heritage",l:"أصيل وعريق",i:"🏛️",w:{smoky:3,royal:2}},
+    {v:"unique",l:"مختلف ونادر",i:"💎",w:{animalic:4}},
+    {v:"gentle",l:"ناعم وراقٍ",i:"🕊️",w:{floral:3,light:2}},
+    {v:"bold",l:"قوي وواثق",i:"⚡",w:{royal:3,animalic:2}}
+  ]}
+];
+
+// map family → recipe id
+const FAMILY_MAP={
+  royal:['r_malaki','r_nasmat_malook'],
+  animalic:['r_hindi_soul','r_nasmat_malook'],
+  smoky:['r_nasmat_bakhoor'],
+  floral:['r_nasmat_ward','r_cambodi_nights'],
+  light:['r_nasmat_sayf','r_cambodi_nights']
+};
+
+let finderOpen=false,finderStep=0,finderAnswers={};
+
+function toggleFinder(){
+  finderOpen=!finderOpen;
+  document.getElementById('finderBody').classList.toggle('open',finderOpen);
+  document.getElementById('finderToggleBtn').textContent=finderOpen?'إغلاق ↑':'ابدأ الاختبار ↓';
+  if(finderOpen&&finderStep===0)renderFinderStep();
+}
+
+function renderFinderStep(){
+  const q=FINDER_QS[finderStep];
+  const prog=document.getElementById('finderProgress');
+  prog.innerHTML=FINDER_QS.map((_,i)=>`<div class="finder-prog-dot${i<finderStep?' done':i===finderStep?' active':''}"></div>`).join('');
+  document.getElementById('finderResult').classList.remove('show');
+  document.getElementById('finderQuestion').innerHTML=`
+    <div class="finder-q">${q.q}</div>
+    <div class="finder-opts">
+      ${q.opts.map(o=>`
+        <button class="finder-opt${finderAnswers[q.id]===o.v?' sel':''}"
+          onclick="finderAnswer('${q.id}','${o.v}',${JSON.stringify(o.w).replace(/"/g,"'")})">
+          <span>${o.i}</span> ${o.l}
+        </button>`).join('')}
+    </div>`;
+}
+
+function finderAnswer(qid,val,weights){
+  finderAnswers[qid]=val;
+  // accumulate scores
+  if(!finderAnswer._scores)finderAnswer._scores={};
+  Object.entries(weights).forEach(([f,pts])=>{
+    finderAnswer._scores[f]=(finderAnswer._scores[f]||0)+pts;
+  });
+  finderStep++;
+  if(finderStep<FINDER_QS.length){renderFinderStep();}
+  else{showFinderResult();}
+}
+
+function showFinderResult(){
+  const scores=finderAnswer._scores||{};
+  const topFamily=Object.entries(scores).sort(([,a],[,b])=>b-a)[0]?.[0]||'royal';
+  const recs=(FAMILY_MAP[topFamily]||FAMILY_MAP.royal)
+    .map(id=>P.find(p=>p.id===id)).filter(Boolean).slice(0,2);
+  document.getElementById('finderQuestion').innerHTML='';
+  const prog=document.getElementById('finderProgress');
+  prog.innerHTML=FINDER_QS.map(()=>`<div class="finder-prog-dot done"></div>`).join('');
+  const rc=document.getElementById('finderResultCards');
+  rc.innerHTML=recs.map(p=>`
+    <div class="finder-rec-card" onclick="openProductModal('${p.id}')">
+      <span style="font-size:1.5rem">${p.icon}</span>
+      <div style="flex:1">
+        <div style="font-size:0.82rem;font-weight:700;color:#F5EFE0">${p.name}</div>
+        <div style="font-size:0.60rem;color:rgba(212,168,67,0.55);margin-top:2px">${p.gender} · ${p.stab}</div>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.80rem;color:#F0C840;font-weight:700">
+        ${p.price} ر
+      </div>
+    </div>`).join('');
+  document.getElementById('finderResult').classList.add('show');
+}
+
+function restartFinder(){
+  finderStep=0;finderAnswers={};
+  if(finderAnswer._scores)delete finderAnswer._scores;
+  renderFinderStep();
+  document.getElementById('finderResult').classList.remove('show');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
