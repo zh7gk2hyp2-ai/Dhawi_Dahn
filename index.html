@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-15-rec46"/>
+<meta name="app-version" content="2026-06-15-rec47"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -57,6 +57,14 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 @keyframes navPop{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes borderGlow{0%,100%{border-color:rgba(201,168,76,0.20)}50%{border-color:rgba(201,168,76,0.50)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* ── Luxury Additions ── */
+@keyframes cardRise{from{opacity:0;transform:translateY(24px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes goldPulseCard{0%,100%{box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 20px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30)}50%{box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 20px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30),0 0 24px rgba(201,168,76,0.10)}}
+@keyframes shimmerPass{0%{transform:translateX(-100%) skewX(-15deg)}100%{transform:translateX(250%) skewX(-15deg)}}
+@keyframes ingAdd{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes glowLine{0%,100%{opacity:0.4}50%{opacity:1;filter:brightness(1.6)}}
+@keyframes scanPulse{0%{top:0;opacity:0.6}90%{opacity:0.6}100%{top:100%;opacity:0}}
 
 .fade{animation:fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both;}
 .tab-fade{animation:slideUp 0.32s cubic-bezier(0.22,1,0.36,1) both;}
@@ -396,9 +404,65 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   background:linear-gradient(135deg,#F0C050,#C07818);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
+
+/* ══ LUXURY LAB ENHANCEMENTS ══ */
+/* Glass card shimmer on hover */
+.glass::after{
+  content:'';position:absolute;top:0;left:0;width:50%;height:100%;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.05) 50%,transparent 70%);
+  transform:translateX(-100%) skewX(-15deg);
+  pointer-events:none;transition:none;
+}
+.glass:hover::after{animation:shimmerPass 0.65s ease forwards;}
+.glass:hover{
+  border-color:rgba(201,168,76,0.22);
+  box-shadow:0 12px 40px rgba(0,0,0,0.55),0 0 32px rgba(201,168,76,0.08),inset 0 1px 0 rgba(255,255,255,0.07);
+}
+/* Gold glass shimmer */
+.glass-gold::after{
+  content:'';position:absolute;top:0;left:0;width:50%;height:100%;
+  background:linear-gradient(105deg,transparent 30%,rgba(201,168,76,0.08) 50%,transparent 70%);
+  transform:translateX(-100%) skewX(-15deg);
+  pointer-events:none;
+}
+.glass-gold:hover::after{animation:shimmerPass 0.65s ease forwards;}
+/* Gradient top line animation */
+.glass-gold::before{animation:glowLine 3s ease-in-out infinite;}
+
+/* Recipe/product cards rise in */
+.lux-card-in{animation:cardRise 0.5s cubic-bezier(0.22,1,0.36,1) both;}
+
+/* Ingredient row add highlight */
+.lux-ing-add{animation:ingAdd 0.35s cubic-bezier(0.22,1,0.36,1);}
+
+/* Bottom nav scan line */
+.bottom-nav::after{
+  content:'';position:absolute;right:0;left:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.45),transparent);
+  animation:scanPulse 4s ease-in-out infinite;
+  pointer-events:none;
+}
+
+/* Stat numbers glow */
+.p-num-gold{animation:borderGlow 3s ease-in-out infinite;}
+.p-num-green,.p-num-blue,.p-num-amber{
+  filter:drop-shadow(0 0 6px currentColor);
+}
+
+/* Ambient particles canvas */
+#lab-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.40;}
+
+/* Smooth scroll */
+html{scroll-behavior:smooth;}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,::before,::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+}
 </style>
 </head>
 <body>
+<canvas id="lab-canvas" aria-hidden="true"></canvas>
 <div id="splash"></div>
 <div id="root"></div>
 <script type="text/babel">
@@ -3762,6 +3826,71 @@ const _pm=(location.hash||"").match(/^#p=(.+)$/);
 const _payload=_pm?decodePerfume(_pm[1]):null;
 const _rootEl=_payload?React.createElement(PublicView,{payload:_payload}):React.createElement(App);
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(ErrorBoundary,null,_rootEl));
+</script>
+
+<script>
+// ══ LAB AMBIENT PARTICLES ══
+(function(){
+  const cv=document.getElementById('lab-canvas');
+  if(!cv)return;
+  const ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  const COLS=['rgba(201,168,76,','rgba(180,50,120,','rgba(80,40,180,','rgba(240,210,100,'];
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize,{passive:true});
+  for(let i=0;i<40;i++){
+    pts.push({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-0.5)*0.14,vy:(Math.random()-0.5)*0.18,
+      r:Math.random()*1.4+0.3,
+      o:Math.random()*0.28+0.06,
+      c:COLS[i%COLS.length],
+      f:Math.random()*Math.PI*2,
+      s:Math.random()*0.012+0.006
+    });
+  }
+  let raf,last=0;
+  function draw(ts){
+    const dt=Math.min(ts-last,50);last=ts;
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.f+=p.s;
+      if(p.x<-4)p.x=W+4;if(p.x>W+4)p.x=-4;
+      if(p.y<-4)p.y=H+4;if(p.y>H+4)p.y=-4;
+      const a=(p.o*(0.6+0.4*Math.sin(p.f))).toFixed(3);
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.c+a+')';ctx.fill();
+    });
+    raf=requestAnimationFrame(draw);
+  }
+  document.addEventListener('visibilitychange',()=>document.hidden?cancelAnimationFrame(raf):(raf=requestAnimationFrame(draw)));
+  raf=requestAnimationFrame(draw);
+})();
+
+// ══ CARD ENTRANCE OBSERVER ══
+(function(){
+  if(!window.IntersectionObserver)return;
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting&&!e.target.classList.contains('lux-card-in')){
+        e.target.classList.add('lux-card-in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -20px 0px'});
+
+  function scan(){
+    document.querySelectorAll('.glass:not(.lux-card-in),.glass-gold:not(.lux-card-in)').forEach((el,i)=>{
+      el.style.animationDelay=(i%6*0.06)+'s';
+      io.observe(el);
+    });
+  }
+  // Initial scan after React mounts
+  setTimeout(scan,600);
+  // Re-scan when DOM changes (tab switches, recipe loads)
+  const root=document.getElementById('root');
+  if(root)new MutationObserver(()=>setTimeout(scan,100)).observe(root,{childList:true,subtree:true});
+})();
 </script>
 </body>
 </html>
