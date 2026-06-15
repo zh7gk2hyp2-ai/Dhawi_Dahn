@@ -946,13 +946,11 @@ function loadFromLab(){
   try{
     const raw=localStorage.getItem('dw_recipes');
     if(!raw)return null;
-    // only show recipes that are published AND have an active production batch
     const prodLog=JSON.parse(localStorage.getItem('dw_prodlog')||'[]');
     const activeBatchIds=new Set(prodLog.filter(e=>!e.sold&&e.readyDate).map(e=>e.recipeId));
     const storePrices=JSON.parse(localStorage.getItem('dw_store_prices')||'{}');
-    const recs=JSON.parse(raw).filter(r=>r.published&&r.price_sar>0&&activeBatchIds.has(r.id));
-    if(!recs.length)return null;
-    return recs.map(r=>{
+    const allPub=JSON.parse(raw).filter(r=>r.published&&r.price_sar>0);
+    const mapRec=r=>{
       const t=calcTiers(r.ing||[]);
       const sp=storePrices[r.id];
       return{
@@ -962,9 +960,14 @@ function loadFromLab(){
         priceH:sp?sp.half:Math.max(5,Math.ceil(r.price_sar*0.55/5)*5),
         priceT:sp?sp.tola:r.price_sar,
         stab:r.stability,story:r.story||'',desc:r.desc||'',
-        top:t.top,mid:t.mid,base:t.base
+        top:t.top,mid:t.mid,base:t.base,
+        hasStock:activeBatchIds.has(r.id)
       };
-    });
+    };
+    return{
+      produced:allPub.filter(r=>activeBatchIds.has(r.id)).map(mapRec),
+      all:allPub.map(mapRec)
+    };
   }catch(e){return null;}
 }
 
@@ -999,7 +1002,9 @@ const P_STATIC=[
    story:'روح استوائية خليجية — حيث الماراكويا الطازجة تلتقي بسليك عود ناعم في مزيج لم تشمّه الجزيرة من قبل. مناسب للأجواء الحارة والرحلات الصيفية، يبقى خفيفاً دون أن يفقد بصمته. جرأة معاصرة بأصول عريقة.',
    desc:'عود كمبودي · ماراكويا استوائي · سليك عود · ورد · صندل هندي'},
 ];
-const P=loadFromLab()||P_STATIC;
+const LAB=loadFromLab();
+const P=LAB?LAB.produced:P_STATIC;
+const P_ALL=LAB?LAB.all:P_STATIC;
 
 // ── BATCH SIZES ─────────────────────────────────────────────────────────────
 const BATCH={
@@ -1012,7 +1017,7 @@ const BATCH={
 let cart=_loadCart(), sf='الكل', gf='الكل', batch='quarter';
 // cardQty: per-card quantity before adding to cart
 const cardQty={};
-P.forEach(p=>cardQty[p.id]=1);
+P_ALL.forEach(p=>cardQty[p.id]=1);
 
 const SI=['الكل','صيف','شتاء','مناسبات'];
 const GI=['الكل','رجالي','للجنسين'];
@@ -1056,7 +1061,15 @@ function render(){
   const f=P.filter(p=>(sf==='الكل'||p.season===sf)&&(gf==='الكل'||p.gender===gf)&&(!q||p.name.includes(q)));
   const g=document.getElementById('grid');
   const nr=document.getElementById('nr');
-  if(!f.length){g.innerHTML='';nr.style.display='block';return;}
+  if(!f.length){
+    nr.style.display='none';
+    if(LAB&&!P.length){
+      g.innerHTML=`<div style="text-align:center;padding:48px 20px;font-family:'Alexandria',sans-serif"><div style="font-size:3rem;margin-bottom:12px">🏭</div><div style="font-size:0.92rem;font-weight:700;color:rgba(212,168,67,0.70);margin-bottom:8px">لا توجد منتجات متاحة حالياً</div><div style="font-size:0.72rem;color:rgba(245,239,224,0.30);line-height:1.7">المعمل يُحضّر الدفعات — عودوا قريباً<br>أو جرّب <strong style="color:rgba(212,168,67,0.50)">ابحث عن عطرك</strong> لتسجيل اهتمامك</div></div>`;
+    } else {
+      g.innerHTML='';nr.style.display='block';
+    }
+    return;
+  }
   nr.style.display='none';
   g.innerHTML=f.map(p=>{
     const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
@@ -1602,22 +1615,25 @@ function showFinderResult(){
   const scores=finderAnswer._scores||{};
   const topFamily=Object.entries(scores).sort(([,a],[,b])=>b-a)[0]?.[0]||'royal';
   const recs=(FAMILY_MAP[topFamily]||FAMILY_MAP.royal)
-    .map(id=>P.find(p=>p.id===id)).filter(Boolean).slice(0,2);
+    .map(id=>P_ALL.find(p=>p.id===id)).filter(Boolean).slice(0,2);
   document.getElementById('finderQuestion').innerHTML='';
   const prog=document.getElementById('finderProgress');
   prog.innerHTML=FINDER_QS.map(()=>`<div class="finder-prog-dot done"></div>`).join('');
   const rc=document.getElementById('finderResultCards');
   rc.innerHTML=recs.map(p=>`
-    <div class="finder-rec-card" onclick="openProductModal('${p.id}')">
+    <div class="finder-rec-card" ${p.hasStock?`onclick="openProductModal('${p.id}')"`:''} style="cursor:${p.hasStock?'pointer':'default'}">
       <span style="font-size:1.5rem">${p.icon}</span>
       <div style="flex:1">
         <div style="font-size:0.82rem;font-weight:700;color:#F5EFE0">${p.name}</div>
         <div style="font-size:0.60rem;color:rgba(212,168,67,0.55);margin-top:2px">${p.gender} · ${p.stab}</div>
+        ${!p.hasStock?'<div style="font-size:0.58rem;color:rgba(255,160,50,0.80);margin-top:2px">⏳ يُنتج خصيصاً لك عند الطلب</div>':''}
       </div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.80rem;color:#F0C840;font-weight:700">
-        ${calcPrice(p)} ر
+      <div style="text-align:right">
+        ${p.hasStock
+          ?`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.80rem;color:#F0C840;font-weight:700">${calcPrice(p)} ر</div><div style="font-size:0.52rem;color:rgba(212,168,67,0.42);margin-top:1px">${BATCH[batch].label}</div>`
+          :`<a href="https://wa.me/966503716775?text=${encodeURIComponent(`مرحبا، أريد طلب مسبق لعطر: ${p.icon} ${p.name}`)}" target="_blank" onclick="event.stopPropagation()" style="display:inline-block;background:rgba(37,211,102,0.14);border:1px solid rgba(37,211,102,0.38);color:#25d366;border-radius:8px;padding:5px 12px;font-size:0.65rem;font-weight:700;text-decoration:none;white-space:nowrap;font-family:'Alexandria',sans-serif">💚 اطلبه الآن</a>`
+        }
       </div>
-      <div style="font-size:0.52rem;color:rgba(212,168,67,0.42);margin-top:1px">${BATCH[batch].label}</div>
     </div>`).join('');
   document.getElementById('finderResult').classList.add('show');
 }
