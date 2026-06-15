@@ -946,43 +946,55 @@ function loadFromLab(){
   try{
     const raw=localStorage.getItem('dw_recipes');
     if(!raw)return null;
-    const recs=JSON.parse(raw).filter(r=>r.published&&r.price_sar>0);
+    // only show recipes that are published AND have an active production batch
+    const prodLog=JSON.parse(localStorage.getItem('dw_prodlog')||'[]');
+    const activeBatchIds=new Set(prodLog.filter(e=>!e.sold&&e.readyDate).map(e=>e.recipeId));
+    const storePrices=JSON.parse(localStorage.getItem('dw_store_prices')||'{}');
+    const recs=JSON.parse(raw).filter(r=>r.published&&r.price_sar>0&&activeBatchIds.has(r.id));
     if(!recs.length)return null;
-    return recs.map(r=>{const t=calcTiers(r.ing||[]);return{
-      id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,
-      price:r.price_sar,stab:r.stability,story:r.story||'',desc:r.desc||'',
-      top:t.top,mid:t.mid,base:t.base
-    };});
+    return recs.map(r=>{
+      const t=calcTiers(r.ing||[]);
+      const sp=storePrices[r.id];
+      return{
+        id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,
+        price:sp?sp.tola:r.price_sar,
+        priceQ:sp?sp.quarter:Math.max(5,Math.ceil(r.price_sar*0.30/5)*5),
+        priceH:sp?sp.half:Math.max(5,Math.ceil(r.price_sar*0.55/5)*5),
+        priceT:sp?sp.tola:r.price_sar,
+        stab:r.stability,story:r.story||'',desc:r.desc||'',
+        top:t.top,mid:t.mid,base:t.base
+      };
+    });
   }catch(e){return null;}
 }
 
 // ── DATA (static fallback — يُستبدل بمحتوى المعمل عند التوفر) ─────────
 const P_STATIC=[
-  {id:'r_hindi_soul',name:'الروح الهندية',icon:'🔥',season:'شتاء',gender:'رجالي',price:220,
+  {id:'r_hindi_soul',name:'الروح الهندية',icon:'🔥',season:'شتاء',gender:'رجالي',price:220,priceQ:65,priceH:120,priceT:220,
    top:2,mid:55,base:43,stab:'طويل جداً · 40 ساعة',
    story:'مستوحى من أعماق غابات الأسام الهندية، حيث يجمع الهواء بين أنفاس الخشب المعتّق وحرارة الأرض البكر. قلبه آرتيسانس حيواني أصيل يُعبّر عن فخر الرجل الخليجي وثقته بنفسه. مثبت العنبرمور يبقيه على الثياب أربعين ساعة.',
    desc:'آرتيسانس هندي · عود سينث · عود أسود · فيتيفير · لبدانوم · صندل هندي · عنبرمور'},
-  {id:'r_nasmat_malook',name:'نسمة الملوك',icon:'🏆',season:'شتاء',gender:'رجالي',price:240,
+  {id:'r_nasmat_malook',name:'نسمة الملوك',icon:'🏆',season:'شتاء',gender:'رجالي',price:240,priceQ:70,priceH:130,priceT:240,
    top:21,mid:43,base:36,stab:'طويل جداً · 40 ساعة',
    story:'تاج المجموعة وخلاصة فن العطار — عود وورد طائفي وزعفران وعنبر وهيل في مزيج يستحق المناسبات الكبرى. لا يُصنع لكل يوم؛ يُصنع للأعياد والأفراح وعقود الأعمال. أطول وصفة في المجموعة في الثبات — أربعون ساعة من الكرامة والحضور.',
    desc:'هندي+كمبودي · ورد طائفي · زعفران · عنبر · هيل · عود أسود · لبدانوم'},
-  {id:'r_malaki',name:'الملكي',icon:'👑',season:'مناسبات',gender:'رجالي',price:250,
+  {id:'r_malaki',name:'الملكي',icon:'👑',season:'مناسبات',gender:'رجالي',price:250,priceQ:75,priceH:135,priceT:250,
    top:16,mid:51,base:33,stab:'طويل الأمد · 38 ساعة',
    story:'ثلاث شخصيات عودية في تركيبة واحدة — الهند في قوّتها، والكمبودي في حريره، والسليك في أناقته المعاصرة. يُقدَّم في مناسبات الفرح والفخر، حيث يصنع صاحبه أثراً لا يُنسى في كل مجلس. خزينة العطار الخاصة في زجاجة واحدة.',
    desc:'هندي+كمبودي+سليك · ورد زعفراني · عود أسود · لبدانوم · صندل هندي · عنبرمور'},
-  {id:'r_nasmat_bakhoor',name:'نسمة البخور',icon:'🕌',season:'شتاء',gender:'رجالي',price:200,
+  {id:'r_nasmat_bakhoor',name:'نسمة البخور',icon:'🕌',season:'شتاء',gender:'رجالي',price:200,priceQ:60,priceH:110,priceT:200,
    top:9,mid:58,base:33,stab:'طويل الأمد · 38 ساعة',
    story:'الهيل السعودي والزعفران الفارسي يفتحان طريق الروائح قبل أن يستلم العود الهندي الأصيل الزمام. مستوحى من بخور المجالس الكبرى في الرياض والقصيم، يُعيد الهوية العربية إلى قلب العطر. شتوي خالص يعيش على الثياب ثمانية وثلاثين ساعة.',
    desc:'هندي+سينث · هيل · زعفران · لبدانوم · صندل هندي · عنبرمور'},
-  {id:'r_cambodi_nights',name:'ليالي الكمبودي',icon:'🌙',season:'صيف',gender:'للجنسين',price:190,
+  {id:'r_cambodi_nights',name:'ليالي الكمبودي',icon:'🌙',season:'صيف',gender:'للجنسين',price:190,priceQ:55,priceH:105,priceT:190,
    top:21,mid:46,base:33,stab:'متوسط · 34 ساعة',
    story:'إلهام من جوهر عود كمبودي فاخر تحت ليلٍ صيفي هادئ، تصاحبه بتلات الورد البرية والزعفران الخليجي. يفتح القلبَ بالخفّة قبل أن يستقر في الصندل الكريمي الدافئ. عطر النهار والأصدقاء — خفيف بما يكفي للسيارة، عميق بما يكفي للمجلس.',
    desc:'عود كمبودي · بتلات ورد · زعفران · صندل هندي · عنبرمور'},
-  {id:'r_nasmat_ward',name:'نسمة الورد',icon:'🌸',season:'صيف',gender:'للجنسين',price:175,
+  {id:'r_nasmat_ward',name:'نسمة الورد',icon:'🌸',season:'صيف',gender:'للجنسين',price:175,priceQ:50,priceH:95,priceT:175,
    top:28,mid:42,base:30,stab:'متوسط · 30 ساعة',
    story:'تستيقظ مع ورد الطائف في فجر صيفي ناعم، ثم تنضج مع الكمبودي الذي يمنح الورد عمقاً وهوية خليجية. عطر يلائم كل صباح ومنتصف النهار، للرجل والمرأة على حدٍّ سواء. رائحة البيت والطمأنينة في جيبك.',
    desc:'عود كمبودي · ورد طائفي · زعفران · صندل هندي · عنبرمور'},
-  {id:'r_nasmat_sayf',name:'نسمة الصيف',icon:'🌴',season:'صيف',gender:'للجنسين',price:165,
+  {id:'r_nasmat_sayf',name:'نسمة الصيف',icon:'🌴',season:'صيف',gender:'للجنسين',price:165,priceQ:50,priceH:90,priceT:165,
    top:15,mid:57,base:28,stab:'خفيف · 28 ساعة',
    story:'روح استوائية خليجية — حيث الماراكويا الطازجة تلتقي بسليك عود ناعم في مزيج لم تشمّه الجزيرة من قبل. مناسب للأجواء الحارة والرحلات الصيفية، يبقى خفيفاً دون أن يفقد بصمته. جرأة معاصرة بأصول عريقة.',
    desc:'عود كمبودي · ماراكويا استوائي · سليك عود · ورد · صندل هندي'},
@@ -1007,8 +1019,13 @@ const GI=['الكل','رجالي','للجنسين'];
 const SE={صيف:'🌞',شتاء:'❄️',مناسبات:'✨',الكل:'🔎'};
 const GE={'رجالي':'👔','للجنسين':'🤝','الكل':'👥'};
 
-function calcPrice(basePrice){
-  return Math.max(5, Math.ceil(basePrice * BATCH[batch].factor / 5)*5);
+function calcPrice(p){
+  if(typeof p==='object'&&p!==null){
+    if(batch==='quarter')return p.priceQ||Math.max(5,Math.ceil(p.price*BATCH.quarter.factor/5)*5);
+    if(batch==='half')return p.priceH||Math.max(5,Math.ceil(p.price*BATCH.half.factor/5)*5);
+    return p.priceT||p.price||0;
+  }
+  return Math.max(5,Math.ceil(p*BATCH[batch].factor/5)*5);
 }
 
 // ── BARCODE ─────────────────────────────────────────────────────────────────
@@ -1045,7 +1062,7 @@ function render(){
     const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
     const stock=_getStock(p.id);
     const oos=stock<=0;
-    const price=calcPrice(p.price);
+    const price=calcPrice(p);
     const qty=cardQty[p.id]||1;
     const s=p.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
     const bars=bc(s).map(b=>`<div style="width:${b.w}px;height:${b.d?'100%':'55%'};background:${b.d?'rgba(201,168,76,0.80)':'transparent'};align-self:flex-end"></div>`).join('');
@@ -1085,7 +1102,7 @@ function cqChange(id,d){
 // ── CART ──────────────────────────────────────────────────────────────────────
 function add(id){
   const p=P.find(x=>x.id===id);if(!p)return;
-  const price=calcPrice(p.price);
+  const price=calcPrice(p);
   const qty=cardQty[id]||1;
   const key=id+'_'+batch;
   const ex=cart.find(i=>i.key===key);
@@ -1438,6 +1455,8 @@ function openProductModal(id){
   document.body.style.overflow='hidden';
 }
 
+function setProdBatch(id,k){batch=k;renderBatch();renderProductModal();}
+
 function closeProdModal(){
   document.getElementById('prodModal').classList.remove('open');
   document.body.style.overflow='';
@@ -1448,7 +1467,7 @@ function renderProductModal(){
   if(!prodModalId)return;
   const p=P.find(x=>x.id===prodModalId);
   if(!p)return;
-  const price=calcPrice(p.price);
+  const price=calcPrice(p);
   const qty=cardQty[p.id]||1;
   const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
   document.getElementById('prodModalContent').innerHTML=`
@@ -1467,6 +1486,14 @@ function renderProductModal(){
       ${p.story?`<div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.88rem;color:rgba(240,220,160,0.82);line-height:2;margin-bottom:14px;text-align:right;padding:0 4px">${p.story}</div>`:''}
       ${p.desc?`<div class="prod-modal-desc" style="opacity:0.65">${p.desc}</div>`:''}
       <div class="prod-modal-sep"></div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px">
+        ${Object.entries(BATCH).map(([k,v])=>`
+        <button onclick="setProdBatch('${p.id}','${k}')" style="flex:1;padding:8px 4px;border-radius:12px;border:${batch===k?'1.5px solid #D4AF37':'1px solid rgba(212,168,67,0.25)'};background:${batch===k?'rgba(212,168,67,0.18)':'rgba(255,255,255,0.04)'};color:${batch===k?'#F0C840':'rgba(212,168,67,0.55)'};cursor:pointer;font-family:'Alexandria',sans-serif;font-weight:700;transition:all 0.2s">
+          <div style="font-size:0.70rem">${v.label}</div>
+          <div style="font-size:0.60rem;opacity:0.65;margin:2px 0">${v.ml}</div>
+          <div style="font-size:0.80rem;font-family:'IBM Plex Mono',monospace;color:${batch===k?'#F0C840':'rgba(212,168,67,0.45)'}">${k==='quarter'?(p.priceQ||Math.ceil(p.price*0.30/5)*5):k==='half'?(p.priceH||Math.ceil(p.price*0.55/5)*5):(p.priceT||p.price)} ر</div>
+        </button>`).join('')}
+      </div>
       <div class="prod-modal-price">${price}<span style="font-size:1rem;opacity:0.6;-webkit-text-fill-color:rgba(212,168,67,0.6)"> ر</span></div>
       <div class="prod-modal-size">${BATCH[batch].label} · ${BATCH[batch].ml}</div>
       <div class="prod-modal-qty-row">
@@ -1588,8 +1615,9 @@ function showFinderResult(){
         <div style="font-size:0.60rem;color:rgba(212,168,67,0.55);margin-top:2px">${p.gender} · ${p.stab}</div>
       </div>
       <div style="font-family:'IBM Plex Mono',monospace;font-size:0.80rem;color:#F0C840;font-weight:700">
-        ${p.price} ر
+        ${calcPrice(p)} ر
       </div>
+      <div style="font-size:0.52rem;color:rgba(212,168,67,0.42);margin-top:1px">${BATCH[batch].label}</div>
     </div>`).join('');
   document.getElementById('finderResult').classList.add('show');
 }
