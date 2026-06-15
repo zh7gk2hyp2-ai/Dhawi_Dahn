@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-15-rec45"/>
+<meta name="app-version" content="2026-06-15-rec46"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -410,7 +410,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_41";
+const PENDING_RECIPES_VERSION="rec_46";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",
@@ -527,30 +527,36 @@ const PENDING_RECIPES=[
     "⚠️ عتّق 5-6 أسابيع — CMP173+الفيتيفير+الباتشولي ثلاثي يحتاج 40+ يوماً | أسبوع 1 في 25-30° يُعجّل الاندماج | حرّك برفق كل 2-3 أيام | اختياري: دورة حرارة (40° ساعة ← ثلاجة 4 ساعات × 3) | 💡 للثبات الأقصى: بشرة رطبة بالجوجوبا"]},
   // ── عطور مستوحاة (rec_24) — Bulkaroma زيوت عطور جاهزة مستوحاة | 20% + 5% مثبت + 75% DPG ──
   // مصدر: بلكاروما — مواد مصنّفة "مستوحى" في المخزون أو مؤكدة من الموقع
-  {id:"s_ins_sleek",name:"سليك عود",icon:"🪶",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",inspired:true,
-   desc:"Sleek Oud Bulkaroma (مستوحى) — عود ناعم معاصر | 20% زيت + 5% كاشميران مثبت + 75% IPA 99.9% — رذاذ جاف خفيف",
-   ing:[["sleek_oud",20],["cashmeran",5],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Cashmeran 5مل ← Sleek Oud 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم قبل الاستخدام | ⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض فقط بعيداً عن الوجه"]},
-  {id:"s_ins_artessence",name:"آرتيسانس عود",icon:"🌿",season:"مناسبات",gender:"رجالي",stability:"24+ ساعة",inspired:true,
-   desc:"Artessence Biolandes (Bulkaroma) — عود طبيعي المنشأ | 20% + بنزوين B سايل 5% + 75% IPA 99.9% — رذاذ جاف خفيف",
-   ing:[["artessence",20],["benzoin_b",5],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Benzoin B سايل 5مل ← Artessence 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض فقط"]},
-  {id:"s_ins_cmp90",name:"عود وتوابل",icon:"🌶️",season:"شتاء",gender:"رجالي",stability:"24 ساعة",inspired:true,
+  {id:"s_ins_sleek",name:"سليك عود",icon:"🪶",season:"مناسبات",gender:"للجنسين",stability:"24 ساعة",inspired:true,
+   desc:"Sleek Oud Bulkaroma (مستوحى) — عود ناعم معاصر | 18% زيت + 5% كاشميران + 2% ISO E ثبات + 75% IPA 99.9% — رذاذ جاف خفيف",
+   ing:[["sleek_oud",18],["cashmeran",5],["iso_e",2],["ipa",75]],
+   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Cashmeran 5مل ← Sleek Oud 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم قبل الاستخدام | ⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض فقط بعيداً عن الوجه"],
+   stepsAlt:{ml8:["في أنبوب تجربة 10مل: أضف الزيوت بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أضف IPA 99.9% تدريجياً مع رج خفيف 20 ثانية","أغلق محكماً — عتّق 24 ساعة في بارد مظلم","اختبر على رسغك: 15 دق توب ← ساعة قلب ← 4+ ساعة قاعدة"],ml12:["في بيكر 25مل: أضف الزيوت بالقطارة (الكميات × 0.12)","أضف المثبتات ← حرّك بعصا زجاجية 30 ثانية","أضف IPA 99.9% تدريجياً مع التحريك","عتّق 48 ساعة في بارد مظلم ← انقل للأتومايزر الزجاجي 12مل"],ml30:["في بيكر 50مل: قس الزيوت بدقة (الكميات × 0.30)","أضف المثبتات ← حرّك بعصا زجاجية دقيقة كاملة","أضف IPA 99.9% ببطء مع التحريك المستمر","عتّق 5-7 أيام في بارد مظلم — التحول يبدأ من اليوم الثالث","انقل لزجاجة داكنة 30مل مع رشاش — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس الزيوت بدقة (الكميات × 0.50)","أضف المثبتات وحرّك 2 دقيقة بعصا زجاجية","أضف نصف IPA ← حرّك 3 دق ← أضف الباقي ← حرّك 2 دق","عتّق 7-14 يوم في بارد مظلم — الأسبوع الثاني تحول كبير في الفوحان والإسقاط","صفّ بمصفى قطن ← انقل لزجاجة 50مل مع رشاش عطري"],ml100:["في بيكر 250مل: صب جميع الزيوت بالترتيب (الأثقل أولاً — IPA أخيراً)","أضف المثبتات ← حرّك بعصا مغناطيسية 3 دقائق على حرارة الغرفة","أضف IPA 99.9% تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 14-21 يوم في بارد مظلم ← الأسبوع الثالث الإبداع الحقيقي","صفّ بمصفى قطن ← انقل لزجاجة 120مل داكنة للتخزين","انقل لزجاجات البيع النهائية 100مل بعد اكتمال التعتيق"]}},
+  {id:"s_ins_artessence",name:"آرتيسانس عود",icon:"🌿",season:"مناسبات",gender:"رجالي",stability:"28+ ساعة",inspired:true,
+   desc:"Artessence Biolandes (Bulkaroma) — عود طبيعي المنشأ | 18% + 4% بنزوين + 2% ISO E + 2% كاشميران + 74% IPA 99.9%",
+   ing:[["artessence",18],["benzoin_b",4],["iso_e",2],["cashmeran",2],["ipa",74]],
+   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Benzoin B سايل 5مل ← Artessence 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض فقط"],
+   stepsAlt:{ml8:["في أنبوب تجربة 10مل: أضف الزيوت بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أضف IPA 99.9% تدريجياً مع رج خفيف 20 ثانية","أغلق محكماً — عتّق 24 ساعة في بارد مظلم","اختبر على رسغك: 15 دق توب ← ساعة قلب ← 4+ ساعة قاعدة"],ml12:["في بيكر 25مل: أضف الزيوت بالقطارة (الكميات × 0.12)","أضف المثبتات ← حرّك بعصا زجاجية 30 ثانية","أضف IPA 99.9% تدريجياً مع التحريك","عتّق 48 ساعة في بارد مظلم ← انقل للأتومايزر الزجاجي 12مل"],ml30:["في بيكر 50مل: قس الزيوت بدقة (الكميات × 0.30)","أضف المثبتات ← حرّك بعصا زجاجية دقيقة كاملة","أضف IPA 99.9% ببطء مع التحريك المستمر","عتّق 5-7 أيام في بارد مظلم — التحول يبدأ من اليوم الثالث","انقل لزجاجة داكنة 30مل مع رشاش — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس الزيوت بدقة (الكميات × 0.50)","أضف المثبتات وحرّك 2 دقيقة بعصا زجاجية","أضف نصف IPA ← حرّك 3 دق ← أضف الباقي ← حرّك 2 دق","عتّق 7-14 يوم في بارد مظلم — الأسبوع الثاني تحول كبير في الفوحان والإسقاط","صفّ بمصفى قطن ← انقل لزجاجة 50مل مع رشاش عطري"],ml100:["في بيكر 250مل: صب جميع الزيوت بالترتيب (الأثقل أولاً — IPA أخيراً)","أضف المثبتات ← حرّك بعصا مغناطيسية 3 دقائق على حرارة الغرفة","أضف IPA 99.9% تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 14-21 يوم في بارد مظلم ← الأسبوع الثالث الإبداع الحقيقي","صفّ بمصفى قطن ← انقل لزجاجة 120مل داكنة للتخزين","انقل لزجاجات البيع النهائية 100مل بعد اكتمال التعتيق"]}},
+  {id:"s_ins_cmp90",name:"عود وتوابل",icon:"🌶️",season:"شتاء",gender:"رجالي",stability:"28 ساعة",inspired:true,
    desc:"CMP 90 Oud Spice Bulkaroma — مستوحى من Oud Malaki | 20% + 5% مثبت + 75% IPA 99.9% — رذاذ جاف خفيف",
-   ing:[["cmp90",20],["lux_fixative",5],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Lux Fixative 5مل ← CMP90 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء"]},
-  {id:"s_ins_cmp121",name:"CMP121 معاصر",icon:"💫",season:"صيف",gender:"للجنسين",stability:"18 ساعة",inspired:true,
+   ing:[["cmp90",18],["lux_fixative",4],["iso_e",2],["cashmeran",2],["ipa",74]],
+   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Lux Fixative 5مل ← CMP90 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء"],
+   stepsAlt:{ml8:["في أنبوب تجربة 10مل: أضف الزيوت بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أضف IPA 99.9% تدريجياً مع رج خفيف 20 ثانية","أغلق محكماً — عتّق 24 ساعة في بارد مظلم","اختبر على رسغك: 15 دق توب ← ساعة قلب ← 4+ ساعة قاعدة"],ml12:["في بيكر 25مل: أضف الزيوت بالقطارة (الكميات × 0.12)","أضف المثبتات ← حرّك بعصا زجاجية 30 ثانية","أضف IPA 99.9% تدريجياً مع التحريك","عتّق 48 ساعة في بارد مظلم ← انقل للأتومايزر الزجاجي 12مل"],ml30:["في بيكر 50مل: قس الزيوت بدقة (الكميات × 0.30)","أضف المثبتات ← حرّك بعصا زجاجية دقيقة كاملة","أضف IPA 99.9% ببطء مع التحريك المستمر","عتّق 5-7 أيام في بارد مظلم — التحول يبدأ من اليوم الثالث","انقل لزجاجة داكنة 30مل مع رشاش — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس الزيوت بدقة (الكميات × 0.50)","أضف المثبتات وحرّك 2 دقيقة بعصا زجاجية","أضف نصف IPA ← حرّك 3 دق ← أضف الباقي ← حرّك 2 دق","عتّق 7-14 يوم في بارد مظلم — الأسبوع الثاني تحول كبير في الفوحان والإسقاط","صفّ بمصفى قطن ← انقل لزجاجة 50مل مع رشاش عطري"],ml100:["في بيكر 250مل: صب جميع الزيوت بالترتيب (الأثقل أولاً — IPA أخيراً)","أضف المثبتات ← حرّك بعصا مغناطيسية 3 دقائق على حرارة الغرفة","أضف IPA 99.9% تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 14-21 يوم في بارد مظلم ← الأسبوع الثالث الإبداع الحقيقي","صفّ بمصفى قطن ← انقل لزجاجة 120مل داكنة للتخزين","انقل لزجاجات البيع النهائية 100مل بعد اكتمال التعتيق"]}},
+  {id:"s_ins_cmp121",name:"CMP121 معاصر",icon:"💫",season:"صيف",gender:"للجنسين",stability:"24 ساعة",inspired:true,
    desc:"CMP 121 Contemporary Bulkaroma (مستوحى) — أناقة عصرية | 20% + 5% + 75% IPA 99.9% — رذاذ جاف خفيف",
-   ing:[["cmp121",20],["lux_fixative",5],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Lux Fixative 5مل ← CMP121 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء"]},
-  {id:"s_ins_crimson",name:"كريمسون فير",icon:"🔴",season:"مناسبات",gender:"للجنسين",stability:"20 ساعة",inspired:true,
+   ing:[["cmp121",18],["lux_fixative",4],["iso_e",2],["cashmeran",2],["ipa",74]],
+   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Lux Fixative 5مل ← CMP121 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء"],
+   stepsAlt:{ml8:["في أنبوب تجربة 10مل: أضف الزيوت بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أضف IPA 99.9% تدريجياً مع رج خفيف 20 ثانية","أغلق محكماً — عتّق 24 ساعة في بارد مظلم","اختبر على رسغك: 15 دق توب ← ساعة قلب ← 4+ ساعة قاعدة"],ml12:["في بيكر 25مل: أضف الزيوت بالقطارة (الكميات × 0.12)","أضف المثبتات ← حرّك بعصا زجاجية 30 ثانية","أضف IPA 99.9% تدريجياً مع التحريك","عتّق 48 ساعة في بارد مظلم ← انقل للأتومايزر الزجاجي 12مل"],ml30:["في بيكر 50مل: قس الزيوت بدقة (الكميات × 0.30)","أضف المثبتات ← حرّك بعصا زجاجية دقيقة كاملة","أضف IPA 99.9% ببطء مع التحريك المستمر","عتّق 5-7 أيام في بارد مظلم — التحول يبدأ من اليوم الثالث","انقل لزجاجة داكنة 30مل مع رشاش — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس الزيوت بدقة (الكميات × 0.50)","أضف المثبتات وحرّك 2 دقيقة بعصا زجاجية","أضف نصف IPA ← حرّك 3 دق ← أضف الباقي ← حرّك 2 دق","عتّق 7-14 يوم في بارد مظلم — الأسبوع الثاني تحول كبير في الفوحان والإسقاط","صفّ بمصفى قطن ← انقل لزجاجة 50مل مع رشاش عطري"],ml100:["في بيكر 250مل: صب جميع الزيوت بالترتيب (الأثقل أولاً — IPA أخيراً)","أضف المثبتات ← حرّك بعصا مغناطيسية 3 دقائق على حرارة الغرفة","أضف IPA 99.9% تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 14-21 يوم في بارد مظلم ← الأسبوع الثالث الإبداع الحقيقي","صفّ بمصفى قطن ← انقل لزجاجة 120مل داكنة للتخزين","انقل لزجاجات البيع النهائية 100مل بعد اكتمال التعتيق"]}},
+  {id:"s_ins_crimson",name:"كريمسون فير",icon:"🔴",season:"مناسبات",gender:"للجنسين",stability:"24 ساعة",inspired:true,
    desc:"Crimson Fair Bulkaroma (مستوحى) — فاكهي مخملي | 20% + 5% + 75% IPA 99.9% — رذاذ جاف خفيف",
-   ing:[["crimson",20],["lux_fixative",5],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Lux Fixative 5مل ← Crimson Fair 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء"]},
-  {id:"s_ins_metal",name:"ميتال ميد",icon:"⚙️",season:"صيف",gender:"رجالي",stability:"16 ساعة",inspired:true,
+   ing:[["crimson",18],["lux_fixative",4],["iso_e",2],["cashmeran",2],["ipa",74]],
+   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Lux Fixative 5مل ← Crimson Fair 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء"],
+   stepsAlt:{ml8:["في أنبوب تجربة 10مل: أضف الزيوت بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أضف IPA 99.9% تدريجياً مع رج خفيف 20 ثانية","أغلق محكماً — عتّق 24 ساعة في بارد مظلم","اختبر على رسغك: 15 دق توب ← ساعة قلب ← 4+ ساعة قاعدة"],ml12:["في بيكر 25مل: أضف الزيوت بالقطارة (الكميات × 0.12)","أضف المثبتات ← حرّك بعصا زجاجية 30 ثانية","أضف IPA 99.9% تدريجياً مع التحريك","عتّق 48 ساعة في بارد مظلم ← انقل للأتومايزر الزجاجي 12مل"],ml30:["في بيكر 50مل: قس الزيوت بدقة (الكميات × 0.30)","أضف المثبتات ← حرّك بعصا زجاجية دقيقة كاملة","أضف IPA 99.9% ببطء مع التحريك المستمر","عتّق 5-7 أيام في بارد مظلم — التحول يبدأ من اليوم الثالث","انقل لزجاجة داكنة 30مل مع رشاش — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس الزيوت بدقة (الكميات × 0.50)","أضف المثبتات وحرّك 2 دقيقة بعصا زجاجية","أضف نصف IPA ← حرّك 3 دق ← أضف الباقي ← حرّك 2 دق","عتّق 7-14 يوم في بارد مظلم — الأسبوع الثاني تحول كبير في الفوحان والإسقاط","صفّ بمصفى قطن ← انقل لزجاجة 50مل مع رشاش عطري"],ml100:["في بيكر 250مل: صب جميع الزيوت بالترتيب (الأثقل أولاً — IPA أخيراً)","أضف المثبتات ← حرّك بعصا مغناطيسية 3 دقائق على حرارة الغرفة","أضف IPA 99.9% تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 14-21 يوم في بارد مظلم ← الأسبوع الثالث الإبداع الحقيقي","صفّ بمصفى قطن ← انقل لزجاجة 120مل داكنة للتخزين","انقل لزجاجات البيع النهائية 100مل بعد اكتمال التعتيق"]}},
+  {id:"s_ins_metal",name:"ميتال ميد",icon:"⚙️",season:"صيف",gender:"رجالي",stability:"20 ساعة",inspired:true,
    desc:"Metal Made Bulkaroma (مستوحى Ganymede) — توقيع معدني حديث | 20% + 5% + 75% IPA 99.9% — رذاذ جاف خفيف",
-   ing:[["metal_made",20],["cashmeran",5],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Cashmeran 5مل ← Metal Made 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء"]},
+   ing:[["metal_made",18],["cashmeran",5],["iso_e",2],["ipa",75]],
+   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Cashmeran 5مل ← Metal Made 20مل — قضيب 30 ثانية | أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم | ⚠️ مثالي للثياب والهواء"],
+   stepsAlt:{ml8:["في أنبوب تجربة 10مل: أضف الزيوت بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أضف IPA 99.9% تدريجياً مع رج خفيف 20 ثانية","أغلق محكماً — عتّق 24 ساعة في بارد مظلم","اختبر على رسغك: 15 دق توب ← ساعة قلب ← 4+ ساعة قاعدة"],ml12:["في بيكر 25مل: أضف الزيوت بالقطارة (الكميات × 0.12)","أضف المثبتات ← حرّك بعصا زجاجية 30 ثانية","أضف IPA 99.9% تدريجياً مع التحريك","عتّق 48 ساعة في بارد مظلم ← انقل للأتومايزر الزجاجي 12مل"],ml30:["في بيكر 50مل: قس الزيوت بدقة (الكميات × 0.30)","أضف المثبتات ← حرّك بعصا زجاجية دقيقة كاملة","أضف IPA 99.9% ببطء مع التحريك المستمر","عتّق 5-7 أيام في بارد مظلم — التحول يبدأ من اليوم الثالث","انقل لزجاجة داكنة 30مل مع رشاش — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس الزيوت بدقة (الكميات × 0.50)","أضف المثبتات وحرّك 2 دقيقة بعصا زجاجية","أضف نصف IPA ← حرّك 3 دق ← أضف الباقي ← حرّك 2 دق","عتّق 7-14 يوم في بارد مظلم — الأسبوع الثاني تحول كبير في الفوحان والإسقاط","صفّ بمصفى قطن ← انقل لزجاجة 50مل مع رشاش عطري"],ml100:["في بيكر 250مل: صب جميع الزيوت بالترتيب (الأثقل أولاً — IPA أخيراً)","أضف المثبتات ← حرّك بعصا مغناطيسية 3 دقائق على حرارة الغرفة","أضف IPA 99.9% تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 14-21 يوم في بارد مظلم ← الأسبوع الثالث الإبداع الحقيقي","صفّ بمصفى قطن ← انقل لزجاجة 120مل داكنة للتخزين","انقل لزجاجات البيع النهائية 100مل بعد اكتمال التعتيق"]}},
   // ── Luxodor Invoice #000472 — وصول متوقع خلال أسبوع ─────────────
   {id:"r_bormi",name:"دهن البورمي الأصيل",icon:"🌑",season:"شتاء",gender:"رجالي",stability:"48+ ساعة",
    desc:"عود بورمي أصيل — داكن دخاني عميق بقلب راتنجي | من أرقى عطور الخليج",
@@ -572,14 +578,16 @@ const PENDING_RECIPES=[
    desc:"عود هندي ترابي حيواني من Luxodor — أصالة الشرق القديم للعارفين",
    ing:[["lux_hindi",40],["artessence",25],["iso_e",15],["sandal_indi",8],["labdanum",5],["benzoin_b",4],["cashmeran",3]],
    steps:["⚡ بري-بلند الهندي (24 ساعة مسبقاً — ضروري): في زجاجة 10مل: Oud Hindi 6مل + Artessence 4مل | الدمج المسبق يُروّض الحدة الحيوانية ويُوحّدها مع الخشب","ذب في بيكر 60°: لبدانوم 5جم + بنزوين B 4مل — 20 دقيقة ← اترك يبرد لـ 40°","على تحريك بارد: أضف ISO E Super 15مل ← Sandal Hindi 8مل ← Cashmeran 3مل ← خليط بري-بلند","أضف Artessence الباقي (21مل) + Oud Hindi الباقي (34مل) — حرّك 5 دقائق","انقل لزجاجة داكنة محكمة — عتّق 21 يوم لا أقل | ⚠️ الحكم قبل 3 أسابيع ظلم للعطر | 💡 نقطة واحدة تكفي — أقوى من الخام"]},
-  {id:"s_ins_opus14",name:"أوبوس رويال توباكو",icon:"🚬",season:"مناسبات",gender:"رجالي",stability:"20 ساعة",inspired:true,
+  {id:"s_ins_opus14",name:"أوبوس رويال توباكو",icon:"🚬",season:"مناسبات",gender:"رجالي",stability:"24 ساعة",inspired:true,
    desc:"Opus XIV Royal Tobacco Amouage (مستوحى) — توقيع التبغ الملكي الداكن | 15%+5%+3%+2%+75% IPA 99.9%",
-   ing:[["lux_opus14",15],["artessence",5],["cashmeran",3],["benzoin_b",2],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Artessence 5مل ← Cashmeran 3مل ← Benzoin B 2مل ← Opus XIV 15مل — قضيب 30 ثانية","أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 48 ساعة في بارد مظلم — التبغ يحتاج وقتاً ليتكشّف","⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض بعيداً عن الوجه | 💡 عيّنة 10مل: اصنع 50مل فقط (نصف الكميات) — Opus XIV 7.5مل + باقي المكوّنات بالنصف + IPA 37.5مل"]},
-  {id:"s_ins_existence",name:"إكزيستنس أموج",icon:"🌸",season:"ربيع",gender:"للجنسين",stability:"18 ساعة",inspired:true,
+   ing:[["lux_opus14",15],["artessence",5],["cashmeran",3],["benzoin_b",2],["iso_e",2],["ipa",73]],
+   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Artessence 5مل ← Cashmeran 3مل ← Benzoin B 2مل ← Opus XIV 15مل — قضيب 30 ثانية","أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 48 ساعة في بارد مظلم — التبغ يحتاج وقتاً ليتكشّف","⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض بعيداً عن الوجه | 💡 عيّنة 10مل: اصنع 50مل فقط (نصف الكميات) — Opus XIV 7.5مل + باقي المكوّنات بالنصف + IPA 37.5مل"],
+   stepsAlt:{ml8:["في أنبوب تجربة 10مل: أضف الزيوت بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أضف IPA 99.9% تدريجياً مع رج خفيف 20 ثانية","أغلق محكماً — عتّق 24 ساعة في بارد مظلم","اختبر على رسغك: 15 دق توب ← ساعة قلب ← 4+ ساعة قاعدة"],ml12:["في بيكر 25مل: أضف الزيوت بالقطارة (الكميات × 0.12)","أضف المثبتات ← حرّك بعصا زجاجية 30 ثانية","أضف IPA 99.9% تدريجياً مع التحريك","عتّق 48 ساعة في بارد مظلم ← انقل للأتومايزر الزجاجي 12مل"],ml30:["في بيكر 50مل: قس الزيوت بدقة (الكميات × 0.30)","أضف المثبتات ← حرّك بعصا زجاجية دقيقة كاملة","أضف IPA 99.9% ببطء مع التحريك المستمر","عتّق 5-7 أيام في بارد مظلم — التحول يبدأ من اليوم الثالث","انقل لزجاجة داكنة 30مل مع رشاش — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس الزيوت بدقة (الكميات × 0.50)","أضف المثبتات وحرّك 2 دقيقة بعصا زجاجية","أضف نصف IPA ← حرّك 3 دق ← أضف الباقي ← حرّك 2 دق","عتّق 7-14 يوم في بارد مظلم — الأسبوع الثاني تحول كبير في الفوحان والإسقاط","صفّ بمصفى قطن ← انقل لزجاجة 50مل مع رشاش عطري"],ml100:["في بيكر 250مل: صب جميع الزيوت بالترتيب (الأثقل أولاً — IPA أخيراً)","أضف المثبتات ← حرّك بعصا مغناطيسية 3 دقائق على حرارة الغرفة","أضف IPA 99.9% تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 14-21 يوم في بارد مظلم ← الأسبوع الثالث الإبداع الحقيقي","صفّ بمصفى قطن ← انقل لزجاجة 120مل داكنة للتخزين","انقل لزجاجات البيع النهائية 100مل بعد اكتمال التعتيق"]}},
+  {id:"s_ins_existence",name:"إكزيستنس أموج",icon:"🌸",season:"ربيع",gender:"للجنسين",stability:"22 ساعة",inspired:true,
    desc:"Existence Amouage (مستوحى) — زهري راقٍ بتوقيع عودي | 15%+5%+5%+75% IPA 99.9%",
-   ing:[["lux_existence",15],["artessence",5],["iso_e",5],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Artessence 5مل ← ISO E Super 5مل ← Existence 15مل — قضيب 30 ثانية","أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم","⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض بعيداً عن الوجه | 💡 عيّنة 10مل: اصنع 50مل فقط (نصف الكميات) — Existence 7.5مل + Artessence 2.5مل + ISO E 2.5مل + IPA 37.5مل"]},
+   ing:[["lux_existence",15],["artessence",5],["iso_e",4],["cashmeran",2],["ipa",74]],
+   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Artessence 5مل ← ISO E Super 5مل ← Existence 15مل — قضيب 30 ثانية","أضف IPA 99.9% 75مل تدريجياً وهزّ برفق","أغلق 24 ساعة في بارد مظلم","⚠️ مثالي للثياب والهواء | للجلد: نقاط النبض بعيداً عن الوجه | 💡 عيّنة 10مل: اصنع 50مل فقط (نصف الكميات) — Existence 7.5مل + Artessence 2.5مل + ISO E 2.5مل + IPA 37.5مل"],
+   stepsAlt:{ml8:["في أنبوب تجربة 10مل: أضف الزيوت بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أضف IPA 99.9% تدريجياً مع رج خفيف 20 ثانية","أغلق محكماً — عتّق 24 ساعة في بارد مظلم","اختبر على رسغك: 15 دق توب ← ساعة قلب ← 4+ ساعة قاعدة"],ml12:["في بيكر 25مل: أضف الزيوت بالقطارة (الكميات × 0.12)","أضف المثبتات ← حرّك بعصا زجاجية 30 ثانية","أضف IPA 99.9% تدريجياً مع التحريك","عتّق 48 ساعة في بارد مظلم ← انقل للأتومايزر الزجاجي 12مل"],ml30:["في بيكر 50مل: قس الزيوت بدقة (الكميات × 0.30)","أضف المثبتات ← حرّك بعصا زجاجية دقيقة كاملة","أضف IPA 99.9% ببطء مع التحريك المستمر","عتّق 5-7 أيام في بارد مظلم — التحول يبدأ من اليوم الثالث","انقل لزجاجة داكنة 30مل مع رشاش — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس الزيوت بدقة (الكميات × 0.50)","أضف المثبتات وحرّك 2 دقيقة بعصا زجاجية","أضف نصف IPA ← حرّك 3 دق ← أضف الباقي ← حرّك 2 دق","عتّق 7-14 يوم في بارد مظلم — الأسبوع الثاني تحول كبير في الفوحان والإسقاط","صفّ بمصفى قطن ← انقل لزجاجة 50مل مع رشاش عطري"],ml100:["في بيكر 250مل: صب جميع الزيوت بالترتيب (الأثقل أولاً — IPA أخيراً)","أضف المثبتات ← حرّك بعصا مغناطيسية 3 دقائق على حرارة الغرفة","أضف IPA 99.9% تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 14-21 يوم في بارد مظلم ← الأسبوع الثالث الإبداع الحقيقي","صفّ بمصفى قطن ← انقل لزجاجة 120مل داكنة للتخزين","انقل لزجاجات البيع النهائية 100مل بعد اكتمال التعتيق"]}},
   // ── rec_35: الدخان الكمبودي — يُوظّف أوليفاك (IFF) المخزّن ─────────────
   {id:"r_oliffac",name:"الدخان الكمبودي",icon:"🌫️",season:"مناسبات",gender:"رجالي",stability:"48+ ساعة",
    desc:"توقيع دخاني أصيل — Oliffac IFF × Lux Cambodi | الدخان العودي الفاخر للمجالس الكبرى",
@@ -842,14 +850,6 @@ const INITIAL_RECIPES=[
   {id:"r_hindi",name:"دهن العود الهندي",icon:"🌍",season:"شتاء",gender:"رجالي",stability:"60+ ساعة",desc:"عود هندي ترابي حيواني — أصالة الشرق القديم للعارفين",
    ing:[["lux_hindi",40],["artessence",25],["iso_e",15],["sandal_indi",8],["labdanum",5],["benzoin_b",4],["cashmeran",3]],
    steps:["⚡ بري-بلند (24 ساعة ضروري): Oud Hindi 6مل + Artessence 4مل — يُروّض الحدة الحيوانية","ذب لبدانوم 5جم + بنزوين 4مل في 60° ← برّد لـ 40°","أضف ISO E ← Sandal ← Cashmeran ← بري-بلند ← باقي المكوّنات","عتّق 21 يوم لا أقل"]},
-  {id:"s_ins_opus14",name:"أوبوس رويال توباكو",icon:"🚬",season:"مناسبات",gender:"رجالي",stability:"20 ساعة",inspired:true,
-   desc:"Opus XIV Royal Tobacco Amouage (مستوحى) | 15%+5%+3%+2%+75% IPA 99.9%",
-   ing:[["lux_opus14",15],["artessence",5],["cashmeran",3],["benzoin_b",2],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Artessence ← Cashmeran ← Benzoin B ← Opus XIV ← IPA 75مل","أغلق 48 ساعة في بارد مظلم | ⚠️ للثياب والهواء | عيّنة 10مل: اصنع 50مل (نصف الكميات)"]},
-  {id:"s_ins_existence",name:"إكزيستنس أموج",icon:"🌸",season:"ربيع",gender:"للجنسين",stability:"18 ساعة",inspired:true,
-   desc:"Existence Amouage (مستوحى) | 15%+5%+5%+75% IPA 99.9%",
-   ing:[["lux_existence",15],["artessence",5],["iso_e",5],["ipa",75]],
-   steps:["زجاجة رش 100مل: صب الزيوت أولاً ← Artessence ← ISO E ← Existence ← IPA 75مل","أغلق 24 ساعة في بارد مظلم | ⚠️ للثياب والهواء | عيّنة 10مل: اصنع 50مل (نصف الكميات)"]},
   {id:"r_oliffac",name:"الدخان الكمبودي",icon:"🌫️",season:"مناسبات",gender:"رجالي",stability:"48+ ساعة",
    desc:"توقيع دخاني أصيل — Oliffac IFF × Lux Cambodi | الدخان العودي الفاخر للمجالس الكبرى",
    ing:[["lux_cambodi",30],["artessence",20],["oliffac",2],["iso_e",10],["sandal_indi",15],["labdanum",8],["benzoin_b",6],["vetiver",4],["cashmeran",2],["ambermor",2],["lux_fixative",1]],
@@ -857,7 +857,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-15-rec45";
+const APP_BUILD="2026-06-15-rec46";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1073,7 +1073,10 @@ function applyNameFix(inv){
 function applyPendingRecipes(recipes){
   if(lsGet("dw_pr_ver","")===PENDING_RECIPES_VERSION)return recipes;
   const map=new Map(recipes.map(r=>[r.id,r]));
-  PENDING_RECIPES.forEach(r=>map.set(r.id,r));
+  PENDING_RECIPES.forEach(r=>{
+    const ex=map.get(r.id);
+    map.set(r.id,ex?{...r,published:ex.published,story:ex.story||r.story}:r);
+  });
   lsSet("dw_pr_ver",PENDING_RECIPES_VERSION);
   return [...map.values()];
 }
@@ -1156,6 +1159,7 @@ function App(){
   const [toastErr,setToastErr]=useState(false);
   const [selectedRecipe,setSelectedRecipe]=useState(null);
   const [batchUnit,setBatchUnit]=useState(()=>lsGet("dw_batchunit","quarter"));
+  const [batchInspUnit,setBatchInspUnit]=useState(()=>lsGet("dw_batchinsp","ml30"));
   const [profitMult,setProfitMult]=useState(()=>lsGet("dw_margin",3));
   const [showAddIng,setShowAddIng]=useState(false);
   const [showAddRec,setShowAddRec]=useState(false);
@@ -1256,6 +1260,7 @@ function App(){
   useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
   useEffect(()=>lsSet("dw_margin",profitMult),[profitMult]);
   useEffect(()=>lsSet("dw_batchunit",batchUnit),[batchUnit]);
+  useEffect(()=>lsSet("dw_batchinsp",batchInspUnit),[batchInspUnit]);
   useEffect(()=>{
     const prices={};
     recipes.filter(r=>r.hero&&r.price_sar>0).forEach(r=>{
@@ -1286,8 +1291,10 @@ function App(){
 
   const show=(m,e=false)=>{setToast(m);setToastErr(e);setTimeout(()=>setToast(""),2800);};
   const getIng=id=>inv.find(i=>i.id===id);
-  const BATCH={quarter:2.9,half:5.8,tola:11.6,ml50:50,ml100:100};
-  const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",tola:"تولة",ml50:"50 مل",ml100:"100 مل"};
+  const BATCH={quarter:2.9,half:5.8,tola:11.6,ml8:8,ml12:12,ml30:30,ml50:50,ml100:100};
+  const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",tola:"تولة",ml8:"8 مل",ml12:"12 مل",ml30:"30 مل",ml50:"50 مل",ml100:"100 مل"};
+  const INSP_SIZES=["ml8","ml12","ml30","ml50","ml100"];
+  const OIL_SIZES=["quarter","half","tola","ml50","ml100"];
 
   const recipeBaseVol=r=>r.ing.reduce((s,[,a])=>s+a,0);
   const recipeScale=r=>BATCH[batchUnit]/recipeBaseVol(r);
@@ -1461,10 +1468,10 @@ function App(){
   const togglePublished=id=>{
     const cur=recipes.find(r=>r.id===id);
     const newPub=!cur?.published;
-    if(newPub&&!hasActiveBatch(prodLog,id)){show("⚠️ لا يمكن النشر — أنتج دفعة أولاً وسجّلها في سجل الإنتاج",true);return;}
     setRecipes(p=>p.map(r=>r.id!==id?r:{...r,published:newPub}));
     setSelectedRecipe(prev=>prev&&prev.id===id?{...prev,published:newPub}:prev);
-    show(newPub?"🌐 نُشر في المتجر":"🔒 أُخفي من المتجر");
+    if(newPub&&!hasActiveBatch(prodLog,id)){show("🌐 نُشر — يظهر في أداة البحث · سيُتاح في المتجر بعد الإنتاج");}
+    else{show(newPub?"🌐 نُشر في المتجر":"🔒 أُخفي من المتجر");}
   };
   const saveStory=(id,txt)=>{setRecipes(p=>p.map(r=>r.id!==id?r:{...r,story:txt.trim()}));setEditingStory(null);show("✅ حُفظت القصة");};
   const deleteRecipe=id=>{if(!window.confirm("حذف هذه الوصفة نهائياً؟ لا يمكن التراجع"))return;setRecipes(p=>p.filter(r=>r.id!==id));setSelectedRecipe(null);show("🗑️ حُذفت الوصفة");};
@@ -2496,7 +2503,7 @@ function App(){
               {/* hero product — price badge + quick order */}
               {r.hero&&(recipePrices[r.id]||r.price_sar)>0&&<div style={{display:"flex",alignItems:"center",gap:"6px",marginTop:"9px",paddingTop:"9px",borderTop:"1px solid rgba(201,168,76,0.10)"}}>
                 <span style={{fontSize:"0.62rem",color:"rgba(37,211,102,0.55)",fontWeight:"700",letterSpacing:"0.3px"}}>★ هيرو</span>
-                <span style={{flex:1,fontSize:"0.68rem",color:"#E8C870",fontWeight:"700",fontFamily:"'IBM Plex Mono',monospace"}}>{recipePrices[r.id]||r.price_sar} ريال / 12مل</span>
+                <span style={{flex:1,fontSize:"0.68rem",color:"#E8C870",fontWeight:"700",fontFamily:"'IBM Plex Mono',monospace"}}>{Math.max(5,Math.ceil((recipePrices[r.id]||r.price_sar)*2.9/11.6/5)*5)} ريال / ربع تولة</span>
                 <a href={`https://wa.me/${WHATSAPP_OWNER}?text=${encodeURIComponent(`مرحبا، أبي أطلب: ${r.icon} ${r.name}\n12مل — ${recipePrices[r.id]||r.price_sar} ريال`)}`} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{background:"rgba(37,211,102,0.14)",border:"1px solid rgba(37,211,102,0.38)",color:"#25d366",borderRadius:"10px",padding:"4px 10px",fontSize:"0.65rem",fontWeight:"700",textDecoration:"none",whiteSpace:"nowrap",fontFamily:"'Alexandria',sans-serif"}}>💚 اطلب</a>
               </div>}
             </div>
@@ -2599,7 +2606,7 @@ function App(){
 
         {/* ── recipe detail ── */}
         {tab==="recipes"&&selectedRecipe&&!showAddRec&&!showCompare&&!showMixer&&(()=>{
-          const r=selectedRecipe;const sc=recipeScale(r);const cost=recipeCost(r);const vol=BATCH[batchUnit];
+          const r=selectedRecipe;const activeBU=r.inspired?batchInspUnit:batchUnit;const sc=(()=>{const base=r.ing.reduce((s,[,a])=>s+a,0)||11.6;return BATCH[activeBU]/base;})();const cost=r.ing.reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a*sc:0);},0);const vol=BATCH[activeBU];
           const mlCost=cost/vol;const sellMl=mlCost*profitMult;
           // render a step string with amounts scaled to current batch; highlights numbers in gold
           const renderStep=txt=>{
@@ -2638,7 +2645,7 @@ function App(){
             {(()=>{const hasBatch=hasActiveBatch(prodLog,r.id);return(
             <div style={{display:"flex",gap:"6px",marginBottom:"12px"}}>
               <button onClick={()=>togglePublished(r.id)} title={!hasBatch&&!r.published?"أنتج دفعة أولاً":""}  style={{flex:1,padding:"9px",borderRadius:"11px",border:`1.5px solid ${r.published?"rgba(37,211,102,0.50)":hasBatch?"rgba(255,255,255,0.22)":"rgba(255,255,255,0.08)"}`,background:r.published?"rgba(37,211,102,0.12)":hasBatch?"rgba(255,255,255,0.04)":"rgba(255,255,255,0.02)",color:r.published?"#25d366":hasBatch?"rgba(255,255,255,0.50)":"rgba(255,255,255,0.22)",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>
-                {r.published?"🌐 ظاهر في المتجر":hasBatch?"🔒 مخفي من المتجر":"⏳ إنتج أولاً للنشر"}
+                {r.published?"🌐 ظاهر في المتجر":hasBatch?"🔒 مخفي من المتجر":"🔒 مخفي — اضغط للنشر"}
               </button>
               <button onClick={()=>{setEditingStory(r.id);setStoryDraft(r.story||"");}} style={{flex:1,padding:"9px",borderRadius:"11px",border:"1px solid rgba(201,168,76,0.30)",background:"rgba(201,168,76,0.06)",color:"#C9A84C",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>
                 ✍️ {r.story?"عدّل القصة":"أضف القصة"}
@@ -2665,7 +2672,7 @@ function App(){
               <h2 style={{color:"#D4AF37",fontSize:"1.15rem",fontWeight:"800",marginTop:"6px",letterSpacing:"-0.01em"}}>{r.name}</h2>
               {r.hero&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",marginTop:"6px",flexWrap:"wrap"}}>
                 <span style={{background:"rgba(37,211,102,0.12)",border:"1px solid rgba(37,211,102,0.38)",color:"#25d366",borderRadius:"20px",padding:"2px 10px",fontSize:"0.60rem",fontWeight:"700",letterSpacing:"0.3px"}}>★ منتج رئيسي</span>
-                {(recipePrices[r.id]||r.price_sar)>0&&<span style={{background:"rgba(201,168,76,0.14)",border:"1px solid rgba(201,168,76,0.40)",color:"#E8C870",borderRadius:"20px",padding:"2px 12px",fontSize:"0.68rem",fontWeight:"700"}}>{recipePrices[r.id]||r.price_sar} ريال / 12مل</span>}
+                {(recipePrices[r.id]||r.price_sar)>0&&<span style={{background:"rgba(201,168,76,0.14)",border:"1px solid rgba(201,168,76,0.40)",color:"#E8C870",borderRadius:"20px",padding:"2px 12px",fontSize:"0.68rem",fontWeight:"700"}}>{Math.max(5,Math.ceil((recipePrices[r.id]||r.price_sar)*2.9/11.6/5)*5)} ريال / ربع تولة</span>}
                 {r.perfumer&&<span style={{fontSize:"0.58rem",color:"rgba(201,168,76,0.42)",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>العطار: {r.perfumer}</span>}
               </div>}
               <div className="g-line" style={{maxWidth:"100px",margin:"8px auto"}}/>
@@ -2703,14 +2710,22 @@ function App(){
             </div>
 
             <div className="glass">
-              <div style={{color:"#D4AF37",fontSize:"0.78rem",textAlign:"center",marginBottom:"8px"}}>حجم الدفعة</div>
-              <div style={{display:"flex",justifyContent:"center",gap:"5px",flexWrap:"wrap"}}>
-                {["quarter","half","tola"].map(b=>(<button key={b} onClick={()=>setBatchUnit(b)} style={{background:batchUnit===b?"#D4AF37":"rgba(255,255,255,0.06)",border:`1px solid ${batchUnit===b?"#D4AF37":"rgba(214,175,55,0.3)"}`,color:batchUnit===b?"#1a0800":"#D4AF37",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
-              </div>
-              <div style={{display:"flex",justifyContent:"center",gap:"5px",flexWrap:"wrap",marginTop:"4px"}}>
-                <span style={{fontSize:"0.58rem",color:"rgba(255,255,255,0.20)",alignSelf:"center",padding:"0 2px"}}>إنتاج:</span>
-                {["ml50","ml100"].map(b=>(<button key={b} onClick={()=>setBatchUnit(b)} style={{background:batchUnit===b?"rgba(80,120,200,0.7)":"rgba(80,120,200,0.08)",border:`1px solid ${batchUnit===b?"rgba(80,120,200,0.8)":"rgba(80,120,200,0.25)"}`,color:batchUnit===b?"#fff":"rgba(120,160,230,0.65)",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
-              </div>
+              <div style={{color:"#D4AF37",fontSize:"0.78rem",textAlign:"center",marginBottom:"8px"}}>{r.inspired?"حجم الزجاجة":"حجم الدفعة"}</div>
+              {r.inspired?(
+                <div style={{display:"flex",justifyContent:"center",gap:"5px",flexWrap:"wrap"}}>
+                  {INSP_SIZES.map(b=>(<button key={b} onClick={()=>setBatchInspUnit(b)} style={{background:batchInspUnit===b?"rgba(180,80,200,0.75)":"rgba(180,80,200,0.08)",border:`1px solid ${batchInspUnit===b?"rgba(180,80,200,0.9)":"rgba(180,80,200,0.28)"}`,color:batchInspUnit===b?"#fff":"rgba(210,140,230,0.65)",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
+                </div>
+              ):(
+                <>
+                <div style={{display:"flex",justifyContent:"center",gap:"5px",flexWrap:"wrap"}}>
+                  {["quarter","half","tola"].map(b=>(<button key={b} onClick={()=>setBatchUnit(b)} style={{background:batchUnit===b?"#D4AF37":"rgba(255,255,255,0.06)",border:`1px solid ${batchUnit===b?"#D4AF37":"rgba(214,175,55,0.3)"}`,color:batchUnit===b?"#1a0800":"#D4AF37",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
+                </div>
+                <div style={{display:"flex",justifyContent:"center",gap:"5px",flexWrap:"wrap",marginTop:"4px"}}>
+                  <span style={{fontSize:"0.58rem",color:"rgba(255,255,255,0.20)",alignSelf:"center",padding:"0 2px"}}>إنتاج:</span>
+                  {["ml50","ml100"].map(b=>(<button key={b} onClick={()=>setBatchUnit(b)} style={{background:batchUnit===b?"rgba(80,120,200,0.7)":"rgba(80,120,200,0.08)",border:`1px solid ${batchUnit===b?"rgba(80,120,200,0.8)":"rgba(80,120,200,0.25)"}`,color:batchUnit===b?"#fff":"rgba(120,160,230,0.65)",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
+                </div>
+                </>
+              )}
             </div>
 
             <div className="glass" style={{background:"rgba(12,8,2,0.88)",borderColor:"rgba(201,168,76,0.38)"}}>
@@ -2745,7 +2760,7 @@ function App(){
               <div style={{marginTop:"9px",textAlign:"center",fontSize:"0.68rem",color:"rgba(255,255,255,0.35)"}}>الربح الصافي للدفعة: <span className="mono" style={{color:"#6AAA48",fontWeight:"700"}}>{(sellMl*vol-cost).toFixed(0)} ريال</span></div>
             </div>
 
-            <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>🏺 المكونات ({BATCH_NAME[batchUnit]})</h3>
+            <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>🏺 المكونات ({BATCH_NAME[activeBU]})</h3>
             <div style={{display:"flex",gap:"6px",marginBottom:"8px",flexWrap:"wrap"}}>
               <span className="tag tag-top">🔝 قمة</span><span className="tag tag-mid">💫 قلب</span><span className="tag tag-base">🪨 قاعدة</span>
             </div>
@@ -2754,10 +2769,10 @@ function App(){
                 <div><div style={{fontSize:"0.82rem",fontWeight:"600"}}>{ing?.name||id} <span className={`tag tag-${tier}`} style={{fontSize:"0.58rem",padding:"1px 6px"}}>{NOTE_LABEL[tier]}</span></div><div style={{fontSize:"0.62rem",color:"#c8a46a"}}>{ing?.brand} • {c.toFixed(2)}ر</div></div>
                 <div style={{textAlign:"left"}}><div style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.85rem"}}>{need.toFixed(2)} {ing?.unit}</div><div style={{fontSize:"0.6rem",color:ok?"#80c080":"#e08080"}}>متوفر: {ing?.stock||0}</div></div>
               </div>);})}
-            <div style={{background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"10px",padding:"8px",textAlign:"center",color:"#D4AF37",fontSize:"0.85rem",margin:"6px 0 12px",fontWeight:"700"}}>إجمالي الحجم: {vol} مل • التكلفة: {cost.toFixed(1)} ريال</div>
+            <div style={{background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"10px",padding:"8px",textAlign:"center",color:"#D4AF37",fontSize:"0.85rem",margin:"6px 0 12px",fontWeight:"700"}}>إجمالي الحجم: {BATCH[activeBU]} مل • التكلفة: {cost.toFixed(1)} ريال</div>
 
-            <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>📝 الخطوات</h3>
-            {[...r.steps,AGING_STEP,FIXATION_STEP].map((s,i)=>(<div key={i} style={{display:"flex",gap:"8px",padding:"8px 11px",marginBottom:"4px",borderRadius:"10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)"}}><div style={{minWidth:"21px",height:"21px",borderRadius:"50%",background:"#D4AF37",color:"#1a0800",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.68rem",fontWeight:"700"}}>{i+1}</div><span style={{fontSize:"0.8rem",color:"#c8a46a"}}>{renderStep(s)}</span></div>))}
+            <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>📝 الخطوات {r.inspired&&r.stepsAlt&&r.stepsAlt[activeBU]?"— "+BATCH_NAME[activeBU]:""}</h3>
+            {(r.inspired&&r.stepsAlt&&r.stepsAlt[activeBU]?r.stepsAlt[activeBU]:[...r.steps,AGING_STEP,FIXATION_STEP]).map((s,i)=>(<div key={i} style={{display:"flex",gap:"8px",padding:"8px 11px",marginBottom:"4px",borderRadius:"10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)"}}><div style={{minWidth:"21px",height:"21px",borderRadius:"50%",background:"#D4AF37",color:"#1a0800",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.68rem",fontWeight:"700"}}>{i+1}</div><span style={{fontSize:"0.8rem",color:"#c8a46a"}}>{renderStep(s)}</span></div>))}
 
             {!canMake(r)&&(()=>{
               const sc2=recipeScale(r);
