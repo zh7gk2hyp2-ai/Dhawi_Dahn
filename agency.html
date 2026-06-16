@@ -1037,6 +1037,16 @@ function calcTiers(ing){
 
 // ── LOAD FROM LAB localStorage (index.html همدان) ──────────────────────
 function loadFromLab(){
+  // fallback prices for known recipes (used when lab hasn't applied rec_48 yet)
+  const PRICE_DEFAULTS={
+    sheikhs_oud:250,
+    royal:240,
+    r_blend2_fixed:175,
+    r_blend1_fixed:175,
+    summer:175,
+    taif_rose_oud:200,
+    r_hindi_soul:220
+  };
   try{
     const raw=localStorage.getItem('dw_recipes');
     if(!raw)return null;
@@ -1047,12 +1057,12 @@ function loadFromLab(){
     const mapRec=r=>{
       const t=calcTiers(r.ing||[]);
       const sp=storePrices[r.id];
-      const basePrice=sp?sp.tola:(r.price_sar||0);
+      const basePrice=sp?sp.tola:(r.price_sar||PRICE_DEFAULTS[r.id]||0);
       return{
         id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,
         price:basePrice,
-        priceQ:sp?sp.quarter:(basePrice>0?Math.max(5,Math.ceil(basePrice*0.30/5)*5):0),
-        priceH:sp?sp.half:(basePrice>0?Math.max(5,Math.ceil(basePrice*0.55/5)*5):0),
+        priceQ:sp?sp.quarter:(basePrice>0?Math.max(5,Math.ceil(basePrice*0.25/5)*5):0),
+        priceH:sp?sp.half:(basePrice>0?Math.max(5,Math.ceil(basePrice*0.50/5)*5):0),
         priceT:basePrice,
         stab:r.stability,story:r.story||'',desc:r.desc||'',
         top:t.top,mid:t.mid,base:t.base,
