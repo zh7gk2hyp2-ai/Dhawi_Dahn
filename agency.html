@@ -1044,7 +1044,6 @@ function loadFromLab(){
     const activeBatchIds=new Set(prodLog.filter(e=>!e.sold&&e.readyDate).map(e=>e.recipeId));
     const storePrices=JSON.parse(localStorage.getItem('dw_store_prices')||'{}');
     const allRecipes=JSON.parse(raw);
-    const pricedRecipes=allRecipes.filter(r=>r.price_sar>0);
     const mapRec=r=>{
       const t=calcTiers(r.ing||[]);
       const sp=storePrices[r.id];
@@ -1060,9 +1059,11 @@ function loadFromLab(){
         hasStock:activeBatchIds.has(r.id)
       };
     };
+    // produced: all items with active batches (no price requirement)
+    // all (P_ALL): produced items + any published priced items (used by finder)
     return{
       produced:allRecipes.filter(r=>activeBatchIds.has(r.id)&&r.name).map(mapRec),
-      all:pricedRecipes.filter(r=>r.published||activeBatchIds.has(r.id)).map(mapRec)
+      all:allRecipes.filter(r=>(activeBatchIds.has(r.id)&&r.name)||(r.price_sar>0&&r.published)).map(mapRec)
     };
   }catch(e){return null;}
 }
@@ -1731,7 +1732,7 @@ function showFinderResult(){
           (!p.hasStock?'<div style="font-size:0.58rem;color:rgba(255,160,50,0.80);margin-top:2px">⏳ يُنتج خصيصاً لك عند الطلب</div>':'')+
         '</div>'+
         '<div style="text-align:right">'+
-          (p.hasStock
+          (p.hasStock&&calcPrice(p)>0
             ?'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:0.80rem;color:#F0C840;font-weight:700">'+calcPrice(p)+' ر</div><div style="font-size:0.52rem;color:rgba(212,168,67,0.42);margin-top:1px">'+BATCH[batch].label+'</div>'
             :'<a href="https://wa.me/966503716775?text='+waMsg+'" target="_blank" onclick="event.stopPropagation()" style="display:inline-block;background:rgba(37,211,102,0.14);border:1px solid rgba(37,211,102,0.38);color:#25d366;border-radius:8px;padding:5px 12px;font-size:0.65rem;font-weight:700;text-decoration:none;white-space:nowrap;font-family:\'Alexandria\',sans-serif">💚 اطلبه الآن</a>'
           )+
