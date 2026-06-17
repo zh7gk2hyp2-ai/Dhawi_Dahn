@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-17-rec49"/>
+<meta name="app-version" content="2026-06-17-v2"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -54,6 +54,71 @@ body::before{
   --c-gold-dark:#8A6A1E;
   --c-ivory:#FAF8F3;
 }
+/* ── Dark Mode ── */
+body.dark-mode{
+  background:#0D0A06;color:#E8D9B8;
+  background-image:radial-gradient(ellipse 140% 60% at 50% -10%,rgba(180,100,15,0.18) 0%,transparent 55%),radial-gradient(ellipse 80% 50% at 95% 110%,rgba(140,40,100,0.12) 0%,transparent 50%);
+}
+body.dark-mode .glass{background:rgba(20,12,5,0.88);border-color:rgba(201,168,76,0.14);color:#E8D9B8;}
+body.dark-mode .glass-gold{background:linear-gradient(135deg,rgba(30,18,6,0.96),rgba(20,12,4,0.94));border-color:rgba(201,168,76,0.28);}
+body.dark-mode .inp{background:rgba(255,255,255,0.06);border-color:rgba(201,168,76,0.18);color:#E8D9B8;}
+body.dark-mode .inp::placeholder{color:rgba(232,217,184,0.30);}
+body.dark-mode .bottom-nav{background:rgba(10,7,3,0.97);}
+body.dark-mode .modal-sheet{background:rgba(15,10,4,0.98);color:#E8D9B8;}
+body.dark-mode .recipe-card{background:rgba(22,14,6,0.90);color:#E8D9B8;}
+body.dark-mode .quick-action{background:rgba(22,14,6,0.85);border-color:rgba(201,168,76,0.14);}
+/* ── New Animations ── */
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(104,176,104,0.45)}70%{box-shadow:0 0 0 9px rgba(104,176,104,0)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+/* ── Quick Action Grid ── */
+.quick-action{
+  background:rgba(255,255,255,0.85);border:1px solid rgba(26,18,8,0.08);
+  border-radius:18px;padding:14px 8px;text-align:center;cursor:pointer;
+  transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1),border-color 0.22s,background 0.22s;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+.quick-action:active{transform:scale(0.92);}
+.quick-action-icon{font-size:1.5rem;line-height:1;}
+.quick-action-label{font-size:0.58rem;font-weight:700;color:#8A6A1E;letter-spacing:0.3px;text-align:center;}
+/* ── Stat Chip ── */
+.stat-chip{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:18px;
+  font-size:0.68rem;font-weight:700;
+  background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);color:#8A6A1E;
+}
+/* ── Product Card (Store) ── */
+.product-card{
+  border-radius:18px;overflow:hidden;border:1px solid rgba(26,18,8,0.10);
+  background:rgba(255,255,255,0.90);
+  transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.22s;
+  position:relative;box-shadow:0 4px 16px rgba(0,0,0,0.06);
+}
+.product-card:active{transform:scale(0.97);}
+.product-card-banner{height:80px;background:linear-gradient(135deg,#1A1208,#3A2010,#8A6A1E);display:flex;align-items:center;justify-content:center;font-size:2.4rem;position:relative;overflow:hidden;}
+.product-card-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(201,168,76,0.15));}
+/* ── Lab Timer ── */
+.lab-timer{font-family:'IBM Plex Mono',monospace;font-size:1.9rem;font-weight:300;color:#C9A84C;letter-spacing:0.12em;text-align:center;}
+/* ── Revenue Hero ── */
+.rev-hero{
+  background:linear-gradient(135deg,#1A1208 0%,#2C1A0E 60%,#1A0E06 100%);
+  border-radius:24px;padding:22px 20px 18px;position:relative;overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,0.22);
+}
+.rev-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.65),transparent);}
+/* ── Inventory Stock Bar ── */
+.stock-bar{height:3px;background:rgba(26,18,8,0.08);border-radius:3px;margin-top:4px;overflow:hidden;}
+.stock-bar-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
+/* ── KPI Mini Card ── */
+.kpi-mini{background:rgba(255,255,255,0.80);border:1px solid rgba(26,18,8,0.10);border-radius:14px;padding:12px 10px;text-align:center;}
+.kpi-mini-val{font-family:'IBM Plex Mono',monospace;font-size:1.15rem;font-weight:600;line-height:1;margin-bottom:4px;}
+.kpi-mini-lbl{font-size:0.55rem;color:rgba(26,18,8,0.45);letter-spacing:0.2px;}
+/* ── Enhanced Recipe Card ── */
+.recipe-card-top{height:3px;background:linear-gradient(90deg,#C9A84C,#E8C870,#8A6A1E);margin:-18px -18px 14px;border-radius:20px 20px 0 0;}
+/* ── Batch Activity Row ── */
+.activity-row{display:flex;gap:12px;align-items:center;padding:9px 0;}
+.activity-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
 #root{position:relative;z-index:1;}
 input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 ::-webkit-scrollbar{width:2px;}
@@ -945,7 +1010,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-17-rec49";
+const APP_BUILD="2026-06-17-v2";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1331,6 +1396,10 @@ function App(){
   const [showQRScan,setShowQRScan]=useState(false);
   const [qrScanResult,setQrScanResult]=useState(null);
   const [notifPerm,setNotifPerm]=useState(()=>typeof Notification!=="undefined"?Notification.permission:"default");
+  const [darkMode,setDarkMode]=useState(()=>lsGet("dw_dark",false));
+  const [labTimerSec,setLabTimerSec]=useState(0);
+  const [labTimerRunning,setLabTimerRunning]=useState(false);
+  const labTimerRef=React.useRef(null);
 
   // add ingredient
   const [niName,setNiName]=useState("");const [niBrand,setNiBrand]=useState("");const [niCat,setNiCat]=useState("عود");
@@ -1338,6 +1407,15 @@ function App(){
   // add recipe
   const [nrName,setNrName]=useState("");const [nrDesc,setNrDesc]=useState("");const [nrSeason,setNrSeason]=useState("صيف");
   const [nrGender,setNrGender]=useState("للجنسين");const [nrIngId,setNrIngId]=useState(RAW[0][0]);const [nrAmt,setNrAmt]=useState(3);const [nrIngs,setNrIngs]=useState([]);
+
+  // ── dark mode ───────────────────────────────────────────────
+  useEffect(()=>{document.body.classList.toggle("dark-mode",darkMode);lsSet("dw_dark",darkMode);},[darkMode]);
+  // ── lab timer ───────────────────────────────────────────────
+  const toggleLabTimer=()=>{
+    if(labTimerRunning){clearInterval(labTimerRef.current);setLabTimerRunning(false);}
+    else{labTimerRef.current=setInterval(()=>setLabTimerSec(s=>s+1),1000);setLabTimerRunning(true);}
+  };
+  const resetLabTimer=()=>{clearInterval(labTimerRef.current);setLabTimerSec(0);setLabTimerRunning(false);};
 
   // ── persist on every change ──────────────────────────────────
   useEffect(()=>lsSet("dw_inv",inv),[inv]);
@@ -1934,159 +2012,200 @@ function App(){
           const readyBatches=prodLog.filter(e=>!e.sold&&e.readyDate&&daysLeft(e.readyDate)<=0);
           const agingBatches=prodLog.filter(e=>!e.sold&&e.readyDate&&daysLeft(e.readyDate)>0).sort((a,b)=>daysLeft(a.readyDate)-daysLeft(b.readyDate));
           const goTab=(t)=>{setTab(t);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setShowAIStudio(false);};
+          const totalProfit=totalRevenue-totalCostOfSold;
           return <div className="fade">
-            {/* ── hero stats ── */}
-            <div className="glass-gold" style={{textAlign:"center",padding:"22px 18px 18px",marginBottom:"10px",cursor:"pointer"}} onClick={()=>goTab("inventory")}>
-              <div className="data-label" style={{marginBottom:"8px"}}>إجمالي قيمة المخزون</div>
-              <div style={{display:"flex",alignItems:"baseline",justifyContent:"center",gap:"6px"}}>
-                <div className="p-num-hero">{totalInvValue.toFixed(0)}</div>
-                <div style={{fontSize:"0.85rem",color:"rgba(201,168,76,0.55)",fontFamily:"'Alexandria',sans-serif",fontWeight:300}}>ر.س</div>
+            {/* ── Hero Revenue Card ── */}
+            <div className="rev-hero" style={{marginBottom:"12px"}}>
+              <div style={{fontSize:"0.46rem",color:"rgba(201,168,76,0.50)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'IBM Plex Mono',monospace",marginBottom:"10px"}}>ATELIER DHAWI · LAB DASHBOARD</div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:"14px"}}>
+                <div>
+                  <div style={{fontSize:"0.65rem",color:"rgba(201,168,76,0.45)",marginBottom:"3px"}}>إجمالي الإيرادات</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"2.3rem",fontWeight:600,color:"#E8C870",letterSpacing:"-0.03em",lineHeight:1}}>{totalRevenue.toFixed(0)}<span style={{fontSize:"0.9rem",opacity:0.45,marginRight:"3px"}}>ر</span></div>
+                </div>
+                <div style={{textAlign:"left"}}>
+                  <div style={{fontSize:"0.60rem",color:"rgba(104,180,104,0.65)",marginBottom:"2px"}}>صافي الربح</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.25rem",fontWeight:600,color:totalProfit>=0?"#80C880":"#E08080",letterSpacing:"-0.02em"}}>{totalProfit>=0?"+":""}{totalProfit.toFixed(0)} ر</div>
+                </div>
               </div>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px",marginBottom:"12px"}}>
-              <div className="glass" style={{textAlign:"center",padding:"14px 6px",cursor:"pointer"}} onClick={()=>goTab("recipes")}>
-                <div className="p-num-green" style={{fontSize:"1.5rem"}}>{_ready.length}<span style={{fontSize:"0.7rem",opacity:0.5}}>/{recipes.length}</span></div>
-                <div className="data-label" style={{marginTop:"5px"}}>وصفة جاهزة</div>
-              </div>
-              <div className="glass" style={{textAlign:"center",padding:"14px 6px",cursor:"pointer"}} onClick={()=>goTab("stats")}>
-                <div className="p-num-amber" style={{fontSize:"1.5rem"}}>{agingBatches.length}</div>
-                <div className="data-label" style={{marginTop:"5px"}}>قيد التعتيق</div>
-              </div>
-              <div className="glass" style={{textAlign:"center",padding:"14px 6px",cursor:"pointer"}} onClick={()=>goTab("stats")}>
-                <div className="p-num" style={{fontSize:"1.5rem"}}>{totalSold}</div>
-                <div className="data-label" style={{marginTop:"5px"}}>دفعة مُباعة</div>
+              <div style={{display:"flex",gap:"7px",flexWrap:"wrap"}}>
+                {[
+                  {label:"وصفة",val:recipes.length,icon:"📋",tab:"recipes"},
+                  {label:"دفعة",val:prodLog.length,icon:"🏺",tab:"stats"},
+                  {label:"مُباعة",val:totalSold,icon:"✅",tab:"stats"},
+                  {label:"عميل",val:customers.length,icon:"👤",tab:"customers"},
+                ].map(({label,val,icon,tab:t})=>(
+                  <div key={label} onClick={()=>goTab(t)} style={{background:"rgba(255,255,255,0.07)",border:"1px solid rgba(201,168,76,0.14)",borderRadius:"12px",padding:"7px 11px",display:"flex",alignItems:"center",gap:"6px",cursor:"pointer",transition:"background 0.2s"}}>
+                    <span style={{fontSize:"0.85rem"}}>{icon}</span>
+                    <div>
+                      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1rem",color:"#E8C870",fontWeight:600,lineHeight:1}}>{val}</div>
+                      <div style={{fontSize:"0.50rem",color:"rgba(201,168,76,0.40)",marginTop:"1px"}}>{label}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* ── ready to sell ── */}
-            {readyBatches.length>0&&<div className="glass" style={{border:"1.5px solid rgba(60,140,62,0.40)",background:"rgba(30,120,40,0.06)",marginBottom:"12px"}}>
+            {/* ── Quick Actions ── */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"7px",marginBottom:"12px"}}>
+              {[
+                {icon:"📋",label:"الوصفات",tab:"recipes"},
+                {icon:"🧪",label:"المخزون",tab:"inventory"},
+                {icon:"📊",label:"الإحصاء",tab:"stats"},
+                {icon:"🛒",label:"المتجر",tab:"orders"},
+              ].map(({icon,label,tab:t})=>(
+                <button key={t} className="quick-action" onClick={()=>goTab(t)}>
+                  <div className="quick-action-icon">{icon}</div>
+                  <div className="quick-action-label">{label}</div>
+                </button>
+              ))}
+            </div>
+
+            {/* ── Utility Buttons ── */}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"6px",marginBottom:"12px"}}>
+              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700"}} onClick={startQRScan}>📷 مسح QR</button>
+              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700"}} onClick={whatsappBulkOrders}>💚 واتساب</button>
+              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700",color:notifPerm==="granted"?"#80c080":undefined}} onClick={requestNotifPerm}>{notifPerm==="granted"?"🔔 ✓":"🔔 إشعارات"}</button>
+            </div>
+
+            {/* ── Ready to Sell ── */}
+            {readyBatches.length>0&&<div className="glass" style={{border:"1.5px solid rgba(60,140,62,0.35)",background:"rgba(20,80,25,0.04)",marginBottom:"12px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
-                <div className="section-hdr" style={{marginBottom:0}}>
-                  <div style={{width:"3px",height:"16px",background:"linear-gradient(180deg,#68D868,#2A8028)",borderRadius:"2px",flexShrink:0}}/>
-                  <h3 style={{color:"#68B068",fontSize:"0.85rem",fontWeight:"700"}}>جاهز للبيع <span className="mono" style={{fontSize:"0.78rem",opacity:0.7}}>({readyBatches.length})</span></h3>
+                <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+                  <div style={{width:"9px",height:"9px",borderRadius:"50%",background:"#68B068",animation:"pulse-green 2s ease-in-out infinite",flexShrink:0}}/>
+                  <h3 style={{color:"#68B068",fontSize:"0.88rem",fontWeight:"700"}}>جاهز للبيع ({readyBatches.length})</h3>
                 </div>
-                <button className="btn-ghost" style={{fontSize:"0.65rem",borderColor:"rgba(60,140,62,0.38)",color:"#68B068",padding:"5px 12px"}} onClick={()=>goTab("stats")}>عرض الكل</button>
+                <button className="btn-ghost" style={{fontSize:"0.62rem",borderColor:"rgba(60,140,62,0.35)",color:"#68B068",padding:"4px 10px"}} onClick={()=>goTab("stats")}>عرض الكل</button>
               </div>
               {readyBatches.slice(0,3).map(e=>(
-                <div key={e.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 10px",marginBottom:"4px",borderRadius:"11px",background:"rgba(60,140,62,0.06)",border:"1px solid rgba(60,140,62,0.12)"}}>
-                  <div style={{fontSize:"0.82rem",color:"#D8C898"}}>{e.recipeIcon} {e.recipeName}</div>
-                  <div style={{textAlign:"left"}}>
-                    <div className="mono" style={{fontSize:"0.70rem",color:"#68B068",fontWeight:"600"}}>{e.vol} مل</div>
-                    <div style={{fontSize:"0.58rem",color:"#5A4015"}} className="mono">#{e.batchNo}</div>
+                <div key={e.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 12px",marginBottom:"6px",borderRadius:"13px",background:"rgba(60,140,62,0.05)",border:"1px solid rgba(60,140,62,0.14)"}}>
+                  <div>
+                    <div style={{fontSize:"0.86rem",color:"#1A1208",fontWeight:600}}>{e.recipeIcon} {e.recipeName}</div>
+                    <div style={{fontSize:"0.62rem",color:"#8A6A1E",marginTop:"2px",fontFamily:"'IBM Plex Mono',monospace"}}>#{e.batchNo} · {e.vol}مل</div>
                   </div>
+                  <button onClick={()=>goTab("stats")} style={{background:"rgba(60,140,62,0.10)",border:"1px solid rgba(60,140,62,0.22)",color:"#68B068",borderRadius:"10px",padding:"5px 12px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700"}}>سجّل بيع</button>
                 </div>
               ))}
             </div>}
 
-            {/* ── aging queue ── */}
+            {/* ── Aging Queue ── */}
             {agingBatches.length>0&&<div className="glass" style={{marginBottom:"12px"}}>
-              <div className="section-hdr">
-                <div className="section-hdr-bar"/>
-                <h3 style={{color:"#C9A84C",fontSize:"0.85rem",fontWeight:"700"}}>قيد التعتيق <span className="mono" style={{fontSize:"0.78rem",opacity:0.7}}>({agingBatches.length})</span></h3>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"12px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+                  <div style={{width:"3px",height:"18px",background:"linear-gradient(180deg,#E8C460,#9E7828)",borderRadius:"2px"}}/>
+                  <h3 style={{color:"#C9A84C",fontSize:"0.88rem",fontWeight:"700"}}>قيد التعتيق ({agingBatches.length})</h3>
+                </div>
               </div>
-              {agingBatches.slice(0,3).map(e=>{
+              {agingBatches.slice(0,4).map(e=>{
                 const dl=daysLeft(e.readyDate);
-                const pct=Math.max(0,Math.min(100,100-(dl/e.agingDays*100)));
-                return <div key={e.id} style={{marginBottom:"10px"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:"4px"}}>
-                    <span style={{fontSize:"0.80rem",color:"#D8C898"}}>{e.recipeIcon} {e.recipeName}</span>
-                    <span className="mono" style={{fontSize:"0.70rem",color:"#C08840",fontWeight:"600"}}>{dl} يوم</span>
+                const pct=Math.max(0,Math.min(100,100-(dl/Math.max(e.agingDays||7,1)*100)));
+                return <div key={e.id} style={{marginBottom:"12px"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"5px"}}>
+                    <span style={{fontSize:"0.84rem",color:"#1A1208",fontWeight:600}}>{e.recipeIcon} {e.recipeName}</span>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.72rem",color:"#C08840",fontWeight:600,background:"rgba(192,136,64,0.09)",padding:"2px 8px",borderRadius:"8px"}}>{dl}د</span>
                   </div>
-                  <div style={{height:"4px",background:"rgba(26,18,8,0.08)",borderRadius:"4px",overflow:"hidden"}}>
-                    <div style={{height:"100%",width:pct+"%",background:"linear-gradient(90deg,#C9A84C,#E8C460)",borderRadius:"4px",transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(201,168,76,0.4)"}}/>
+                  <div style={{height:"6px",background:"rgba(26,18,8,0.07)",borderRadius:"6px",overflow:"hidden"}}>
+                    <div style={{height:"100%",width:pct+"%",background:"linear-gradient(90deg,#8A6A1E,#C9A84C,#E8C460)",borderRadius:"6px",transition:"width 0.6s cubic-bezier(0.22,1,0.36,1)",boxShadow:"0 0 8px rgba(201,168,76,0.40)"}}/>
                   </div>
-                  <div className="mono" style={{fontSize:"0.56rem",color:"#4A3010",marginTop:"3px"}}>#{e.batchNo} · جاهز {fmtDate(e.readyDate)}</div>
+                  <div style={{display:"flex",justifyContent:"space-between",marginTop:"3px"}}>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.54rem",color:"rgba(138,106,30,0.55)"}}>#{e.batchNo}</div>
+                    <div style={{fontSize:"0.54rem",color:"rgba(138,106,30,0.55)"}}>جاهز {fmtDate(e.readyDate)}</div>
+                  </div>
                 </div>;
               })}
             </div>}
 
-            {/* ── low stock ── */}
-            {lowStockItems.length>0&&<div className="glass" style={{border:"1px solid rgba(200,60,60,0.4)",background:"rgba(80,20,20,0.2)",marginBottom:"12px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"7px"}}>
-                <h3 style={{color:"#e08080",fontSize:"0.85rem",fontWeight:"700"}}>⚠️ مخزون منخفض ({lowStockItems.length})</h3>
-                <button className="btn-ghost" style={{fontSize:"0.68rem",borderColor:"rgba(200,60,60,0.4)",color:"#e08080"}} onClick={()=>{goTab("inventory");setShowShopList(true);}}>🛒 تسوق</button>
-              </div>
-              {lowStockItems.slice(0,4).map(i=>(
-                <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(26,18,8,0.08)"}}>
-                  <span style={{fontSize:"0.75rem",color:"#1A1208"}}>{i.name.split('(')[0].trim()}</span>
-                  <span style={{fontSize:"0.72rem",color:"#e08080",fontWeight:"600"}}>{i.stock} {i.unit}</span>
+            {/* ── Alerts Row ── */}
+            {(lowStockItems.length>0||totalExpiryAlerts>0)&&<div style={{display:"grid",gridTemplateColumns:lowStockItems.length>0&&totalExpiryAlerts>0?"1fr 1fr":"1fr",gap:"8px",marginBottom:"12px"}}>
+              {lowStockItems.length>0&&<div style={{background:"rgba(160,40,40,0.05)",border:"1px solid rgba(200,60,60,0.28)",borderRadius:"16px",padding:"12px 13px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"7px"}}>
+                  <span style={{color:"#C86060",fontSize:"0.78rem",fontWeight:700}}>⚠️ مخزون ({lowStockItems.length})</span>
+                  <button onClick={()=>{goTab("inventory");setShowShopList(true);}} style={{background:"none",border:"none",color:"#A05050",fontSize:"0.63rem",cursor:"pointer",fontWeight:700}}>تسوق ←</button>
                 </div>
-              ))}
-              {lowStockItems.length>4&&<div style={{fontSize:"0.68rem",color:"#7a4040",marginTop:"4px"}}>+ {lowStockItems.length-4} أخرى</div>}
+                {lowStockItems.slice(0,3).map(i=><div key={i.id} style={{fontSize:"0.68rem",color:"#7A4040",padding:"2px 0",display:"flex",justifyContent:"space-between"}}>
+                  <span>{i.name.split('(')[0].trim().substring(0,16)}</span>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",color:"#C86060"}}>{i.stock}{i.unit}</span>
+                </div>)}
+              </div>}
+              {totalExpiryAlerts>0&&<div style={{background:"rgba(160,100,10,0.05)",border:"1px solid rgba(200,140,20,0.28)",borderRadius:"16px",padding:"12px 13px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"7px"}}>
+                  <span style={{color:"#B08030",fontSize:"0.78rem",fontWeight:700}}>📅 صلاحية ({totalExpiryAlerts})</span>
+                  <button onClick={()=>{goTab("inventory");setShowExpiryCalendar(true);}} style={{background:"none",border:"none",color:"#907020",fontSize:"0.63rem",cursor:"pointer",fontWeight:700}}>تفاصيل ←</button>
+                </div>
+                {[...expiryGroups.expired,...expiryGroups.week].slice(0,3).map(i=><div key={i.id} style={{fontSize:"0.68rem",color:"#6A5020",padding:"2px 0",display:"flex",justifyContent:"space-between"}}>
+                  <span>{i.name.split('(')[0].trim().substring(0,13)}</span>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",color:"#B08030"}}>{i.d<0?"منتهي":`${i.d}د`}</span>
+                </div>)}
+              </div>}
             </div>}
 
-            {/* ── expiry alert ── */}
-            {totalExpiryAlerts>0&&<div className="glass" style={{border:"1px solid rgba(200,60,60,0.4)",background:"rgba(80,20,20,0.2)",marginBottom:"12px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"7px"}}>
-                <h3 style={{color:"#e08080",fontSize:"0.85rem",fontWeight:"700"}}>📅 صلاحية قاربت الانتهاء ({totalExpiryAlerts})</h3>
-                <button className="btn-ghost" style={{fontSize:"0.68rem",borderColor:"rgba(200,60,60,0.4)",color:"#e08080"}} onClick={()=>{goTab("inventory");setShowExpiryCalendar(true);}}>تفاصيل</button>
-              </div>
-              {[...expiryGroups.expired,...expiryGroups.week].slice(0,3).map(i=>(
-                <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(26,18,8,0.08)"}}>
-                  <span style={{fontSize:"0.75rem",color:"#1A1208"}}>{i.name.split('(')[0].trim()}</span>
-                  <span style={{fontSize:"0.72rem",color:"#e08080",fontWeight:"600"}}>{i.d<0?`منذ ${Math.abs(i.d)} يوم`:`${i.d} يوم متبقٍ`}</span>
-                </div>
-              ))}
-              {totalExpiryAlerts>3&&<div style={{fontSize:"0.68rem",color:"#7a4040",marginTop:"4px"}}>+ {totalExpiryAlerts-3} أخرى</div>}
-            </div>}
-
-            {/* ── suggested recipe ── */}
-            {suggestedRecipe&&<div className="suggest-card" style={{marginBottom:"12px"}}>
-              <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
+            {/* ── Suggested Recipe ── */}
+            {suggestedRecipe&&<div style={{background:"linear-gradient(135deg,rgba(74,103,65,0.10),rgba(74,103,65,0.04))",border:"1.5px solid rgba(74,103,65,0.22)",borderRadius:"20px",padding:"16px 18px",marginBottom:"12px",position:"relative",overflow:"hidden"}}>
+              <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(74,103,65,0.35),transparent)"}}/>
+              <div style={{fontSize:"0.50rem",color:"rgba(74,103,65,0.65)",letterSpacing:"0.5em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"8px"}}>RECIPE OF THE DAY</div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#1A1208"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
-                  <div style={{fontSize:"0.72rem",color:"#8A6A1E",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
-                  {ratings[suggestedRecipe.id]&&<div style={{fontSize:"0.7rem",color:"#e8c860",marginTop:"4px"}}>{"⭐".repeat(ratings[suggestedRecipe.id].stars)}</div>}
+                  <div style={{fontSize:"1.0rem",fontWeight:700,color:"#1A1208",marginBottom:"3px"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
+                  <div style={{fontSize:"0.70rem",color:"#4A6741",marginBottom:"6px"}}>{(suggestedRecipe.desc||"").substring(0,55)}{suggestedRecipe.desc?.length>55?"…":""}</div>
+                  <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
+                    <span className="stat-chip" style={{fontSize:"0.58rem",background:"rgba(74,103,65,0.08)",borderColor:"rgba(74,103,65,0.18)",color:"#4A6741"}}>{suggestedRecipe.season}</span>
+                    {ratings[suggestedRecipe.id]&&<span style={{fontSize:"0.7rem",color:"#E8C860"}}>{"★".repeat(ratings[suggestedRecipe.id].stars)}</span>}
+                  </div>
                 </div>
-                <button className="btn-ghost" style={{borderColor:"rgba(80,160,80,0.5)",color:"#80c080",marginRight:"8px",whiteSpace:"nowrap"}} onClick={()=>{goTab("recipes");setSelectedRecipe(suggestedRecipe);}}>ابدأ ←</button>
+                <button className="btn-gold" style={{padding:"9px 14px",fontSize:"0.72rem",marginRight:"10px",flexShrink:0}} onClick={()=>{goTab("recipes");setSelectedRecipe(suggestedRecipe);}}>ابدأ ←</button>
               </div>
             </div>}
 
-            {/* ── no data onboarding ── */}
-            {prodLog.length===0&&!suggestedRecipe&&<div className="glass-gold" style={{textAlign:"center",padding:"24px",marginBottom:"12px"}}>
-              <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"2.4rem",lineHeight:1,color:"rgba(201,168,76,0.22)",marginBottom:"4px"}}>I</div>
-              <div style={{color:"#D4AF37",fontWeight:"700",marginBottom:"4px",fontSize:"0.95rem"}}>ابدأ أول دفعة</div>
-              <div className="brand-sub" style={{marginBottom:"14px"}}>YOUR FIRST BATCH AWAITS</div>
-              <button className="btn-gold" style={{padding:"12px 28px"}} onClick={()=>goTab("recipes")}>← الوصفات</button>
+            {/* ── Onboarding ── */}
+            {prodLog.length===0&&!suggestedRecipe&&<div className="glass-gold" style={{textAlign:"center",padding:"32px 20px",marginBottom:"12px"}}>
+              <div style={{fontSize:"2.8rem",marginBottom:"8px"}}>🪬</div>
+              <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",color:"#C9A84C",fontSize:"1.5rem",marginBottom:"4px"}}>Atelier Dhawi</div>
+              <div style={{color:"#8A6A1E",fontSize:"0.80rem",marginBottom:"16px",lineHeight:1.8}}>مرحباً بك في مختبر دهن العود الخاص</div>
+              <button className="btn-gold" style={{padding:"13px 32px"}} onClick={()=>goTab("recipes")}>← استعرض الوصفات</button>
             </div>}
 
-            {/* ── recent activity ── */}
+            {/* ── Recent Activity ── */}
             {prodLog.length>0&&(()=>{
-              const recent=[...prodLog].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,4);
-              return <div className="glass" style={{marginBottom:"12px",padding:"14px 16px"}}>
-                <div className="section-hdr">
-                  <div className="section-hdr-bar"/>
-                  <h3 style={{color:"#D4AF37",fontSize:"0.82rem",fontWeight:"700"}}>آخر النشاطات</h3>
+              const recent=[...prodLog].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,5);
+              return <div className="glass" style={{marginBottom:"12px",padding:"16px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"12px"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+                    <div className="section-hdr-bar"/>
+                    <h3 style={{color:"#D4AF37",fontSize:"0.85rem",fontWeight:700}}>آخر النشاطات</h3>
+                  </div>
+                  <button onClick={()=>goTab("stats")} style={{background:"none",border:"none",color:"#8A6A1E",fontSize:"0.63rem",cursor:"pointer",fontWeight:700}}>الكل ←</button>
                 </div>
                 {recent.map((e,i)=>(
-                  <div key={e.id} style={{display:"flex",alignItems:"center",gap:"10px",padding:"7px 0",borderBottom:i<recent.length-1?"1px solid rgba(26,18,8,0.08)":"none"}}>
-                    <div style={{width:"32px",height:"32px",borderRadius:"10px",background:e.sold?"rgba(60,140,60,0.10)":"rgba(201,168,76,0.07)",border:`1px solid ${e.sold?"rgba(60,140,60,0.22)":"rgba(201,168,76,0.15)"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1rem",flexShrink:0}}>{e.recipeIcon||"🧪"}</div>
+                  <div key={e.id} style={{display:"flex",gap:"11px",alignItems:"center",padding:"8px 0",borderBottom:i<recent.length-1?"1px solid rgba(26,18,8,0.07)":"none"}}>
+                    <div style={{width:"36px",height:"36px",borderRadius:"50%",background:e.sold?"linear-gradient(135deg,#2A6A2A,#4A9A4A)":"linear-gradient(135deg,#C9A84C,#8A6A1E)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1rem",flexShrink:0}}>{e.recipeIcon||"🧪"}</div>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:"0.78rem",color:"#1A1208",fontWeight:"600",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{e.recipeName}</div>
-                      <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.30)",marginTop:"1px"}}>{fmtDate(e.date)} · {e.vol}مل{e.sold?` · بيع ${e.sellPrice||""}ر`:(e.readyDate&&daysLeft(e.readyDate)>0?` · ${daysLeft(e.readyDate)} يوم للجاهزية`:" · جاهز")}</div>
+                      <div style={{fontSize:"0.82rem",fontWeight:600,color:"#1A1208",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{e.recipeName}</div>
+                      <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.38)",fontFamily:"'IBM Plex Mono',monospace",marginTop:"1px"}}>#{e.batchNo} · {e.vol}مل · {fmtDate(e.date)}</div>
                     </div>
-                    <div style={{flexShrink:0}}>
-                      {e.sold?<span className="tag tag-green" style={{fontSize:"0.56rem"}}>مباع</span>:e.readyDate&&daysLeft(e.readyDate)>0?<span className="tag tag-gold" style={{fontSize:"0.56rem"}}>تعتيق</span>:<span className="tag tag-green" style={{fontSize:"0.56rem"}}>جاهز</span>}
-                    </div>
+                    {e.sold?<span style={{fontSize:"0.66rem",color:"#68B068",fontWeight:700,background:"rgba(104,176,104,0.10)",padding:"3px 8px",borderRadius:"8px",flexShrink:0}}>✓ مُباع</span>
+                    :<span style={{fontSize:"0.66rem",color:"#C9A84C",fontWeight:700,background:"rgba(201,168,76,0.09)",padding:"3px 8px",borderRadius:"8px",flexShrink:0}}>{e.readyDate&&daysLeft(e.readyDate)<=0?"جاهز":"يُعتَّق"}</span>}
                   </div>
                 ))}
               </div>;
             })()}
 
-            {/* ── quick actions ── */}
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginTop:"4px"}}>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("recipes")}>📋 الوصفات</button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("inventory")}>🏺 المخزون</button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700",position:"relative"}} onClick={()=>{goTab("inventory");setShowShopList(true);}}>
-                🛒 قائمة التسوق
-                {(lowStockItems.length+shopCart.length)>0&&<span style={{background:"rgba(185,45,45,0.9)",borderRadius:"10px",padding:"1px 6px",fontSize:"0.6rem",marginInlineStart:"5px",color:"#FFD0D0"}}>{lowStockItems.length+shopCart.length}</span>}
-              </button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("customers")}>👥 العملاء {customers.length>0&&<span className="mono" style={{fontSize:"0.72rem",color:"#8A6830"}}>({customers.length})</span>}</button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={startQRScan}>📷 مسح QR</button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={whatsappBulkOrders}>💚 إشعار واتساب</button>
-              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700",color:notifPerm==="granted"?"#80c080":undefined}} onClick={requestNotifPerm}>{notifPerm==="granted"?"🔔 إشعارات ✓":"🔔 تفعيل إشعارات"}</button>
-            </div>
+            {/* ── Top Recipes ── */}
+            {topByProfit&&topByProfit.length>0&&<div className="glass" style={{marginBottom:"12px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"12px"}}>
+                <div className="section-hdr-bar"/>
+                <h3 style={{color:"#D4AF37",fontSize:"0.85rem",fontWeight:700}}>الأعلى ربحاً</h3>
+              </div>
+              {topByProfit.map((p,i)=>(
+                <div key={p.name} style={{display:"flex",alignItems:"center",gap:"10px",padding:"7px 0",borderBottom:i<topByProfit.length-1?"1px solid rgba(26,18,8,0.06)":"none"}}>
+                  <div style={{width:"22px",height:"22px",borderRadius:"50%",background:[
+                    "linear-gradient(135deg,#C9A84C,#8A6A1E)",
+                    "linear-gradient(135deg,rgba(200,168,76,0.55),rgba(138,106,30,0.55))",
+                    "linear-gradient(135deg,rgba(200,168,76,0.28),rgba(138,106,30,0.28))"
+                  ][i],display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.62rem",fontWeight:800,color:"#07050E",flexShrink:0}}>{i+1}</div>
+                  <span style={{fontSize:"0.80rem",flex:1,color:"#1A1208"}}>{p.icon} {p.name}</span>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.75rem",color:"#6AAA48",fontWeight:600}}>+{p.profit.toFixed(0)}<span style={{fontSize:"0.54rem",opacity:0.6}}> ر</span></span>
+                </div>
+              ))}
+            </div>}
             {/* ── Data Backup ── */}
             <div className="glass" style={{marginBottom:"12px"}}>
               <div className="section-hdr"><div className="section-hdr-bar"/><span style={{fontWeight:700,fontSize:"0.82rem",color:"#1A1208"}}>نسخ احتياطية</span></div>
@@ -2678,7 +2797,8 @@ function App(){
             const seasonIcon=r.season==="صيف"?"🌞":r.season==="شتاء"?"❄️":r.season==="مناسبات"?"✨":r.season==="ربيع"?"🌸":"🍂";
             const rat=ratings[r.id];
             return(
-            <div key={r.id} className={cardClass} style={{opacity:ready?1:0.75}}>
+            <div key={r.id} className={cardClass} style={{opacity:ready?1:0.78}}>
+              <div className="recipe-card-top"/>
               {/* top row */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"10px"}}>
                 <div style={{flex:1,paddingInlineEnd:"10px",cursor:"pointer"}} onClick={()=>setSelectedRecipe(r)}>
@@ -3137,17 +3257,46 @@ function App(){
                 }} style={{marginTop:"7px",width:"100%",background:"rgba(200,60,60,0.15)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.72rem",fontWeight:"600"}}>🛒 أضف الناقص لقائمة التسوق</button>
               </div>;
             })()}
+            {/* ── Lab Timer ── */}
+            <div style={{background:"rgba(26,18,8,0.06)",border:"1px solid rgba(201,168,76,0.15)",borderRadius:"16px",padding:"14px",marginTop:"12px",textAlign:"center"}}>
+              <div style={{fontSize:"0.46rem",color:"rgba(138,106,30,0.52)",letterSpacing:"0.55em",textTransform:"uppercase",fontFamily:"'IBM Plex Mono',monospace",marginBottom:"7px"}}>LAB TIMER</div>
+              <div className="lab-timer">{String(Math.floor(labTimerSec/3600)).padStart(2,"0")}:{String(Math.floor((labTimerSec%3600)/60)).padStart(2,"0")}:{String(labTimerSec%60).padStart(2,"0")}</div>
+              <div style={{display:"flex",gap:"8px",justifyContent:"center",marginTop:"10px"}}>
+                <button onClick={toggleLabTimer} style={{background:labTimerRunning?"rgba(160,40,40,0.10)":"rgba(74,103,65,0.10)",border:`1px solid ${labTimerRunning?"rgba(160,40,40,0.28)":"rgba(74,103,65,0.28)"}`,color:labTimerRunning?"#C06060":"#4A9A4A",borderRadius:"10px",padding:"7px 18px",cursor:"pointer",fontSize:"0.75rem",fontWeight:700}}>{labTimerRunning?"⏸ إيقاف":"▶ ابدأ"}</button>
+                <button onClick={resetLabTimer} style={{background:"rgba(26,18,8,0.05)",border:"1px solid rgba(26,18,8,0.10)",color:"#8A6A1E",borderRadius:"10px",padding:"7px 14px",cursor:"pointer",fontSize:"0.75rem",fontWeight:700}}>↺ صفر</button>
+              </div>
+            </div>
             {canMake(r)&&<textarea className="inp" placeholder="📝 ملاحظة للدفعة (اختياري)..." value={batchNote} onChange={e=>setBatchNote(e.target.value)} rows={2} style={{marginTop:"12px",resize:"none",fontSize:"0.78rem"}}/>}
-            <button onClick={()=>produce(r)} disabled={!canMake(r)} style={{width:"100%",marginTop:"8px",padding:"12px",background:canMake(r)?"linear-gradient(135deg,#2d6a1b,#1a4010)":"rgba(26,18,8,0.08)",border:`1px solid ${canMake(r)?"#5aD420":"rgba(26,18,8,0.12)"}`,color:canMake(r)?"#a0ff60":"#5a3a10",borderRadius:"12px",cursor:canMake(r)?"pointer":"not-allowed",fontSize:"0.95rem",fontWeight:"700"}}>🏭 أنتج وخصم من المخزون</button>
+            <button onClick={()=>{produce(r);resetLabTimer();}} disabled={!canMake(r)} style={{width:"100%",marginTop:"8px",padding:"13px",background:canMake(r)?"linear-gradient(135deg,#2d6a1b,#1a4010)":"rgba(26,18,8,0.08)",border:`1px solid ${canMake(r)?"#5aD420":"rgba(26,18,8,0.12)"}`,color:canMake(r)?"#a0ff60":"#5a3a10",borderRadius:"12px",cursor:canMake(r)?"pointer":"not-allowed",fontSize:"0.95rem",fontWeight:"700"}}>🏭 أنتج وخصم من المخزون</button>
           </div>;
         })()}
 
         {/* ══════════════ STATS ══════════════ */}
         {tab==="stats"&&<div className="fade">
-          <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"16px"}}>
+          <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"14px"}}>
             <div style={{width:"3px",height:"22px",background:"linear-gradient(180deg,#E8C460,#9E7828)",borderRadius:"2px",flexShrink:0}}/>
-            <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"800",letterSpacing:"-0.01em"}}>الإحصائيات</h2>
+            <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"800",letterSpacing:"-0.01em",flex:1}}>الإحصائيات</h2>
+            <button onClick={printLabReport} style={{background:"rgba(201,168,76,0.09)",border:"1px solid rgba(201,168,76,0.28)",color:"#C9A84C",borderRadius:"10px",padding:"6px 12px",cursor:"pointer",fontSize:"0.68rem",fontWeight:700}}>🖨️ تقرير PDF</button>
           </div>
+
+          {/* ── KPI mini row ── */}
+          {(()=>{
+            const avgProfit=totalSold>0?(totalRevenue-totalCostOfSold)/totalSold:0;
+            const maxMonthProfit=monthlyReport&&monthlyReport.length>0?Math.max(...monthlyReport.map(m=>m.profit)):0;
+            const salesRate=prodLog.length>0?Math.round(totalSold/prodLog.length*100):0;
+            return <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px",marginBottom:"14px"}}>
+              {[
+                {label:"متوسط ربح الدفعة",val:avgProfit.toFixed(0)+" ر",color:"#C9A84C"},
+                {label:"أعلى ربح شهري",val:maxMonthProfit.toFixed(0)+" ر",color:"#6AAA48"},
+                {label:"نسبة المبيعات",val:salesRate+"%",color:"#90B8F0"},
+              ].map(({label,val,color})=>(
+                <div key={label} className="kpi-mini">
+                  <div className="kpi-mini-val" style={{color}}>{val}</div>
+                  <div className="kpi-mini-lbl">{label}</div>
+                </div>
+              ))}
+            </div>;
+          })()}
 
           {/* ── backup card ── */}
           <div className="glass-gold" style={{marginBottom:"14px",padding:"14px 14px 12px",borderRadius:"16px"}}>
@@ -3997,6 +4146,7 @@ function App(){
           </button>
         ))
         })()}
+        <button onClick={()=>setDarkMode(d=>!d)} style={{background:darkMode?"rgba(201,168,76,0.14)":"rgba(26,18,8,0.05)",border:"1px solid rgba(201,168,76,0.18)",borderRadius:"50%",width:"34px",height:"34px",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:"0.9rem",flexShrink:0,transition:"all 0.25s"}}>{darkMode?"☀️":"🌙"}</button>
       </div>
     </div>
   );
