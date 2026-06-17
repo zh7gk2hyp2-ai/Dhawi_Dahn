@@ -140,8 +140,8 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
   position:relative;border-radius:28px;
 }
 .nav-btn.active{
-  color:#E8C870;
-  text-shadow:0 0 12px rgba(232,200,112,0.45);
+  color:#8A6A1E;
+  text-shadow:none;
 }
 .nav-btn.active::before{
   content:'';position:absolute;inset:-2px -4px;
@@ -151,7 +151,7 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
   animation:navPop 0.25s cubic-bezier(0.34,1.56,0.64,1);
 }
 .nav-btn.active .nav-icon{
-  filter:drop-shadow(0 0 6px rgba(232,200,112,0.55));
+  filter:drop-shadow(0 2px 4px rgba(138,106,30,0.35));
 }
 .nav-icon{font-size:1.22rem;position:relative;z-index:1;transition:filter 0.24s;}
 
@@ -1746,31 +1746,37 @@ function App(){
   const mixCost=mixItems.reduce((s,i)=>{const ing=getIng(i.id);return s+(ing?ing.unitCost*i.amount:0);},0);
 
   if(!logged) return(
-    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",padding:"32px 24px",background:"url('brand_poster.jpg') center/cover no-repeat",position:"relative"}} className="fade">
-      <div style={{position:"absolute",inset:0,background:"linear-gradient(170deg,rgba(6,4,12,0.72) 0%,rgba(6,4,12,0.88) 60%,rgba(6,4,12,0.97) 100%)"}}/>
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",padding:"32px 24px",background:"#FAF8F3",position:"relative",overflow:"hidden"}} className="fade">
+      {/* ambient orbs */}
+      <div style={{position:"absolute",top:"-120px",right:"-80px",width:"380px",height:"380px",borderRadius:"50%",background:"radial-gradient(circle,rgba(212,168,67,0.18) 0%,transparent 70%)",filter:"blur(60px)",pointerEvents:"none"}}/>
+      <div style={{position:"absolute",bottom:"-80px",left:"-60px",width:"300px",height:"300px",borderRadius:"50%",background:"radial-gradient(circle,rgba(200,80,140,0.12) 0%,transparent 70%)",filter:"blur(50px)",pointerEvents:"none"}}/>
+      <div style={{position:"absolute",top:"40%",left:"-100px",width:"260px",height:"260px",borderRadius:"50%",background:"radial-gradient(circle,rgba(120,80,200,0.10) 0%,transparent 70%)",filter:"blur(50px)",pointerEvents:"none"}}/>
       <div style={{position:"relative",zIndex:1,maxWidth:"340px",width:"100%",textAlign:"center"}}>
-        <div style={{marginBottom:"32px"}}>
-          <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"3.2rem",letterSpacing:"0.04em",color:"rgba(232,200,112,0.92)",lineHeight:1,marginBottom:"8px"}}>Atelier Dhawi</div>
-          <div style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.95rem",fontWeight:600,color:"rgba(237,224,200,0.88)",letterSpacing:"0.08em",marginBottom:"4px"}}>ضاوي دهن العود</div>
-          <div className="brand-sub">PRIVATE LAB ACCESS</div>
-          <div className="g-line" style={{maxWidth:"120px",margin:"16px auto 0"}}/>
+        {/* brand header */}
+        <div style={{marginBottom:"36px"}}>
+          <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"3.4rem",letterSpacing:"0.04em",color:"#8A6A1E",lineHeight:1,marginBottom:"6px"}}>Atelier Dhawi</div>
+          <div style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.92rem",fontWeight:700,color:"#1A1208",letterSpacing:"0.10em",marginBottom:"6px"}}>ضاوي دهن العود</div>
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.42rem",color:"rgba(138,106,30,0.55)",letterSpacing:"0.5em",textTransform:"uppercase"}}>PRIVATE LAB ACCESS</div>
+          <div style={{height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.40),transparent)",maxWidth:"120px",margin:"16px auto 0"}}/>
         </div>
+        {/* login card */}
         <div style={{
-          background:"rgba(26,18,8,0.08)",
-          border:"1px solid rgba(201,168,76,0.22)",
-          borderRadius:"24px",padding:"28px 22px 24px",
-          backdropFilter:"blur(32px)",
-          WebkitBackdropFilter:"blur(32px)",
-          boxShadow:"0 32px 80px rgba(0,0,0,0.12),inset 0 1px 0 rgba(201,168,76,0.10)"
+          background:"#FFFFFF",
+          border:"1px solid rgba(201,168,76,0.30)",
+          borderRadius:"24px",padding:"30px 24px 26px",
+          boxShadow:"0 8px 40px rgba(180,140,40,0.14),0 2px 8px rgba(0,0,0,0.06)"
         }}>
-          <div style={{fontSize:"0.52rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.55em",textTransform:"uppercase",marginBottom:"18px",fontFamily:"'Cormorant Garamond',serif"}}>رمز الدخول</div>
+          <div style={{height:"3px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.70),rgba(180,100,40,0.50),transparent)",borderRadius:"3px 3px 0 0",marginBottom:"24px",marginInline:"-24px",marginTop:"-30px",borderTopLeftRadius:"24px",borderTopRightRadius:"24px"}}/>
+          <div style={{fontSize:"0.50rem",color:"rgba(138,106,30,0.60)",letterSpacing:"0.55em",textTransform:"uppercase",marginBottom:"20px",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>رمز الدخول السري</div>
           <input type="password" inputMode="numeric" placeholder="· · · ·" value={pin} autoFocus onChange={e=>setPin(e.target.value)}
             onKeyDown={e=>{if(e.key==="Enter"){if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}}
-            style={{background:"rgba(26,18,8,0.85)",border:"1px solid rgba(201,168,76,0.28)",borderRadius:"16px",padding:"18px",color:"#1A1208",textAlign:"center",fontSize:"2rem",letterSpacing:"16px",outline:"none",width:"100%",marginBottom:"16px",fontFamily:"'IBM Plex Mono',monospace",boxShadow:"inset 0 2px 12px rgba(0,0,0,0.10)",transition:"border-color 0.22s"}}/>
-          <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}>دخول المعمل</button>
+            style={{background:"#FAF8F3",border:"1.5px solid rgba(201,168,76,0.35)",borderRadius:"14px",padding:"18px",color:"#1A1208",textAlign:"center",fontSize:"2.2rem",letterSpacing:"20px",outline:"none",width:"100%",marginBottom:"16px",fontFamily:"'IBM Plex Mono',monospace",transition:"border-color 0.22s, box-shadow 0.22s"}}/>
+          <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}>دخول المعمل ←</button>
         </div>
+        {/* footer */}
+        <div style={{marginTop:"24px",fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.40rem",color:"rgba(138,106,30,0.35)",letterSpacing:"0.3em",textTransform:"uppercase"}}>Dhawi Heritage Lab · Est. 2025</div>
       </div>
-      {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",background:toastErr?"rgba(200,50,50,0.92)":"rgba(250,248,243,0.97)",border:`1px solid ${toastErr?"rgba(180,50,50,0.6)":"rgba(201,168,76,0.5)"}`,color:toastErr?"#C05050":"#8A6A1E",padding:"12px 24px",borderRadius:"30px",fontWeight:"700",backdropFilter:"blur(16px)",boxShadow:"0 4px 16px rgba(0,0,0,0.10)"}}>{toast}</div>}
+      {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",left:"50%",transform:"translateX(-50%)",background:toastErr?"rgba(255,245,245,0.98)":"rgba(255,252,245,0.98)",border:`1.5px solid ${toastErr?"rgba(200,60,60,0.50)":"rgba(201,168,76,0.50)"}`,color:toastErr?"#B03030":"#7A5C10",padding:"12px 28px",borderRadius:"30px",fontWeight:"700",fontSize:"0.85rem",whiteSpace:"nowrap",boxShadow:"0 4px 20px rgba(0,0,0,0.08)"}}>{toast}</div>}
     </div>
   );
 
@@ -1787,7 +1793,7 @@ function App(){
       <div style={{padding:"20px 18px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
         <Logo size={32}/>
         <div style={{flex:1,textAlign:"center"}}>
-          <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"1.55rem",letterSpacing:"0.04em",color:"rgba(232,200,112,0.90)",lineHeight:1.1}}>Atelier Dhawi</div>
+          <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"1.55rem",letterSpacing:"0.04em",color:"#8A6A1E",lineHeight:1.1}}>Atelier Dhawi</div>
           <div className="brand-sub" style={{marginTop:"2px"}}>HERITAGE OUD LAB</div>
         </div>
         <div style={{width:32}}/>
@@ -2276,7 +2282,7 @@ function App(){
                   <div key={s.lbl} style={DCARD}>
                     <div style={{fontSize:"1rem",marginBottom:"3px"}}>{s.icon}</div>
                     <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.4rem",fontWeight:"700",color:s.color,lineHeight:1}}>{s.val}</div>
-                    <div style={{fontSize:"0.58rem",color:"rgba(237,224,200,0.40)",marginTop:"3px",fontFamily:"'Alexandria',sans-serif"}}>{s.lbl}</div>
+                    <div style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.45)",marginTop:"3px",fontFamily:"'Alexandria',sans-serif"}}>{s.lbl}</div>
                   </div>
                 ))}
               </div>
@@ -2285,13 +2291,13 @@ function App(){
                 <div style={DCARD}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.50rem",letterSpacing:"0.18em",color:"rgba(201,168,76,0.45)",marginBottom:"8px",textAlign:"right"}}>قيمة المخزون</div>
                   <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.7rem",color:"#E8C870",lineHeight:1}}>{totalInvValue.toFixed(0)}</div>
-                  <div style={{fontSize:"0.60rem",color:"rgba(237,224,200,0.30)",marginTop:"3px"}}>ريال سعودي</div>
+                  <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.35)",marginTop:"3px"}}>ريال سعودي</div>
                 </div>
                 <div style={DCARD}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.50rem",letterSpacing:"0.18em",color:"rgba(201,168,76,0.45)",marginBottom:"8px",textAlign:"right"}}>أعلى الأسعار</div>
                   {heroRecs.sort((a,b)=>(b.price_sar||0)-(a.price_sar||0)).slice(0,3).map(r=>(
                     <div key={r.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"4px"}}>
-                      <span style={{fontSize:"0.68rem",color:"rgba(237,224,200,0.60)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"70px"}}>{r.name}</span>
+                      <span style={{fontSize:"0.68rem",color:"rgba(26,18,8,0.60)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"70px"}}>{r.name}</span>
                       <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.68rem",color:"#C9A84C",flexShrink:0}}>{r.price_sar}ر</span>
                     </div>
                   ))}
@@ -2312,14 +2318,14 @@ function App(){
                       return(
                       <div key={l} style={{background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.10)",borderRadius:"8px",padding:"8px 4px",textAlign:"center"}}>
                         <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.58rem",color:"rgba(212,168,67,0.50)",marginBottom:"4px"}}>{l}</div>
-                        <div style={{fontSize:"0.60rem",color:"rgba(237,224,200,0.35)"}}>تكلفة: {c}ر</div>
+                        <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.40)"}}>تكلفة: {c}ر</div>
                         <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.72rem",color:"#E8C870",fontWeight:"700",marginTop:"2px"}}>{sell}ر</div>
                         <div style={{fontSize:"0.52rem",color:"rgba(37,211,102,0.55)",marginTop:"1px"}}>×3.5</div>
                       </div>
                       );
                     })}
                   </div>
-                  <div style={{fontSize:"0.60rem",color:"rgba(237,224,200,0.28)",marginTop:"8px",textAlign:"center"}}>
+                  <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.30)",marginTop:"8px",textAlign:"center"}}>
                     💡 اضغط على أي وصفة لرؤية حاسبة كاملة
                   </div>
                 </div>
@@ -2357,7 +2363,7 @@ function App(){
             {/* season chips */}
             <div style={{display:"flex",gap:"5px",flexWrap:"wrap",marginBottom:"6px"}}>
               {["الكل","صيف","شتاء","ربيع","خريف","مناسبات","للجنسين"].map(s=>(
-                <button key={s} onClick={()=>setRecipeSeasonF(s)} style={{padding:"3px 9px",borderRadius:"20px",border:`1px solid ${recipeSeasonF===s?"rgba(232,200,112,0.6)":"rgba(26,18,8,0.12)"}`,background:recipeSeasonF===s?"rgba(232,200,112,0.12)":"rgba(26,18,8,0.08)",color:recipeSeasonF===s?"#E8C870":"rgba(26,18,8,0.45)",fontSize:"0.7rem",cursor:"pointer",fontWeight:recipeSeasonF===s?"700":"400"}}>
+                <button key={s} onClick={()=>setRecipeSeasonF(s)} style={{padding:"3px 9px",borderRadius:"20px",border:`1px solid ${recipeSeasonF===s?"rgba(138,106,30,0.6)":"rgba(26,18,8,0.12)"}`,background:recipeSeasonF===s?"rgba(201,168,76,0.12)":"rgba(26,18,8,0.05)",color:recipeSeasonF===s?"#8A6A1E":"rgba(26,18,8,0.45)",fontSize:"0.7rem",cursor:"pointer",fontWeight:recipeSeasonF===s?"700":"400"}}>
                   {s==="صيف"?"🌞":s==="شتاء"?"❄️":s==="ربيع"?"🌸":s==="خريف"?"🍂":s==="مناسبات"?"✨":s==="للجنسين"?"🌿":"🔎"} {s}
                 </button>
               ))}
@@ -2375,10 +2381,10 @@ function App(){
               {readyFilter?"✅ جاهز للإنتاج — اضغط للكل":"⚗️ عرض الجاهز للإنتاج فقط"}
             </button>
             {/* hero/produced filter */}
-            <button onClick={()=>setHeroFilter(f=>!f)} style={{width:"100%",padding:"6px",marginTop:"4px",background:heroFilter?"rgba(232,200,112,0.15)":"rgba(26,18,8,0.08)",border:`1px solid ${heroFilter?"rgba(232,200,112,0.55)":"rgba(26,18,8,0.08)"}`,color:heroFilter?"#E8C870":"rgba(26,18,8,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
+            <button onClick={()=>setHeroFilter(f=>!f)} style={{width:"100%",padding:"6px",marginTop:"4px",background:heroFilter?"rgba(201,168,76,0.12)":"rgba(26,18,8,0.05)",border:`1px solid ${heroFilter?"rgba(138,106,30,0.50)":"rgba(26,18,8,0.10)"}`,color:heroFilter?"#8A6A1E":"rgba(26,18,8,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
               {heroFilter?"★ المنتجات المُنتجة — اضغط للكل":"★ عرض المُنتج فقط"}
             </button>
-            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter||heroFilter)&&<div style={{marginTop:"5px",fontSize:"0.65rem",color:"rgba(232,200,112,0.5)",textAlign:"center"}}>
+            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter||heroFilter)&&<div style={{marginTop:"5px",fontSize:"0.65rem",color:"rgba(138,106,30,0.55)",textAlign:"center"}}>
               {filteredRecipes.length} وصفة — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);setHeroFilter(false);}}>مسح الفلاتر</span>
             </div>}
           </div>}
@@ -2548,7 +2554,7 @@ function App(){
                       <div style={{flex:bpct||0.1,background:"rgba(190,140,70,0.70)",borderRadius:"0 3px 3px 0"}}/>
                     </div>
                     <div style={{display:"flex",gap:"10px",marginTop:"3px",fontSize:"0.50rem"}}>
-                      <span style={{color:"rgba(232,200,112,0.60)"}}>⬆ توب {tpct}%</span>
+                      <span style={{color:"rgba(138,106,30,0.65)"}}>⬆ توب {tpct}%</span>
                       <span style={{color:"rgba(200,120,190,0.58)"}}>◆ قلب {mpct}%</span>
                       <span style={{color:"rgba(190,140,70,0.55)"}}>⬇ قاعدة {bpct}%</span>
                     </div>
@@ -2885,7 +2891,7 @@ function App(){
           {totalProduced===0&&<div className="glass-gold" style={{textAlign:"center",padding:"28px 20px",marginBottom:"16px",position:"relative",overflow:"hidden"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 80% 50% at 50% 0%,rgba(201,168,76,0.07) 0%,transparent 70%)",pointerEvents:"none"}}/>
             <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"3.2rem",lineHeight:1,color:"rgba(201,168,76,0.18)",marginBottom:"6px",letterSpacing:"0.02em"}}>I</div>
-            <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.1rem",color:"rgba(232,200,112,0.80)",marginBottom:"4px",letterSpacing:"0.06em"}}>ابدأ رحلتك</div>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.1rem",color:"rgba(138,106,30,0.85)",marginBottom:"4px",letterSpacing:"0.06em"}}>ابدأ رحلتك</div>
             <div className="brand-sub" style={{marginBottom:"18px"}}>YOUR FIRST BATCH AWAITS</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px",marginBottom:"20px"}}>
               <div style={{background:"rgba(26,18,8,0.08)",borderRadius:"12px",padding:"12px 6px",border:"1px solid rgba(26,18,8,0.08)"}}>
