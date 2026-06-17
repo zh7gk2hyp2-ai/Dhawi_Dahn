@@ -13,6 +13,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="ضاوي دهن العود"/>
 <meta name="theme-color" content="#FAF8F3"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1208'/><text x='90' y='125' text-anchor='middle' font-size='100'>🪬</text></svg>"/>
 <title>ضاوي دهن العود — مختبر العطور التراثي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +24,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <style>
 /* ═══════════ ATELIER DHAWI — Obsidian Edition ═══════════ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -949,9 +953,10 @@ const APP_BUILD="2026-06-17-rec49";
     // clear only version keys so apply-functions re-run on next load
     ["dw_nm_ver","dw_pr_ver","dw_xs_ver","dw_sf_ver","dw_ir_ver","dw_rc_ver","dw_ia_ver"].forEach(k=>localStorage.removeItem(k));
     localStorage.setItem("dw_build",APP_BUILD);
-    if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(sw=>sw.unregister()));}
+    if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(sw=>sw.unregister())).then(()=>navigator.serviceWorker.register('/sw.js'));}
   } else if(!stored){
     localStorage.setItem("dw_build",APP_BUILD);
+    if("serviceWorker" in navigator) navigator.serviceWorker.register('/sw.js');
   }
 })();
 // ─── localStorage helpers ───────────────────────────────────────
@@ -1323,6 +1328,9 @@ function App(){
   const [editRecSeason,setEditRecSeason]=useState("صيف");
   const [editRecGender,setEditRecGender]=useState("للجنسين");
   const [editRecStab,setEditRecStab]=useState("");
+  const [showQRScan,setShowQRScan]=useState(false);
+  const [qrScanResult,setQrScanResult]=useState(null);
+  const [notifPerm,setNotifPerm]=useState(()=>typeof Notification!=="undefined"?Notification.permission:"default");
 
   // add ingredient
   const [niName,setNiName]=useState("");const [niBrand,setNiBrand]=useState("");const [niCat,setNiCat]=useState("عود");
@@ -1551,6 +1559,48 @@ function App(){
     w.document.close();w.print();
   };
 
+  // ── full lab PDF report ────────────────────────────────────────
+  const printLabReport=()=>{
+    const soldBatches=prodLog.filter(e=>e.sold&&e.sellPrice);
+    const totalRev=soldBatches.reduce((s,e)=>s+e.sellPrice,0);
+    const totalCost=soldBatches.reduce((s,e)=>s+(e.cost||0),0);
+    const totalProfit=totalRev-totalCost;
+    const invRows=inv.map(i=>`<tr><td>${i.name}</td><td style="text-align:center">${i.stock} ${i.unit}</td><td style="text-align:center">${i.unitCost?.toFixed(2)||"—"}</td><td style="text-align:center;color:${(i.stock/i.qty)<0.2?"#c00":"#060"}">${((i.stock/i.qty)*100).toFixed(0)}%</td></tr>`).join("");
+    const batchRows=prodLog.slice(0,20).map(e=>`<tr><td>${e.recipeIcon} ${e.recipeName}</td><td>${e.batchNo}</td><td>${e.vol}مل</td><td>${fmtDate(e.date)}</td><td style="color:${e.sold?"#060":"#880"}">${e.sold?`${e.sellPrice} ر`:"جار"}</td></tr>`).join("");
+    const w=window.open("","_blank","width=800,height=1000");
+    w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><title>تقرير ضاوي الدهن</title><style>
+      body{font-family:Arial,sans-serif;padding:28px 32px;color:#111;direction:rtl;font-size:13px}
+      h1{font-size:22px;border-bottom:3px double #8A6A1E;padding-bottom:10px;margin-bottom:6px;color:#2C1A0E}
+      h2{font-size:15px;color:#8A6A1E;margin:20px 0 8px;border-right:3px solid #C9A84C;padding-right:8px}
+      .meta{font-size:11px;color:#777;margin-bottom:20px;letter-spacing:1px}
+      .kpi{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+      .kpi-box{border:1px solid #C9A84C;border-radius:8px;padding:12px 18px;min-width:120px;text-align:center}
+      .kpi-val{font-size:22px;font-weight:700;color:#2C1A0E}
+      .kpi-lbl{font-size:10px;color:#8A6A1E;letter-spacing:1px}
+      table{width:100%;border-collapse:collapse;font-size:12px}
+      th{background:#2C1A0E;color:#C9A84C;padding:7px 10px;text-align:right}
+      td{padding:6px 10px;border-bottom:1px solid #eee}
+      tr:nth-child(even){background:#faf8f3}
+      .footer{margin-top:28px;border-top:1px dashed #aaa;padding-top:12px;font-size:10px;color:#999;text-align:center;letter-spacing:2px}
+      @media print{body{padding:10px}}
+    </style></head><body>
+    <h1>🪬 تقرير مختبر ضاوي دهن العود</h1>
+    <div class="meta">تاريخ التقرير: ${new Date().toLocaleDateString("ar-SA")} · ${prodLog.length} دفعة منتجة · ${inv.length} مادة في المخزون</div>
+    <div class="kpi">
+      <div class="kpi-box"><div class="kpi-val">${totalRev.toFixed(0)}</div><div class="kpi-lbl">إجمالي الإيرادات (ر)</div></div>
+      <div class="kpi-box"><div class="kpi-val">${totalProfit.toFixed(0)}</div><div class="kpi-lbl">صافي الربح (ر)</div></div>
+      <div class="kpi-box"><div class="kpi-val">${soldBatches.length}</div><div class="kpi-lbl">دفعات مباعة</div></div>
+      <div class="kpi-box"><div class="kpi-val">${recipes.length}</div><div class="kpi-lbl">وصفات محفوظة</div></div>
+    </div>
+    <h2>📦 سجل الدفعات</h2>
+    <table><thead><tr><th>الوصفة</th><th>الدفعة</th><th>الحجم</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody>${batchRows}</tbody></table>
+    <h2>🧪 حالة المخزون</h2>
+    <table><thead><tr><th>المادة</th><th>المتوفر</th><th>تكلفة/وحدة</th><th>نسبة المخزون</th></tr></thead><tbody>${invRows}</tbody></table>
+    <div class="footer">Atelier Dhawi · Private Oud Lab · تقرير سري</div>
+    <script>window.onload=()=>window.print();<\/script></body></html>`);
+    w.document.close();
+  };
+
   // ── favorites ──────────────────────────────────────────────────
   const toggleFav=id=>setFavoriteIds(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
   const togglePublished=id=>{
@@ -1567,6 +1617,63 @@ function App(){
   const saveEditRecipe=()=>{if(!editRecipe)return;const ic={"صيف":"☀️","شتاء":"❄️","ربيع":"🌸","خريف":"🍂","مناسبات":"👑"};const upd={name:editRecName,desc:editRecDesc,season:editRecSeason,gender:editRecGender,stability:editRecStab,icon:ic[editRecSeason]||editRecipe.icon};setRecipes(p=>p.map(r=>r.id!==editRecipe.id?r:{...r,...upd}));setSelectedRecipe(prev=>prev&&prev.id===editRecipe.id?{...prev,...upd}:prev);setEditRecipe(null);show("✅ تم تعديل الوصفة");};
   const deleteCustomer=id=>{if(!window.confirm("حذف هذا العميل نهائياً؟"))return;setCustomers(p=>p.filter(c=>c.id!==id));setSelectedCustomer(null);show("🗑️ حُذف العميل");};
 
+  // ── notifications ──────────────────────────────────────────────
+  const requestNotifPerm=async()=>{
+    if(typeof Notification==="undefined")return show("⚠️ المتصفح لا يدعم الإشعارات",true);
+    const p=await Notification.requestPermission();
+    setNotifPerm(p);
+    if(p==="granted"){show("🔔 الإشعارات مفعّلة");sendLowStockNotif();}
+    else show("⚠️ لم تُمنح صلاحية الإشعارات",true);
+  };
+  const sendLowStockNotif=()=>{
+    if(typeof Notification==="undefined"||Notification.permission!=="granted")return;
+    const low=inv.filter(i=>i.stock>0&&i.stock/i.qty<0.20);
+    if(!low.length)return;
+    new Notification("⚠️ ضاوي — مخزون منخفض",{body:low.slice(0,3).map(i=>i.name.split('(')[0].trim()).join(" · ")+(low.length>3?` +${low.length-3} أخرى`:""),icon:"/manifest.json",dir:"rtl"});
+  };
+  // ── QR scanner ─────────────────────────────────────────────────
+  const startQRScan=()=>{
+    setShowQRScan(true);setQrScanResult(null);
+    setTimeout(()=>{
+      const video=document.getElementById("qr-video");const canvas=document.getElementById("qr-canvas");
+      if(!video||!canvas)return;
+      navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}}).then(stream=>{
+        video.srcObject=stream;video.play();
+        const ctx=canvas.getContext("2d");
+        const tick=()=>{
+          if(video.readyState===video.HAVE_ENOUGH_DATA){
+            canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+            ctx.drawImage(video,0,0);
+            const img=ctx.getImageData(0,0,canvas.width,canvas.height);
+            const code=window.jsQR&&window.jsQR(img.data,img.width,img.height);
+            if(code){
+              stream.getTracks().forEach(t=>t.stop());
+              setQrScanResult(code.data);setShowQRScan(false);
+              const found=prodLog.find(e=>e.id===code.data||e.batchNo===code.data);
+              if(found)show("✅ دفعة #"+found.batchNo+" — "+found.recipeName);
+              else show("📌 كود: "+code.data);
+              return;
+            }
+          }
+          if(document.getElementById("qr-video"))requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }).catch(()=>show("⚠️ تعذّر الوصول للكاميرا",true));
+    },300);
+  };
+  const stopQRScan=()=>{
+    const video=document.getElementById("qr-video");
+    if(video?.srcObject)video.srcObject.getTracks().forEach(t=>t.stop());
+    setShowQRScan(false);
+  };
+  // ── whatsapp bulk ───────────────────────────────────────────────
+  const whatsappBulkOrders=()=>{
+    const pending=prodLog.filter(e=>!e.sold&&e.readyDate&&daysLeft(e.readyDate)<=0);
+    if(!pending.length){show("لا توجد دفعات جاهزة للبيع",true);return;}
+    const lines=pending.map(e=>`${e.recipeIcon} ${e.recipeName} — ${e.vol}مل (#${e.batchNo})`).join("\n");
+    const msg=`🪬 *ضاوي الدهن — المتوفر الآن*\n\n${lines}\n\nللطلب تواصل معنا 🌿`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank");
+  };
   // ── customers ──────────────────────────────────────────────────
   const addCustomer=()=>{
     if(!ncName){show("⚠️ أدخل اسم العميل",true);return;}
@@ -1976,6 +2083,9 @@ function App(){
                 {(lowStockItems.length+shopCart.length)>0&&<span style={{background:"rgba(185,45,45,0.9)",borderRadius:"10px",padding:"1px 6px",fontSize:"0.6rem",marginInlineStart:"5px",color:"#FFD0D0"}}>{lowStockItems.length+shopCart.length}</span>}
               </button>
               <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("customers")}>👥 العملاء {customers.length>0&&<span className="mono" style={{fontSize:"0.72rem",color:"#8A6830"}}>({customers.length})</span>}</button>
+              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={startQRScan}>📷 مسح QR</button>
+              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={whatsappBulkOrders}>💚 إشعار واتساب</button>
+              <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700",color:notifPerm==="granted"?"#80c080":undefined}} onClick={requestNotifPerm}>{notifPerm==="granted"?"🔔 إشعارات ✓":"🔔 تفعيل إشعارات"}</button>
             </div>
             {/* ── Data Backup ── */}
             <div className="glass" style={{marginBottom:"12px"}}>
@@ -2987,6 +3097,15 @@ function App(){
                 </div>
               </div>
               <div style={{marginTop:"9px",textAlign:"center",fontSize:"0.68rem",color:"rgba(26,18,8,0.35)"}}>الربح الصافي للدفعة: <span className="mono" style={{color:"#6AAA48",fontWeight:"700"}}>{(sellMl*vol-cost).toFixed(0)} ريال</span></div>
+              {(()=>{const batchProfit=sellMl*vol-cost;const monthly4=Math.round(batchProfit*4);const monthly8=Math.round(batchProfit*8);const monthly12=Math.round(batchProfit*12);return(<div style={{marginTop:"10px",background:"rgba(80,160,80,0.06)",border:"1px solid rgba(80,160,80,0.20)",borderRadius:"12px",padding:"11px 14px"}}>
+                <div style={{fontSize:"0.52rem",color:"rgba(80,160,80,0.7)",letterSpacing:"0.5em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"8px"}}>التوقعات الشهرية</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"6px",textAlign:"center"}}>
+                  {[["4 دفعات",monthly4],["8 دفعات",monthly8],["12 دفعة",monthly12]].map(([label,val])=>(<div key={label} style={{background:"rgba(80,160,80,0.08)",borderRadius:"8px",padding:"7px 4px"}}>
+                    <div style={{fontSize:"0.55rem",color:"rgba(80,160,80,0.6)",marginBottom:"3px"}}>{label}/شهر</div>
+                    <div className="mono" style={{color:"#6AAA48",fontWeight:"700",fontSize:"0.88rem"}}>{val}<span style={{fontSize:"0.52rem",opacity:0.7}}> ر</span></div>
+                  </div>))}
+                </div>
+              </div>);})()}
             </div>
 
             <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>🏺 المكونات ({BATCH_NAME[activeBU]})</h3>
@@ -3099,7 +3218,8 @@ function App(){
           {monthlyReport.length>0&&<div className="glass" style={{marginBottom:"14px",background:"linear-gradient(135deg,rgba(255,252,245,0.98),rgba(250,246,235,0.95)) padding-box,linear-gradient(135deg,rgba(201,168,76,0.35),rgba(160,120,20,0.15),rgba(201,168,76,0.35)) border-box",border:"1.5px solid transparent"}}>
             <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"14px"}}>
               <div style={{width:"3px",height:"18px",background:"linear-gradient(180deg,#E8C460,#9E7828)",borderRadius:"2px",flexShrink:0}}/>
-              <h3 style={{fontFamily:"'Alexandria',sans-serif",color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",letterSpacing:"0.01em"}}>تقرير الأرباح الشهري</h3>
+              <h3 style={{fontFamily:"'Alexandria',sans-serif",color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",letterSpacing:"0.01em",flex:1}}>تقرير الأرباح الشهري</h3>
+              <button onClick={printLabReport} style={{background:"rgba(201,168,76,0.10)",border:"1px solid rgba(201,168,76,0.30)",color:"#C9A84C",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600",whiteSpace:"nowrap"}}>🖨️ طباعة PDF</button>
             </div>
             {monthlyReport.map((m,idx)=>{const pct=(m.revenue/maxMonthRev*100).toFixed(0);const isTop=idx===0;return(
               <div key={m.key} style={{marginBottom:"14px",padding:"10px 12px",borderRadius:"11px",background:isTop?"rgba(201,168,76,0.06)":"rgba(26,18,8,0.08)",border:`1px solid ${isTop?"rgba(201,168,76,0.18)":"rgba(26,18,8,0.08)"}`}}>
@@ -3654,6 +3774,17 @@ function App(){
             <button className="btn-gold" style={{flex:1}} onClick={saveRating}>💾 حفظ التقييم</button>
             <button className="btn-ghost" onClick={()=>setShowRating(false)}>إلغاء</button>
           </div>
+        </div>
+      </div>}
+
+      {showQRScan&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")stopQRScan();}}>
+        <div className="modal-sheet" style={{textAlign:"center"}}>
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.55rem",letterSpacing:"0.2em",color:"rgba(138,106,30,0.6)",marginBottom:"10px"}}>SCANNING QR</div>
+          <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"12px"}}>📷 مسح QR الدفعة</h3>
+          <video id="qr-video" style={{width:"100%",maxWidth:"280px",borderRadius:"12px",background:"#000",display:"block",margin:"0 auto"}} playsInline muted/>
+          <canvas id="qr-canvas" style={{display:"none"}}/>
+          <p style={{fontSize:"0.72rem",color:"#8A6A1E",margin:"10px 0"}}>وجّه الكاميرا نحو QR Code الدفعة</p>
+          <button className="btn-ghost" style={{marginTop:"8px",width:"100%"}} onClick={stopQRScan}>✕ إيقاف المسح</button>
         </div>
       </div>}
 
