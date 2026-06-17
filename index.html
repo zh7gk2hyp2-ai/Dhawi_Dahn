@@ -115,7 +115,28 @@ body.dark-mode .quick-action{background:rgba(22,14,6,0.85);border-color:rgba(201
 .kpi-mini-val{font-family:'IBM Plex Mono',monospace;font-size:1.15rem;font-weight:600;line-height:1;margin-bottom:4px;}
 .kpi-mini-lbl{font-size:0.55rem;color:rgba(26,18,8,0.45);letter-spacing:0.2px;}
 /* ── Enhanced Recipe Card ── */
-.recipe-card-top{height:3px;background:linear-gradient(90deg,#C9A84C,#E8C870,#8A6A1E);margin:-18px -18px 14px;border-radius:20px 20px 0 0;}
+.recipe-card-top{height:4px;margin:-18px -18px 14px;border-radius:20px 20px 0 0;}
+/* ── Recipe DNA strip (dynamic per card — set via inline) ── */
+/* ── Scent Pyramid ── */
+.scent-pyramid{display:flex;flex-direction:column;align-items:center;gap:3px;margin:10px 0;}
+.pyramid-row{border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:width 0.5s cubic-bezier(0.22,1,0.36,1);}
+/* ── Recipe stat badge ── */
+.rec-stat{display:flex;flex-direction:column;align-items:center;gap:2px;background:rgba(255,255,255,0.85);border:1px solid rgba(26,18,8,0.09);border-radius:12px;padding:8px 10px;flex:1;}
+.rec-stat-val{font-family:'IBM Plex Mono',monospace;font-size:1.05rem;font-weight:600;color:#1A1208;line-height:1;}
+.rec-stat-lbl{font-size:0.52rem;color:rgba(26,18,8,0.40);text-align:center;}
+/* ── Sort chips ── */
+.sort-chip{padding:4px 10px;border-radius:16px;font-size:0.65rem;font-weight:700;cursor:pointer;transition:all 0.18s;border:1px solid rgba(26,18,8,0.10);background:rgba(26,18,8,0.04);color:rgba(26,18,8,0.40);white-space:nowrap;}
+.sort-chip.active{background:rgba(201,168,76,0.14);border-color:rgba(201,168,76,0.40);color:#8A6A1E;}
+/* ── Filter scroll row ── */
+.filter-row{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.filter-row::-webkit-scrollbar{display:none;}
+.fchip{padding:5px 12px;border-radius:20px;border:1px solid rgba(26,18,8,0.10);background:rgba(26,18,8,0.04);color:rgba(26,18,8,0.45);font-size:0.70rem;cursor:pointer;font-weight:500;white-space:nowrap;transition:all 0.18s;}
+.fchip.on{background:rgba(201,168,76,0.12);border-color:rgba(138,106,30,0.50);color:#8A6A1E;font-weight:700;}
+.fchip.gender.on{background:rgba(160,130,210,0.12);border-color:rgba(160,130,210,0.45);color:#c8a0f0;}
+/* ── Similar recipe chip ── */
+.similar-chip{background:rgba(255,255,255,0.85);border:1px solid rgba(26,18,8,0.10);border-radius:14px;padding:10px 12px;cursor:pointer;transition:transform 0.2s;display:flex;align-items:center;gap:8px;}
+.similar-chip:active{transform:scale(0.97);}
+
 /* ── Batch Activity Row ── */
 .activity-row{display:flex;gap:12px;align-items:center;padding:9px 0;}
 .activity-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
@@ -1691,6 +1712,7 @@ function App(){
   };
   const saveStory=(id,txt)=>{setRecipes(p=>p.map(r=>r.id!==id?r:{...r,story:txt.trim()}));setEditingStory(null);show("✅ حُفظت القصة");};
   const deleteRecipe=id=>{if(!window.confirm("حذف هذه الوصفة نهائياً؟ لا يمكن التراجع"))return;setRecipes(p=>p.filter(r=>r.id!==id));setSelectedRecipe(null);show("🗑️ حُذفت الوصفة");};
+  const cloneRecipe=r=>{const newId="clone_"+Date.now();const copy={...r,id:newId,name:r.name+" (نسخة)",hero:false,published:false,price_sar:r.price_sar||0,story:"",rating:undefined};setRecipes(p=>[copy,...p]);setSelectedRecipe(copy);show("📋 تم نسخ الوصفة — يمكنك التعديل الآن");};
   const openEditRecipe=r=>{setEditRecName(r.name);setEditRecDesc(r.desc||"");setEditRecSeason(r.season||"صيف");setEditRecGender(r.gender||"للجنسين");setEditRecStab(r.stability||"");setEditRecipe(r);};
   const saveEditRecipe=()=>{if(!editRecipe)return;const ic={"صيف":"☀️","شتاء":"❄️","ربيع":"🌸","خريف":"🍂","مناسبات":"👑"};const upd={name:editRecName,desc:editRecDesc,season:editRecSeason,gender:editRecGender,stability:editRecStab,icon:ic[editRecSeason]||editRecipe.icon};setRecipes(p=>p.map(r=>r.id!==editRecipe.id?r:{...r,...upd}));setSelectedRecipe(prev=>prev&&prev.id===editRecipe.id?{...prev,...upd}:prev);setEditRecipe(null);show("✅ تم تعديل الوصفة");};
   const deleteCustomer=id=>{if(!window.confirm("حذف هذا العميل نهائياً؟"))return;setCustomers(p=>p.filter(c=>c.id!==id));setSelectedCustomer(null);show("🗑️ حُذف العميل");};
@@ -1928,10 +1950,17 @@ function App(){
   };
 
   // ── recipes sorted: favorites first ──────────────────────────
-  const sortedRecipes=useMemo(()=>[...recipes].sort((a,b)=>{
-    const fa=favoriteIds.includes(a.id)?1:0,fb=favoriteIds.includes(b.id)?1:0;
-    return fb-fa;
-  }),[recipes,favoriteIds]);
+  const [recipeSort,setRecipeSort]=useState("fav");
+  const sortedRecipes=useMemo(()=>{
+    const arr=[...recipes];
+    if(recipeSort==="fav")arr.sort((a,b)=>{const fa=favoriteIds.includes(a.id)?1:0,fb=favoriteIds.includes(b.id)?1:0;return fb-fa;});
+    else if(recipeSort==="price_desc")arr.sort((a,b)=>(b.price_sar||0)-(a.price_sar||0));
+    else if(recipeSort==="price_asc")arr.sort((a,b)=>(a.price_sar||0)-(b.price_sar||0));
+    else if(recipeSort==="rating")arr.sort((a,b)=>(ratings[b.id]?.stars||0)-(ratings[a.id]?.stars||0));
+    else if(recipeSort==="alpha")arr.sort((a,b)=>a.name.localeCompare(b.name,"ar"));
+    else if(recipeSort==="cost")arr.sort((a,b)=>recipeCost(a)-recipeCost(b));
+    return arr;
+  },[recipes,favoriteIds,recipeSort,ratings]);
   const filteredRecipes=useMemo(()=>{
     let f=sortedRecipes;
     if(recipeSearch.trim()){const q=recipeSearch.trim().toLowerCase();f=f.filter(r=>r.name.toLowerCase().includes(q)||(r.desc||"").toLowerCase().includes(q));}
@@ -2636,38 +2665,38 @@ function App(){
             ⚖️ اختر وصفتين للمقارنة ({compareIds.length}/2) — {compareIds.length===2?"اضغط «قارن»":"اختر وصفة ثانية"}
             <button onClick={()=>setCompareIds([])} style={{background:"none",border:"none",color:"#e08080",cursor:"pointer",marginRight:"8px",fontSize:"0.75rem"}}>✕ إلغاء</button>
           </div>}
-          {!catalogMode&&!showCustomerStore&&<div style={{marginBottom:"10px"}}>
-            {/* search */}
-            <div style={{position:"relative",marginBottom:"8px"}}>
-              <span style={{position:"absolute",right:"11px",top:"50%",transform:"translateY(-50%)",fontSize:"0.85rem",opacity:0.4,pointerEvents:"none"}}>🔍</span>
-              <input value={recipeSearch} onChange={e=>setRecipeSearch(e.target.value)} placeholder="ابحث باسم الوصفة أو الوصف..." style={{width:"100%",boxSizing:"border-box",padding:"8px 34px 8px 10px",background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.12)",borderRadius:"10px",color:"#e8dcc8",fontSize:"0.8rem",outline:"none",direction:"rtl"}}/>
+          {!catalogMode&&!showCustomerStore&&<div style={{marginBottom:"12px"}}>
+            {/* ── Search ── */}
+            <div style={{position:"relative",marginBottom:"10px"}}>
+              <span style={{position:"absolute",right:"12px",top:"50%",transform:"translateY(-50%)",fontSize:"0.85rem",opacity:0.35,pointerEvents:"none"}}>🔍</span>
+              <input value={recipeSearch} onChange={e=>setRecipeSearch(e.target.value)} placeholder="ابحث باسم الوصفة أو الوصف..." className="inp" style={{paddingRight:"36px",fontSize:"0.82rem"}}/>
+              {recipeSearch&&<button onClick={()=>setRecipeSearch("")} style={{position:"absolute",left:"10px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"rgba(26,18,8,0.35)",cursor:"pointer",fontSize:"0.75rem",padding:0}}>✕</button>}
             </div>
-            {/* season chips */}
-            <div style={{display:"flex",gap:"5px",flexWrap:"wrap",marginBottom:"6px"}}>
-              {["الكل","صيف","شتاء","ربيع","خريف","مناسبات","للجنسين"].map(s=>(
-                <button key={s} onClick={()=>setRecipeSeasonF(s)} style={{padding:"3px 9px",borderRadius:"20px",border:`1px solid ${recipeSeasonF===s?"rgba(138,106,30,0.6)":"rgba(26,18,8,0.12)"}`,background:recipeSeasonF===s?"rgba(201,168,76,0.12)":"rgba(26,18,8,0.05)",color:recipeSeasonF===s?"#8A6A1E":"rgba(26,18,8,0.45)",fontSize:"0.7rem",cursor:"pointer",fontWeight:recipeSeasonF===s?"700":"400"}}>
-                  {s==="صيف"?"🌞":s==="شتاء"?"❄️":s==="ربيع"?"🌸":s==="خريف"?"🍂":s==="مناسبات"?"✨":s==="للجنسين"?"🌿":"🔎"} {s}
-                </button>
+            {/* ── Season chips ── */}
+            <div className="filter-row" style={{marginBottom:"7px"}}>
+              {[["الكل","🔎"],["صيف","🌞"],["شتاء","❄️"],["ربيع","🌸"],["خريف","🍂"],["مناسبات","✨"],["للجنسين","🌿"]].map(([s,em])=>(
+                <button key={s} className={`fchip${recipeSeasonF===s?" on":""}`} onClick={()=>setRecipeSeasonF(s)}>{em} {s}</button>
               ))}
             </div>
-            {/* gender chips */}
-            <div style={{display:"flex",gap:"5px",flexWrap:"wrap",marginBottom:"6px"}}>
-              {["الكل","رجالي","نسائي","للجنسين"].map(g=>(
-                <button key={g} onClick={()=>setRecipeGenderF(g)} style={{padding:"3px 9px",borderRadius:"20px",border:`1px solid ${recipeGenderF===g?"rgba(160,130,210,0.6)":"rgba(26,18,8,0.12)"}`,background:recipeGenderF===g?"rgba(160,130,210,0.12)":"rgba(26,18,8,0.08)",color:recipeGenderF===g?"#c8a0f0":"rgba(26,18,8,0.45)",fontSize:"0.7rem",cursor:"pointer",fontWeight:recipeGenderF===g?"700":"400"}}>
-                  {g==="رجالي"?"👔":g==="نسائي"?"💐":g==="للجنسين"?"🤝":"👥"} {g}
-                </button>
+            {/* ── Gender + Status chips ── */}
+            <div className="filter-row" style={{marginBottom:"7px"}}>
+              {[["الكل","👥"],["رجالي","👔"],["نسائي","💐"],["للجنسين","🤝"]].map(([g,em])=>(
+                <button key={g} className={`fchip gender${recipeGenderF===g?" on":""}`} onClick={()=>setRecipeGenderF(g)}>{em} {g}</button>
+              ))}
+              <button className={`fchip${readyFilter?" on":""}`} onClick={()=>setReadyFilter(f=>!f)}>✅ جاهز</button>
+              <button className={`fchip${heroFilter?" on":""}`} onClick={()=>setHeroFilter(f=>!f)}>⭐ هيرو</button>
+            </div>
+            {/* ── Sort row ── */}
+            <div className="filter-row">
+              <span style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.30)",alignSelf:"center",marginLeft:"2px",whiteSpace:"nowrap",flexShrink:0}}>ترتيب:</span>
+              {[["fav","⭐ المفضل"],["price_desc","💰 أغلى"],["rating","🌟 التقييم"],["cost","💲 التكلفة"],["alpha","أ-ي"]].map(([v,l])=>(
+                <button key={v} className={`sort-chip${recipeSort===v?" active":""}`} onClick={()=>setRecipeSort(v)}>{l}</button>
               ))}
             </div>
-            {/* ready toggle */}
-            <button onClick={()=>setReadyFilter(f=>!f)} style={{width:"100%",padding:"6px",background:readyFilter?"rgba(80,160,80,0.2)":"rgba(26,18,8,0.08)",border:`1px solid ${readyFilter?"rgba(80,160,80,0.5)":"rgba(26,18,8,0.08)"}`,color:readyFilter?"#80c080":"rgba(26,18,8,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
-              {readyFilter?"✅ جاهز للإنتاج — اضغط للكل":"⚗️ عرض الجاهز للإنتاج فقط"}
-            </button>
-            {/* hero/produced filter */}
-            <button onClick={()=>setHeroFilter(f=>!f)} style={{width:"100%",padding:"6px",marginTop:"4px",background:heroFilter?"rgba(201,168,76,0.12)":"rgba(26,18,8,0.05)",border:`1px solid ${heroFilter?"rgba(138,106,30,0.50)":"rgba(26,18,8,0.10)"}`,color:heroFilter?"#8A6A1E":"rgba(26,18,8,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
-              {heroFilter?"★ المنتجات المُنتجة — اضغط للكل":"★ عرض المُنتج فقط"}
-            </button>
-            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter||heroFilter)&&<div style={{marginTop:"5px",fontSize:"0.65rem",color:"rgba(138,106,30,0.55)",textAlign:"center"}}>
-              {filteredRecipes.length} وصفة — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);setHeroFilter(false);}}>مسح الفلاتر</span>
+            {/* ── Active filters summary ── */}
+            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter||heroFilter)&&<div style={{marginTop:"6px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <span style={{fontSize:"0.65rem",color:"rgba(138,106,30,0.55)"}}>{filteredRecipes.length} وصفة</span>
+              <button onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);setHeroFilter(false);}} style={{background:"none",border:"none",color:"rgba(201,168,76,0.55)",fontSize:"0.65rem",cursor:"pointer",fontWeight:"600",padding:0}}>✕ مسح الفلاتر</button>
             </div>}
           </div>}
           {suggestedRecipe&&!catalogMode&&!showCustomerStore&&<div className="suggest-card">
@@ -2838,7 +2867,7 @@ function App(){
                   </div>
                 </div>
               </div>
-              {/* layer balance bar */}
+              {/* ── DNA layer strip ── */}
               {(()=>{
                 const pI=r.ing.filter(([id])=>!NOTES_CARRIER.has(id));
                 const tot=pI.reduce((s,[,a])=>s+a,0)||1;
@@ -2847,39 +2876,36 @@ function App(){
                 const bp=tot-tp-mp;
                 const tpct=Math.round(tp/tot*100),mpct=Math.round(mp/tot*100),bpct=100-tpct-mpct;
                 return(
-                  <div style={{marginBottom:"9px",cursor:"pointer"}} onClick={()=>setSelectedRecipe(r)}>
-                    <div style={{display:"flex",height:"5px",borderRadius:"3px",overflow:"hidden",gap:"2px"}}>
-                      <div style={{flex:tpct||0.1,background:"rgba(232,200,112,0.80)",borderRadius:"3px 0 0 3px"}}/>
-                      <div style={{flex:mpct||0.1,background:"rgba(200,120,190,0.72)"}}/>
-                      <div style={{flex:bpct||0.1,background:"rgba(190,140,70,0.70)",borderRadius:"0 3px 3px 0"}}/>
+                  <div style={{marginBottom:"10px",cursor:"pointer"}} onClick={()=>setSelectedRecipe(r)}>
+                    <div style={{height:"6px",borderRadius:"4px",overflow:"hidden",display:"flex",gap:"2px",marginBottom:"4px"}}>
+                      <div style={{flex:tpct||0.1,background:"linear-gradient(90deg,#E8C870,#F0D880)",borderRadius:"4px 0 0 4px"}}/>
+                      <div style={{flex:mpct||0.1,background:"linear-gradient(90deg,#C878C0,#D890D0)"}}/>
+                      <div style={{flex:bpct||0.1,background:"linear-gradient(90deg,#8A6A1E,#B08040)",borderRadius:"0 4px 4px 0"}}/>
                     </div>
-                    <div style={{display:"flex",gap:"10px",marginTop:"3px",fontSize:"0.50rem"}}>
-                      <span style={{color:"rgba(138,106,30,0.65)"}}>⬆ توب {tpct}%</span>
-                      <span style={{color:"rgba(200,120,190,0.58)"}}>◆ قلب {mpct}%</span>
-                      <span style={{color:"rgba(190,140,70,0.55)"}}>⬇ قاعدة {bpct}%</span>
+                    <div style={{display:"flex",gap:"8px",fontSize:"0.50rem"}}>
+                      <span style={{color:"rgba(232,200,112,0.80)",fontWeight:"600"}}>▲{tpct}%</span>
+                      <span style={{color:"rgba(200,120,190,0.70)",fontWeight:"600"}}>◆{mpct}%</span>
+                      <span style={{color:"rgba(160,110,40,0.70)",fontWeight:"600"}}>▼{bpct}%</span>
+                      <span style={{flex:1,textAlign:"left",color:"rgba(26,18,8,0.28)"}}>{r.ing.length} خامة</span>
                     </div>
                   </div>
                 );
               })()}
-              {/* description */}
-              <p onClick={()=>setSelectedRecipe(r)} style={{fontSize:"0.74rem",color:"rgba(200,180,140,0.65)",marginBottom:"10px",lineHeight:"1.7",cursor:"pointer"}}>{r.desc}</p>
-              {/* bottom row */}
+              {/* ── Description ── */}
+              <p onClick={()=>setSelectedRecipe(r)} style={{fontSize:"0.72rem",color:"rgba(26,18,8,0.50)",marginBottom:"10px",lineHeight:"1.75",cursor:"pointer",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{r.desc}</p>
+              {/* ── Bottom row: stability + cost + rating ── */}
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"6px"}}>
-                <div style={{display:"flex",gap:"5px",flexWrap:"wrap",flex:1}}>
+                <div style={{display:"flex",gap:"5px",flexWrap:"wrap",flex:1,alignItems:"center"}}>
                   <span className="tag tag-gold" style={{fontSize:"0.58rem"}}>⏱ {r.stability}</span>
-                  <span className="tag" style={{background:"rgba(26,18,8,0.08)",color:"rgba(200,180,140,0.55)",border:"1px solid rgba(26,18,8,0.08)",fontSize:"0.58rem"}}>{r.ing.length} خامة</span>
-                  {rat&&<span style={{fontSize:"0.68rem",color:"#E8C060",letterSpacing:"0.5px"}}>{"★".repeat(rat.stars)}{"☆".repeat(5-rat.stars)}</span>}
+                  {rat&&<span style={{fontSize:"0.70rem",color:"#E8C060",letterSpacing:"0.5px"}}>{"★".repeat(rat.stars)}</span>}
                 </div>
-                <div style={{background:ready?"rgba(60,140,60,0.10)":"rgba(26,18,8,0.08)",border:`1px solid ${ready?"rgba(60,140,60,0.22)":"rgba(26,18,8,0.08)"}`,borderRadius:"20px",padding:"4px 10px",flexShrink:0}}>
-                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.70rem",color:ready?"#6AAA48":"rgba(26,18,8,0.30)",fontWeight:"600",letterSpacing:"-0.02em"}}>{recipeCost(r).toFixed(0)}<span style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.58rem",opacity:0.75}}> ر</span></span>
+                <div style={{display:"flex",gap:"5px",alignItems:"center",flexShrink:0}}>
+                  {r.hero&&(recipePrices[r.id]||r.price_sar)>0&&<span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.72rem",color:"#E8C870",fontWeight:"700"}}>{r.price_sar||recipePrices[r.id]}<span style={{fontSize:"0.52rem",opacity:0.6}}> ر</span></span>}
+                  <button onClick={()=>setSelectedRecipe(r)} style={{background:ready?"linear-gradient(135deg,rgba(60,140,60,0.12),rgba(40,120,40,0.08))":"rgba(26,18,8,0.06)",border:`1px solid ${ready?"rgba(60,140,60,0.28)":"rgba(26,18,8,0.08)"}`,borderRadius:"20px",padding:"5px 11px",cursor:"pointer",fontSize:"0.70rem",fontWeight:"700",color:ready?"#6AAA48":"rgba(26,18,8,0.30)",display:"flex",alignItems:"center",gap:"4px"}}>
+                    {ready?"⚗️ أنتج":"👁 عرض"}
+                  </button>
                 </div>
               </div>
-              {/* hero product — price badge + quick order */}
-              {r.hero&&(recipePrices[r.id]||r.price_sar)>0&&<div style={{display:"flex",alignItems:"center",gap:"6px",marginTop:"9px",paddingTop:"9px",borderTop:"1px solid rgba(201,168,76,0.10)"}}>
-                <span style={{fontSize:"0.62rem",color:"rgba(37,211,102,0.55)",fontWeight:"700",letterSpacing:"0.3px"}}>★ هيرو</span>
-                <span style={{flex:1,fontSize:"0.68rem",color:"#E8C870",fontWeight:"700",fontFamily:"'IBM Plex Mono',monospace"}}>{Math.max(5,Math.ceil((recipePrices[r.id]||r.price_sar)*2.9/11.6/5)*5)} ريال / ربع تولة</span>
-                <a href={`https://wa.me/${WHATSAPP_OWNER}?text=${encodeURIComponent(`مرحبا، أبي أطلب: ${r.icon} ${r.name}\n12مل — ${recipePrices[r.id]||r.price_sar} ريال`)}`} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{background:"rgba(37,211,102,0.14)",border:"1px solid rgba(37,211,102,0.38)",color:"#25d366",borderRadius:"10px",padding:"4px 10px",fontSize:"0.65rem",fontWeight:"700",textDecoration:"none",whiteSpace:"nowrap",fontFamily:"'Alexandria',sans-serif"}}>💚 اطلب</a>
-              </div>}
             </div>
           );})}
         </div>}
@@ -2994,14 +3020,37 @@ function App(){
             return out;
           };
           return <div className="fade">
-            <div style={{display:"flex",gap:"6px",marginBottom:"4px"}}>
-              <button className="btn-ghost" onClick={()=>setSelectedRecipe(null)}>← رجوع</button>
-              <button className="btn-ghost" onClick={()=>printRecipe(r)}>🖨️</button>
-              <button className="btn-ghost" onClick={()=>setQrRecipe(r)}>📲</button>
-              <button className="btn-ghost" onClick={()=>openRating(r)}>⭐ {ratings[r.id]?`${ratings[r.id].stars}/5`:"تقييم"}</button>
-              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0"}} onClick={()=>analyzeRecipeAI(r)}>🤖 تحليل</button>
-              <button className="btn-ghost" style={favoriteIds.includes(r.id)?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>toggleFav(r.id)}>{favoriteIds.includes(r.id)?"★":"☆"}</button>
+            {/* ── Action bar ── */}
+            <div style={{display:"flex",gap:"5px",marginBottom:"8px",flexWrap:"wrap"}}>
+              <button className="btn-ghost" onClick={()=>setSelectedRecipe(null)} style={{padding:"7px 12px"}}>← رجوع</button>
+              <button className="btn-ghost" onClick={()=>toggleFav(r.id)} style={favoriteIds.includes(r.id)?{background:"rgba(201,168,76,0.18)",color:"#E8C060",borderColor:"rgba(201,168,76,0.45)",padding:"7px 10px"}:{padding:"7px 10px"}}>{favoriteIds.includes(r.id)?"★":"☆"}</button>
+              <button className="btn-ghost" onClick={()=>openRating(r)} style={{padding:"7px 10px"}}>⭐ {ratings[r.id]?`${ratings[r.id].stars}/5`:"تقييم"}</button>
+              <button className="btn-ghost" onClick={()=>cloneRecipe(r)} style={{padding:"7px 10px"}} title="نسخ الوصفة">📋 نسخ</button>
+              <button className="btn-ghost" onClick={()=>printRecipe(r)} style={{padding:"7px 10px"}}>🖨️</button>
+              <button className="btn-ghost" onClick={()=>setQrRecipe(r)} style={{padding:"7px 10px"}}>📲</button>
+              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0",padding:"7px 10px"}} onClick={()=>analyzeRecipeAI(r)}>🤖</button>
             </div>
+            {/* ── Recipe Production Stats ── */}
+            {(()=>{
+              const batches=prodLog.filter(e=>e.recipeId===r.id||e.recipeName===r.name);
+              const sold=batches.filter(e=>e.sold);
+              const rev=sold.reduce((s,e)=>s+(e.sellPrice||0),0);
+              const lastProd=batches.length>0?[...batches].sort((a,b)=>new Date(b.date)-new Date(a.date))[0]:null;
+              if(batches.length===0)return null;
+              return <div style={{display:"flex",gap:"7px",marginBottom:"10px"}}>
+                {[
+                  {val:batches.length,lbl:"دفعة مُنتجة"},
+                  {val:sold.length,lbl:"مباعة"},
+                  {val:rev>0?rev.toFixed(0)+" ر":"—",lbl:"إجمالي الإيراد"},
+                  {val:lastProd?fmtDate(lastProd.date):"—",lbl:"آخر إنتاج"},
+                ].map(({val,lbl})=>(
+                  <div key={lbl} className="rec-stat">
+                    <div className="rec-stat-val" style={{fontSize:"0.85rem"}}>{val}</div>
+                    <div className="rec-stat-lbl">{lbl}</div>
+                  </div>
+                ))}
+              </div>;
+            })()}
             {aiKey&&<div style={{display:"flex",gap:"5px",marginBottom:"8px"}}>
               <button onClick={()=>openAIStudio(r,"story")} style={{flex:1,padding:"7px 4px",background:"rgba(201,168,76,0.07)",border:"1px solid rgba(201,168,76,0.25)",color:"#C9A84C",borderRadius:"10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>✍️ AI قصة</button>
               <button onClick={()=>openAIStudio(r,"campaign")} style={{flex:1,padding:"7px 4px",background:"rgba(80,120,200,0.07)",border:"1px solid rgba(80,120,200,0.25)",color:"#90B8F0",borderRadius:"10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>📢 AI حملة</button>
@@ -3052,7 +3101,7 @@ function App(){
               <div className="g-line" style={{maxWidth:"100px",margin:"8px auto"}}/>
               {r.story&&<p style={{fontSize:"0.80rem",color:"rgba(232,210,160,0.80)",lineHeight:"1.85",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"10px",padding:"0 6px"}}>{r.story}</p>}
               <p style={{fontSize:"0.74rem",color:"#A88858",lineHeight:"1.75",opacity:r.story?0.6:1}}>{r.desc}</p>
-              {/* layer balance detail */}
+              {/* ── Scent Pyramid ── */}
               {(()=>{
                 const pI=r.ing.filter(([id])=>!NOTES_CARRIER.has(id));
                 const tot=pI.reduce((s,[,a])=>s+a,0)||1;
@@ -3060,21 +3109,26 @@ function App(){
                 const mp=pI.filter(([id])=>noteTier(id)==="mid").reduce((s,[,a])=>s+a,0);
                 const bp=tot-tp-mp;
                 const tpct=Math.round(tp/tot*100),mpct=Math.round(mp/tot*100),bpct=100-tpct-mpct;
-                const layers=[
-                  {label:"التوب",sub:"TOP",pct:tpct,bg:"rgba(232,200,112,0.10)",border:"rgba(232,200,112,0.35)",col:"#E8C870",icon:"⬆"},
-                  {label:"القلب",sub:"HEART",pct:mpct,bg:"rgba(190,100,170,0.10)",border:"rgba(190,100,170,0.32)",col:"#C878C0",icon:"◆"},
-                  {label:"القاعدة",sub:"BASE",pct:bpct,bg:"rgba(160,110,60,0.10)",border:"rgba(160,110,60,0.32)",col:"#C89050",icon:"⬇"},
-                ];
+                const topIngs=pI.filter(([id])=>noteTier(id)==="top").sort((a,b)=>b[1]-a[1]).slice(0,3);
+                const midIngs=pI.filter(([id])=>noteTier(id)==="mid").sort((a,b)=>b[1]-a[1]).slice(0,3);
+                const baseIngs=pI.filter(([id])=>noteTier(id)==="base").sort((a,b)=>b[1]-a[1]).slice(0,3);
                 return(
                   <div style={{marginTop:"14px"}}>
-                    <div style={{fontSize:"0.45rem",color:"rgba(201,168,76,0.35)",letterSpacing:"0.6em",textTransform:"uppercase",marginBottom:"8px",fontFamily:"'Cormorant Garamond',serif"}}>هيكل الطبقات</div>
-                    <div style={{display:"flex",gap:"6px"}}>
-                      {layers.map(l=>(
-                        <div key={l.sub} style={{flex:1,background:l.bg,border:`1px solid ${l.border}`,borderRadius:"10px",padding:"8px 4px 6px",textAlign:"center"}}>
-                          <div style={{fontSize:"0.85rem",marginBottom:"2px"}}>{l.icon}</div>
-                          <div style={{fontSize:"1.1rem",fontWeight:"700",color:l.col,fontFamily:"'IBM Plex Mono',monospace",lineHeight:1}}>{l.pct}<span style={{fontSize:"0.55rem",opacity:0.7}}>%</span></div>
-                          <div style={{fontSize:"0.58rem",color:l.col,fontWeight:"700",marginTop:"3px",opacity:0.85}}>{l.label}</div>
-                          <div style={{fontSize:"0.42rem",color:"rgba(26,18,8,0.25)",letterSpacing:"0.08em",marginTop:"1px"}}>{l.sub}</div>
+                    <div style={{fontSize:"0.45rem",color:"rgba(201,168,76,0.35)",letterSpacing:"0.6em",textTransform:"uppercase",marginBottom:"10px",fontFamily:"'Cormorant Garamond',serif",textAlign:"center"}}>SCENT PYRAMID</div>
+                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"3px"}}>
+                      {[
+                        {pct:tpct,col:"#E8C870",bg:"rgba(232,200,112,0.12)",border:"rgba(232,200,112,0.30)",label:"قمة",em:"⬆",ings:topIngs,w:"55%"},
+                        {pct:mpct,col:"#C878C0",bg:"rgba(190,100,170,0.10)",border:"rgba(190,100,170,0.28)",label:"قلب",em:"◆",ings:midIngs,w:"78%"},
+                        {pct:bpct,col:"#B08040",bg:"rgba(160,110,60,0.10)",border:"rgba(160,110,60,0.28)",label:"قاعدة",em:"⬇",ings:baseIngs,w:"100%"},
+                      ].map(l=>(
+                        <div key={l.label} style={{width:l.w,background:l.bg,border:`1px solid ${l.border}`,borderRadius:"10px",padding:"8px 12px",textAlign:"center"}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"3px"}}>
+                            <span style={{fontSize:"0.52rem",color:l.col,fontWeight:"700"}}>{l.em} {l.label}</span>
+                            <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.80rem",color:l.col,fontWeight:"700"}}>{l.pct}%</span>
+                          </div>
+                          <div style={{fontSize:"0.52rem",color:"rgba(26,18,8,0.40)",lineHeight:"1.5"}}>
+                            {l.ings.map(([id])=>getIng(id)?.name?.split('(')[0].trim()||id).join(' · ')||"—"}
+                          </div>
                         </div>
                       ))}
                     </div>
