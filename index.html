@@ -483,7 +483,7 @@ const {useState,useEffect,useRef,useMemo}=React;
 async function verifyPin(input){
   try{
     const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(input));
-    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')==='e45bc40f3a527e1df97a6c6d39e5f9027efc09a5fa89d0e6e7de4e97a9c52f8';
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')==='165fdf42142e58406ee330643497e9b9a739773f064d63ee053592ef778d704d';
   }catch{return input==='6775';}
 }
 function sanitize(str){return String(str||'').replace(/[<>'"&]/g,c=>({'<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;','&':'&amp;'}[c]));}
