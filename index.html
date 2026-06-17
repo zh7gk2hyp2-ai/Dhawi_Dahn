@@ -364,6 +364,7 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   font-size:1.4rem;font-weight:600;letter-spacing:-0.04em;line-height:1;
   background:linear-gradient(135deg,#F0D878 0%,#C9A84C 55%,#9A7828 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  transition:opacity 0.3s ease;
 }
 .p-num-hero{
   font-family:'IBM Plex Mono','Courier New',monospace;
@@ -402,7 +403,14 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 <div id="splash"></div>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useEffect,useRef}=React;
+const {useState,useEffect,useRef,useMemo}=React;
+async function verifyPin(input){
+  try{
+    const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(input));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')==='e45bc40f3a527e1df97a6c6d39e5f9027efc09a5fa89d0e6e7de4e97a9c52f8';
+  }catch{return input==='6775';}
+}
+function sanitize(str){return String(str||'').replace(/[<>'"&]/g,c=>({'<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;','&':'&amp;'}[c]));}
 setTimeout(()=>{const s=document.getElementById("splash");if(s){s.style.opacity="0";setTimeout(()=>s.remove(),600);}},1700);
 
 const SHIPPING_BULK=2000;
@@ -1291,10 +1299,10 @@ function App(){
   // STORE_BATCH: sizes shown to customers in agency.html (no bulk sizes)
   const STORE_BATCH={quarter:"ربع تولة (2.9مل)",half:"نص تولة (5.8مل)",tola:"تولة (11.6مل)"};
 
-  const recipeBaseVol=r=>r.ing.reduce((s,[,a])=>s+a,0);
+  const recipeBaseVol=r=>(r.ing||[]).reduce((s,[,a])=>s+a,0)||1;
   const recipeScale=r=>BATCH[batchUnit]/recipeBaseVol(r);
-  const recipeCost=r=>{const sc=recipeScale(r);return r.ing.reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a*sc:0);},0);};
-  const canMake=r=>{const sc=recipeScale(r);return r.ing.every(([id,a])=>{const ing=getIng(id);return ing&&ing.stock>=a*sc;});};
+  const recipeCost=r=>{const sc=recipeScale(r);return (r.ing||[]).reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a*sc:0);},0);};
+  const canMake=r=>{const sc=recipeScale(r);return (r.ing||[]).every(([id,a])=>{const ing=getIng(id);return ing&&ing.stock>=a*sc;});};
 
   // ── cart & store ─────────────────────────────────────────────
   const storePrice=r=>Math.ceil(recipeCost(r)*profitMult/5)*5;
@@ -1637,8 +1645,8 @@ function App(){
   const topByProfit=[...perfStats].sort((a,b)=>b.profit-a.profit).slice(0,3);
 
   const CATS=["الكل","عود","مثبت","مسك","صندل","زهري","عنبر","سويتي","قاعدة","حامل","مضخم","خلطة","مستوحى"];
-  const fInvBase=(catFilter==="الكل"?inv:inv.filter(i=>i.cat===catFilter)).filter(i=>i.name.toLowerCase().includes(search.toLowerCase())||i.brand.toLowerCase().includes(search.toLowerCase()));
-  const fInv=invSort==="stock_asc"?[...fInvBase].sort((a,b)=>a.stock-b.stock):invSort==="stock_desc"?[...fInvBase].sort((a,b)=>b.stock-a.stock):invSort==="brand"?[...fInvBase].sort((a,b)=>a.brand.localeCompare(b.brand)):invSort==="name"?[...fInvBase].sort((a,b)=>a.name.localeCompare(b.name)):fInvBase;
+  const fInvBase=useMemo(()=>(catFilter==="الكل"?inv:inv.filter(i=>i.cat===catFilter)).filter(i=>i.name.toLowerCase().includes(search.toLowerCase())||i.brand.toLowerCase().includes(search.toLowerCase())),[inv,catFilter,search]);
+  const fInv=useMemo(()=>invSort==="stock_asc"?[...fInvBase].sort((a,b)=>a.stock-b.stock):invSort==="stock_desc"?[...fInvBase].sort((a,b)=>b.stock-a.stock):invSort==="brand"?[...fInvBase].sort((a,b)=>a.brand.localeCompare(b.brand)):invSort==="name"?[...fInvBase].sort((a,b)=>a.name.localeCompare(b.name)):fInvBase,[fInvBase,invSort]);
 
   // ── compare ─────────────────────────────────────────────────
   const toggleCompare=id=>{
@@ -1650,11 +1658,11 @@ function App(){
   };
 
   // ── recipes sorted: favorites first ──────────────────────────
-  const sortedRecipes=[...recipes].sort((a,b)=>{
+  const sortedRecipes=useMemo(()=>[...recipes].sort((a,b)=>{
     const fa=favoriteIds.includes(a.id)?1:0,fb=favoriteIds.includes(b.id)?1:0;
     return fb-fa;
-  });
-  const filteredRecipes=(()=>{
+  }),[recipes,favoriteIds]);
+  const filteredRecipes=useMemo(()=>{
     let f=sortedRecipes;
     if(recipeSearch.trim()){const q=recipeSearch.trim().toLowerCase();f=f.filter(r=>r.name.toLowerCase().includes(q)||(r.desc||"").toLowerCase().includes(q));}
     if(recipeSeasonF!=="الكل")f=f.filter(r=>r.season===recipeSeasonF);
@@ -1662,10 +1670,10 @@ function App(){
     if(readyFilter)f=f.filter(r=>canMake(r));
     if(heroFilter)f=f.filter(r=>r.hero);
     return f;
-  })();
+  },[sortedRecipes,recipeSearch,recipeSeasonF,recipeGenderF,readyFilter,heroFilter,inv]);
   const _m=new Date().getMonth();
   const currentSeason=_m>=5&&_m<=7?"صيف":_m>=2&&_m<=4?"ربيع":_m>=8&&_m<=10?"خريف":"شتاء";
-  const _ready=sortedRecipes.filter(r=>canMake(r));
+  const _ready=useMemo(()=>sortedRecipes.filter(r=>canMake(r)),[sortedRecipes,inv]);
   const suggestedRecipe=_ready.find(r=>r.season===currentSeason)||_ready.find(r=>r.season==="للجنسين")||_ready[0];
 
   // ── mixer cost ───────────────────────────────────────────────
@@ -1692,9 +1700,9 @@ function App(){
         }}>
           <div style={{fontSize:"0.52rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.55em",textTransform:"uppercase",marginBottom:"18px",fontFamily:"'Cormorant Garamond',serif"}}>رمز الدخول</div>
           <input type="password" inputMode="numeric" placeholder="· · · ·" value={pin} autoFocus onChange={e=>setPin(e.target.value)}
-            onKeyDown={e=>{if(e.key==="Enter"){if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}}
+            onKeyDown={e=>{if(e.key==="Enter"){verifyPin(pin).then(ok=>{if(ok)setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);});}}}
             style={{background:"rgba(0,0,0,0.40)",border:"1px solid rgba(201,168,76,0.28)",borderRadius:"16px",padding:"18px",color:"#F0E6D0",textAlign:"center",fontSize:"2rem",letterSpacing:"16px",outline:"none",width:"100%",marginBottom:"16px",fontFamily:"'IBM Plex Mono',monospace",boxShadow:"inset 0 2px 12px rgba(0,0,0,0.5)",transition:"border-color 0.22s"}}/>
-          <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}>دخول المعمل</button>
+          <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{verifyPin(pin).then(ok=>{if(ok)setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);});}}>دخول المعمل</button>
         </div>
       </div>
       {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",background:toastErr?"rgba(120,20,20,0.95)":"rgba(8,5,14,0.96)",border:`1px solid ${toastErr?"rgba(180,50,50,0.6)":"rgba(201,168,76,0.5)"}`,color:toastErr?"#D88080":"#D4AF37",padding:"12px 24px",borderRadius:"30px",fontWeight:"700",backdropFilter:"blur(16px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>{toast}</div>}
@@ -1877,6 +1885,39 @@ function App(){
                 {(lowStockItems.length+shopCart.length)>0&&<span style={{background:"rgba(185,45,45,0.9)",borderRadius:"10px",padding:"1px 6px",fontSize:"0.6rem",marginInlineStart:"5px",color:"#FFD0D0"}}>{lowStockItems.length+shopCart.length}</span>}
               </button>
               <button className="btn-ghost" style={{padding:"13px 10px",fontSize:"0.78rem",fontWeight:"700"}} onClick={()=>goTab("customers")}>👥 العملاء {customers.length>0&&<span className="mono" style={{fontSize:"0.72rem",color:"#8A6830"}}>({customers.length})</span>}</button>
+            </div>
+            {/* ── Data Backup ── */}
+            <div className="glass" style={{marginBottom:"12px"}}>
+              <div className="section-hdr"><div className="section-hdr-bar"/><span style={{fontWeight:700,fontSize:"0.82rem",color:"#1A1208"}}>نسخ احتياطية</span></div>
+              <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+                <button className="btn-ghost" style={{fontSize:"0.75rem"}} onClick={()=>{
+                  const data={recipes:lsGet('dw_recipes',[]),prodlog:lsGet('dw_prodlog',[]),inv:lsGet('dw_inv',[]),customers:lsGet('dw_customers',[]),orders:lsGet('dw_orders',[]),exportDate:new Date().toISOString()};
+                  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+                  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dhawi-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+                  show('✅ تم تصدير البيانات بنجاح');
+                }}>⬇ تصدير النسخة الاحتياطية</button>
+                <label className="btn-ghost" style={{fontSize:"0.75rem",cursor:"pointer"}}>
+                  ⬆ استيراد نسخة احتياطية
+                  <input type="file" accept=".json" style={{display:"none"}} onChange={e=>{
+                    const file=e.target.files[0];if(!file)return;
+                    const reader=new FileReader();
+                    reader.onload=ev=>{try{
+                      const d=JSON.parse(ev.target.result);
+                      if(window.confirm('سيتم استبدال جميع البيانات الحالية. هل أنت متأكد؟')){
+                        if(d.recipes)lsSet('dw_recipes',d.recipes);
+                        if(d.prodlog)lsSet('dw_prodlog',d.prodlog);
+                        if(d.inv)lsSet('dw_inv',d.inv);
+                        if(d.customers)lsSet('dw_customers',d.customers);
+                        if(d.orders)lsSet('dw_orders',d.orders);
+                        show('✅ تم استيراد البيانات بنجاح');
+                        setTimeout(()=>window.location.reload(),1200);
+                      }
+                    }catch{show('❌ ملف غير صالح',true);}};
+                    reader.readAsText(file);
+                    e.target.value='';
+                  }}/>
+                </label>
+              </div>
             </div>
             {/* ── roadmap card ── */}
             <div onClick={()=>setShowRoadmap(true)} style={{marginTop:"10px",background:"linear-gradient(135deg,rgba(201,168,76,0.06),rgba(120,70,200,0.06))",border:"1px solid rgba(201,168,76,0.18)",borderRadius:"16px",padding:"14px 16px",cursor:"pointer",position:"relative",overflow:"hidden"}}>
@@ -2449,6 +2490,23 @@ function App(){
                   </div>}
                   <div style={{fontSize:"1.0rem",fontWeight:"700",color:"#F0E6D0",lineHeight:"1.35",letterSpacing:"-0.01em"}}>{r.name}</div>
                   <div style={{fontSize:"0.55rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.35em",textTransform:"uppercase",marginTop:"2px",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>{seasonIcon} {r.season} · {r.gender}</div>
+                  {/* formula score mini-bar */}
+                  {r.stability&&(
+                    <div style={{display:"flex",gap:"3px",marginTop:"4px",alignItems:"center"}}>
+                      {[
+                        {label:"ث",val:r.stability&&r.stability.includes("40")?9:r.stability&&r.stability.includes("36")?8:r.stability&&r.stability.includes("30")?7:6,color:"#C9A84C"},
+                        {label:"ف",val:(r.ing||[]).length>8?8:(r.ing||[]).length>5?7:6,color:"#8B5CF6"},
+                        {label:"ت",val:r.hero?9:8,color:"#10B981"},
+                      ].map(s=>(
+                        <div key={s.label} style={{display:"flex",alignItems:"center",gap:"2px",fontSize:"0.38rem",color:"rgba(26,18,8,0.45)"}}>
+                          <span>{s.label}</span>
+                          <div style={{width:"24px",height:"3px",background:"rgba(26,18,8,0.08)",borderRadius:"2px",overflow:"hidden"}}>
+                            <div style={{width:`${s.val*10}%`,height:"100%",background:s.color,borderRadius:"2px"}}/>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {/* icon + actions */}
                 <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:"5px",flexShrink:0}}>
