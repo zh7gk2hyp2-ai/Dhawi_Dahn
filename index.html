@@ -73,15 +73,13 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 /* ── Splash ── */
 #splash{
   position:fixed;inset:0;
-  background:url('brand_poster.jpg') center/cover no-repeat;
+  background:#FAF8F3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
   z-index:99999;
-  animation:splashOut 2.5s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+  animation:splashOut 1.8s 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
   pointer-events:none;
 }
-#splash::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(6,4,12,0.95) 0%,rgba(6,4,12,0.3) 50%,transparent 100%);
-}
+#splash::after{content:none;}
 
 /* ── Card System ── */
 .glass{
@@ -464,7 +462,13 @@ html{scroll-behavior:smooth;}
 </head>
 <body>
 <canvas id="lab-canvas" aria-hidden="true"></canvas>
-<div id="splash"></div>
+<div id="splash">
+  <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#8A6A1E);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(201,168,67,0.30);margin-bottom:4px">
+    <span style="font-size:1.5rem">🪬</span>
+  </div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:#1A1208;letter-spacing:0.02em">ضاوي الدهن</div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:0.50rem;color:rgba(138,106,30,0.55);letter-spacing:0.45em;text-transform:uppercase">Private Oud Laboratory</div>
+</div>
 <div id="root"></div>
 <script type="text/babel">
 const {useState,useEffect,useRef,useMemo}=React;
