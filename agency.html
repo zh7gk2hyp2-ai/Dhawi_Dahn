@@ -532,9 +532,9 @@ body {
 .pcard-oos-badge { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.10); backdrop-filter:blur(4px); border-radius:24px; color:rgba(26,18,8,0.70); font-size:0.78rem; font-weight:700; z-index:2; }
 
 /* CART / OVERLAYS — glassmorphism */
-.overlay { position:fixed; inset:0; z-index:300; background:rgba(4,2,14,0.85); backdrop-filter:blur(14px); display:none; align-items:flex-end; justify-content:center; }
+.overlay { position:fixed; inset:0; z-index:300; background:rgba(26,18,8,0.42); backdrop-filter:blur(14px); display:none; align-items:flex-end; justify-content:center; }
 .overlay.open { display:flex; }
-.sheet { background:rgba(12,8,30,0.92); backdrop-filter:blur(30px); border-top:1px solid rgba(212,168,67,0.22); border-radius:28px 28px 0 0; padding:20px 18px 48px; width:100%; max-width:500px; max-height:88vh; overflow-y:auto; }
+.sheet { background:rgba(250,248,243,0.97); backdrop-filter:blur(30px); border-top:1px solid rgba(212,168,67,0.22); border-radius:28px 28px 0 0; padding:20px 18px 48px; width:100%; max-width:500px; max-height:88vh; overflow-y:auto; }
 .handle { width:40px; height:4px; background:rgba(0,0,0,0.06); border-radius:2px; margin:0 auto 18px; }
 .sheet-title { font-size:1.08rem; font-weight:800; color:#D4A843; }
 .sheet-sub { font-size:0.60rem; color:rgba(26,18,8,0.40); margin-top:2px; }
@@ -562,7 +562,7 @@ body {
 .btn-gh { width:100%; padding:12px; border-radius:14px; background:rgba(26,18,8,0.04); border:1px solid rgba(26,18,8,0.10); color:rgba(26,18,8,0.45); font-family:'Alexandria',sans-serif; font-size:0.82rem; cursor:pointer; margin-top:8px; transition:all 0.20s; backdrop-filter:blur(6px); }
 .btn-gh:hover { border-color:rgba(26,18,8,0.25); color:rgba(26,18,8,0.70); }
 .empty-cart { text-align:center; padding:42px; color:rgba(26,18,8,0.25); font-size:0.90rem; }
-.toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(18px); background:rgba(12,8,30,0.95); border:1px solid rgba(212,168,67,0.40); border-radius:14px; padding:10px 20px; font-size:0.78rem; color:#8A6A1E; white-space:nowrap; opacity:0; transition:all 0.28s; z-index:500; pointer-events:none; backdrop-filter:blur(16px); box-shadow:0 4px 24px rgba(212,168,67,0.20); }
+.toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(18px); background:rgba(250,248,243,0.97); border:1px solid rgba(212,168,67,0.40); border-radius:14px; padding:10px 20px; font-size:0.78rem; color:#8A6A1E; white-space:nowrap; opacity:0; transition:all 0.28s; z-index:500; pointer-events:none; backdrop-filter:blur(16px); box-shadow:0 4px 24px rgba(212,168,67,0.20); }
 .toast.s { opacity:1; transform:translateX(-50%) translateY(0); }
 .no-results { text-align:center; padding:60px 24px; color:rgba(26,18,8,0.30); position:relative; z-index:1; }
 
@@ -628,7 +628,7 @@ body {
 .pay-exp-desc { text-align:center; font-size:0.62rem; color:rgba(26,18,8,0.35); margin-bottom:14px; }
 
 /* Product detail modal */
-.prod-modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(4,2,14,0.88); backdrop-filter:blur(16px); display:none; align-items:center; justify-content:center; padding:20px; }
+.prod-modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(26,18,8,0.45); backdrop-filter:blur(16px); display:none; align-items:center; justify-content:center; padding:20px; }
 .prod-modal-overlay.open { display:flex; }
 .prod-modal { background:rgba(255,255,255,0.97); backdrop-filter:blur(30px); border:1px solid rgba(212,168,67,0.28); border-radius:28px; width:100%; max-width:380px; max-height:90vh; overflow-y:auto; position:relative; animation:modalPop 0.32s cubic-bezier(0.22,1,0.36,1); }
 @keyframes modalPop { from{opacity:0;transform:scale(0.85) translateY(30px)} to{opacity:1;transform:scale(1) translateY(0)} }
