@@ -1599,7 +1599,7 @@ function App(){
       const res=await fetch("https://api.anthropic.com/v1/messages",{
         method:"POST",
         headers:{"x-api-key":aiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true","content-type":"application/json"},
-        body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:maxTokens,messages:[{role:"user",content:prompt}]})
+        body:JSON.stringify({model:"claude-haiku-4-5",max_tokens:maxTokens,messages:[{role:"user",content:prompt}]})
       });
       if(!res.ok){const e=await res.json();show("❌ "+(e.error?.message||"خطأ API"),true);return null;}
       const data=await res.json();
@@ -2348,7 +2348,7 @@ function App(){
               {heroRecs.length>0&&(()=>{
                 const r=heroRecs[0];
                 const cost=recipeCost(r);
-                const mlCost=cost/(r.ing||[]).reduce((s,[,a])=>s+a,0)||0;
+                const _vol=(r.ing||[]).reduce((s,[,a])=>s+a,0);const mlCost=_vol>0?cost/_vol:0;
                 return(
                 <div style={{...DCARD,textAlign:"right"}}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.50rem",letterSpacing:"0.15em",color:"rgba(201,168,76,0.45)",marginBottom:"10px"}}>حاسبة التكلفة — {r.name}</div>
@@ -2739,7 +2739,7 @@ function App(){
         {/* ── recipe detail ── */}
         {tab==="recipes"&&selectedRecipe&&!showAddRec&&!showCompare&&!showMixer&&(()=>{
           const r=selectedRecipe;const activeBU=r.inspired?batchInspUnit:batchUnit;const sc=(()=>{const base=r.ing.reduce((s,[,a])=>s+a,0)||11.6;return BATCH[activeBU]/base;})();const cost=r.ing.reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a*sc:0);},0);const vol=BATCH[activeBU];
-          const mlCost=cost/vol;const sellMl=mlCost*profitMult;
+          const mlCost=vol>0?cost/vol:0;const sellMl=mlCost*profitMult;
           // render a step string with amounts scaled to current batch; highlights numbers in gold
           const renderStep=txt=>{
             const out=[];let last=0;
