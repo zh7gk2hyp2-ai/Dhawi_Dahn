@@ -517,7 +517,7 @@ body {
 .lm { background:rgba(200,80,160,0.70); }
 .lb { background:rgba(160,100,40,0.70); border-radius:0 3px 3px 0; }
 .pcard-meta { font-size:0.52rem; color:rgba(26,18,8,0.55); margin-bottom:4px; font-weight:600; }
-.pcard-desc { font-size:0.50rem; color:rgba(138,106,30,0.62); line-height:1.65; margin-bottom:8px; direction:rtl; }
+.pcard-desc { font-size:0.50rem; color:rgba(26,18,8,0.55); line-height:1.65; margin-bottom:8px; direction:rtl; }
 .bcode { display:flex; align-items:flex-end; height:22px; justify-content:center; margin-bottom:7px; }
 .pcard-sep { height:1px; background:linear-gradient(90deg,transparent,rgba(212,168,67,0.25),transparent); margin-bottom:10px; }
 .pcard-price { font-family:'IBM Plex Mono',monospace; font-size:1.25rem; font-weight:700; background:linear-gradient(135deg,#F0C840,#D4A843,#C06020); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:2px; }
@@ -637,12 +637,12 @@ body {
 .prod-modal-bar { height:5px; background:linear-gradient(90deg,rgba(212,168,67,0),rgba(212,168,67,0.80),rgba(200,72,128,0.60),rgba(212,168,67,0)); border-radius:28px 28px 0 0; }
 .prod-modal-body { padding:24px 22px 28px; text-align:center; }
 .prod-modal-icon { font-size:5rem; filter:drop-shadow(0 12px 36px rgba(212,168,67,0.45)); margin:10px 0 14px; display:block; }
-.prod-modal-badge { display:inline-block; font-size:0.55rem; padding:4px 12px; border-radius:10px; background:rgba(212,168,67,0.15); border:1px solid rgba(212,168,67,0.40); color:rgba(240,200,64,0.95); font-family:'IBM Plex Mono',monospace; font-weight:700; margin-bottom:14px; }
+.prod-modal-badge { display:inline-block; font-size:0.55rem; padding:4px 12px; border-radius:10px; background:rgba(201,168,76,0.12); border:1px solid rgba(138,106,30,0.40); color:#7A5C10; font-family:'IBM Plex Mono',monospace; font-weight:700; margin-bottom:14px; }
 .prod-modal-name { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:#1A1208; line-height:1.1; margin-bottom:8px; }
 .prod-modal-meta { font-size:0.72rem; color:rgba(26,18,8,0.48); margin-bottom:14px; }
 .prod-modal-lbar { display:flex; height:7px; border-radius:4px; overflow:hidden; gap:1px; margin:0 0 6px; }
-.prod-modal-lbar-labels { display:flex; justify-content:space-between; font-size:0.52rem; color:rgba(26,18,8,0.30); margin-bottom:16px; font-family:'IBM Plex Mono',monospace; }
-.prod-modal-desc { font-size:0.80rem; color:rgba(138,106,30,0.75); line-height:2; margin-bottom:20px; }
+.prod-modal-lbar-labels { display:flex; justify-content:space-between; font-size:0.52rem; color:rgba(26,18,8,0.50); margin-bottom:16px; font-family:'IBM Plex Mono',monospace; }
+.prod-modal-desc { font-size:0.80rem; color:rgba(26,18,8,0.70); line-height:2; margin-bottom:20px; }
 .prod-modal-sep { height:1px; background:linear-gradient(90deg,transparent,rgba(212,168,67,0.22),transparent); margin:0 0 18px; }
 .prod-modal-price { font-family:'IBM Plex Mono',monospace; font-size:2.4rem; font-weight:700; background:linear-gradient(135deg,#F0C840,#D4A843,#C06020); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:4px; }
 .prod-modal-size { font-size:0.60rem; color:rgba(138,106,30,0.48); margin-bottom:22px; font-family:'IBM Plex Mono',monospace; }
@@ -1195,7 +1195,7 @@ ${oos?'<div class="pcard-oos-badge">نفذ المخزون</div>':''}
 <div class="pcard-name">${p.name}</div>
 <div class="lbar"><div class="lt" style="flex:${p.top||0.1}"></div><div class="lm" style="flex:${p.mid||0.1}"></div><div class="lb" style="flex:${p.base||0.1}"></div></div>
 <div class="pcard-meta">${p.gender} · ${p.stab}</div>
-${p.desc?`<div style="font-size:0.54rem;color:rgba(220,185,100,0.72);line-height:1.65;margin-bottom:7px;direction:rtl">${p.desc}</div>`:''}
+${p.desc?`<div style="font-size:0.54rem;color:rgba(26,18,8,0.55);line-height:1.65;margin-bottom:7px;direction:rtl">${p.desc}</div>`:''}
 <div class="bcode">${bars}</div>
 <div class="pcard-sep"></div>
 <div class="pcard-price">${price}<span style="font-size:0.56rem;opacity:0.6"> ر</span></div>
@@ -1602,8 +1602,8 @@ function renderProductModal(){
         <div style="flex:${p.base||0.1};background:rgba(160,100,40,0.70);border-radius:0 4px 4px 0"></div>
       </div>
       <div class="prod-modal-lbar-labels"><span>قمة ${p.top}%</span><span>قلب ${p.mid}%</span><span>قاعدة ${p.base}%</span></div>
-      ${p.story?`<div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.88rem;color:rgba(240,220,160,0.82);line-height:2;margin-bottom:14px;text-align:right;padding:0 4px">${p.story}</div>`:''}
-      ${p.desc?`<div class="prod-modal-desc" style="opacity:0.65">${p.desc}</div>`:''}
+      ${p.story?`<div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.88rem;color:rgba(26,18,8,0.72);line-height:2;margin-bottom:14px;text-align:right;padding:0 4px">${p.story}</div>`:''}
+      ${p.desc?`<div class="prod-modal-desc">${p.desc}</div>`:''}
       <div class="prod-modal-sep"></div>
       <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px">
         ${Object.entries(BATCH).map(([k,v])=>`
