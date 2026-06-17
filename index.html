@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="ضاوي دهن العود"/>
-<meta name="theme-color" content="#06040C"/>
+<meta name="theme-color" content="#FAF8F3"/>
 <title>ضاوي دهن العود — مختبر العطور التراثي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,9 +27,9 @@
 html{height:100%;}
 body{
   font-family:'Alexandria',sans-serif;
-  color:#EDE0C8;
+  color:#1A1208;
   overflow-x:hidden;min-height:100vh;font-size:15px;
-  background:#07050F;
+  background:#FAF8F3;
   background-image:
     radial-gradient(ellipse 140% 60% at 50% -10%, rgba(180,100,15,0.13) 0%, transparent 55%),
     radial-gradient(ellipse 80% 50% at 95% 110%, rgba(140,40,100,0.09) 0%, transparent 50%),
@@ -60,7 +60,7 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 
 /* ── Luxury Additions ── */
 @keyframes cardRise{from{opacity:0;transform:translateY(24px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes goldPulseCard{0%,100%{box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 20px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30)}50%{box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 20px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30),0 0 24px rgba(201,168,76,0.10)}}
+@keyframes goldPulseCard{0%,100%{box-shadow:0 2px 0 rgba(26,18,8,0.08) inset,0 20px 48px rgba(180,140,40,0.10),0 4px 12px rgba(0,0,0,0.05)}50%{box-shadow:0 2px 0 rgba(26,18,8,0.08) inset,0 20px 48px rgba(180,140,40,0.10),0 4px 12px rgba(0,0,0,0.05),0 0 24px rgba(201,168,76,0.10)}}
 @keyframes shimmerPass{0%{transform:translateX(-100%) skewX(-15deg)}100%{transform:translateX(250%) skewX(-15deg)}}
 @keyframes ingAdd{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}
 @keyframes glowLine{0%,100%{opacity:0.4}50%{opacity:1;filter:brightness(1.6)}}
@@ -85,29 +85,29 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 
 /* ── Card System ── */
 .glass{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.09);
+  background:rgba(255,255,255,0.82);
+  border:1px solid rgba(26,18,8,0.10);
   border-radius:20px;padding:18px;margin-bottom:12px;
   position:relative;overflow:hidden;
-  box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 20px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30);
+  box-shadow:0 2px 0 rgba(26,18,8,0.08) inset,0 20px 48px rgba(180,140,40,0.10),0 4px 12px rgba(0,0,0,0.05);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
   transition:border-color 0.3s,box-shadow 0.3s;
 }
 .glass:hover{
-  box-shadow: 0 8px 32px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  box-shadow: 0 8px 32px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.10), inset 0 1px 0 rgba(26,18,8,0.08);
 }
 .glass::before{
   content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.10) 40%,rgba(255,255,255,0.16) 50%,rgba(255,255,255,0.10) 60%,transparent);
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 40%,rgba(201,168,76,0.40) 50%,rgba(201,168,76,0.25) 60%,transparent);
   pointer-events:none;
 }
 .glass-gold{
-  background:rgba(201,168,76,0.05);
+  background:rgba(255,252,245,0.90);
   border:1px solid rgba(201,168,76,0.22);
   border-radius:20px;padding:18px;margin-bottom:12px;
   position:relative;overflow:hidden;
-  box-shadow:0 2px 0 rgba(201,168,76,0.07) inset,0 20px 48px rgba(0,0,0,0.45),0 0 30px rgba(201,168,76,0.10);
+  box-shadow:0 2px 0 rgba(201,168,76,0.07) inset,0 20px 48px rgba(0,0,0,0.08),0 0 30px rgba(201,168,76,0.10);
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
 }
@@ -121,17 +121,17 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 .bottom-nav{
   position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
   width:calc(100% - 28px);max-width:420px;height:64px;
-  background:rgba(8,6,16,0.97);
+  background:rgba(250,248,243,0.95);
   backdrop-filter:blur(40px) saturate(200%);
   -webkit-backdrop-filter:blur(40px) saturate(200%);
   border:1px solid rgba(201,168,76,0.18);
   border-radius:36px;
   display:flex;justify-content:space-around;align-items:center;
   padding:0 6px;z-index:9999;
-  box-shadow:0 24px 64px rgba(0,0,0,0.80),0 0 0 1px rgba(255,255,255,0.04),inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow:0 24px 64px rgba(0,0,0,0.12),0 0 0 1px rgba(26,18,8,0.08),inset 0 1px 0 rgba(26,18,8,0.08);
 }
 .nav-btn{
-  background:none;border:none;color:rgba(255,255,255,0.26);
+  background:none;border:none;color:rgba(26,18,8,0.26);
   display:flex;flex-direction:column;align-items:center;
   font-size:0.44rem;font-weight:700;cursor:pointer;
   transition:all 0.24s cubic-bezier(0.34,1.56,0.64,1);
@@ -157,16 +157,16 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
 
 /* ── Input ── */
 .inp{
-  background:rgba(255,255,255,0.045);
-  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.80);
+  border:1px solid rgba(26,18,8,0.12);
   border-radius:14px;padding:13px 16px;
-  color:#EDE0C8;outline:none;
+  color:#1A1208;outline:none;
   font-family:'Alexandria',sans-serif;font-size:0.9rem;width:100%;
   transition:border-color 0.22s,background 0.22s,box-shadow 0.22s;
   line-height:1.7;-webkit-appearance:none;
 }
-.inp:focus{border-color:rgba(201,168,76,0.50);background:rgba(255,255,255,0.065);box-shadow:0 0 0 4px rgba(201,168,76,0.06);}
-.inp::placeholder{color:rgba(255,255,255,0.18);}
+.inp:focus{border-color:rgba(201,168,76,0.50);background:rgba(26,18,8,0.10);box-shadow:0 0 0 4px rgba(201,168,76,0.06);}
+.inp::placeholder{color:rgba(26,18,8,0.12);}
 
 /* ── Buttons ── */
 .btn-gold{
@@ -174,7 +174,7 @@ input,select,button,textarea{font-family:'Alexandria',sans-serif;}
   color:#07050E;border:none;
   padding:14px 24px;border-radius:32px;
   font-weight:800;font-size:0.9rem;cursor:pointer;
-  box-shadow:0 4px 16px rgba(201,168,76,0.30),0 1px 3px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.25);
+  box-shadow:0 4px 16px rgba(201,168,76,0.30),0 1px 3px rgba(0,0,0,0.12),inset 0 1px 0 rgba(255,255,255,0.25);
   transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
   letter-spacing:0.3px;position:relative;overflow:hidden;
   font-family:'Alexandria',sans-serif;
@@ -218,21 +218,21 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 
 /* ── Stat Cards ── */
 .stat-card{
-  background:rgba(255,255,255,0.028);border-radius:16px;padding:16px 14px;text-align:center;
-  border:1px solid rgba(255,255,255,0.065);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
+  background:rgba(255,255,255,0.75);border-radius:16px;padding:16px 14px;text-align:center;
+  border:1px solid rgba(26,18,8,0.10);
+  box-shadow:inset 0 1px 0 rgba(26,18,8,0.08);
 }
 
 /* ── KPI Card (premium) ── */
 .kpi-card{
-  background:rgba(255,255,255,0.025);
-  border:1px solid rgba(255,255,255,0.065);
+  background:rgba(26,18,8,0.08);
+  border:1px solid rgba(26,18,8,0.10);
   border-radius:18px;padding:16px 14px;
   position:relative;overflow:hidden;
 }
 .kpi-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.10) 50%,transparent);
+  background:linear-gradient(90deg,transparent,rgba(26,18,8,0.12) 50%,transparent);
   pointer-events:none;
 }
 
@@ -240,14 +240,14 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 .recipe-card{
   border-radius:20px;padding:16px;margin-bottom:10px;
   position:relative;overflow:hidden;
-  border:1px solid rgba(255,255,255,0.065);
-  background:rgba(14,9,2,0.82);
+  border:1px solid rgba(26,18,8,0.10);
+  background:rgba(255,255,255,0.85);
   transition:border-color 0.25s,box-shadow 0.25s;
-  box-shadow:0 4px 20px rgba(0,0,0,0.40);
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
 }
 .recipe-card.ready-card{
   border-color:rgba(201,168,76,0.28);
-  box-shadow:0 0 0 0.5px rgba(201,168,76,0.10),0 8px 32px rgba(0,0,0,0.55);
+  box-shadow:0 0 0 0.5px rgba(201,168,76,0.10),0 8px 32px rgba(0,0,0,0.10);
 }
 .recipe-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
@@ -259,8 +259,8 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 
 /* ── Ingredient Card ── */
 .ing-card{
-  background:rgba(14,9,2,0.80);
-  border:1px solid rgba(255,255,255,0.065);
+  background:rgba(255,255,255,0.80);
+  border:1px solid rgba(26,18,8,0.10);
   border-radius:16px;padding:13px 14px;margin-bottom:7px;
   position:relative;overflow:hidden;
   transition:border-color 0.2s;
@@ -276,7 +276,7 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   display:flex;align-items:center;justify-content:center;
   font-size:1.05rem;font-weight:800;color:#D4AF37;
   flex-shrink:0;font-family:'Alexandria',sans-serif;
-  box-shadow:0 2px 8px rgba(0,0,0,0.30);
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
 }
 
 /* ── Fancy Section Divider ── */
@@ -295,17 +295,17 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 
 /* ── Modal ── */
 .modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.90);z-index:9998;
+  position:fixed;inset:0;background:rgba(26,18,8,0.65);z-index:9998;
   display:flex;align-items:flex-end;justify-content:center;
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
 .modal-sheet{
-  background:#0B0814;
+  background:#FAF8F3;
   border-radius:28px 28px 0 0;padding:22px 20px 44px;
   width:100%;max-width:480px;
   border-top:1px solid rgba(201,168,76,0.35);
   max-height:88vh;overflow-y:auto;
-  box-shadow:0 -28px 80px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow:0 -28px 80px rgba(0,0,0,0.12),inset 0 1px 0 rgba(26,18,8,0.08);
 }
 .modal-sheet::before{
   content:'';display:block;width:36px;height:4px;
@@ -316,7 +316,7 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 .star-btn{background:none;border:none;cursor:pointer;font-size:1.7rem;padding:4px;transition:transform 0.15s;}
 .star-btn:active{transform:scale(1.32);}
 .suggest-card{
-  background:linear-gradient(135deg,rgba(25,80,28,0.12),rgba(6,4,12,0.96));
+  background:linear-gradient(135deg,rgba(50,130,52,0.08),rgba(250,248,243,0.96));
   border:1px solid rgba(50,130,52,0.28);border-radius:18px;padding:16px;margin-bottom:12px;
   animation:fadeUp 0.4s ease both;
   backdrop-filter:blur(12px);
@@ -326,28 +326,28 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 .pkg-card{
   transition:transform 0.38s cubic-bezier(0.22,1,0.36,1),box-shadow 0.38s ease;
   cursor:pointer;
-  background:linear-gradient(160deg,rgba(18,11,3,0.92),rgba(8,4,1,0.97)) padding-box,
+  background:linear-gradient(160deg,rgba(255,252,240,0.95),rgba(250,248,235,0.98)) padding-box,
              linear-gradient(135deg,rgba(201,168,76,0.42),rgba(60,35,5,0.18),rgba(201,168,76,0.42)) border-box;
   border:1.5px solid transparent;border-radius:20px;overflow:hidden;position:relative;
 }
 .pkg-card:hover{
   transform:perspective(640px) rotateY(10deg) rotateX(-4deg) translateY(-6px);
-  box-shadow:18px 14px 48px rgba(0,0,0,0.72),-3px -2px 20px rgba(201,168,76,0.10);
+  box-shadow:18px 14px 48px rgba(0,0,0,0.10),-3px -2px 20px rgba(201,168,76,0.10);
 }
 .pkg-top-bar{height:6px;background:linear-gradient(90deg,rgba(201,168,76,0.0),rgba(201,168,76,0.55),rgba(201,168,76,0.0));}
 .pkg-badge{position:absolute;top:10px;right:10px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.28);border-radius:20px;padding:2px 8px;font-size:0.52rem;color:rgba(201,168,76,0.70);letter-spacing:0.4px;text-transform:uppercase;font-family:'Cormorant Garamond',serif;font-style:italic;}
 /* ── Cart Overlay ── */
-.cart-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.78);backdrop-filter:blur(10px);}
+.cart-overlay{position:fixed;inset:0;z-index:300;background:rgba(26,18,8,0.55);backdrop-filter:blur(10px);}
 .cart-sheet{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
-  background:#08050F;border-top:1px solid rgba(201,168,76,0.22);border-radius:24px 24px 0 0;
+  background:#FAF8F3;border-top:1px solid rgba(201,168,76,0.22);border-radius:24px 24px 0 0;
   padding:20px 18px 40px;max-height:82vh;overflow-y:auto;}
-.cart-sheet-handle{width:36px;height:4px;background:rgba(255,255,255,0.10);border-radius:2px;margin:0 auto 18px;}
-.cart-item-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.cart-sheet-handle{width:36px;height:4px;background:rgba(26,18,8,0.12);border-radius:2px;margin:0 auto 18px;}
+.cart-item-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(26,18,8,0.08);}
 /* Barcode */
 .barcode{display:flex;align-items:flex-end;gap:0;height:28px;}
 .expiry-row{
   display:flex;justify-content:space-between;align-items:center;
-  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.78rem;
+  padding:8px 0;border-bottom:1px solid rgba(26,18,8,0.08);font-size:0.78rem;
 }
 
 /* ── Typography System ── */
@@ -359,7 +359,7 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
   margin-top:2px;display:block;
 }
 .data-label{
-  font-size:0.50rem;color:rgba(255,255,255,0.32);
+  font-size:0.50rem;color:rgba(26,18,8,0.32);
   letter-spacing:0.65px;text-transform:uppercase;font-weight:700;
 }
 .section-hdr{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
@@ -409,14 +409,14 @@ input[type=number]{-moz-appearance:textfield;}input[type=number]::-webkit-inner-
 /* Glass card shimmer on hover */
 .glass::after{
   content:'';position:absolute;top:0;left:0;width:50%;height:100%;
-  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.05) 50%,transparent 70%);
+  background:linear-gradient(105deg,transparent 30%,rgba(26,18,8,0.08) 50%,transparent 70%);
   transform:translateX(-100%) skewX(-15deg);
   pointer-events:none;transition:none;
 }
 .glass:hover::after{animation:shimmerPass 0.65s ease forwards;}
 .glass:hover{
   border-color:rgba(201,168,76,0.22);
-  box-shadow:0 12px 40px rgba(0,0,0,0.55),0 0 32px rgba(201,168,76,0.08),inset 0 1px 0 rgba(255,255,255,0.07);
+  box-shadow:0 12px 40px rgba(0,0,0,0.10),0 0 32px rgba(201,168,76,0.08),inset 0 1px 0 rgba(26,18,8,0.08);
 }
 /* Gold glass shimmer */
 .glass-gold::after{
@@ -1756,27 +1756,27 @@ function App(){
           <div className="g-line" style={{maxWidth:"120px",margin:"16px auto 0"}}/>
         </div>
         <div style={{
-          background:"rgba(255,255,255,0.032)",
+          background:"rgba(26,18,8,0.08)",
           border:"1px solid rgba(201,168,76,0.22)",
           borderRadius:"24px",padding:"28px 22px 24px",
           backdropFilter:"blur(32px)",
           WebkitBackdropFilter:"blur(32px)",
-          boxShadow:"0 32px 80px rgba(0,0,0,0.80),inset 0 1px 0 rgba(201,168,76,0.10)"
+          boxShadow:"0 32px 80px rgba(0,0,0,0.12),inset 0 1px 0 rgba(201,168,76,0.10)"
         }}>
           <div style={{fontSize:"0.52rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.55em",textTransform:"uppercase",marginBottom:"18px",fontFamily:"'Cormorant Garamond',serif"}}>رمز الدخول</div>
           <input type="password" inputMode="numeric" placeholder="· · · ·" value={pin} autoFocus onChange={e=>setPin(e.target.value)}
             onKeyDown={e=>{if(e.key==="Enter"){if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}}
-            style={{background:"rgba(0,0,0,0.40)",border:"1px solid rgba(201,168,76,0.28)",borderRadius:"16px",padding:"18px",color:"#F0E6D0",textAlign:"center",fontSize:"2rem",letterSpacing:"16px",outline:"none",width:"100%",marginBottom:"16px",fontFamily:"'IBM Plex Mono',monospace",boxShadow:"inset 0 2px 12px rgba(0,0,0,0.5)",transition:"border-color 0.22s"}}/>
+            style={{background:"rgba(26,18,8,0.85)",border:"1px solid rgba(201,168,76,0.28)",borderRadius:"16px",padding:"18px",color:"#1A1208",textAlign:"center",fontSize:"2rem",letterSpacing:"16px",outline:"none",width:"100%",marginBottom:"16px",fontFamily:"'IBM Plex Mono',monospace",boxShadow:"inset 0 2px 12px rgba(0,0,0,0.10)",transition:"border-color 0.22s"}}/>
           <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{if(pin==="6775")setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);}}>دخول المعمل</button>
         </div>
       </div>
-      {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",background:toastErr?"rgba(120,20,20,0.95)":"rgba(8,5,14,0.96)",border:`1px solid ${toastErr?"rgba(180,50,50,0.6)":"rgba(201,168,76,0.5)"}`,color:toastErr?"#D88080":"#D4AF37",padding:"12px 24px",borderRadius:"30px",fontWeight:"700",backdropFilter:"blur(16px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>{toast}</div>}
+      {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",background:toastErr?"rgba(200,50,50,0.92)":"rgba(250,248,243,0.97)",border:`1px solid ${toastErr?"rgba(180,50,50,0.6)":"rgba(201,168,76,0.5)"}`,color:toastErr?"#C05050":"#8A6A1E",padding:"12px 24px",borderRadius:"30px",fontWeight:"700",backdropFilter:"blur(16px)",boxShadow:"0 4px 16px rgba(0,0,0,0.10)"}}>{toast}</div>}
     </div>
   );
 
   return(
     <div style={{paddingBottom:"90px"}}>
-      {toast&&<div className="fade" style={{position:"fixed",bottom:"92px",left:"50%",transform:"translateX(-50%)",background:toastErr?"rgba(100,15,15,0.96)":"rgba(8,5,1,0.96)",border:`1px solid ${toastErr?"rgba(180,50,50,0.55)":"rgba(201,168,76,0.50)"}`,color:toastErr?"#C87070":"#D4AF37",padding:"11px 22px",borderRadius:"30px",fontSize:"0.82rem",fontWeight:"700",zIndex:99999,whiteSpace:"nowrap",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",boxShadow:"0 6px 24px rgba(0,0,0,0.55)"}}>{toast}</div>}
+      {toast&&<div className="fade" style={{position:"fixed",bottom:"92px",left:"50%",transform:"translateX(-50%)",background:toastErr?"rgba(200,50,50,0.92)":"rgba(250,248,243,0.97)",border:`1px solid ${toastErr?"rgba(180,50,50,0.55)":"rgba(201,168,76,0.50)"}`,color:toastErr?"#C05050":"#8A6A1E",padding:"11px 22px",borderRadius:"30px",fontSize:"0.82rem",fontWeight:"700",zIndex:99999,whiteSpace:"nowrap",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",boxShadow:"0 6px 24px rgba(0,0,0,0.10)"}}>{toast}</div>}
 
       {/* ── low stock banner ── */}
       {lowStockItems.length>0&&tab==="inventory"&&<div className="alert-pulse" style={{background:"rgba(100,20,20,0.30)",border:"1px solid rgba(170,45,45,0.45)",padding:"10px 16px",margin:"10px 14px 0",borderRadius:"12px",fontSize:"0.75rem",color:"#C07070",display:"flex",alignItems:"center",gap:"8px",backdropFilter:"blur(8px)"}}>
@@ -1859,7 +1859,7 @@ function App(){
                     <span style={{fontSize:"0.80rem",color:"#D8C898"}}>{e.recipeIcon} {e.recipeName}</span>
                     <span className="mono" style={{fontSize:"0.70rem",color:"#C08840",fontWeight:"600"}}>{dl} يوم</span>
                   </div>
-                  <div style={{height:"4px",background:"rgba(255,255,255,0.06)",borderRadius:"4px",overflow:"hidden"}}>
+                  <div style={{height:"4px",background:"rgba(26,18,8,0.08)",borderRadius:"4px",overflow:"hidden"}}>
                     <div style={{height:"100%",width:pct+"%",background:"linear-gradient(90deg,#C9A84C,#E8C460)",borderRadius:"4px",transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(201,168,76,0.4)"}}/>
                   </div>
                   <div className="mono" style={{fontSize:"0.56rem",color:"#4A3010",marginTop:"3px"}}>#{e.batchNo} · جاهز {fmtDate(e.readyDate)}</div>
@@ -1874,8 +1874,8 @@ function App(){
                 <button className="btn-ghost" style={{fontSize:"0.68rem",borderColor:"rgba(200,60,60,0.4)",color:"#e08080"}} onClick={()=>{goTab("inventory");setShowShopList(true);}}>🛒 تسوق</button>
               </div>
               {lowStockItems.slice(0,4).map(i=>(
-                <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
-                  <span style={{fontSize:"0.75rem",color:"#e5d5be"}}>{i.name.split('(')[0].trim()}</span>
+                <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(26,18,8,0.08)"}}>
+                  <span style={{fontSize:"0.75rem",color:"#1A1208"}}>{i.name.split('(')[0].trim()}</span>
                   <span style={{fontSize:"0.72rem",color:"#e08080",fontWeight:"600"}}>{i.stock} {i.unit}</span>
                 </div>
               ))}
@@ -1889,8 +1889,8 @@ function App(){
                 <button className="btn-ghost" style={{fontSize:"0.68rem",borderColor:"rgba(200,60,60,0.4)",color:"#e08080"}} onClick={()=>{goTab("inventory");setShowExpiryCalendar(true);}}>تفاصيل</button>
               </div>
               {[...expiryGroups.expired,...expiryGroups.week].slice(0,3).map(i=>(
-                <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
-                  <span style={{fontSize:"0.75rem",color:"#e5d5be"}}>{i.name.split('(')[0].trim()}</span>
+                <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(26,18,8,0.08)"}}>
+                  <span style={{fontSize:"0.75rem",color:"#1A1208"}}>{i.name.split('(')[0].trim()}</span>
                   <span style={{fontSize:"0.72rem",color:"#e08080",fontWeight:"600"}}>{i.d<0?`منذ ${Math.abs(i.d)} يوم`:`${i.d} يوم متبقٍ`}</span>
                 </div>
               ))}
@@ -1902,8 +1902,8 @@ function App(){
               <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#fff"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
-                  <div style={{fontSize:"0.72rem",color:"#c8a46a",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
+                  <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#1A1208"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
+                  <div style={{fontSize:"0.72rem",color:"#8A6A1E",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
                   {ratings[suggestedRecipe.id]&&<div style={{fontSize:"0.7rem",color:"#e8c860",marginTop:"4px"}}>{"⭐".repeat(ratings[suggestedRecipe.id].stars)}</div>}
                 </div>
                 <button className="btn-ghost" style={{borderColor:"rgba(80,160,80,0.5)",color:"#80c080",marginRight:"8px",whiteSpace:"nowrap"}} onClick={()=>{goTab("recipes");setSelectedRecipe(suggestedRecipe);}}>ابدأ ←</button>
@@ -1927,11 +1927,11 @@ function App(){
                   <h3 style={{color:"#D4AF37",fontSize:"0.82rem",fontWeight:"700"}}>آخر النشاطات</h3>
                 </div>
                 {recent.map((e,i)=>(
-                  <div key={e.id} style={{display:"flex",alignItems:"center",gap:"10px",padding:"7px 0",borderBottom:i<recent.length-1?"1px solid rgba(255,255,255,0.04)":"none"}}>
+                  <div key={e.id} style={{display:"flex",alignItems:"center",gap:"10px",padding:"7px 0",borderBottom:i<recent.length-1?"1px solid rgba(26,18,8,0.08)":"none"}}>
                     <div style={{width:"32px",height:"32px",borderRadius:"10px",background:e.sold?"rgba(60,140,60,0.10)":"rgba(201,168,76,0.07)",border:`1px solid ${e.sold?"rgba(60,140,60,0.22)":"rgba(201,168,76,0.15)"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1rem",flexShrink:0}}>{e.recipeIcon||"🧪"}</div>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:"0.78rem",color:"#EDE0C8",fontWeight:"600",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{e.recipeName}</div>
-                      <div style={{fontSize:"0.60rem",color:"rgba(255,255,255,0.30)",marginTop:"1px"}}>{fmtDate(e.date)} · {e.vol}مل{e.sold?` · بيع ${e.sellPrice||""}ر`:(e.readyDate&&daysLeft(e.readyDate)>0?` · ${daysLeft(e.readyDate)} يوم للجاهزية`:" · جاهز")}</div>
+                      <div style={{fontSize:"0.78rem",color:"#1A1208",fontWeight:"600",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{e.recipeName}</div>
+                      <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.30)",marginTop:"1px"}}>{fmtDate(e.date)} · {e.vol}مل{e.sold?` · بيع ${e.sellPrice||""}ر`:(e.readyDate&&daysLeft(e.readyDate)>0?` · ${daysLeft(e.readyDate)} يوم للجاهزية`:" · جاهز")}</div>
                     </div>
                     <div style={{flexShrink:0}}>
                       {e.sold?<span className="tag tag-green" style={{fontSize:"0.56rem"}}>مباع</span>:e.readyDate&&daysLeft(e.readyDate)>0?<span className="tag tag-gold" style={{fontSize:"0.56rem"}}>تعتيق</span>:<span className="tag tag-green" style={{fontSize:"0.56rem"}}>جاهز</span>}
@@ -1957,15 +1957,15 @@ function App(){
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <div>
                   <div style={{fontSize:"0.78rem",fontWeight:"800",color:"#E8C870",marginBottom:"3px"}}>🚀 متجر إلكتروني — خارطة الطريق</div>
-                  <div style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.30)"}}>Next.js · Supabase · Moyasar · Aramex</div>
+                  <div style={{fontSize:"0.62rem",color:"rgba(26,18,8,0.30)"}}>Next.js · Supabase · Moyasar · Aramex</div>
                 </div>
                 <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:"3px"}}>
-                  {["①","②","③","④","⑤"].map((n,i)=><div key={i} style={{width:"28px",height:"4px",borderRadius:"2px",background:i===0?"rgba(201,168,76,0.6)":"rgba(255,255,255,0.08)"}}/>)}
+                  {["①","②","③","④","⑤"].map((n,i)=><div key={i} style={{width:"28px",height:"4px",borderRadius:"2px",background:i===0?"rgba(201,168,76,0.6)":"rgba(26,18,8,0.08)"}}/>)}
                 </div>
               </div>
               <div style={{marginTop:"10px",display:"flex",gap:"6px",flexWrap:"wrap"}}>
                 {[{lbl:"كتالوج",done:true},{lbl:"سلة + فاتورة",done:true},{lbl:"دفع",done:false},{lbl:"شحن",done:false},{lbl:"إشعارات",done:false}].map(({lbl,done})=>(
-                  <span key={lbl} style={{fontSize:"0.58rem",padding:"2px 8px",borderRadius:"10px",background:done?"rgba(80,160,80,0.15)":"rgba(255,255,255,0.05)",border:`1px solid ${done?"rgba(80,160,80,0.35)":"rgba(255,255,255,0.08)"}`,color:done?"#80d080":"rgba(255,255,255,0.30)"}}>
+                  <span key={lbl} style={{fontSize:"0.58rem",padding:"2px 8px",borderRadius:"10px",background:done?"rgba(80,160,80,0.15)":"rgba(26,18,8,0.08)",border:`1px solid ${done?"rgba(80,160,80,0.35)":"rgba(26,18,8,0.08)"}`,color:done?"#80d080":"rgba(26,18,8,0.30)"}}>
                     {done?"✓ ":""}{lbl}
                   </span>
                 ))}
@@ -1994,12 +1994,12 @@ function App(){
           </div>
           <input className="inp" placeholder="🔍 ابحث..." value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:"10px"}}/>
           <div style={{display:"flex",gap:"5px",overflowX:"auto",marginBottom:"6px",paddingBottom:"4px"}}>
-            {CATS.map(c=>(<button key={c} onClick={()=>setCatFilter(c)} style={{background:catFilter===c?"#D4AF37":"rgba(255,255,255,0.06)",border:"1px solid rgba(214,175,55,0.4)",color:catFilter===c?"#1a0800":"#D4AF37",padding:"5px 13px",borderRadius:"20px",fontSize:"0.72rem",fontWeight:"600",cursor:"pointer",whiteSpace:"nowrap"}}>{c}</button>))}
+            {CATS.map(c=>(<button key={c} onClick={()=>setCatFilter(c)} style={{background:catFilter===c?"#D4AF37":"rgba(26,18,8,0.08)",border:"1px solid rgba(214,175,55,0.4)",color:catFilter===c?"#1a0800":"#D4AF37",padding:"5px 13px",borderRadius:"20px",fontSize:"0.72rem",fontWeight:"600",cursor:"pointer",whiteSpace:"nowrap"}}>{c}</button>))}
           </div>
           <div style={{display:"flex",gap:"5px",overflowX:"auto",marginBottom:"12px",paddingBottom:"4px",alignItems:"center"}}>
             <span style={{fontSize:"0.62rem",color:"#7a5a30",whiteSpace:"nowrap"}}>ترتيب:</span>
             {[["default","الافتراضي"],["stock_asc","⬆️ مخزون"],["stock_desc","⬇️ مخزون"],["brand","المورّد"],["name","الاسم"]].map(([val,lbl])=>(
-              <button key={val} onClick={()=>setInvSort(val)} style={{background:invSort===val?"rgba(214,175,55,0.25)":"rgba(255,255,255,0.04)",border:`1px solid ${invSort===val?"rgba(214,175,55,0.7)":"rgba(214,175,55,0.2)"}`,color:invSort===val?"#D4AF37":"#7a5a30",padding:"4px 10px",borderRadius:"20px",fontSize:"0.64rem",fontWeight:"600",cursor:"pointer",whiteSpace:"nowrap"}}>{lbl}</button>
+              <button key={val} onClick={()=>setInvSort(val)} style={{background:invSort===val?"rgba(214,175,55,0.25)":"rgba(26,18,8,0.08)",border:`1px solid ${invSort===val?"rgba(214,175,55,0.7)":"rgba(214,175,55,0.2)"}`,color:invSort===val?"#D4AF37":"#7a5a30",padding:"4px 10px",borderRadius:"20px",fontSize:"0.64rem",fontWeight:"600",cursor:"pointer",whiteSpace:"nowrap"}}>{lbl}</button>
             ))}
           </div>
           {fInv.map(ing=>{
@@ -2015,7 +2015,7 @@ function App(){
                 {/* SVG ring */}
                 <div style={{flexShrink:0,cursor:"pointer"}} onClick={()=>setEditCostId(editCostId===ing.id?null:ing.id)}>
                   <svg width="38" height="38" viewBox="0 0 38 38">
-                    <circle cx="19" cy="19" r={r2} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3.5"/>
+                    <circle cx="19" cy="19" r={r2} fill="none" stroke="rgba(26,18,8,0.08)" strokeWidth="3.5"/>
                     <circle cx="19" cy="19" r={r2} fill="none" stroke={ringColor} strokeWidth="3.5"
                       strokeDasharray={`${pct/100*circ} ${circ}`}
                       strokeLinecap="round"
@@ -2025,7 +2025,7 @@ function App(){
                 </div>
                 {/* name + meta */}
                 <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:"0.87rem",fontWeight:"700",color:"#F0E6D0",lineHeight:"1.25",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
+                  <div style={{fontSize:"0.87rem",fontWeight:"700",color:"#1A1208",lineHeight:"1.25",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
                     {ing.name}
                     {isLow&&<span style={{marginInlineStart:"6px",fontSize:"0.58rem",color:"#C06868",fontWeight:"700",background:"rgba(185,45,45,0.12)",border:"1px solid rgba(185,45,45,0.25)",borderRadius:"8px",padding:"1px 5px"}}>ينفد</span>}
                     {expSt==="expired"&&<span style={{marginInlineStart:"5px",fontSize:"0.58rem",color:"#C06868",background:"rgba(185,45,45,0.12)",border:"1px solid rgba(185,45,45,0.25)",borderRadius:"8px",padding:"1px 5px"}}>منتهي</span>}
@@ -2033,7 +2033,7 @@ function App(){
                   </div>
                   <div style={{display:"flex",gap:"5px",marginTop:"3px",flexWrap:"wrap"}}>
                     <span style={{fontSize:"0.60rem",color:"rgba(201,168,76,0.45)",background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.12)",borderRadius:"8px",padding:"1px 6px"}}>{ing.brand}</span>
-                    <span style={{fontSize:"0.60rem",color:"rgba(255,255,255,0.25)",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:"8px",padding:"1px 6px"}}>{ing.cat}</span>
+                    <span style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.25)",background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.08)",borderRadius:"8px",padding:"1px 6px"}}>{ing.cat}</span>
                   </div>
                 </div>
                 {/* stock + cost */}
@@ -2042,30 +2042,30 @@ function App(){
                   <div onClick={()=>setEditCostId(editCostId===ing.id?null:ing.id)} style={{fontSize:"0.60rem",color:"rgba(106,170,72,0.75)",cursor:"pointer",marginTop:"2px",fontFamily:"'IBM Plex Mono',monospace"}}>{ing.unitCost.toFixed(2)}ر/{ing.unit}</div>
                 </div>
               </div>
-              {editCostId===ing.id&&<div style={{marginBottom:"8px",padding:"10px",background:"rgba(0,0,0,0.3)",borderRadius:"11px",border:"1px solid rgba(201,168,76,0.12)"}}>
+              {editCostId===ing.id&&<div style={{marginBottom:"8px",padding:"10px",background:"rgba(0,0,0,0.05)",borderRadius:"11px",border:"1px solid rgba(201,168,76,0.12)"}}>
                 <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
-                  <span style={{fontSize:"0.70rem",color:"#c8a46a"}}>السعر الكلي:</span>
-                  <input type="number" value={ing.price} onChange={e=>setPrice(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.8rem",padding:"4px"}}/>
+                  <span style={{fontSize:"0.70rem",color:"#8A6A1E"}}>السعر الكلي:</span>
+                  <input type="number" value={ing.price} onChange={e=>setPrice(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(26,18,8,0.85)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#1A1208",fontSize:"0.8rem",padding:"4px"}}/>
                   <span style={{fontSize:"0.68rem",color:"#7a5a20"}}>ر / {ing.qty}{ing.unit}</span>
                 </div>
                 <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
-                  <span style={{fontSize:"0.70rem",color:"#c8a46a"}}>الكمية الأصلية:</span>
-                  <input type="number" value={ing.qty} onChange={e=>setQty(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.8rem",padding:"4px"}}/>
+                  <span style={{fontSize:"0.70rem",color:"#8A6A1E"}}>الكمية الأصلية:</span>
+                  <input type="number" value={ing.qty} onChange={e=>setQty(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(26,18,8,0.85)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#1A1208",fontSize:"0.8rem",padding:"4px"}}/>
                   <span style={{fontSize:"0.68rem",color:"#7a5a20"}}>{ing.unit}</span>
                 </div>
                 <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
-                  <span style={{fontSize:"0.70rem",color:"#c8a46a"}}>تاريخ الانتهاء:</span>
-                  <input type="date" value={ing.expiry||""} onChange={e=>setExpiry(ing.id,e.target.value)} style={{background:"rgba(0,0,0,0.4)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#fff",fontSize:"0.75rem",padding:"4px",colorScheme:"dark"}}/>
+                  <span style={{fontSize:"0.70rem",color:"#8A6A1E"}}>تاريخ الانتهاء:</span>
+                  <input type="date" value={ing.expiry||""} onChange={e=>setExpiry(ing.id,e.target.value)} style={{background:"rgba(26,18,8,0.85)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#1A1208",fontSize:"0.75rem",padding:"4px",colorScheme:"light"}}/>
                 </div>
                 <button onClick={()=>deleteIng(ing.id)} style={{width:"100%",background:"rgba(200,60,60,0.12)",border:"1px solid rgba(200,60,60,0.35)",color:"#e08080",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>🗑️ حذف</button>
               </div>}
               {/* stock bar + controls */}
               <div style={{display:"flex",alignItems:"center",gap:"7px"}}>
-                <div style={{flex:1,background:"rgba(255,255,255,0.05)",borderRadius:"4px",height:"3px",overflow:"hidden"}}>
+                <div style={{flex:1,background:"rgba(26,18,8,0.08)",borderRadius:"4px",height:"3px",overflow:"hidden"}}>
                   <div style={{height:"100%",borderRadius:"4px",width:`${pct}%`,background:pct>50?"linear-gradient(90deg,#4A8A30,#5AA840)":pct>20?"linear-gradient(90deg,#C9A84C,#E8C460)":"linear-gradient(90deg,#8A2020,#C04040)",transition:"width 0.5s ease"}}/>
                 </div>
                 <button onClick={()=>updateStock(ing.id,-5)} style={{background:"rgba(170,40,40,0.14)",border:"1px solid rgba(180,50,50,0.28)",color:"#C06868",width:"28px",height:"28px",borderRadius:"50%",cursor:"pointer",fontSize:"1rem",lineHeight:"1",display:"flex",alignItems:"center",justifyContent:"center"}}>−</button>
-                <input type="number" value={ing.stock} onChange={e=>setStock(ing.id,+e.target.value)} className="mono" style={{width:"52px",textAlign:"center",background:"rgba(0,0,0,0.45)",border:"1px solid rgba(201,168,76,0.30)",borderRadius:"9px",color:"#F0E6D0",fontSize:"0.78rem",padding:"5px"}}/>
+                <input type="number" value={ing.stock} onChange={e=>setStock(ing.id,+e.target.value)} className="mono" style={{width:"52px",textAlign:"center",background:"rgba(26,18,8,0.85)",border:"1px solid rgba(201,168,76,0.30)",borderRadius:"9px",color:"#1A1208",fontSize:"0.78rem",padding:"5px"}}/>
                 <button onClick={()=>updateStock(ing.id,5)} style={{background:"rgba(60,130,60,0.14)",border:"1px solid rgba(70,150,70,0.28)",color:"#68B068",width:"28px",height:"28px",borderRadius:"50%",cursor:"pointer",fontSize:"1rem",lineHeight:"1",display:"flex",alignItems:"center",justifyContent:"center"}}>+</button>
               </div>
             </div>);
@@ -2077,20 +2077,20 @@ function App(){
           <button className="btn-ghost" onClick={()=>setShowAddIng(false)} style={{marginBottom:"14px"}}>← رجوع</button>
           <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>🏺 إضافة خامة + سعرها</h3>
           <div style={{display:"grid",gap:"9px"}}>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الاسم *</label><input className="inp" value={niName} onChange={e=>setNiName(e.target.value)}/></div>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>المورّد</label>
-              <select className="inp" value={niBrand} onChange={e=>setNiBrand(e.target.value)} style={{background:"#0C0601"}}><option value="">اختر...</option>{["شرفان","الحميدي","Luxodor","Bulkaroma","محلي","صناعتي"].map(b=><option key={b}>{b}</option>)}</select></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الاسم *</label><input className="inp" value={niName} onChange={e=>setNiName(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>المورّد</label>
+              <select className="inp" value={niBrand} onChange={e=>setNiBrand(e.target.value)} style={{background:"#FAF8F3"}}><option value="">اختر...</option>{["شرفان","الحميدي","Luxodor","Bulkaroma","محلي","صناعتي"].map(b=><option key={b}>{b}</option>)}</select></div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>التصنيف</label><select className="inp" value={niCat} onChange={e=>setNiCat(e.target.value)} style={{background:"#0C0601"}}>{CATS.slice(1).map(c=><option key={c}>{c}</option>)}</select></div>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الوحدة</label><select className="inp" value={niUnit} onChange={e=>setNiUnit(e.target.value)} style={{background:"#0C0601"}}>{["مل","جم","كجم","لتر"].map(u=><option key={u}>{u}</option>)}</select></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>التصنيف</label><select className="inp" value={niCat} onChange={e=>setNiCat(e.target.value)} style={{background:"#FAF8F3"}}>{CATS.slice(1).map(c=><option key={c}>{c}</option>)}</select></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الوحدة</label><select className="inp" value={niUnit} onChange={e=>setNiUnit(e.target.value)} style={{background:"#FAF8F3"}}>{["مل","جم","كجم","لتر"].map(u=><option key={u}>{u}</option>)}</select></div>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>السعر الكلي (ريال)</label><input type="number" className="inp" value={niPrice} onChange={e=>setNiPrice(+e.target.value)}/></div>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الكمية</label><input type="number" className="inp" value={niQty} onChange={e=>setNiQty(+e.target.value)}/></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>السعر الكلي (ريال)</label><input type="number" className="inp" value={niPrice} onChange={e=>setNiPrice(+e.target.value)}/></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الكمية</label><input type="number" className="inp" value={niQty} onChange={e=>setNiQty(+e.target.value)}/></div>
             </div>
             {niName&&niQty>0&&<div className="glass" style={{textAlign:"center",padding:"10px",background:"rgba(214,175,55,0.06)"}}>
               <div style={{color:"#80c080",fontSize:"0.8rem"}}>تكلفة الوحدة المحسوبة: <b style={{color:"#D4AF37"}}>{(((niBrand==="Bulkaroma"?SHIPPING_BULK*niQty/bulkTotalQty:0)+niPrice)/niQty).toFixed(2)} ريال/{niUnit}</b></div>
-              {niBrand==="Bulkaroma"&&<div style={{color:"#c8a46a",fontSize:"0.68rem",marginTop:"3px"}}>+ حصة شحن {(SHIPPING_BULK*niQty/bulkTotalQty).toFixed(1)} ريال</div>}
+              {niBrand==="Bulkaroma"&&<div style={{color:"#8A6A1E",fontSize:"0.68rem",marginTop:"3px"}}>+ حصة شحن {(SHIPPING_BULK*niQty/bulkTotalQty).toFixed(1)} ريال</div>}
             </div>}
             <button className="btn-gold" onClick={addIng}>💾 حفظ الخامة</button>
           </div>
@@ -2101,15 +2101,15 @@ function App(){
           <div className="modal-sheet">
             <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>📦 تسجيل شراء جديد</h3>
             <div style={{display:"grid",gap:"9px"}}>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الخامة</label>
-                <select className="inp" value={puIngId} onChange={e=>setPuIngId(e.target.value)} style={{background:"#0C0601"}}>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الخامة</label>
+                <select className="inp" value={puIngId} onChange={e=>setPuIngId(e.target.value)} style={{background:"#FAF8F3"}}>
                   {inv.map(i=><option key={i.id} value={i.id}>{i.name} ({i.brand})</option>)}
                 </select></div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
-                <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الكمية المشتراة</label><input type="number" className="inp" value={puQty} onChange={e=>setPuQty(+e.target.value)}/></div>
-                <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>السعر المدفوع (ريال)</label><input type="number" className="inp" value={puPrice} onChange={e=>setPuPrice(+e.target.value)}/></div>
+                <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الكمية المشتراة</label><input type="number" className="inp" value={puQty} onChange={e=>setPuQty(+e.target.value)}/></div>
+                <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>السعر المدفوع (ريال)</label><input type="number" className="inp" value={puPrice} onChange={e=>setPuPrice(+e.target.value)}/></div>
               </div>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>ملاحظة</label><input className="inp" placeholder="اختياري..." value={puNote} onChange={e=>setPuNote(e.target.value)}/></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>ملاحظة</label><input className="inp" placeholder="اختياري..." value={puNote} onChange={e=>setPuNote(e.target.value)}/></div>
               <button className="btn-gold" onClick={addPurchase}>💾 حفظ الشراء</button>
               <button className="btn-ghost" onClick={()=>setShowPurchaseForm(false)}>إلغاء</button>
             </div>
@@ -2131,7 +2131,7 @@ function App(){
                   <button onClick={()=>setShopCart([])} style={{background:"rgba(200,60,60,0.2)",border:"1px solid rgba(200,60,60,0.4)",color:"#e08080",borderRadius:"6px",padding:"2px 8px",cursor:"pointer",fontSize:"0.68rem"}}>مسح الكل</button>
                 </div>
                 {shopCart.map(item=>(
-                  <div key={item.id} style={{borderBottom:"1px solid rgba(255,255,255,0.05)",paddingBottom:"6px",marginBottom:"4px"}}>
+                  <div key={item.id} style={{borderBottom:"1px solid rgba(26,18,8,0.08)",paddingBottom:"6px",marginBottom:"4px"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0"}}>
                       <div>
                         <div style={{fontSize:"0.78rem",fontWeight:"600"}}>{item.name}</div>
@@ -2148,17 +2148,17 @@ function App(){
                         <div style={{fontSize:"0.7rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>📦 تسجيل الشراء</div>
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px",marginBottom:"6px"}}>
                           <div>
-                            <div style={{fontSize:"0.62rem",color:"#c8a46a",marginBottom:"2px"}}>الكمية ({item.unit})</div>
+                            <div style={{fontSize:"0.62rem",color:"#8A6A1E",marginBottom:"2px"}}>الكمية ({item.unit})</div>
                             <input type="number" className="inp" value={buyQty} onChange={e=>setBuyQty(+e.target.value)} step="0.1" style={{textAlign:"center",fontSize:"0.82rem",padding:"5px"}}/>
                           </div>
                           <div>
-                            <div style={{fontSize:"0.62rem",color:"#c8a46a",marginBottom:"2px"}}>السعر (ريال)</div>
+                            <div style={{fontSize:"0.62rem",color:"#8A6A1E",marginBottom:"2px"}}>السعر (ريال)</div>
                             <input type="number" className="inp" value={buyPrice} onChange={e=>setBuyPrice(+e.target.value)} step="1" placeholder="0" style={{textAlign:"center",fontSize:"0.82rem",padding:"5px"}}/>
                           </div>
                         </div>
                         <div style={{display:"flex",gap:"6px"}}>
                           <button onClick={confirmCartPurchase} style={{flex:1,background:"rgba(80,160,80,0.25)",border:"1px solid rgba(80,160,80,0.5)",color:"#80c080",borderRadius:"7px",padding:"6px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"700"}}>💾 حفظ وتحديث المخزون</button>
-                          <button onClick={()=>setBuyingCartItem(null)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"#7a6a50",borderRadius:"7px",padding:"6px 10px",cursor:"pointer",fontSize:"0.75rem"}}>إلغاء</button>
+                          <button onClick={()=>setBuyingCartItem(null)} style={{background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.12)",color:"#7a6a50",borderRadius:"7px",padding:"6px 10px",cursor:"pointer",fontSize:"0.75rem"}}>إلغاء</button>
                         </div>
                       </div>
                     )}
@@ -2171,7 +2171,7 @@ function App(){
                 <div style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.85rem",marginBottom:"8px"}}>🏷️ {brand}</div>
                 {items.map(i=>(
                   <div key={i.id}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:"1px solid rgba(255,255,255,0.05)"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:"1px solid rgba(26,18,8,0.08)"}}>
                       <span style={{fontSize:"0.78rem"}}>{i.name}</span>
                       <div style={{display:"flex",alignItems:"center",gap:"5px"}}>
                         <span style={{fontSize:"0.74rem",color:"#80c080",fontWeight:"700"}}>اشترِ {i.recommend} {i.unit} <span style={{color:"#e08080",fontWeight:"400"}}>(باقي {i.stock})</span></span>
@@ -2182,12 +2182,12 @@ function App(){
                       <div style={{background:"rgba(80,160,80,0.08)",border:"1px solid rgba(80,160,80,0.3)",borderRadius:"8px",padding:"8px",marginTop:"4px"}}>
                         <div style={{fontSize:"0.7rem",color:"#80c080",marginBottom:"6px",fontWeight:"700"}}>تسجيل شراء: {i.name}</div>
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px",marginBottom:"6px"}}>
-                          <div><div style={{fontSize:"0.62rem",color:"#c8a46a",marginBottom:"2px"}}>الكمية ({i.unit})</div><input type="number" className="inp" value={buyQty} onChange={e=>setBuyQty(+e.target.value)} step="0.1" style={{textAlign:"center",fontSize:"0.82rem",padding:"5px"}}/></div>
-                          <div><div style={{fontSize:"0.62rem",color:"#c8a46a",marginBottom:"2px"}}>السعر (ريال)</div><input type="number" className="inp" value={buyPrice} onChange={e=>setBuyPrice(+e.target.value)} step="1" placeholder="0" style={{textAlign:"center",fontSize:"0.82rem",padding:"5px"}}/></div>
+                          <div><div style={{fontSize:"0.62rem",color:"#8A6A1E",marginBottom:"2px"}}>الكمية ({i.unit})</div><input type="number" className="inp" value={buyQty} onChange={e=>setBuyQty(+e.target.value)} step="0.1" style={{textAlign:"center",fontSize:"0.82rem",padding:"5px"}}/></div>
+                          <div><div style={{fontSize:"0.62rem",color:"#8A6A1E",marginBottom:"2px"}}>السعر (ريال)</div><input type="number" className="inp" value={buyPrice} onChange={e=>setBuyPrice(+e.target.value)} step="1" placeholder="0" style={{textAlign:"center",fontSize:"0.82rem",padding:"5px"}}/></div>
                         </div>
                         <div style={{display:"flex",gap:"6px"}}>
                           <button onClick={confirmCartPurchase} style={{flex:1,background:"rgba(80,160,80,0.25)",border:"1px solid rgba(80,160,80,0.5)",color:"#80c080",borderRadius:"7px",padding:"6px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"700"}}>💾 حفظ وتحديث المخزون</button>
-                          <button onClick={()=>setBuyingCartItem(null)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"#7a6a50",borderRadius:"7px",padding:"6px 10px",cursor:"pointer",fontSize:"0.75rem"}}>إلغاء</button>
+                          <button onClick={()=>setBuyingCartItem(null)} style={{background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.12)",color:"#7a6a50",borderRadius:"7px",padding:"6px 10px",cursor:"pointer",fontSize:"0.75rem"}}>إلغاء</button>
                         </div>
                       </div>
                     )}
@@ -2205,10 +2205,10 @@ function App(){
             <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>📊 مقارنة الموردين</h3>
             <p style={{fontSize:"0.68rem",color:"#7a5a30",marginBottom:"12px"}}>الأرخص لكل تصنيف يظهر أولاً (الأخضر = الأوفر)</p>
             {Object.entries(supplierCmp).map(([cat,items])=>(
-              <div key={cat} className="glass" style={{padding:"12px",marginBottom:"10px",background:"rgba(0,0,0,0.25)"}}>
+              <div key={cat} className="glass" style={{padding:"12px",marginBottom:"10px",background:"rgba(0,0,0,0.04)"}}>
                 <div style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.82rem",marginBottom:"8px"}}>{cat}</div>
                 {items.map((i,idx)=>(
-                  <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+                  <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(26,18,8,0.08)"}}>
                     <span style={{fontSize:"0.74rem",color:idx===0?"#80c080":"#c8a46a"}}>{idx===0?"🏆 ":""}{i.name} <span style={{color:"#7a5a30"}}>· {i.brand}</span></span>
                     <span style={{fontSize:"0.74rem",fontWeight:"700",color:idx===0?"#80c080":"#D4AF37"}}>{i.unitCost.toFixed(2)} ر/{i.unit}</span>
                   </div>
@@ -2334,7 +2334,7 @@ function App(){
             <div style={{display:"flex",gap:"5px",flexWrap:"wrap",justifyContent:"flex-end"}}>
               {cartCount>0&&<button className="btn-ghost" style={{borderColor:"rgba(201,168,76,0.5)",color:"#E8C870",position:"relative",paddingInlineEnd:"18px"}} onClick={()=>setShowCart(true)}>
                 🛒
-                <span style={{position:"absolute",top:"-5px",right:"-5px",background:"#C9A84C",color:"#06040C",borderRadius:"50%",width:"17px",height:"17px",fontSize:"0.60rem",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"900",lineHeight:1}}>{cartCount}</span>
+                <span style={{position:"absolute",top:"-5px",right:"-5px",background:"#C9A84C",color:"#1A1208",borderRadius:"50%",width:"17px",height:"17px",fontSize:"0.60rem",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"900",lineHeight:1}}>{cartCount}</span>
               </button>}
               <button className="btn-ghost" style={showCustomerStore?{background:"rgba(201,168,76,0.18)",color:"#E8C870",borderColor:"rgba(201,168,76,0.5)"}:{}} onClick={()=>{setShowCustomerStore(s=>!s);setCatalogMode(false);}}>🛍 متجر</button>
               {!showCustomerStore&&<button className="btn-ghost" style={catalogMode?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>setCatalogMode(c=>!c)}>📖 كتالوج</button>}
@@ -2352,12 +2352,12 @@ function App(){
             {/* search */}
             <div style={{position:"relative",marginBottom:"8px"}}>
               <span style={{position:"absolute",right:"11px",top:"50%",transform:"translateY(-50%)",fontSize:"0.85rem",opacity:0.4,pointerEvents:"none"}}>🔍</span>
-              <input value={recipeSearch} onChange={e=>setRecipeSearch(e.target.value)} placeholder="ابحث باسم الوصفة أو الوصف..." style={{width:"100%",boxSizing:"border-box",padding:"8px 34px 8px 10px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:"10px",color:"#e8dcc8",fontSize:"0.8rem",outline:"none",direction:"rtl"}}/>
+              <input value={recipeSearch} onChange={e=>setRecipeSearch(e.target.value)} placeholder="ابحث باسم الوصفة أو الوصف..." style={{width:"100%",boxSizing:"border-box",padding:"8px 34px 8px 10px",background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.12)",borderRadius:"10px",color:"#e8dcc8",fontSize:"0.8rem",outline:"none",direction:"rtl"}}/>
             </div>
             {/* season chips */}
             <div style={{display:"flex",gap:"5px",flexWrap:"wrap",marginBottom:"6px"}}>
               {["الكل","صيف","شتاء","ربيع","خريف","مناسبات","للجنسين"].map(s=>(
-                <button key={s} onClick={()=>setRecipeSeasonF(s)} style={{padding:"3px 9px",borderRadius:"20px",border:`1px solid ${recipeSeasonF===s?"rgba(232,200,112,0.6)":"rgba(255,255,255,0.1)"}`,background:recipeSeasonF===s?"rgba(232,200,112,0.12)":"rgba(255,255,255,0.03)",color:recipeSeasonF===s?"#E8C870":"rgba(255,255,255,0.45)",fontSize:"0.7rem",cursor:"pointer",fontWeight:recipeSeasonF===s?"700":"400"}}>
+                <button key={s} onClick={()=>setRecipeSeasonF(s)} style={{padding:"3px 9px",borderRadius:"20px",border:`1px solid ${recipeSeasonF===s?"rgba(232,200,112,0.6)":"rgba(26,18,8,0.12)"}`,background:recipeSeasonF===s?"rgba(232,200,112,0.12)":"rgba(26,18,8,0.08)",color:recipeSeasonF===s?"#E8C870":"rgba(26,18,8,0.45)",fontSize:"0.7rem",cursor:"pointer",fontWeight:recipeSeasonF===s?"700":"400"}}>
                   {s==="صيف"?"🌞":s==="شتاء"?"❄️":s==="ربيع"?"🌸":s==="خريف"?"🍂":s==="مناسبات"?"✨":s==="للجنسين"?"🌿":"🔎"} {s}
                 </button>
               ))}
@@ -2365,17 +2365,17 @@ function App(){
             {/* gender chips */}
             <div style={{display:"flex",gap:"5px",flexWrap:"wrap",marginBottom:"6px"}}>
               {["الكل","رجالي","نسائي","للجنسين"].map(g=>(
-                <button key={g} onClick={()=>setRecipeGenderF(g)} style={{padding:"3px 9px",borderRadius:"20px",border:`1px solid ${recipeGenderF===g?"rgba(160,130,210,0.6)":"rgba(255,255,255,0.1)"}`,background:recipeGenderF===g?"rgba(160,130,210,0.12)":"rgba(255,255,255,0.03)",color:recipeGenderF===g?"#c8a0f0":"rgba(255,255,255,0.45)",fontSize:"0.7rem",cursor:"pointer",fontWeight:recipeGenderF===g?"700":"400"}}>
+                <button key={g} onClick={()=>setRecipeGenderF(g)} style={{padding:"3px 9px",borderRadius:"20px",border:`1px solid ${recipeGenderF===g?"rgba(160,130,210,0.6)":"rgba(26,18,8,0.12)"}`,background:recipeGenderF===g?"rgba(160,130,210,0.12)":"rgba(26,18,8,0.08)",color:recipeGenderF===g?"#c8a0f0":"rgba(26,18,8,0.45)",fontSize:"0.7rem",cursor:"pointer",fontWeight:recipeGenderF===g?"700":"400"}}>
                   {g==="رجالي"?"👔":g==="نسائي"?"💐":g==="للجنسين"?"🤝":"👥"} {g}
                 </button>
               ))}
             </div>
             {/* ready toggle */}
-            <button onClick={()=>setReadyFilter(f=>!f)} style={{width:"100%",padding:"6px",background:readyFilter?"rgba(80,160,80,0.2)":"rgba(255,255,255,0.03)",border:`1px solid ${readyFilter?"rgba(80,160,80,0.5)":"rgba(255,255,255,0.08)"}`,color:readyFilter?"#80c080":"rgba(255,255,255,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
+            <button onClick={()=>setReadyFilter(f=>!f)} style={{width:"100%",padding:"6px",background:readyFilter?"rgba(80,160,80,0.2)":"rgba(26,18,8,0.08)",border:`1px solid ${readyFilter?"rgba(80,160,80,0.5)":"rgba(26,18,8,0.08)"}`,color:readyFilter?"#80c080":"rgba(26,18,8,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
               {readyFilter?"✅ جاهز للإنتاج — اضغط للكل":"⚗️ عرض الجاهز للإنتاج فقط"}
             </button>
             {/* hero/produced filter */}
-            <button onClick={()=>setHeroFilter(f=>!f)} style={{width:"100%",padding:"6px",marginTop:"4px",background:heroFilter?"rgba(232,200,112,0.15)":"rgba(255,255,255,0.03)",border:`1px solid ${heroFilter?"rgba(232,200,112,0.55)":"rgba(255,255,255,0.08)"}`,color:heroFilter?"#E8C870":"rgba(255,255,255,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
+            <button onClick={()=>setHeroFilter(f=>!f)} style={{width:"100%",padding:"6px",marginTop:"4px",background:heroFilter?"rgba(232,200,112,0.15)":"rgba(26,18,8,0.08)",border:`1px solid ${heroFilter?"rgba(232,200,112,0.55)":"rgba(26,18,8,0.08)"}`,color:heroFilter?"#E8C870":"rgba(26,18,8,0.35)",borderRadius:"10px",cursor:"pointer",fontSize:"0.73rem",fontWeight:"600"}}>
               {heroFilter?"★ المنتجات المُنتجة — اضغط للكل":"★ عرض المُنتج فقط"}
             </button>
             {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter||heroFilter)&&<div style={{marginTop:"5px",fontSize:"0.65rem",color:"rgba(232,200,112,0.5)",textAlign:"center"}}>
@@ -2386,8 +2386,8 @@ function App(){
             <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{flex:1}}>
-                <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#fff"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
-                <div style={{fontSize:"0.72rem",color:"#c8a46a",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
+                <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#1A1208"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
+                <div style={{fontSize:"0.72rem",color:"#8A6A1E",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
                 {ratings[suggestedRecipe.id]&&<div style={{fontSize:"0.7rem",color:"#e8c860",marginTop:"4px"}}>{"⭐".repeat(ratings[suggestedRecipe.id].stars)}{ratings[suggestedRecipe.id].note&&` — ${ratings[suggestedRecipe.id].note}`}</div>}
               </div>
               <button className="btn-ghost" style={{borderColor:"rgba(80,160,80,0.5)",color:"#80c080",marginRight:"8px",whiteSpace:"nowrap"}} onClick={()=>setSelectedRecipe(suggestedRecipe)}>ابدأ ←</button>
@@ -2397,8 +2397,8 @@ function App(){
           {catalogMode&&<div style={{marginBottom:"12px"}}>
             <input className="inp" placeholder="🔍 ابحث عن عطر..." value={catalogSearch} onChange={e=>setCatalogSearch(e.target.value)} style={{marginBottom:"8px"}}/>
             <div style={{display:"flex",gap:"6px",flexWrap:"wrap"}}>
-              <select className="inp" value={catalogSeason} onChange={e=>setCatalogSeason(e.target.value)} style={{flex:1,background:"#0C0601",fontSize:"0.78rem"}}>{["الكل","صيف","شتاء","ربيع","خريف","مناسبات"].map(s=><option key={s}>{s}</option>)}</select>
-              <select className="inp" value={catalogGender} onChange={e=>setCatalogGender(e.target.value)} style={{flex:1,background:"#0C0601",fontSize:"0.78rem"}}>{["الكل","للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select>
+              <select className="inp" value={catalogSeason} onChange={e=>setCatalogSeason(e.target.value)} style={{flex:1,background:"#FAF8F3",fontSize:"0.78rem"}}>{["الكل","صيف","شتاء","ربيع","خريف","مناسبات"].map(s=><option key={s}>{s}</option>)}</select>
+              <select className="inp" value={catalogGender} onChange={e=>setCatalogGender(e.target.value)} style={{flex:1,background:"#FAF8F3",fontSize:"0.78rem"}}>{["الكل","للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select>
             </div>
           </div>}
           {/* ── customer store ── */}
@@ -2408,7 +2408,7 @@ function App(){
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"14px"}}>
                 <div>
                   <div style={{fontSize:"0.42rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>Atelier Dhawi · Private Collection</div>
-                  <div style={{fontSize:"0.68rem",color:"rgba(255,255,255,0.28)",marginTop:"2px"}}>اختر منتجاتك وأضفها للسلة</div>
+                  <div style={{fontSize:"0.68rem",color:"rgba(26,18,8,0.28)",marginTop:"2px"}}>اختر منتجاتك وأضفها للسلة</div>
                 </div>
                 {cartCount>0
                   ?<button className="btn-gold" style={{padding:"8px 14px",fontSize:"0.72rem",borderRadius:"20px",whiteSpace:"nowrap"}} onClick={()=>setShowCart(true)}>
@@ -2432,16 +2432,16 @@ function App(){
                     <div className="pkg-top-bar"/>
                     <div style={{padding:"14px 12px 12px",textAlign:"center"}}>
                       <div className="pkg-badge">{r.season}</div>
-                      <div style={{fontSize:"2.6rem",filter:"drop-shadow(0 4px 16px rgba(0,0,0,0.6))",marginBottom:"6px",marginTop:"8px"}}>{r.icon}</div>
+                      <div style={{fontSize:"2.6rem",filter:"drop-shadow(0 4px 16px rgba(0,0,0,0.12))",marginBottom:"6px",marginTop:"8px"}}>{r.icon}</div>
                       <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"0.40rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.35em",textTransform:"uppercase",marginBottom:"3px"}}>ATELIER DHAWI</div>
-                      <div style={{fontSize:"0.82rem",fontWeight:"800",color:"#F0E6D0",letterSpacing:"-0.01em",lineHeight:1.25,marginBottom:"6px"}}>{r.name}</div>
+                      <div style={{fontSize:"0.82rem",fontWeight:"800",color:"#1A1208",letterSpacing:"-0.01em",lineHeight:1.25,marginBottom:"6px"}}>{r.name}</div>
                       {/* layer mini bar */}
                       <div style={{display:"flex",height:"3px",borderRadius:"2px",overflow:"hidden",gap:"1px",marginBottom:"8px"}}>
                         <div style={{flex:tpct||0.1,background:"rgba(232,200,112,0.75)"}}/>
                         <div style={{flex:mpct||0.1,background:"rgba(200,120,190,0.65)"}}/>
                         <div style={{flex:bpct||0.1,background:"rgba(190,140,70,0.60)"}}/>
                       </div>
-                      <div style={{fontSize:"0.48rem",color:"rgba(255,255,255,0.22)",marginBottom:"10px",direction:"ltr"}}>{r.gender} · {r.stability}</div>
+                      <div style={{fontSize:"0.48rem",color:"rgba(26,18,8,0.22)",marginBottom:"10px",direction:"ltr"}}>{r.gender} · {r.stability}</div>
                       {/* barcode */}
                       <div style={{display:"flex",justifyContent:"center",marginBottom:"6px"}}>
                         <div className="barcode">
@@ -2451,7 +2451,7 @@ function App(){
                       {/* price + add */}
                       <div style={{borderTop:"1px solid rgba(201,168,76,0.12)",paddingTop:"10px",marginTop:"2px"}}>
                         <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.15rem",fontWeight:"700",background:"linear-gradient(135deg,#E8C870,#A07830)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",marginBottom:"6px"}}>{price}<span style={{fontSize:"0.60rem",opacity:0.7}}> ر</span></div>
-                        <div style={{fontSize:"0.48rem",color:"rgba(255,255,255,0.22)",marginBottom:"8px"}}>{BATCH_NAME[batchUnit]}</div>
+                        <div style={{fontSize:"0.48rem",color:"rgba(26,18,8,0.22)",marginBottom:"8px"}}>{BATCH_NAME[batchUnit]}</div>
                         <button onClick={e=>addToCart(r,e)} style={{
                           width:"100%",padding:"7px 4px",borderRadius:"20px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700",
                           background:inCart?"rgba(201,168,76,0.22)":"rgba(201,168,76,0.10)",
@@ -2482,15 +2482,15 @@ function App(){
             return filtered.map(r=>(
             <div key={r.id} onClick={()=>setCatalogView(r)} style={{
               cursor:"pointer",marginBottom:"14px",padding:"22px 18px",textAlign:"center",
-              background:"linear-gradient(160deg,rgba(18,11,3,0.88),rgba(10,6,1,0.94)) padding-box, linear-gradient(135deg,rgba(201,168,76,0.40),rgba(70,42,8,0.25),rgba(201,168,76,0.40)) border-box",
+              background:"linear-gradient(160deg,rgba(255,255,255,0.95),rgba(248,245,237,0.98)) padding-box, linear-gradient(135deg,rgba(201,168,76,0.45),rgba(180,140,40,0.20),rgba(201,168,76,0.45)) border-box",
               border:"1.5px solid transparent",borderRadius:"20px",
               position:"relative",overflow:"hidden",
-              boxShadow:"0 10px 44px rgba(0,0,0,0.58),inset 0 1px 0 rgba(201,168,76,0.10)"
+              boxShadow:"0 10px 44px rgba(0,0,0,0.10),inset 0 1px 0 rgba(201,168,76,0.10)"
             }}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.45),transparent)"}}/>
               <div style={{position:"absolute",top:"12px",left:"12px",fontSize:"1.2rem",opacity:0.8}}>{r.season==="صيف"?"🌞":r.season==="شتاء"?"❄️":r.season==="مناسبات"?"✨":r.season==="ربيع"?"🌸":"🍂"}</div>
               {favoriteIds.includes(r.id)&&<div style={{position:"absolute",top:"12px",right:"12px",fontSize:"1rem",filter:"drop-shadow(0 0 4px rgba(232,196,96,0.6))"}}>⭐</div>}
-              <div style={{fontSize:"3rem",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.5))",marginBottom:"4px"}}>{r.icon}</div>
+              <div style={{fontSize:"3rem",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.10))",marginBottom:"4px"}}>{r.icon}</div>
               <h3 style={{color:"#D4AF37",fontSize:"1.18rem",fontWeight:"800",margin:"6px 0",letterSpacing:"-0.01em"}}>{r.name}</h3>
               <p style={{fontSize:"0.80rem",color:"#C8A870",marginBottom:"12px",lineHeight:"1.8"}}>{r.desc}</p>
               <div className="g-line" style={{maxWidth:"120px",margin:"0 auto 12px"}}/>
@@ -2520,15 +2520,15 @@ function App(){
                   {!ready&&<div style={{display:"inline-flex",alignItems:"center",gap:"4px",background:"rgba(180,50,50,0.09)",border:"1px solid rgba(180,50,50,0.22)",borderRadius:"20px",padding:"2px 8px",marginBottom:"6px"}}>
                     <span style={{fontSize:"0.52rem",color:"rgba(200,100,100,0.70)",fontWeight:"700",letterSpacing:"0.4px",textTransform:"uppercase"}}>مخزون ناقص</span>
                   </div>}
-                  <div style={{fontSize:"1.0rem",fontWeight:"700",color:"#F0E6D0",lineHeight:"1.35",letterSpacing:"-0.01em"}}>{r.name}</div>
+                  <div style={{fontSize:"1.0rem",fontWeight:"700",color:"#1A1208",lineHeight:"1.35",letterSpacing:"-0.01em"}}>{r.name}</div>
                   <div style={{fontSize:"0.55rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.35em",textTransform:"uppercase",marginTop:"2px",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>{seasonIcon} {r.season} · {r.gender}</div>
                 </div>
                 {/* icon + actions */}
                 <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:"5px",flexShrink:0}}>
                   <div style={{width:"44px",height:"44px",borderRadius:"14px",background:"rgba(201,168,76,0.07)",border:"1px solid rgba(201,168,76,0.14)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.5rem",cursor:"pointer"}} onClick={()=>setSelectedRecipe(r)}>{r.icon}</div>
                   <div style={{display:"flex",gap:"4px"}}>
-                    <button onClick={e=>{e.stopPropagation();toggleFav(r.id);}} style={{background:fav?"rgba(201,168,76,0.18)":"rgba(255,255,255,0.04)",border:`1px solid ${fav?"rgba(201,168,76,0.40)":"rgba(255,255,255,0.08)"}`,color:fav?"#E8C060":"rgba(255,255,255,0.25)",borderRadius:"8px",padding:"3px 7px",fontSize:"0.75rem",cursor:"pointer",lineHeight:1}}>{fav?"★":"☆"}</button>
-                    <button onClick={e=>{e.stopPropagation();toggleCompare(r.id);}} style={{background:compareIds.includes(r.id)?"rgba(80,120,200,0.22)":"rgba(255,255,255,0.04)",border:`1px solid ${compareIds.includes(r.id)?"rgba(80,120,200,0.40)":"rgba(255,255,255,0.08)"}`,color:compareIds.includes(r.id)?"#8AAAE0":"rgba(255,255,255,0.25)",borderRadius:"8px",padding:"3px 6px",fontSize:"0.68rem",cursor:"pointer",lineHeight:1}}>⚖</button>
+                    <button onClick={e=>{e.stopPropagation();toggleFav(r.id);}} style={{background:fav?"rgba(201,168,76,0.18)":"rgba(26,18,8,0.08)",border:`1px solid ${fav?"rgba(201,168,76,0.40)":"rgba(26,18,8,0.08)"}`,color:fav?"#E8C060":"rgba(26,18,8,0.25)",borderRadius:"8px",padding:"3px 7px",fontSize:"0.75rem",cursor:"pointer",lineHeight:1}}>{fav?"★":"☆"}</button>
+                    <button onClick={e=>{e.stopPropagation();toggleCompare(r.id);}} style={{background:compareIds.includes(r.id)?"rgba(80,120,200,0.22)":"rgba(26,18,8,0.08)",border:`1px solid ${compareIds.includes(r.id)?"rgba(80,120,200,0.40)":"rgba(26,18,8,0.08)"}`,color:compareIds.includes(r.id)?"#8AAAE0":"rgba(26,18,8,0.25)",borderRadius:"8px",padding:"3px 6px",fontSize:"0.68rem",cursor:"pointer",lineHeight:1}}>⚖</button>
                   </div>
                 </div>
               </div>
@@ -2561,11 +2561,11 @@ function App(){
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"6px"}}>
                 <div style={{display:"flex",gap:"5px",flexWrap:"wrap",flex:1}}>
                   <span className="tag tag-gold" style={{fontSize:"0.58rem"}}>⏱ {r.stability}</span>
-                  <span className="tag" style={{background:"rgba(255,255,255,0.04)",color:"rgba(200,180,140,0.55)",border:"1px solid rgba(255,255,255,0.06)",fontSize:"0.58rem"}}>{r.ing.length} خامة</span>
+                  <span className="tag" style={{background:"rgba(26,18,8,0.08)",color:"rgba(200,180,140,0.55)",border:"1px solid rgba(26,18,8,0.08)",fontSize:"0.58rem"}}>{r.ing.length} خامة</span>
                   {rat&&<span style={{fontSize:"0.68rem",color:"#E8C060",letterSpacing:"0.5px"}}>{"★".repeat(rat.stars)}{"☆".repeat(5-rat.stars)}</span>}
                 </div>
-                <div style={{background:ready?"rgba(60,140,60,0.10)":"rgba(255,255,255,0.04)",border:`1px solid ${ready?"rgba(60,140,60,0.22)":"rgba(255,255,255,0.07)"}`,borderRadius:"20px",padding:"4px 10px",flexShrink:0}}>
-                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.70rem",color:ready?"#6AAA48":"rgba(255,255,255,0.30)",fontWeight:"600",letterSpacing:"-0.02em"}}>{recipeCost(r).toFixed(0)}<span style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.58rem",opacity:0.75}}> ر</span></span>
+                <div style={{background:ready?"rgba(60,140,60,0.10)":"rgba(26,18,8,0.08)",border:`1px solid ${ready?"rgba(60,140,60,0.22)":"rgba(26,18,8,0.08)"}`,borderRadius:"20px",padding:"4px 10px",flexShrink:0}}>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.70rem",color:ready?"#6AAA48":"rgba(26,18,8,0.30)",fontWeight:"600",letterSpacing:"-0.02em"}}>{recipeCost(r).toFixed(0)}<span style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.58rem",opacity:0.75}}> ر</span></span>
                 </div>
               </div>
               {/* hero product — price badge + quick order */}
@@ -2590,18 +2590,18 @@ function App(){
               {[r1,r2].map(r=><div key={r.id} className="glass" style={{textAlign:"center",padding:"12px"}}>
                 <div style={{fontSize:"1.5rem"}}>{r.icon}</div>
                 <div style={{fontSize:"0.82rem",fontWeight:"700",color:"#D4AF37",marginTop:"4px"}}>{r.name}</div>
-                <div style={{fontSize:"0.68rem",color:"#c8a46a",marginTop:"2px"}}>{r.gender} • {r.season}</div>
+                <div style={{fontSize:"0.68rem",color:"#8A6A1E",marginTop:"2px"}}>{r.gender} • {r.season}</div>
                 <div style={{fontSize:"0.7rem",color:"#80c080",marginTop:"4px"}}>تكلفة {BATCH_NAME[batchUnit]}: {recipeCost(r).toFixed(0)} ر</div>
-                <div style={{fontSize:"0.68rem",color:"#c8a46a"}}>ثبات: {r.stability}</div>
+                <div style={{fontSize:"0.68rem",color:"#8A6A1E"}}>ثبات: {r.stability}</div>
               </div>)}
             </div>
             <h4 style={{color:"#D4AF37",fontSize:"0.8rem",marginBottom:"8px"}}>المكونات</h4>
             {allIds.map(id=>{
               const ing=getIng(id);
               const a1=r1.ing.find(i=>i[0]===id);const a2=r2.ing.find(i=>i[0]===id);
-              return <div key={id} style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:"6px",alignItems:"center",padding:"5px 8px",marginBottom:"3px",borderRadius:"8px",background:"rgba(255,255,255,0.03)"}}>
+              return <div key={id} style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:"6px",alignItems:"center",padding:"5px 8px",marginBottom:"3px",borderRadius:"8px",background:"rgba(26,18,8,0.08)"}}>
                 <div style={{fontSize:"0.72rem",color:a1?"#D4AF37":"#3a2a10",textAlign:"right"}}>{a1?`${(a1[1]*recipeScale(r1)).toFixed(1)}`:"—"}</div>
-                <div style={{fontSize:"0.68rem",color:"#c8a46a",textAlign:"center"}}>{ing?.name||id}</div>
+                <div style={{fontSize:"0.68rem",color:"#8A6A1E",textAlign:"center"}}>{ing?.name||id}</div>
                 <div style={{fontSize:"0.72rem",color:a2?"#D4AF37":"#3a2a10",textAlign:"left"}}>{a2?`${(a2[1]*recipeScale(r2)).toFixed(1)}`:"—"}</div>
               </div>;
             })}
@@ -2614,7 +2614,7 @@ function App(){
           <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>🧪 حاسبة الخلط المباشرة</h3>
           <div className="glass" style={{padding:"12px"}}>
             <div style={{display:"grid",gridTemplateColumns:"2fr 1fr auto",gap:"6px",marginBottom:"8px"}}>
-              <select className="inp" value={mixIngId} onChange={e=>setMixIngId(e.target.value)} style={{background:"#0C0601",fontSize:"0.78rem"}}>
+              <select className="inp" value={mixIngId} onChange={e=>setMixIngId(e.target.value)} style={{background:"#FAF8F3",fontSize:"0.78rem"}}>
                 {inv.map(i=><option key={i.id} value={i.id}>{i.name}</option>)}
               </select>
               <input type="number" className="inp" value={mixAmt} onChange={e=>setMixAmt(+e.target.value)} step="0.5" style={{textAlign:"center"}}/>
@@ -2627,10 +2627,10 @@ function App(){
               const ing=getIng(mi.id);
               const pct=mixTotal>0?(mi.amount/mixTotal*100).toFixed(1):0;
               const cost=ing?ing.unitCost*mi.amount:0;
-              return <div key={mi.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 8px",background:"rgba(255,255,255,0.04)",borderRadius:"7px",marginBottom:"3px"}}>
+              return <div key={mi.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 8px",background:"rgba(26,18,8,0.08)",borderRadius:"7px",marginBottom:"3px"}}>
                 <div>
                   <div style={{fontSize:"0.78rem"}}>{ing?.name}</div>
-                  <div style={{fontSize:"0.62rem",color:"#c8a46a"}}>{pct}% • {cost.toFixed(2)} ريال</div>
+                  <div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>{pct}% • {cost.toFixed(2)} ريال</div>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:"7px"}}>
                   <span style={{color:"#D4AF37",fontWeight:"700"}}>{mi.amount} {ing?.unit}</span>
@@ -2640,9 +2640,9 @@ function App(){
             })}
             {mixItems.length>0&&<div style={{marginTop:"10px",padding:"10px",background:"rgba(214,175,55,0.08)",borderRadius:"10px"}}>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"6px",textAlign:"center"}}>
-                <div><div style={{fontSize:"0.62rem",color:"#c8a46a"}}>المجموع</div><div style={{fontWeight:"700",color:"#D4AF37"}}>{mixTotal.toFixed(1)} وحدة</div></div>
-                <div><div style={{fontSize:"0.62rem",color:"#c8a46a"}}>التكلفة الكلية</div><div style={{fontWeight:"700",color:"#D4AF37"}}>{mixCost.toFixed(1)} ريال</div></div>
-                <div><div style={{fontSize:"0.62rem",color:"#c8a46a"}}>تكلفة الوحدة</div><div style={{fontWeight:"700",color:"#80c080"}}>{mixTotal>0?(mixCost/mixTotal).toFixed(2):0} ريال</div></div>
+                <div><div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>المجموع</div><div style={{fontWeight:"700",color:"#D4AF37"}}>{mixTotal.toFixed(1)} وحدة</div></div>
+                <div><div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>التكلفة الكلية</div><div style={{fontWeight:"700",color:"#D4AF37"}}>{mixCost.toFixed(1)} ريال</div></div>
+                <div><div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>تكلفة الوحدة</div><div style={{fontWeight:"700",color:"#80c080"}}>{mixTotal>0?(mixCost/mixTotal).toFixed(2):0} ريال</div></div>
               </div>
             </div>}
           </div>
@@ -2653,19 +2653,19 @@ function App(){
           <button className="btn-ghost" onClick={()=>setShowAddRec(false)} style={{marginBottom:"14px"}}>← رجوع</button>
           <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>✦ وصفة جديدة</h3>
           <div style={{display:"grid",gap:"9px"}}>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الاسم *</label><input className="inp" value={nrName} onChange={e=>setNrName(e.target.value)}/></div>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الوصف</label><input className="inp" value={nrDesc} onChange={e=>setNrDesc(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الاسم *</label><input className="inp" value={nrName} onChange={e=>setNrName(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الوصف</label><input className="inp" value={nrDesc} onChange={e=>setNrDesc(e.target.value)}/></div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الموسم</label><select className="inp" value={nrSeason} onChange={e=>setNrSeason(e.target.value)} style={{background:"#0C0601"}}>{["صيف","شتاء","ربيع","خريف","مناسبات"].map(s=><option key={s}>{s}</option>)}</select></div>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الجنس</label><select className="inp" value={nrGender} onChange={e=>setNrGender(e.target.value)} style={{background:"#0C0601"}}>{["للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الموسم</label><select className="inp" value={nrSeason} onChange={e=>setNrSeason(e.target.value)} style={{background:"#FAF8F3"}}>{["صيف","شتاء","ربيع","خريف","مناسبات"].map(s=><option key={s}>{s}</option>)}</select></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الجنس</label><select className="inp" value={nrGender} onChange={e=>setNrGender(e.target.value)} style={{background:"#FAF8F3"}}>{["للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select></div>
             </div>
-            <div className="glass" style={{padding:"12px",background:"rgba(0,0,0,0.3)"}}>
+            <div className="glass" style={{padding:"12px",background:"rgba(0,0,0,0.05)"}}>
               <div style={{display:"grid",gridTemplateColumns:"2fr 1fr auto",gap:"6px",marginBottom:"8px"}}>
-                <select className="inp" value={nrIngId} onChange={e=>setNrIngId(e.target.value)} style={{background:"#0C0601",fontSize:"0.78rem"}}>{inv.map(i=><option key={i.id} value={i.id}>{i.name}</option>)}</select>
+                <select className="inp" value={nrIngId} onChange={e=>setNrIngId(e.target.value)} style={{background:"#FAF8F3",fontSize:"0.78rem"}}>{inv.map(i=><option key={i.id} value={i.id}>{i.name}</option>)}</select>
                 <input type="number" className="inp" value={nrAmt} onChange={e=>setNrAmt(+e.target.value)} step="0.5" style={{textAlign:"center"}}/>
                 <button onClick={()=>{if(nrIngs.find(i=>i.id===nrIngId))setNrIngs(p=>p.map(i=>i.id===nrIngId?{...i,amount:+(i.amount+nrAmt).toFixed(1)}:i));else setNrIngs(p=>[...p,{id:nrIngId,amount:nrAmt}]);}} style={{background:"#D4AF37",border:"none",color:"#1a0800",width:"36px",height:"36px",borderRadius:"50%",cursor:"pointer",fontSize:"1.1rem",fontWeight:"bold",alignSelf:"end"}}>+</button>
               </div>
-              {nrIngs.map(ri=>{const ing=getIng(ri.id);return(<div key={ri.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 8px",background:"rgba(255,255,255,0.04)",borderRadius:"7px",marginBottom:"3px"}}><span style={{fontSize:"0.78rem"}}>{ing?.name}</span><div style={{display:"flex",alignItems:"center",gap:"7px"}}><span style={{color:"#D4AF37",fontWeight:"700"}}>{ri.amount}مل</span><button onClick={()=>setNrIngs(p=>p.filter(i=>i.id!==ri.id))} style={{background:"none",border:"none",color:"#e08080",cursor:"pointer"}}>✕</button></div></div>);})}
+              {nrIngs.map(ri=>{const ing=getIng(ri.id);return(<div key={ri.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 8px",background:"rgba(26,18,8,0.08)",borderRadius:"7px",marginBottom:"3px"}}><span style={{fontSize:"0.78rem"}}>{ing?.name}</span><div style={{display:"flex",alignItems:"center",gap:"7px"}}><span style={{color:"#D4AF37",fontWeight:"700"}}>{ri.amount}مل</span><button onClick={()=>setNrIngs(p=>p.filter(i=>i.id!==ri.id))} style={{background:"none",border:"none",color:"#e08080",cursor:"pointer"}}>✕</button></div></div>);})}
               {nrIngs.length>0&&<div style={{textAlign:"left",color:"#D4AF37",fontSize:"0.78rem",marginTop:"5px"}}>المجموع: {nrIngs.reduce((s,i)=>s+i.amount,0).toFixed(1)} مل • التكلفة: {nrIngs.reduce((s,i)=>{const ing=getIng(i.id);return s+(ing?ing.unitCost*i.amount:0);},0).toFixed(1)} ريال</div>}
             </div>
             <button className="btn-gold" onClick={addRec}>✦ حفظ الوصفة</button>
@@ -2705,14 +2705,14 @@ function App(){
             {(()=>{const dp=recipePrices[r.id]||r.price_sar||0;const hasBatch=hasActiveBatch(prodLog,r.id);return(
             <div style={{display:"flex",gap:"6px",marginBottom:"8px"}}>
               {r.hero&&dp>0&&hasBatch&&<a href={`https://wa.me/${WHATSAPP_OWNER}?text=${encodeURIComponent(`مرحبا، أبي أطلب: ${r.icon} ${r.name}\nالحجم: 12مل\nالسعر: ${dp} ريال\nالموسم: ${r.season} — ${r.gender}`)}`} target="_blank" rel="noreferrer" style={{flex:2,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"rgba(37,211,102,0.14)",border:"1.5px solid rgba(37,211,102,0.45)",color:"#25d366",borderRadius:"12px",padding:"9px 14px",fontSize:"0.82rem",fontWeight:"700",textDecoration:"none",fontFamily:"'Alexandria',sans-serif"}}>💚 اطلب الآن — {dp} ريال</a>}
-              {r.hero&&dp>0&&!hasBatch&&<div style={{flex:2,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"rgba(255,255,255,0.03)",border:"1px dashed rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.25)",borderRadius:"12px",padding:"9px 14px",fontSize:"0.76rem",fontFamily:"'Alexandria',sans-serif"}}>⏳ لم يُنتج بعد</div>}
+              {r.hero&&dp>0&&!hasBatch&&<div style={{flex:2,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",background:"rgba(26,18,8,0.08)",border:"1px dashed rgba(26,18,8,0.12)",color:"rgba(26,18,8,0.25)",borderRadius:"12px",padding:"9px 14px",fontSize:"0.76rem",fontFamily:"'Alexandria',sans-serif"}}>⏳ لم يُنتج بعد</div>}
               <button className="btn-ghost" style={{flex:r.hero&&dp>0?1:2,fontSize:"0.78rem"}} onClick={()=>openEditRecipe(r)}>✏️ تعديل</button>
               <button className="btn-danger" style={{flex:1,fontSize:"0.78rem"}} onClick={()=>deleteRecipe(r.id)}>🗑️ حذف</button>
             </div>);})()}
             {/* ── publish toggle + story edit ── */}
             {(()=>{const hasBatch=hasActiveBatch(prodLog,r.id);return(
             <div style={{display:"flex",gap:"6px",marginBottom:"12px"}}>
-              <button onClick={()=>togglePublished(r.id)} title={!hasBatch&&!r.published?"أنتج دفعة أولاً":""}  style={{flex:1,padding:"9px",borderRadius:"11px",border:`1.5px solid ${r.published?"rgba(37,211,102,0.50)":hasBatch?"rgba(255,255,255,0.22)":"rgba(255,255,255,0.08)"}`,background:r.published?"rgba(37,211,102,0.12)":hasBatch?"rgba(255,255,255,0.04)":"rgba(255,255,255,0.02)",color:r.published?"#25d366":hasBatch?"rgba(255,255,255,0.50)":"rgba(255,255,255,0.22)",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>
+              <button onClick={()=>togglePublished(r.id)} title={!hasBatch&&!r.published?"أنتج دفعة أولاً":""}  style={{flex:1,padding:"9px",borderRadius:"11px",border:`1.5px solid ${r.published?"rgba(37,211,102,0.50)":hasBatch?"rgba(26,18,8,0.22)":"rgba(26,18,8,0.08)"}`,background:r.published?"rgba(37,211,102,0.12)":hasBatch?"rgba(26,18,8,0.08)":"rgba(26,18,8,0.08)",color:r.published?"#25d366":hasBatch?"rgba(26,18,8,0.50)":"rgba(26,18,8,0.22)",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>
                 {r.published?"🌐 ظاهر في المتجر":hasBatch?"🔒 مخفي من المتجر":"🔒 مخفي — اضغط للنشر"}
               </button>
               <button onClick={()=>{setEditingStory(r.id);setStoryDraft(r.story||"");}} style={{flex:1,padding:"9px",borderRadius:"11px",border:"1px solid rgba(201,168,76,0.30)",background:"rgba(201,168,76,0.06)",color:"#C9A84C",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>
@@ -2726,17 +2726,17 @@ function App(){
               <textarea value={storyDraft} onChange={e=>setStoryDraft(e.target.value)} rows={4} className="inp" style={{resize:"vertical",fontSize:"0.80rem",lineHeight:"1.8",fontFamily:"'Cormorant Garamond',serif"}} placeholder="اكتب القصة العاطفية للعطر هنا..."/>
               <div style={{display:"flex",gap:"6px",marginTop:"8px"}}>
                 <button onClick={()=>saveStory(r.id,storyDraft)} style={{flex:2,padding:"8px",borderRadius:"9px",background:"rgba(201,168,76,0.18)",border:"1px solid rgba(201,168,76,0.45)",color:"#E8C060",cursor:"pointer",fontSize:"0.78rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}}>✅ حفظ القصة</button>
-                <button onClick={()=>setEditingStory(null)} style={{flex:1,padding:"8px",borderRadius:"9px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.10)",color:"rgba(255,255,255,0.35)",cursor:"pointer",fontSize:"0.75rem",fontFamily:"'Alexandria',sans-serif"}}>إلغاء</button>
+                <button onClick={()=>setEditingStory(null)} style={{flex:1,padding:"8px",borderRadius:"9px",background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.12)",color:"rgba(26,18,8,0.35)",cursor:"pointer",fontSize:"0.75rem",fontFamily:"'Alexandria',sans-serif"}}>إلغاء</button>
               </div>
             </div>}
             <div style={{
               textAlign:"center",padding:"20px 18px 18px",
-              background:"linear-gradient(160deg,rgba(18,11,3,0.88),rgba(10,6,1,0.94)) padding-box, linear-gradient(135deg,rgba(201,168,76,0.38),rgba(70,42,8,0.2),rgba(201,168,76,0.38)) border-box",
+              background:"linear-gradient(160deg,rgba(255,255,255,0.95),rgba(248,245,237,0.98)) padding-box, linear-gradient(135deg,rgba(201,168,76,0.42),rgba(180,140,40,0.18),rgba(201,168,76,0.42)) border-box",
               border:"1.5px solid transparent",borderRadius:"20px",marginBottom:"14px",
-              boxShadow:"0 8px 36px rgba(0,0,0,0.55)",position:"relative",overflow:"hidden"
+              boxShadow:"0 8px 36px rgba(0,0,0,0.10)",position:"relative",overflow:"hidden"
             }}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.45),transparent)"}}/>
-              <span style={{fontSize:"2.8rem",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.5))"}}>{r.icon}</span>
+              <span style={{fontSize:"2.8rem",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.10))"}}>{r.icon}</span>
               <h2 style={{color:"#D4AF37",fontSize:"1.15rem",fontWeight:"800",marginTop:"6px",letterSpacing:"-0.01em"}}>{r.name}</h2>
               {r.hero&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"6px",marginTop:"6px",flexWrap:"wrap"}}>
                 <span style={{background:"rgba(37,211,102,0.12)",border:"1px solid rgba(37,211,102,0.38)",color:"#25d366",borderRadius:"20px",padding:"2px 10px",fontSize:"0.60rem",fontWeight:"700",letterSpacing:"0.3px"}}>★ منتج رئيسي</span>
@@ -2768,7 +2768,7 @@ function App(){
                           <div style={{fontSize:"0.85rem",marginBottom:"2px"}}>{l.icon}</div>
                           <div style={{fontSize:"1.1rem",fontWeight:"700",color:l.col,fontFamily:"'IBM Plex Mono',monospace",lineHeight:1}}>{l.pct}<span style={{fontSize:"0.55rem",opacity:0.7}}>%</span></div>
                           <div style={{fontSize:"0.58rem",color:l.col,fontWeight:"700",marginTop:"3px",opacity:0.85}}>{l.label}</div>
-                          <div style={{fontSize:"0.42rem",color:"rgba(255,255,255,0.25)",letterSpacing:"0.08em",marginTop:"1px"}}>{l.sub}</div>
+                          <div style={{fontSize:"0.42rem",color:"rgba(26,18,8,0.25)",letterSpacing:"0.08em",marginTop:"1px"}}>{l.sub}</div>
                         </div>
                       ))}
                     </div>
@@ -2786,10 +2786,10 @@ function App(){
               ):(
                 <>
                 <div style={{display:"flex",justifyContent:"center",gap:"5px",flexWrap:"wrap"}}>
-                  {["quarter","half","tola"].map(b=>(<button key={b} onClick={()=>setBatchUnit(b)} style={{background:batchUnit===b?"#D4AF37":"rgba(255,255,255,0.06)",border:`1px solid ${batchUnit===b?"#D4AF37":"rgba(214,175,55,0.3)"}`,color:batchUnit===b?"#1a0800":"#D4AF37",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
+                  {["quarter","half","tola"].map(b=>(<button key={b} onClick={()=>setBatchUnit(b)} style={{background:batchUnit===b?"#D4AF37":"rgba(26,18,8,0.08)",border:`1px solid ${batchUnit===b?"#D4AF37":"rgba(214,175,55,0.3)"}`,color:batchUnit===b?"#1a0800":"#D4AF37",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
                 </div>
                 <div style={{display:"flex",justifyContent:"center",gap:"5px",flexWrap:"wrap",marginTop:"4px"}}>
-                  <span style={{fontSize:"0.58rem",color:"rgba(255,255,255,0.20)",alignSelf:"center",padding:"0 2px"}}>إنتاج:</span>
+                  <span style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.20)",alignSelf:"center",padding:"0 2px"}}>إنتاج:</span>
                   {["ml50","ml100"].map(b=>(<button key={b} onClick={()=>setBatchUnit(b)} style={{background:batchUnit===b?"rgba(80,120,200,0.7)":"rgba(80,120,200,0.08)",border:`1px solid ${batchUnit===b?"rgba(80,120,200,0.8)":"rgba(80,120,200,0.25)"}`,color:batchUnit===b?"#fff":"rgba(120,160,230,0.65)",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
                 </div>
                 </>
@@ -2808,7 +2808,7 @@ function App(){
                   <div className="p-num" style={{fontSize:"1.25rem"}}>{mlCost.toFixed(2)}<span style={{fontSize:"0.65rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div>
                 </div>
               </div>
-              <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"10px",padding:"10px",background:"rgba(0,0,0,0.30)",borderRadius:"12px",border:"1px solid rgba(201,168,76,0.10)"}}>
+              <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"10px",padding:"10px",background:"rgba(0,0,0,0.05)",borderRadius:"12px",border:"1px solid rgba(201,168,76,0.10)"}}>
                 <span style={{fontSize:"0.75rem",color:"#8A6830",whiteSpace:"nowrap"}}>هامش الربح:</span>
                 <input type="range" min="1.5" max="6" step="0.5" value={profitMult} onChange={e=>setProfitMult(+e.target.value)} style={{flex:1,accentColor:"#C9A84C"}}/>
                 <span className="mono" style={{color:"#C9A84C",fontWeight:"600",fontSize:"0.88rem",minWidth:"32px"}}>×{profitMult}</span>
@@ -2825,7 +2825,7 @@ function App(){
                   <div className="p-num" style={{fontSize:"1.55rem",lineHeight:1}}>{(sellMl*vol).toFixed(0)}<span style={{fontSize:"0.60rem",opacity:0.55,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div>
                 </div>
               </div>
-              <div style={{marginTop:"9px",textAlign:"center",fontSize:"0.68rem",color:"rgba(255,255,255,0.35)"}}>الربح الصافي للدفعة: <span className="mono" style={{color:"#6AAA48",fontWeight:"700"}}>{(sellMl*vol-cost).toFixed(0)} ريال</span></div>
+              <div style={{marginTop:"9px",textAlign:"center",fontSize:"0.68rem",color:"rgba(26,18,8,0.35)"}}>الربح الصافي للدفعة: <span className="mono" style={{color:"#6AAA48",fontWeight:"700"}}>{(sellMl*vol-cost).toFixed(0)} ريال</span></div>
             </div>
 
             <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>🏺 المكونات ({BATCH_NAME[activeBU]})</h3>
@@ -2834,13 +2834,13 @@ function App(){
             </div>
             {[...r.ing].sort((x,y)=>{const o={top:0,mid:1,base:2};return o[noteTier(x[0])]-o[noteTier(y[0])];}).map(([id,a])=>{const ing=getIng(id);const need=a*sc;const ok=ing&&ing.stock>=need;const c=ing?ing.unitCost*need:0;const tier=noteTier(id);return(
               <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"7px 11px",marginBottom:"4px",borderRadius:"10px",background:ok?"rgba(80,160,80,0.08)":"rgba(200,60,60,0.08)",border:`1px solid ${ok?"rgba(80,160,80,0.25)":"rgba(200,60,60,0.25)"}`}}>
-                <div><div style={{fontSize:"0.82rem",fontWeight:"600"}}>{ing?.name||id} <span className={`tag tag-${tier}`} style={{fontSize:"0.58rem",padding:"1px 6px"}}>{NOTE_LABEL[tier]}</span></div><div style={{fontSize:"0.62rem",color:"#c8a46a"}}>{ing?.brand} • {c.toFixed(2)}ر</div></div>
+                <div><div style={{fontSize:"0.82rem",fontWeight:"600"}}>{ing?.name||id} <span className={`tag tag-${tier}`} style={{fontSize:"0.58rem",padding:"1px 6px"}}>{NOTE_LABEL[tier]}</span></div><div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>{ing?.brand} • {c.toFixed(2)}ر</div></div>
                 <div style={{textAlign:"left"}}><div style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.85rem"}}>{need.toFixed(2)} {ing?.unit}</div><div style={{fontSize:"0.6rem",color:ok?"#80c080":"#e08080"}}>متوفر: {ing?.stock||0}</div></div>
               </div>);})}
             <div style={{background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"10px",padding:"8px",textAlign:"center",color:"#D4AF37",fontSize:"0.85rem",margin:"6px 0 12px",fontWeight:"700"}}>إجمالي الحجم: {BATCH[activeBU]} مل • التكلفة: {cost.toFixed(1)} ريال</div>
 
             <h3 style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",marginBottom:"7px"}}>📝 الخطوات {r.inspired&&r.stepsAlt&&r.stepsAlt[activeBU]?"— "+BATCH_NAME[activeBU]:""}</h3>
-            {(r.inspired&&r.stepsAlt&&r.stepsAlt[activeBU]?r.stepsAlt[activeBU]:[...r.steps,AGING_STEP,FIXATION_STEP]).map((s,i)=>(<div key={i} style={{display:"flex",gap:"8px",padding:"8px 11px",marginBottom:"4px",borderRadius:"10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)"}}><div style={{minWidth:"21px",height:"21px",borderRadius:"50%",background:"#D4AF37",color:"#1a0800",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.68rem",fontWeight:"700"}}>{i+1}</div><span style={{fontSize:"0.8rem",color:"#c8a46a"}}>{renderStep(s)}</span></div>))}
+            {(r.inspired&&r.stepsAlt&&r.stepsAlt[activeBU]?r.stepsAlt[activeBU]:[...r.steps,AGING_STEP,FIXATION_STEP]).map((s,i)=>(<div key={i} style={{display:"flex",gap:"8px",padding:"8px 11px",marginBottom:"4px",borderRadius:"10px",background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.08)"}}><div style={{minWidth:"21px",height:"21px",borderRadius:"50%",background:"#D4AF37",color:"#1a0800",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.68rem",fontWeight:"700"}}>{i+1}</div><span style={{fontSize:"0.8rem",color:"#8A6A1E"}}>{renderStep(s)}</span></div>))}
 
             {!canMake(r)&&(()=>{
               const sc2=recipeScale(r);
@@ -2848,8 +2848,8 @@ function App(){
               const missingTxt=missing.map(([id,a])=>{const ing=getIng(id);const need=(a*sc2).toFixed(2);return `${ing?.name||id}: يحتاج ${need} ${ing?.unit||""}`}).join("\n");
               return <div style={{background:"rgba(200,60,60,0.08)",border:"1px solid rgba(200,60,60,0.25)",borderRadius:"10px",padding:"10px 12px",marginTop:"12px"}}>
                 <div style={{fontSize:"0.72rem",color:"#e08080",fontWeight:"700",marginBottom:"6px"}}>⚠️ مكونات ناقصة ({missing.length})</div>
-                {missing.slice(0,3).map(([id,a])=>{const ing=getIng(id);const need=(a*sc2).toFixed(2);const have=ing?ing.stock:0;return <div key={id} style={{fontSize:"0.7rem",color:"#c8a46a",marginBottom:"2px"}}>• {ing?.name||id}: متوفر {have} / يحتاج {need} {ing?.unit||""}</div>;})}
-                {missing.length>3&&<div style={{fontSize:"0.68rem",color:"#c8a46a"}}>+ {missing.length-3} أخرى</div>}
+                {missing.slice(0,3).map(([id,a])=>{const ing=getIng(id);const need=(a*sc2).toFixed(2);const have=ing?ing.stock:0;return <div key={id} style={{fontSize:"0.7rem",color:"#8A6A1E",marginBottom:"2px"}}>• {ing?.name||id}: متوفر {have} / يحتاج {need} {ing?.unit||""}</div>;})}
+                {missing.length>3&&<div style={{fontSize:"0.68rem",color:"#8A6A1E"}}>+ {missing.length-3} أخرى</div>}
                 <button onClick={()=>{
                   const newItems=missing.map(([id,a])=>{const ing=getIng(id);const need=(a*sc2).toFixed(2);return{id,name:ing?.name||id,need:parseFloat(need),unit:ing?.unit||"",brand:ing?.brand||"غير محدد",fromRecipe:r.name};});
                   setShopCart(prev=>{const existIds=new Set(prev.map(x=>x.id));const toAdd=newItems.filter(x=>!existIds.has(x.id));if(toAdd.length===0){show("⚠️ الناقص موجود بالفعل في قائمة التسوق",true);return prev;}show("🛒 أُضيف للتسوق: "+toAdd.map(x=>x.name).join("، "));return[...prev,...toAdd];});
@@ -2858,7 +2858,7 @@ function App(){
               </div>;
             })()}
             {canMake(r)&&<textarea className="inp" placeholder="📝 ملاحظة للدفعة (اختياري)..." value={batchNote} onChange={e=>setBatchNote(e.target.value)} rows={2} style={{marginTop:"12px",resize:"none",fontSize:"0.78rem"}}/>}
-            <button onClick={()=>produce(r)} disabled={!canMake(r)} style={{width:"100%",marginTop:"8px",padding:"12px",background:canMake(r)?"linear-gradient(135deg,#2d6a1b,#1a4010)":"rgba(255,255,255,0.05)",border:`1px solid ${canMake(r)?"#5aD420":"rgba(255,255,255,0.1)"}`,color:canMake(r)?"#a0ff60":"#5a3a10",borderRadius:"12px",cursor:canMake(r)?"pointer":"not-allowed",fontSize:"0.95rem",fontWeight:"700"}}>🏭 أنتج وخصم من المخزون</button>
+            <button onClick={()=>produce(r)} disabled={!canMake(r)} style={{width:"100%",marginTop:"8px",padding:"12px",background:canMake(r)?"linear-gradient(135deg,#2d6a1b,#1a4010)":"rgba(26,18,8,0.08)",border:`1px solid ${canMake(r)?"#5aD420":"rgba(26,18,8,0.12)"}`,color:canMake(r)?"#a0ff60":"#5a3a10",borderRadius:"12px",cursor:canMake(r)?"pointer":"not-allowed",fontSize:"0.95rem",fontWeight:"700"}}>🏭 أنتج وخصم من المخزون</button>
           </div>;
         })()}
 
@@ -2888,15 +2888,15 @@ function App(){
             <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.1rem",color:"rgba(232,200,112,0.80)",marginBottom:"4px",letterSpacing:"0.06em"}}>ابدأ رحلتك</div>
             <div className="brand-sub" style={{marginBottom:"18px"}}>YOUR FIRST BATCH AWAITS</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px",marginBottom:"20px"}}>
-              <div style={{background:"rgba(255,255,255,0.03)",borderRadius:"12px",padding:"12px 6px",border:"1px solid rgba(255,255,255,0.06)"}}>
+              <div style={{background:"rgba(26,18,8,0.08)",borderRadius:"12px",padding:"12px 6px",border:"1px solid rgba(26,18,8,0.08)"}}>
                 <div className="p-num" style={{fontSize:"1.5rem"}}>{recipes.length}</div>
                 <div className="data-label" style={{marginTop:"4px"}}>وصفة متاحة</div>
               </div>
-              <div style={{background:"rgba(255,255,255,0.03)",borderRadius:"12px",padding:"12px 6px",border:"1px solid rgba(255,255,255,0.06)"}}>
+              <div style={{background:"rgba(26,18,8,0.08)",borderRadius:"12px",padding:"12px 6px",border:"1px solid rgba(26,18,8,0.08)"}}>
                 <div className="p-num-green" style={{fontSize:"1.5rem"}}>{_ready.length}</div>
                 <div className="data-label" style={{marginTop:"4px"}}>جاهزة الآن</div>
               </div>
-              <div style={{background:"rgba(255,255,255,0.03)",borderRadius:"12px",padding:"12px 6px",border:"1px solid rgba(255,255,255,0.06)"}}>
+              <div style={{background:"rgba(26,18,8,0.08)",borderRadius:"12px",padding:"12px 6px",border:"1px solid rgba(26,18,8,0.08)"}}>
                 <div className="p-num" style={{fontSize:"1.2rem"}}>{totalInvValue.toFixed(0)}</div>
                 <div className="data-label" style={{marginTop:"4px"}}>قيمة المخزون</div>
               </div>
@@ -2914,7 +2914,7 @@ function App(){
               {icon:"📈",label:"الربح الصافي",val:netProfit.toFixed(0),unit:"ر",cls:netProfit>=0?"p-num-green":"p-num-amber"},
             ].map((k,i)=>(
               <div key={i} className="kpi-card">
-                <div style={{fontSize:"1.25rem",marginBottom:"8px",filter:"drop-shadow(0 1px 4px rgba(0,0,0,0.5))"}}>{k.icon}</div>
+                <div style={{fontSize:"1.25rem",marginBottom:"8px",filter:"drop-shadow(0 1px 4px rgba(0,0,0,0.10))"}}>{k.icon}</div>
                 <div className="data-label" style={{marginBottom:"5px"}}>{k.label}</div>
                 <div className={k.cls} style={{fontSize:"1.55rem",lineHeight:1}}>{k.val}<span style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.72rem",opacity:0.55}}>{k.unit&&` ${k.unit}`}</span></div>
               </div>
@@ -2941,12 +2941,12 @@ function App(){
               <h3 style={{fontFamily:"'Alexandria',sans-serif",color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",letterSpacing:"0.01em"}}>تقرير الأرباح الشهري</h3>
             </div>
             {monthlyReport.map((m,idx)=>{const pct=(m.revenue/maxMonthRev*100).toFixed(0);const isTop=idx===0;return(
-              <div key={m.key} style={{marginBottom:"14px",padding:"10px 12px",borderRadius:"11px",background:isTop?"rgba(201,168,76,0.06)":"rgba(255,255,255,0.02)",border:`1px solid ${isTop?"rgba(201,168,76,0.18)":"rgba(255,255,255,0.04)"}`}}>
+              <div key={m.key} style={{marginBottom:"14px",padding:"10px 12px",borderRadius:"11px",background:isTop?"rgba(201,168,76,0.06)":"rgba(26,18,8,0.08)",border:`1px solid ${isTop?"rgba(201,168,76,0.18)":"rgba(26,18,8,0.08)"}`}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:"6px"}}>
-                  <span style={{color:"#F0E6D0",fontWeight:"700",fontSize:"0.8rem"}}>{m.label}</span>
+                  <span style={{color:"#1A1208",fontWeight:"700",fontSize:"0.8rem"}}>{m.label}</span>
                   <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.68rem",color:"#8A6830",letterSpacing:"-0.01em"}}>{m.count} دفعة</span>
                 </div>
-                <div style={{height:"7px",background:"rgba(0,0,0,0.40)",borderRadius:"4px",overflow:"hidden",marginBottom:"6px",position:"relative"}}>
+                <div style={{height:"7px",background:"rgba(26,18,8,0.85)",borderRadius:"4px",overflow:"hidden",marginBottom:"6px",position:"relative"}}>
                   <div style={{height:"100%",width:`${pct}%`,background:m.profit>=0?"linear-gradient(90deg,#4A7A30,#6AAA48,#C9A84C)":"linear-gradient(90deg,#8A2020,#C04040)",borderRadius:"4px",transition:"width 0.5s cubic-bezier(0.22,1,0.36,1)",boxShadow:m.profit>=0?"0 0 6px rgba(106,170,72,0.35)":"0 0 6px rgba(192,64,64,0.35)"}}/>
                 </div>
                 <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.69rem"}}>
@@ -2978,7 +2978,7 @@ function App(){
               </div>
               <div style={{display:"flex",alignItems:"center",gap:"16px"}}>
                 <svg width="140" height="140" viewBox="0 0 140 140" style={{flexShrink:0}}>
-                  <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth={strokeW}/>
+                  <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(26,18,8,0.08)" strokeWidth={strokeW}/>
                   {arcs.map((a,i)=>(
                     <circle key={i} cx={cx} cy={cy} r={r} fill="none"
                       stroke={a.color} strokeWidth={strokeW}
@@ -2988,14 +2988,14 @@ function App(){
                       style={{transform:"rotate(-90deg)",transformOrigin:`${cx}px ${cy}px`}}/>
                   ))}
                   <text x={cx} y={cy-7} textAnchor="middle" fill="#D4AF37" fontSize="18" fontFamily="'IBM Plex Mono',monospace" fontWeight="600">{total}</text>
-                  <text x={cx} y={cy+10} textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="8" fontFamily="'Alexandria',sans-serif">دفعة</text>
+                  <text x={cx} y={cy+10} textAnchor="middle" fill="rgba(26,18,8,0.35)" fontSize="8" fontFamily="'Alexandria',sans-serif">دفعة</text>
                 </svg>
                 <div style={{flex:1,display:"flex",flexDirection:"column",gap:"5px"}}>
                   {arcs.map((a,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:"6px"}}>
                       <div style={{width:"8px",height:"8px",borderRadius:"50%",background:a.color,flexShrink:0}}/>
                       <span style={{fontSize:"0.70rem",color:"#C8B898",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a.icon} {a.name}</span>
-                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.65rem",color:"rgba(255,255,255,0.45)"}}>{a.count}</span>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.65rem",color:"rgba(26,18,8,0.45)"}}>{a.count}</span>
                     </div>
                   ))}
                 </div>
@@ -3008,7 +3008,7 @@ function App(){
             <div className="glass" style={{padding:"13px",background:"rgba(100,140,200,0.05)"}}>
               <div style={{fontSize:"0.60rem",color:"#8A6830",textTransform:"uppercase",letterSpacing:"0.5px",marginBottom:"10px",fontWeight:"700"}}>الأكثر مبيعاً</div>
               {topBySales.map((p,i)=>(
-                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:i<topBySales.length-1?"1px solid rgba(255,255,255,0.04)":"none"}}>
+                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:i<topBySales.length-1?"1px solid rgba(26,18,8,0.08)":"none"}}>
                   <span style={{fontSize:"0.73rem",color:"#C8B898"}}>{p.icon} {p.name}</span>
                   <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.68rem",color:"#90B8F0",fontWeight:"600",letterSpacing:"-0.02em"}}>{p.count}</span>
                 </div>
@@ -3017,7 +3017,7 @@ function App(){
             <div className="glass" style={{padding:"13px",background:"rgba(70,140,60,0.05)"}}>
               <div style={{fontSize:"0.60rem",color:"#8A6830",textTransform:"uppercase",letterSpacing:"0.5px",marginBottom:"10px",fontWeight:"700"}}>الأعلى ربحاً</div>
               {topByProfit.map((p,i)=>(
-                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:i<topByProfit.length-1?"1px solid rgba(255,255,255,0.04)":"none"}}>
+                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:i<topByProfit.length-1?"1px solid rgba(26,18,8,0.08)":"none"}}>
                   <span style={{fontSize:"0.73rem",color:"#C8B898"}}>{p.icon} {p.name}</span>
                   <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.68rem",color:"#6AAA48",fontWeight:"600",letterSpacing:"-0.02em"}}>{p.profit.toFixed(0)}</span>
                 </div>
@@ -3032,8 +3032,8 @@ function App(){
               <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.65rem",color:"#9A4040",marginInlineStart:"auto"}}>{lowStockItems.length}</span>
             </div>
             {lowStockItems.map(i=>(
-              <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:"1px solid rgba(255,255,255,0.04)",alignItems:"center"}}>
-                <span style={{fontSize:"0.78rem",color:"#F0E6D0"}}>{i.name}</span>
+              <div key={i.id} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:"1px solid rgba(26,18,8,0.08)",alignItems:"center"}}>
+                <span style={{fontSize:"0.78rem",color:"#1A1208"}}>{i.name}</span>
                 <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.70rem",color:"#E07070",letterSpacing:"-0.02em"}}>{i.stock}<span style={{opacity:0.5,fontSize:"0.60rem"}}> / {i.qty} {i.unit}</span></span>
               </div>
             ))}
@@ -3050,10 +3050,10 @@ function App(){
                     <span style={{fontWeight:"700"}}>{e.recipeIcon} {e.recipeName}</span>
                     <span style={{color:"#e0a060",fontWeight:"700"}}>{dl} يوم متبقي</span>
                   </div>
-                  <div style={{height:"8px",background:"rgba(255,255,255,0.06)",borderRadius:"4px",overflow:"hidden"}}>
+                  <div style={{height:"8px",background:"rgba(26,18,8,0.08)",borderRadius:"4px",overflow:"hidden"}}>
                     <div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,#c08020,#D4AF37)",borderRadius:"4px",transition:"width .4s"}}/>
                   </div>
-                  <div style={{fontSize:"0.62rem",color:"#c8a46a",marginTop:"2px"}}>#{e.batchNo} • {e.batch} • جاهز {fmtDate(e.readyDate)}</div>
+                  <div style={{fontSize:"0.62rem",color:"#8A6A1E",marginTop:"2px"}}>#{e.batchNo} • {e.batch} • جاهز {fmtDate(e.readyDate)}</div>
                 </div>
               );})}
             </div>
@@ -3070,7 +3070,7 @@ function App(){
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"4px"}}>
                 <div>
                   <span style={{fontSize:"0.85rem",fontWeight:"700"}}>{e.recipeIcon} {e.recipeName}</span>
-                  <div style={{fontSize:"0.66rem",color:"#c8a46a"}}>{e.batchNo&&<span style={{color:"#D4AF37",fontWeight:"700"}}>#{e.batchNo} • </span>}{fmtDate(e.date)} • {e.batch} ({e.vol} مل)</div>
+                  <div style={{fontSize:"0.66rem",color:"#8A6A1E"}}>{e.batchNo&&<span style={{color:"#D4AF37",fontWeight:"700"}}>#{e.batchNo} • </span>}{fmtDate(e.date)} • {e.batch} ({e.vol} مل)</div>
                   {e.note&&<div style={{fontSize:"0.65rem",color:"#80a0e0",marginTop:"2px"}}>📝 {e.note}</div>}
                 </div>
                 <div style={{textAlign:"left"}}>
@@ -3085,7 +3085,7 @@ function App(){
               {!e.sold&&<SellEntry id={e.id} onSell={markSold}/>}
               {e.sold&&<span className="tag tag-green">✅ مباع</span>}
               <button onClick={()=>{const custName=e.customerId?customers.find(c=>c.id===e.customerId)?.name:"";const w=window.open('','_blank','width=400,height=320');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:340px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي دهن العود</div><div style="text-align:center;font-size:22px;margin:4px 0">${e.recipeIcon}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${e.recipeName}</div><hr style="border-color:#D4AF37;opacity:0.3"/>${custName?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">العميل</span><span style="color:#80c0ff;font-weight:700">${custName}</span></div>`:""}<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${e.batchNo}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${e.vol} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.sold&&e.sellPrice?`<div style="display:flex;justify-content:space-between;font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid rgba(214,175,55,0.3)"><span style="color:#c8a46a">سعر البيع</span><span style="color:#80c080;font-weight:700">${e.sellPrice} ريال</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${e.note}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
-              {!e.customerId&&customers.length>0&&<select value="" onChange={ev=>{if(ev.target.value)linkOrderToCustomer(e.id,ev.target.value);}} style={{marginTop:"6px",background:"rgba(0,0,0,0.4)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"8px",color:"#c8a46a",fontSize:"0.72rem",padding:"4px 8px",fontFamily:"'Alexandria',sans-serif",width:"100%"}}><option value="">🔗 اربط بعميل...</option>{customers.map(c=><option key={c.id} value={c.id} style={{background:"#0C0601"}}>{c.name}</option>)}</select>}
+              {!e.customerId&&customers.length>0&&<select value="" onChange={ev=>{if(ev.target.value)linkOrderToCustomer(e.id,ev.target.value);}} style={{marginTop:"6px",background:"rgba(26,18,8,0.85)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"8px",color:"#8A6A1E",fontSize:"0.72rem",padding:"4px 8px",fontFamily:"'Alexandria',sans-serif",width:"100%"}}><option value="">🔗 اربط بعميل...</option>{customers.map(c=><option key={c.id} value={c.id} style={{background:"#FAF8F3"}}>{c.name}</option>)}</select>}
               {!e.sold&&<button onClick={()=>deleteProdEntry(e.id)} style={{marginTop:"5px",background:"rgba(200,60,60,0.1)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🗑️ حذف الدفعة</button>}
             </div>
           );})}
@@ -3098,7 +3098,7 @@ function App(){
                 <div style={{display:"flex",justifyContent:"space-between"}}>
                   <div>
                     <div style={{fontSize:"0.82rem",fontWeight:"700"}}>{p.ingName}</div>
-                    <div style={{fontSize:"0.65rem",color:"#c8a46a"}}>{p.brand} • {fmtDate(p.date)}</div>
+                    <div style={{fontSize:"0.65rem",color:"#8A6A1E"}}>{p.brand} • {fmtDate(p.date)}</div>
                     {p.note&&<div style={{fontSize:"0.65rem",color:"#7a5a30",marginTop:"2px"}}>{p.note}</div>}
                   </div>
                   <div style={{textAlign:"left"}}>
@@ -3140,23 +3140,23 @@ function App(){
             const isVip=orders.length>2||spent>500;
             const initials=c.name.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join("");
             return(
-            <div key={c.id} className="glass" style={{padding:"14px",marginBottom:"8px",borderColor:isVip?"rgba(201,168,76,0.25)":"rgba(255,255,255,0.065)",boxShadow:isVip?"0 0 0 0.5px rgba(201,168,76,0.08),0 6px 24px rgba(0,0,0,0.45)":"0 4px 16px rgba(0,0,0,0.35)"}}>
+            <div key={c.id} className="glass" style={{padding:"14px",marginBottom:"8px",borderColor:isVip?"rgba(201,168,76,0.25)":"rgba(26,18,8,0.10)",boxShadow:isVip?"0 0 0 0.5px rgba(201,168,76,0.08),0 6px 24px rgba(0,0,0,0.08)":"0 4px 16px rgba(0,0,0,0.07)"}}>
               <div style={{display:"flex",alignItems:"center",gap:"11px",cursor:"pointer",marginBottom:"10px"}} onClick={()=>setSelectedCustomer(c)}>
                 {/* avatar */}
                 <div className="cust-avatar">{initials}</div>
                 {/* info */}
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"2px"}}>
-                    <span style={{fontSize:"0.92rem",fontWeight:"800",color:"#F0E6D0"}}>{c.name}</span>
+                    <span style={{fontSize:"0.92rem",fontWeight:"800",color:"#1A1208"}}>{c.name}</span>
                     {isVip&&<span style={{fontSize:"0.55rem",background:"rgba(201,168,76,0.12)",color:"#D4AF37",border:"1px solid rgba(201,168,76,0.25)",borderRadius:"20px",padding:"1px 7px",letterSpacing:"0.3px",fontWeight:"700"}}>VIP</span>}
                   </div>
                   {c.phone&&<div style={{fontSize:"0.65rem",color:"rgba(201,168,76,0.45)",fontFamily:"'IBM Plex Mono',monospace",letterSpacing:"-0.01em"}}>{c.phone}</div>}
-                  {c.notes&&<div style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.22)",marginTop:"2px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.notes}</div>}
+                  {c.notes&&<div style={{fontSize:"0.62rem",color:"rgba(26,18,8,0.22)",marginTop:"2px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{c.notes}</div>}
                 </div>
                 {/* stats */}
                 <div style={{textAlign:"left",flexShrink:0}}>
-                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.80rem",color:spent>0?"#6AAA48":"rgba(255,255,255,0.20)",fontWeight:"600",letterSpacing:"-0.02em"}}>{spent>0?`${spent.toFixed(0)} ر`:"—"}</div>
-                  <div style={{fontSize:"0.58rem",color:"rgba(255,255,255,0.28)",marginTop:"2px",textAlign:"left"}}>{orders.length} طلب</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.80rem",color:spent>0?"#6AAA48":"rgba(26,18,8,0.20)",fontWeight:"600",letterSpacing:"-0.02em"}}>{spent>0?`${spent.toFixed(0)} ر`:"—"}</div>
+                  <div style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.28)",marginTop:"2px",textAlign:"left"}}>{orders.length} طلب</div>
                 </div>
               </div>
               <div style={{display:"flex",gap:"6px"}}>
@@ -3173,15 +3173,15 @@ function App(){
           <button className="btn-ghost" onClick={()=>setShowAddCust(false)} style={{marginBottom:"14px"}}>← رجوع</button>
           <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>👤 إضافة عميل</h3>
           <div style={{display:"grid",gap:"9px"}}>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الاسم *</label><input className="inp" value={ncName} onChange={e=>setNcName(e.target.value)}/></div>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>رقم الجوال</label><input className="inp" inputMode="tel" value={ncPhone} onChange={e=>setNcPhone(e.target.value)}/></div>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>ملاحظات</label><input className="inp" placeholder="تفضيلاته، مناسبات..." value={ncNotes} onChange={e=>setNcNotes(e.target.value)}/></div>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>🎂 تاريخ الميلاد</label><input type="date" className="inp" value={ncBirthday} onChange={e=>setNcBirthday(e.target.value)} style={{colorScheme:"dark"}}/></div>
-            <div className="glass" style={{padding:"12px",background:"rgba(0,0,0,0.3)"}}>
-              <div style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"8px"}}>⭐ الوصفات المفضلة لديه</div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الاسم *</label><input className="inp" value={ncName} onChange={e=>setNcName(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>رقم الجوال</label><input className="inp" inputMode="tel" value={ncPhone} onChange={e=>setNcPhone(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>ملاحظات</label><input className="inp" placeholder="تفضيلاته، مناسبات..." value={ncNotes} onChange={e=>setNcNotes(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>🎂 تاريخ الميلاد</label><input type="date" className="inp" value={ncBirthday} onChange={e=>setNcBirthday(e.target.value)} style={{colorScheme:"light"}}/></div>
+            <div className="glass" style={{padding:"12px",background:"rgba(0,0,0,0.05)"}}>
+              <div style={{fontSize:"0.74rem",color:"#8A6A1E",marginBottom:"8px"}}>⭐ الوصفات المفضلة لديه</div>
               <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
                 {recipes.map(r=>{const sel=ncPrefs.includes(r.id);return(
-                  <button key={r.id} onClick={()=>setNcPrefs(p=>sel?p.filter(x=>x!==r.id):[...p,r.id])} style={{background:sel?"#D4AF37":"rgba(255,255,255,0.06)",border:"1px solid rgba(214,175,55,0.4)",color:sel?"#1a0800":"#D4AF37",padding:"4px 10px",borderRadius:"16px",fontSize:"0.7rem",cursor:"pointer",fontWeight:"600"}}>{r.icon} {r.name}</button>
+                  <button key={r.id} onClick={()=>setNcPrefs(p=>sel?p.filter(x=>x!==r.id):[...p,r.id])} style={{background:sel?"#D4AF37":"rgba(26,18,8,0.08)",border:"1px solid rgba(214,175,55,0.4)",color:sel?"#1a0800":"#D4AF37",padding:"4px 10px",borderRadius:"16px",fontSize:"0.7rem",cursor:"pointer",fontWeight:"600"}}>{r.icon} {r.name}</button>
                 );})}
               </div>
             </div>
@@ -3203,7 +3203,7 @@ function App(){
             </div>
             <div className="glass" style={{textAlign:"center",background:"linear-gradient(rgba(14,8,2,0.85),rgba(14,8,2,0.85)) padding-box,linear-gradient(135deg,rgba(100,140,200,0.30),rgba(40,60,120,0.15),rgba(100,140,200,0.30)) border-box",border:"1.5px solid transparent",padding:"22px 18px"}}>
               <div style={{fontSize:"2.4rem",marginBottom:"8px",filter:"drop-shadow(0 2px 10px rgba(100,140,200,0.25))"}}>👤</div>
-              <h2 style={{color:"#F0E6D0",fontSize:"1.15rem",fontWeight:"800",letterSpacing:"-0.01em"}}>{c.name}</h2>
+              <h2 style={{color:"#1A1208",fontSize:"1.15rem",fontWeight:"800",letterSpacing:"-0.01em"}}>{c.name}</h2>
               {c.phone&&<p style={{fontSize:"0.75rem",color:"#8A6830",fontFamily:"'IBM Plex Mono',monospace",letterSpacing:"-0.01em",marginTop:"6px"}}>{c.phone}</p>}
               {c.birthday&&<p style={{fontSize:"0.72rem",color:"#E8C460",marginTop:"5px"}}>🎂 {new Date(c.birthday).toLocaleDateString('ar-SA',{day:'numeric',month:'long'})}</p>}
               {c.notes&&<><div className="g-line" style={{maxWidth:"100px",margin:"10px auto"}}/><p style={{fontSize:"0.75rem",color:"#C8B898",lineHeight:"1.8"}}>{c.notes}</p></>}
@@ -3217,7 +3217,7 @@ function App(){
               {prefRecipes.map(r=>(
                 <div key={r.id} onClick={()=>{setTab("recipes");setSelectedRecipe(r);setSelectedCustomer(null);}} className="glass" style={{cursor:"pointer",padding:"10px 13px",marginBottom:"6px"}}>
                   <span style={{fontSize:"0.85rem",fontWeight:"700"}}>{r.icon} {r.name}</span>
-                  <span style={{fontSize:"0.68rem",color:"#c8a46a",float:"left"}}>{r.gender} • {r.season}</span>
+                  <span style={{fontSize:"0.68rem",color:"#8A6A1E",float:"left"}}>{r.gender} • {r.season}</span>
                 </div>
               ))}
             </>}
@@ -3229,7 +3229,7 @@ function App(){
                   <span style={{fontSize:"0.82rem",fontWeight:"700"}}>{o.recipeIcon} {o.recipeName}</span>
                   <span style={{fontSize:"0.7rem",color:o.sold?"#80c080":"#c8a46a"}}>{o.sold?`✅ ${o.sellPrice} ر`:"قيد التنفيذ"}</span>
                 </div>
-                <div style={{fontSize:"0.64rem",color:"#c8a46a"}}>{fmtDate(o.date)} • {o.batch}</div>
+                <div style={{fontSize:"0.64rem",color:"#8A6A1E"}}>{fmtDate(o.date)} • {o.batch}</div>
               </div>
             ))}
           </div>;
@@ -3314,12 +3314,12 @@ function App(){
         <div className="modal-sheet">
           <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"16px"}}>⚗️ حاسبة التخفيف</h3>
           <div style={{display:"grid",gap:"12px",marginBottom:"16px"}}>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a",display:"block",marginBottom:"4px"}}>كمية المركّز (مل)</label>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E",display:"block",marginBottom:"4px"}}>كمية المركّز (مل)</label>
               <input type="number" className="inp" value={dilConc} onChange={e=>setDilConc(+e.target.value)} min="1"/></div>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a",display:"block",marginBottom:"4px"}}>نسبة التركيز المطلوبة (%)</label>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E",display:"block",marginBottom:"4px"}}>نسبة التركيز المطلوبة (%)</label>
               <div style={{display:"flex",gap:"6px",flexWrap:"wrap"}}>
                 {[5,10,15,20,25,30].map(p=>(
-                  <button key={p} onClick={()=>setDilPct(p)} style={{padding:"6px 12px",background:dilPct===p?"#D4AF37":"rgba(255,255,255,0.06)",border:`1px solid ${dilPct===p?"#D4AF37":"rgba(214,175,55,0.3)"}`,color:dilPct===p?"#1a0800":"#D4AF37",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{p}%</button>
+                  <button key={p} onClick={()=>setDilPct(p)} style={{padding:"6px 12px",background:dilPct===p?"#D4AF37":"rgba(26,18,8,0.08)",border:`1px solid ${dilPct===p?"#D4AF37":"rgba(214,175,55,0.3)"}`,color:dilPct===p?"#1a0800":"#D4AF37",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{p}%</button>
                 ))}
                 <input type="number" className="inp" value={dilPct} onChange={e=>setDilPct(+e.target.value)} min="1" max="100" style={{width:"60px",textAlign:"center"}}/>
               </div>
@@ -3331,23 +3331,23 @@ function App(){
             const carrierName=dilCarrier||"الزيت الحامل";
             return <div className="glass" style={{background:"linear-gradient(135deg,rgba(214,175,55,0.12),rgba(30,12,3,0.8))",padding:"16px",textAlign:"center",marginBottom:"12px"}}>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px"}}>
-                <div style={{background:"rgba(0,0,0,0.3)",borderRadius:"10px",padding:"10px"}}>
-                  <div style={{fontSize:"0.62rem",color:"#c8a46a"}}>مركّز</div>
+                <div style={{background:"rgba(0,0,0,0.05)",borderRadius:"10px",padding:"10px"}}>
+                  <div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>مركّز</div>
                   <div style={{fontSize:"1.2rem",fontWeight:"700",color:"#D4AF37"}}>{dilConc} مل</div>
                 </div>
-                <div style={{background:"rgba(0,0,0,0.3)",borderRadius:"10px",padding:"10px"}}>
-                  <div style={{fontSize:"0.62rem",color:"#c8a46a"}}>{carrierName}</div>
+                <div style={{background:"rgba(0,0,0,0.05)",borderRadius:"10px",padding:"10px"}}>
+                  <div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>{carrierName}</div>
                   <div style={{fontSize:"1.2rem",fontWeight:"700",color:"#80c080"}}>{carrier} مل</div>
                 </div>
-                <div style={{background:"rgba(0,0,0,0.3)",borderRadius:"10px",padding:"10px"}}>
-                  <div style={{fontSize:"0.62rem",color:"#c8a46a"}}>الناتج</div>
+                <div style={{background:"rgba(0,0,0,0.05)",borderRadius:"10px",padding:"10px"}}>
+                  <div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>الناتج</div>
                   <div style={{fontSize:"1.2rem",fontWeight:"700",color:"#80a0e0"}}>{totalVol} مل</div>
                 </div>
               </div>
-              <div style={{marginTop:"10px",fontSize:"0.72rem",color:"#c8a46a"}}>{dilConc} مل مركّز + {carrier} مل {carrierName} = {totalVol} مل بتركيز {dilPct}%</div>
+              <div style={{marginTop:"10px",fontSize:"0.72rem",color:"#8A6A1E"}}>{dilConc} مل مركّز + {carrier} مل {carrierName} = {totalVol} مل بتركيز {dilPct}%</div>
             </div>;
           })()}
-          <select className="inp" value={dilCarrier} onChange={e=>setDilCarrier(e.target.value)} style={{background:"#0C0601",marginBottom:"12px"}}>
+          <select className="inp" value={dilCarrier} onChange={e=>setDilCarrier(e.target.value)} style={{background:"#FAF8F3",marginBottom:"12px"}}>
             <option value="">اختر الحامل...</option>
             {inv.filter(i=>i.cat==="حامل").map(i=><option key={i.id} value={i.name}>{i.name} ({i.stock} {i.unit})</option>)}
           </select>
@@ -3361,7 +3361,7 @@ function App(){
           <div style={{textAlign:"center",marginBottom:"16px"}}>
             <div style={{fontSize:"3rem"}}>{catalogView.icon}</div>
             <h2 style={{color:"#D4AF37",fontSize:"1.3rem",fontWeight:"700",margin:"6px 0"}}>{catalogView.name}</h2>
-            <p style={{fontSize:"0.85rem",color:"#e5d5be",lineHeight:"1.8"}}>{catalogView.desc}</p>
+            <p style={{fontSize:"0.85rem",color:"#1A1208",lineHeight:"1.8"}}>{catalogView.desc}</p>
           </div>
           <div style={{display:"flex",gap:"6px",justifyContent:"center",flexWrap:"wrap",marginBottom:"16px"}}>
             <span className="tag tag-gold">👤 {catalogView.gender}</span>
@@ -3374,20 +3374,20 @@ function App(){
             const Row=({label,arr})=>arr.length?(
               <div style={{marginBottom:"10px"}}>
                 <div style={{color:"#D4AF37",fontSize:"0.78rem",fontWeight:"700",marginBottom:"5px"}}>{label}</div>
-                <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>{arr.map((n,i)=><span key={i} className="tag" style={{background:"rgba(255,255,255,0.06)",color:"#e5d5be",fontSize:"0.7rem"}}>{n}</span>)}</div>
+                <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>{arr.map((n,i)=><span key={i} className="tag" style={{background:"rgba(26,18,8,0.08)",color:"#1A1208",fontSize:"0.7rem"}}>{n}</span>)}</div>
               </div>
             ):null;
-            return <div className="glass" style={{background:"rgba(0,0,0,0.25)",padding:"14px",marginBottom:"14px"}}>
+            return <div className="glass" style={{background:"rgba(0,0,0,0.04)",padding:"14px",marginBottom:"14px"}}>
               <h3 style={{color:"#D4AF37",fontSize:"0.9rem",fontWeight:"700",marginBottom:"10px",textAlign:"center"}}>🌸 هرم العطر</h3>
               <Row label="🔝 المقدّمة" arr={tops}/>
               <Row label="💫 القلب" arr={mids}/>
               <Row label="🪨 القاعدة" arr={bases}/>
             </div>;
           })()}
-          <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"12px",background:"rgba(0,0,0,0.25)",borderRadius:"10px",padding:"10px"}}>
-            <span style={{fontSize:"0.78rem",color:"#c8a46a",whiteSpace:"nowrap"}}>💰 سعر البيع:</span>
-            <input type="number" placeholder="0" value={recipePrices[catalogView.id]||""} onChange={e=>{const v=+e.target.value;setRecipePrices(p=>v>0?{...p,[catalogView.id]:v}:(({[catalogView.id]:_,...rest})=>rest)(p));}} style={{flex:1,background:"rgba(0,0,0,0.4)",border:"1px solid rgba(214,175,55,0.4)",borderRadius:"8px",color:"#fff",fontSize:"0.9rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif",textAlign:"center"}}/>
-            <span style={{fontSize:"0.8rem",color:"#c8a46a"}}>ريال</span>
+          <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"12px",background:"rgba(0,0,0,0.04)",borderRadius:"10px",padding:"10px"}}>
+            <span style={{fontSize:"0.78rem",color:"#8A6A1E",whiteSpace:"nowrap"}}>💰 سعر البيع:</span>
+            <input type="number" placeholder="0" value={recipePrices[catalogView.id]||""} onChange={e=>{const v=+e.target.value;setRecipePrices(p=>v>0?{...p,[catalogView.id]:v}:(({[catalogView.id]:_,...rest})=>rest)(p));}} style={{flex:1,background:"rgba(26,18,8,0.85)",border:"1px solid rgba(214,175,55,0.4)",borderRadius:"8px",color:"#1A1208",fontSize:"0.9rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif",textAlign:"center"}}/>
+            <span style={{fontSize:"0.8rem",color:"#8A6A1E"}}>ريال</span>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"8px"}}>
             <button className="btn-gold" onClick={()=>{setQrRecipe(catalogView);}}>📲 QR مشاركة</button>
@@ -3413,7 +3413,7 @@ function App(){
             <div className="glass" style={{textAlign:"center",background:"rgba(80,120,200,0.08)",padding:"16px",marginBottom:"12px"}}>
               <span style={{fontSize:"2rem"}}>{aiGenResult.icon}</span>
               <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700",margin:"6px 0"}}>{aiGenResult.name}</h2>
-              <p style={{fontSize:"0.78rem",color:"#e5d5be"}}>{aiGenResult.desc}</p>
+              <p style={{fontSize:"0.78rem",color:"#1A1208"}}>{aiGenResult.desc}</p>
               <div style={{display:"flex",gap:"5px",justifyContent:"center",marginTop:"8px",flexWrap:"wrap"}}>
                 <span className="tag tag-gold">🗓️ {aiGenResult.season}</span>
                 <span className="tag tag-gold">👤 {aiGenResult.gender}</span>
@@ -3422,7 +3422,7 @@ function App(){
             </div>
             <h4 style={{color:"#D4AF37",fontSize:"0.82rem",marginBottom:"7px"}}>المكونات</h4>
             {(aiGenResult.ing||[]).map(([id,a],i)=>{const ing=getIng(id);return(
-              <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 10px",background:ing?"rgba(255,255,255,0.04)":"rgba(200,60,60,0.08)",borderRadius:"8px",marginBottom:"3px"}}>
+              <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 10px",background:ing?"rgba(26,18,8,0.08)":"rgba(200,60,60,0.08)",borderRadius:"8px",marginBottom:"3px"}}>
                 <span style={{fontSize:"0.78rem",color:ing?"#fff":"#e08080"}}>{ing?ing.name:id} {!ing&&<span style={{fontSize:"0.65rem"}}>⚠️ غير موجود</span>}</span>
                 <span style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.78rem"}}>{a} مل</span>
               </div>
@@ -3440,12 +3440,12 @@ function App(){
       {showAIAnalysis&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowAIAnalysis(false);}}>
         <div className="modal-sheet">
           <h3 style={{color:"#80a0e0",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>🤖 تحليل Claude AI</h3>
-          {aiAnalysisRecipe&&<p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{aiAnalysisRecipe.icon} {aiAnalysisRecipe.name}</p>}
+          {aiAnalysisRecipe&&<p style={{fontSize:"0.74rem",color:"#8A6A1E",marginBottom:"14px"}}>{aiAnalysisRecipe.icon} {aiAnalysisRecipe.name}</p>}
           {aiLoading&&<div style={{textAlign:"center",padding:"30px",color:"#80a0e0"}}>
             <div style={{fontSize:"2.5rem",animation:"pulseGlow 1.5s ease-in-out infinite"}}>🤖</div>
             <p style={{marginTop:"12px",fontSize:"0.85rem"}}>Claude يحلّل الوصفة...</p>
           </div>}
-          {!aiLoading&&<div style={{background:"rgba(0,0,0,0.3)",borderRadius:"12px",padding:"14px",fontSize:"0.8rem",lineHeight:"1.9",color:"#e5d5be",whiteSpace:"pre-wrap"}}>{aiAnalysisText}</div>}
+          {!aiLoading&&<div style={{background:"rgba(0,0,0,0.05)",borderRadius:"12px",padding:"14px",fontSize:"0.8rem",lineHeight:"1.9",color:"#1A1208",whiteSpace:"pre-wrap"}}>{aiAnalysisText}</div>}
           <button className="btn-ghost" style={{width:"100%",marginTop:"14px"}} onClick={()=>setShowAIAnalysis(false)}>إغلاق</button>
         </div>
       </div>}
@@ -3457,15 +3457,15 @@ function App(){
             <span style={{fontSize:"1.4rem"}}>{aiStudioMode==="story"?"✍️":aiStudioMode==="campaign"?"📢":"📊"}</span>
             <div>
               <h3 style={{color:aiStudioMode==="story"?"#C9A84C":aiStudioMode==="campaign"?"#90B8F0":"#40C090",fontSize:"0.95rem",fontWeight:"700",margin:0}}>{aiStudioMode==="story"?"كتابة القصة التسويقية":aiStudioMode==="campaign"?"الحملة التسويقية":"تقدير الثبات العلمي"}</h3>
-              {aiStudioRecipe&&<p style={{fontSize:"0.72rem",color:"rgba(255,255,255,0.40)",margin:"2px 0 0"}}>{aiStudioRecipe.icon} {aiStudioRecipe.name}</p>}
+              {aiStudioRecipe&&<p style={{fontSize:"0.72rem",color:"rgba(26,18,8,0.40)",margin:"2px 0 0"}}>{aiStudioRecipe.icon} {aiStudioRecipe.name}</p>}
             </div>
           </div>
           {aiLoading&&<div style={{textAlign:"center",padding:"30px",color:"#90B8F0"}}>
             <div style={{fontSize:"2.5rem",animation:"pulseGlow 1.5s ease-in-out infinite"}}>🤖</div>
-            <p style={{marginTop:"12px",fontSize:"0.85rem",color:"rgba(255,255,255,0.50)"}}>Claude يعمل...</p>
+            <p style={{marginTop:"12px",fontSize:"0.85rem",color:"rgba(26,18,8,0.50)"}}>Claude يعمل...</p>
           </div>}
           {!aiLoading&&aiStudioResult&&<div>
-            <div style={{background:"rgba(0,0,0,0.35)",borderRadius:"14px",padding:"16px",fontSize:"0.80rem",lineHeight:"1.95",color:"#e5d5be",whiteSpace:"pre-wrap",maxHeight:"55vh",overflowY:"auto"}}>{aiStudioResult}</div>
+            <div style={{background:"rgba(0,0,0,0.04)",borderRadius:"14px",padding:"16px",fontSize:"0.80rem",lineHeight:"1.95",color:"#1A1208",whiteSpace:"pre-wrap",maxHeight:"55vh",overflowY:"auto"}}>{aiStudioResult}</div>
             {aiStudioMode==="story"&&aiStudioRecipe&&<button className="btn-gold" style={{width:"100%",marginTop:"12px"}} onClick={()=>{
               const txt=aiStudioResult.trim();
               setRecipes(p=>p.map(r=>r.id!==aiStudioRecipe.id?r:{...r,story:txt}));
@@ -3481,7 +3481,7 @@ function App(){
       {showRating&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setShowRating(false);}}>
         <div className="modal-sheet" style={{textAlign:"center"}}>
           <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>⭐ تقييم الوصفة</h3>
-          <p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{recipes.find(r=>r.id===ratingRecId)?.name}</p>
+          <p style={{fontSize:"0.74rem",color:"#8A6A1E",marginBottom:"14px"}}>{recipes.find(r=>r.id===ratingRecId)?.name}</p>
           <div style={{display:"flex",justifyContent:"center",gap:"2px",marginBottom:"16px"}}>
             {[1,2,3,4,5].map(s=>(
               <button key={s} className="star-btn" onClick={()=>setRatingStars(s)}
@@ -3500,13 +3500,13 @@ function App(){
         <div className="modal-sheet">
           <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"14px"}}>✏️ تعديل: {editRecipe.name}</h3>
           <div style={{display:"grid",gap:"9px"}}>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>اسم الوصفة *</label><input className="inp" value={editRecName} onChange={e=>setEditRecName(e.target.value)}/></div>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الوصف</label><input className="inp" value={editRecDesc} onChange={e=>setEditRecDesc(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>اسم الوصفة *</label><input className="inp" value={editRecName} onChange={e=>setEditRecName(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الوصف</label><input className="inp" value={editRecDesc} onChange={e=>setEditRecDesc(e.target.value)}/></div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الموسم</label><select className="inp" value={editRecSeason} onChange={e=>setEditRecSeason(e.target.value)} style={{background:"#0C0601"}}>{["صيف","شتاء","ربيع","خريف","مناسبات"].map(s=><option key={s}>{s}</option>)}</select></div>
-              <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الجنس</label><select className="inp" value={editRecGender} onChange={e=>setEditRecGender(e.target.value)} style={{background:"#0C0601"}}>{["للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الموسم</label><select className="inp" value={editRecSeason} onChange={e=>setEditRecSeason(e.target.value)} style={{background:"#FAF8F3"}}>{["صيف","شتاء","ربيع","خريف","مناسبات"].map(s=><option key={s}>{s}</option>)}</select></div>
+              <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الجنس</label><select className="inp" value={editRecGender} onChange={e=>setEditRecGender(e.target.value)} style={{background:"#FAF8F3"}}>{["للجنسين","رجالي","نسائي"].map(g=><option key={g}>{g}</option>)}</select></div>
             </div>
-            <div><label style={{fontSize:"0.72rem",color:"#c8a46a"}}>الثبات (مثال: 24 ساعة)</label><input className="inp" value={editRecStab} onChange={e=>setEditRecStab(e.target.value)}/></div>
+            <div><label style={{fontSize:"0.72rem",color:"#8A6A1E"}}>الثبات (مثال: 24 ساعة)</label><input className="inp" value={editRecStab} onChange={e=>setEditRecStab(e.target.value)}/></div>
             <button className="btn-gold" onClick={saveEditRecipe}>💾 حفظ التعديلات</button>
             <button className="btn-ghost" onClick={()=>setEditRecipe(null)}>إلغاء</button>
           </div>
@@ -3538,7 +3538,7 @@ function App(){
                     <span style={{fontSize:"1.3rem"}}>{p.icon}</span>
                     <div>
                       <div style={{fontSize:"0.82rem",fontWeight:"800",color:p.done?"#80D080":"#E8C870"}}>{p.title}</div>
-                      <div style={{fontSize:"0.52rem",letterSpacing:"0.3em",color:"rgba(255,255,255,0.25)",textTransform:"uppercase"}}>{p.sub}</div>
+                      <div style={{fontSize:"0.52rem",letterSpacing:"0.3em",color:"rgba(26,18,8,0.25)",textTransform:"uppercase"}}>{p.sub}</div>
                     </div>
                   </div>
                   <div style={{display:"flex",alignItems:"center",gap:"4px"}}>
@@ -3548,10 +3548,10 @@ function App(){
                     <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.1rem",fontWeight:"700",color:"rgba(201,168,76,0.18)"}}>0{p.num}</span>
                   </div>
                 </div>
-                <div style={{fontSize:"0.65rem",color:"rgba(255,255,255,0.40)",marginBottom:"8px",lineHeight:1.5}}>{p.detail}</div>
+                <div style={{fontSize:"0.65rem",color:"rgba(26,18,8,0.40)",marginBottom:"8px",lineHeight:1.5}}>{p.detail}</div>
                 <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
                   {p.stack.map(s=>(
-                    <span key={s} style={{fontSize:"0.55rem",padding:"2px 7px",borderRadius:"6px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",color:"rgba(255,255,255,0.35)",fontFamily:"'IBM Plex Mono',monospace"}}>{s}</span>
+                    <span key={s} style={{fontSize:"0.55rem",padding:"2px 7px",borderRadius:"6px",background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.08)",color:"rgba(26,18,8,0.35)",fontFamily:"'IBM Plex Mono',monospace"}}>{s}</span>
                   ))}
                 </div>
               </div>
@@ -3562,14 +3562,14 @@ function App(){
           <div style={{background:"rgba(201,168,76,0.04)",border:"1px solid rgba(201,168,76,0.12)",borderRadius:"12px",padding:"12px 14px",marginBottom:"12px"}}>
             <div style={{fontSize:"0.70rem",fontWeight:"700",color:"rgba(201,168,76,0.60)",marginBottom:"8px"}}>⏱ الجدول الزمني المقترح</div>
             {[["أسبوع 1–2","Next.js + Supabase + كتالوج بدون دفع"],["أسبوع 3","Moyasar sandbox + سلة + تسديد"],["أسبوع 4","Aramex + إشعارات SMS/Email"],["أسبوع 5","لوحة إدارة + تقارير مبيعات"],["أسبوع 6","اختبار شامل + إطلاق"],].map(([w,t])=>(
-              <div key={w} style={{display:"flex",gap:"10px",padding:"5px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+              <div key={w} style={{display:"flex",gap:"10px",padding:"5px 0",borderBottom:"1px solid rgba(26,18,8,0.08)"}}>
                 <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.58rem",color:"rgba(201,168,76,0.50)",whiteSpace:"nowrap",minWidth:"68px"}}>{w}</span>
-                <span style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.35)"}}>{t}</span>
+                <span style={{fontSize:"0.62rem",color:"rgba(26,18,8,0.35)"}}>{t}</span>
               </div>
             ))}
           </div>
 
-          <div style={{fontSize:"0.58rem",color:"rgba(255,255,255,0.18)",textAlign:"center",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>
+          <div style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.12)",textAlign:"center",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>
             scaffold المشروع جاهز في dhawi-store/ داخل المستودع
           </div>
           <button className="btn-ghost" style={{width:"100%",marginTop:"12px"}} onClick={()=>setShowRoadmap(false)}>إغلاق</button>
@@ -3583,24 +3583,24 @@ function App(){
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"16px"}}>
             <div>
               <div style={{fontSize:"1.05rem",fontWeight:"800",color:"#D4AF37"}}>🛒 السلة</div>
-              <div style={{fontSize:"0.62rem",color:"rgba(255,255,255,0.30)",marginTop:"2px"}}>{cartCount} منتج</div>
+              <div style={{fontSize:"0.62rem",color:"rgba(26,18,8,0.30)",marginTop:"2px"}}>{cartCount} منتج</div>
             </div>
             <button onClick={()=>setCartItems([])} style={{background:"rgba(200,60,60,0.10)",border:"1px solid rgba(200,60,60,0.22)",color:"rgba(200,100,100,0.70)",borderRadius:"8px",padding:"4px 10px",fontSize:"0.70rem",cursor:"pointer"}}>مسح الكل</button>
           </div>
           {cartItems.length===0
-            ?<div style={{textAlign:"center",padding:"32px",color:"rgba(255,255,255,0.22)",fontSize:"0.85rem"}}>السلة فارغة</div>
+            ?<div style={{textAlign:"center",padding:"32px",color:"rgba(26,18,8,0.22)",fontSize:"0.85rem"}}>السلة فارغة</div>
             :<div>
               {cartItems.map(i=>(
                 <div key={i.id} className="cart-item-row">
                   <div style={{fontSize:"1.6rem",flexShrink:0}}>{i.icon}</div>
                   <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:"0.82rem",fontWeight:"700",color:"#F0E6D0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{i.name}</div>
+                    <div style={{fontSize:"0.82rem",fontWeight:"700",color:"#1A1208",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{i.name}</div>
                     <div style={{fontSize:"0.58rem",color:"rgba(201,168,76,0.45)",marginTop:"2px"}}>{i.batchName} · {i.season} · {i.gender}</div>
                   </div>
                   <div style={{display:"flex",alignItems:"center",gap:"6px",flexShrink:0}}>
-                    <button onClick={()=>updateQty(i.id,-1)} style={{width:"24px",height:"24px",borderRadius:"50%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.10)",color:"#D4AF37",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>−</button>
+                    <button onClick={()=>updateQty(i.id,-1)} style={{width:"24px",height:"24px",borderRadius:"50%",background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.12)",color:"#D4AF37",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>−</button>
                     <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.85rem",color:"#E8C870",minWidth:"16px",textAlign:"center"}}>{i.qty}</span>
-                    <button onClick={()=>updateQty(i.id,1)} style={{width:"24px",height:"24px",borderRadius:"50%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.10)",color:"#D4AF37",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>+</button>
+                    <button onClick={()=>updateQty(i.id,1)} style={{width:"24px",height:"24px",borderRadius:"50%",background:"rgba(26,18,8,0.08)",border:"1px solid rgba(26,18,8,0.12)",color:"#D4AF37",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>+</button>
                   </div>
                   <div style={{minWidth:"58px",textAlign:"left",flexShrink:0}}>
                     <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.85rem",fontWeight:"700",color:"#E8C870"}}>{i.price*i.qty}<span style={{fontSize:"0.55rem",opacity:0.6}}> ر</span></div>
@@ -3609,10 +3609,10 @@ function App(){
                 </div>
               ))}
               <div style={{borderTop:"1px solid rgba(201,168,76,0.15)",marginTop:"14px",paddingTop:"14px"}}>
-                <div style={{display:"flex",justifyContent:"space-between",marginBottom:"4px",fontSize:"0.72rem",color:"rgba(255,255,255,0.35)"}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:"4px",fontSize:"0.72rem",color:"rgba(26,18,8,0.35)"}}>
                   <span>المجموع</span><span style={{fontFamily:"'IBM Plex Mono',monospace"}}>{cartTotal} ر</span>
                 </div>
-                <div style={{display:"flex",justifyContent:"space-between",marginBottom:"14px",fontSize:"0.68rem",color:"rgba(255,255,255,0.25)"}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:"14px",fontSize:"0.68rem",color:"rgba(26,18,8,0.25)"}}>
                   <span>ضريبة القيمة المضافة 15%</span><span style={{fontFamily:"'IBM Plex Mono',monospace"}}>{Math.round(cartTotal*0.15)} ر</span>
                 </div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:"16px",background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.20)",borderRadius:"12px",padding:"10px 14px"}}>
@@ -3639,12 +3639,12 @@ function App(){
           <div className="section-hdr">
             <div className="section-hdr-bar"/>
             <span style={{fontWeight:800,fontSize:"1.05rem"}}>📦 طلبات المتجر</span>
-            {newCount>0&&<span style={{background:"#C03030",color:"#fff",borderRadius:"10px",padding:"2px 9px",fontSize:"0.60rem",fontWeight:900,marginRight:"auto"}}>{newCount} جديد</span>}
+            {newCount>0&&<span style={{background:"#C03030",color:"#1A1208",borderRadius:"10px",padding:"2px 9px",fontSize:"0.60rem",fontWeight:900,marginRight:"auto"}}>{newCount} جديد</span>}
           </div>
           {storeOrders.length===0
-            ?<div className="glass" style={{textAlign:"center",padding:"48px 20px",color:"rgba(255,255,255,0.25)",fontSize:"0.88rem"}}>لا توجد طلبات بعد<br/><span style={{fontSize:"0.70rem",marginTop:"8px",display:"block",opacity:0.6}}>ستظهر هنا طلبات متجر agency.html تلقائياً</span></div>
+            ?<div className="glass" style={{textAlign:"center",padding:"48px 20px",color:"rgba(26,18,8,0.25)",fontSize:"0.88rem"}}>لا توجد طلبات بعد<br/><span style={{fontSize:"0.70rem",marginTop:"8px",display:"block",opacity:0.6}}>ستظهر هنا طلبات متجر agency.html تلقائياً</span></div>
             :storeOrders.map(o=>(
-            <div key={o.id} className="glass" style={{padding:"14px",marginBottom:"10px",borderColor:o.status==='new'?"rgba(212,168,67,0.45)":"rgba(255,255,255,0.07)"}}>
+            <div key={o.id} className="glass" style={{padding:"14px",marginBottom:"10px",borderColor:o.status==='new'?"rgba(212,168,67,0.45)":"rgba(26,18,8,0.08)"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"8px"}}>
                 <div>
                   <div style={{fontWeight:800,fontSize:"0.90rem"}}>{o.customer.name}</div>
@@ -3656,27 +3656,27 @@ function App(){
                     :<span style={{color:"rgba(80,160,80,0.65)",fontSize:"0.60rem"}}>✓ مكتمل</span>}
                 </div>
               </div>
-              <div style={{borderTop:"1px solid rgba(255,255,255,0.06)",paddingTop:"8px",marginBottom:"8px"}}>
+              <div style={{borderTop:"1px solid rgba(26,18,8,0.08)",paddingTop:"8px",marginBottom:"8px"}}>
                 {o.items.map((i,idx)=>(
-                  <div key={idx} style={{display:"flex",justifyContent:"space-between",fontSize:"0.72rem",color:"rgba(245,239,224,0.72)",marginBottom:"3px"}}>
+                  <div key={idx} style={{display:"flex",justifyContent:"space-between",fontSize:"0.72rem",color:"rgba(26,18,8,0.72)",marginBottom:"3px"}}>
                     <span>{i.icon} {i.name} ({i.batchLabel}) ×{i.qty}</span>
                     <span style={{fontFamily:"monospace"}}>{i.price*i.qty} ر</span>
                   </div>
                 ))}
               </div>
-              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.63rem",color:"rgba(255,255,255,0.32)",marginBottom:"3px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.63rem",color:"rgba(26,18,8,0.32)",marginBottom:"3px"}}>
                 <span>الشحن: {o.delivery==='express'?'سريع · 45 ر':'عادي · 25 ر'}</span>
                 <span>الدفع: {PAY_LABEL[o.payment]||o.payment}</span>
               </div>
               {o.codFee>0&&<div style={{fontSize:"0.63rem",color:"rgba(255,190,80,0.65)",marginBottom:"3px"}}>رسوم الاستلام: {o.codFee} ر</div>}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:"10px",borderTop:"1px solid rgba(255,255,255,0.06)",paddingTop:"10px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:"10px",borderTop:"1px solid rgba(26,18,8,0.08)",paddingTop:"10px"}}>
                 <div style={{fontFamily:"monospace",fontSize:"1.05rem",fontWeight:700,background:"linear-gradient(135deg,#F0C840,#D4A843)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{o.total} ر.س</div>
                 <div style={{display:"flex",gap:"6px"}}>
                   {o.status==='new'&&<button className="btn-gold" style={{padding:"6px 13px",fontSize:"0.68rem"}} onClick={()=>markDone(o.id)}>✓ تمت المعالجة</button>}
                   <button style={{background:"rgba(180,40,40,0.12)",border:"1px solid rgba(180,40,40,0.28)",color:"rgba(220,100,100,0.70)",borderRadius:"8px",padding:"6px 10px",fontSize:"0.65rem",cursor:"pointer"}} onClick={()=>deleteOrder(o.id)}>حذف</button>
                 </div>
               </div>
-              <div style={{fontFamily:"monospace",fontSize:"0.48rem",color:"rgba(255,255,255,0.18)",marginTop:"5px"}}>{o.id} · {new Date(o.date).toLocaleString('ar-SA')}</div>
+              <div style={{fontFamily:"monospace",fontSize:"0.48rem",color:"rgba(26,18,8,0.12)",marginTop:"5px"}}>{o.id} · {new Date(o.date).toLocaleString('ar-SA')}</div>
             </div>
           ))}
         </div>);
@@ -3699,7 +3699,7 @@ function App(){
           <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);setShowCustomerStore(false);setShowCart(false);setShowRoadmap(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon" style={{position:"relative"}}>
               {t.icon}
-              {t.badge>0&&<span style={{position:"absolute",top:-5,right:-5,background:"#C03030",color:"#fff",borderRadius:"50%",width:15,height:15,fontSize:"0.40rem",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{t.badge}</span>}
+              {t.badge>0&&<span style={{position:"absolute",top:-5,right:-5,background:"#C03030",color:"#1A1208",borderRadius:"50%",width:15,height:15,fontSize:"0.40rem",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{t.badge}</span>}
             </span>
             {t.label}
           </button>
@@ -3731,17 +3731,17 @@ function PublicView({payload}){
     </div>
   ):null;
   return(
-    <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"28px 18px",fontFamily:"'Alexandria',sans-serif",background:"radial-gradient(ellipse at 30% 20%,rgba(100,50,8,0.16) 0%,transparent 55%),linear-gradient(170deg,#060300,#0C0601,#100802)"}}>
+    <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"28px 18px",fontFamily:"'Alexandria',sans-serif",background:"#FAF8F3"}}>
       <div style={{
         maxWidth:"420px",width:"100%",textAlign:"center",
-        background:"linear-gradient(160deg,rgba(20,12,3,0.90),rgba(10,6,1,0.95)) padding-box, linear-gradient(135deg,rgba(201,168,76,0.45),rgba(70,42,8,0.2),rgba(201,168,76,0.45)) border-box",
+        background:"linear-gradient(160deg,rgba(255,255,255,0.95),rgba(250,248,240,0.98)) padding-box, linear-gradient(135deg,rgba(201,168,76,0.50),rgba(180,140,40,0.22),rgba(201,168,76,0.50)) border-box",
         border:"1.5px solid transparent",borderRadius:"24px",padding:"32px 22px 28px",
         backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-        boxShadow:"0 20px 72px rgba(0,0,0,0.80),inset 0 1px 0 rgba(201,168,76,0.12)"
+        boxShadow:"0 20px 72px rgba(0,0,0,0.12),inset 0 1px 0 rgba(201,168,76,0.12)"
       }}>
         <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.50),transparent)",borderRadius:"24px 24px 0 0"}}/>
         <div style={{fontSize:"0.60rem",color:"rgba(201,168,76,0.65)",letterSpacing:"0.38em",marginBottom:"14px",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>Dhawi Oud Oil Heritage Lab</div>
-        <div style={{fontSize:"3.6rem",filter:"drop-shadow(0 4px 14px rgba(0,0,0,0.6))",marginBottom:"4px"}}>{payload.i}</div>
+        <div style={{fontSize:"3.6rem",filter:"drop-shadow(0 4px 14px rgba(0,0,0,0.12))",marginBottom:"4px"}}>{payload.i}</div>
         <h1 style={{color:"#D4AF37",fontSize:"1.55rem",fontWeight:"800",margin:"8px 0 4px",letterSpacing:"-0.01em"}}>{payload.n}</h1>
         <div style={{height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.35),transparent)",margin:"12px auto",maxWidth:"140px"}}/>
         <p style={{fontSize:"0.86rem",color:"#A88858",lineHeight:"1.9",marginBottom:"18px"}}>{payload.d}</p>
@@ -3785,9 +3785,9 @@ function QRModal({recipe,getIng,onClose}){
     <div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")onClose();}}>
       <div className="modal-sheet" style={{textAlign:"center"}}>
         <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"6px"}}>📲 مشاركة العطر مع العميل</h3>
-        <p style={{fontSize:"0.74rem",color:"#c8a46a",marginBottom:"14px"}}>{recipe.icon} {recipe.name} — يفتح صفحة فاخرة بدون أسعار</p>
+        <p style={{fontSize:"0.74rem",color:"#8A6A1E",marginBottom:"14px"}}>{recipe.icon} {recipe.name} — يفتح صفحة فاخرة بدون أسعار</p>
         {!fallback&&<div ref={ref} style={{display:"inline-block",padding:"12px",background:"#fff",borderRadius:"14px"}}/>}
-        {fallback&&<div style={{color:"#c8a46a",fontSize:"0.72rem",padding:"16px",background:"rgba(0,0,0,0.3)",borderRadius:"12px",wordBreak:"break-all",textAlign:"center",lineHeight:"1.8"}}>{shareLink}</div>}
+        {fallback&&<div style={{color:"#8A6A1E",fontSize:"0.72rem",padding:"16px",background:"rgba(0,0,0,0.05)",borderRadius:"12px",wordBreak:"break-all",textAlign:"center",lineHeight:"1.8"}}>{shareLink}</div>}
         <button className="btn-gold" style={{width:"100%",marginTop:"14px"}} onClick={copyLink}>{copied?"✅ تم النسخ":"🔗 نسخ رابط العميل"}</button>
         <button className="btn-ghost" style={{width:"100%",marginTop:"8px"}} onClick={onClose}>إغلاق</button>
       </div>
@@ -3800,7 +3800,7 @@ function SellEntry({id,onSell}){
   return(
     <div style={{display:"flex",gap:"6px",alignItems:"center",marginTop:"6px"}}>
       <input type="number" placeholder="سعر البيع (ريال)" value={price} onChange={e=>setPrice(e.target.value)}
-        style={{flex:1,background:"rgba(0,0,0,0.4)",border:"1px solid rgba(214,175,55,0.4)",borderRadius:"8px",color:"#fff",fontSize:"0.75rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif"}}/>
+        style={{flex:1,background:"rgba(26,18,8,0.85)",border:"1px solid rgba(214,175,55,0.4)",borderRadius:"8px",color:"#1A1208",fontSize:"0.75rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif"}}/>
       <button onClick={()=>{if(price)onSell(id,+price);}} style={{background:"rgba(80,160,80,0.2)",border:"1px solid rgba(80,160,80,0.4)",color:"#80c080",borderRadius:"8px",padding:"5px 10px",fontSize:"0.72rem",cursor:"pointer",fontWeight:"600",whiteSpace:"nowrap"}}>✓ بيع</button>
     </div>
   );
@@ -3811,10 +3811,10 @@ class ErrorBoundary extends React.Component{
   static getDerivedStateFromError(err){return {err};}
   render(){
     if(this.state.err){
-      return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"30px",textAlign:"center",fontFamily:"'Alexandria',sans-serif",color:"#e5d5be"}},
+      return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"30px",textAlign:"center",fontFamily:"'Alexandria',sans-serif",color:"#1A1208"}},
         React.createElement("div",{style:{fontSize:"2.5rem",marginBottom:"12px"}},"⚠️"),
         React.createElement("h2",{style:{color:"#D4AF37",fontSize:"1.1rem",marginBottom:"8px"}},"حدث خطأ مؤقت"),
-        React.createElement("p",{style:{fontSize:"0.82rem",color:"#c8a46a",marginBottom:"18px",maxWidth:"320px",lineHeight:"1.8"}},"التطبيق واجه مشكلة لكن بياناتك محفوظة. اضغط لإعادة التحميل."),
+        React.createElement("p",{style:{fontSize:"0.82rem",color:"#8A6A1E",marginBottom:"18px",maxWidth:"320px",lineHeight:"1.8"}},"التطبيق واجه مشكلة لكن بياناتك محفوظة. اضغط لإعادة التحميل."),
         React.createElement("button",{onClick:()=>location.reload(),style:{background:"#D4AF37",border:"none",color:"#1a0800",padding:"10px 24px",borderRadius:"12px",cursor:"pointer",fontSize:"0.9rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}},"🔄 إعادة التحميل")
       );
     }
@@ -3835,7 +3835,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(
   if(!cv)return;
   const ctx=cv.getContext('2d');
   let W,H,pts=[];
-  const COLS=['rgba(201,168,76,','rgba(180,50,120,','rgba(80,40,180,','rgba(240,210,100,'];
+  const COLS=['rgba(180,130,30,','rgba(200,80,120,','rgba(120,80,180,','rgba(160,110,20,'];
   function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
   resize();window.addEventListener('resize',resize,{passive:true});
   for(let i=0;i<40;i++){
