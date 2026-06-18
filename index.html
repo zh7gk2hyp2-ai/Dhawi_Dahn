@@ -2418,7 +2418,7 @@ function App(){
             <div>
               <div style={{fontSize:"0.44rem",color:"rgba(138,106,30,0.45)",letterSpacing:"0.55em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"4px"}}>INVENTORY VALUE</div>
               <div className="p-num" style={{marginTop:"2px"}}>{totalInvValue.toFixed(0)} <span style={{fontSize:"0.75rem",opacity:0.55,fontFamily:"'Alexandria',sans-serif"}}>ريال</span></div>
-              <div style={{fontSize:"0.60rem",color:"rgba(90,148,80,0.65)",marginTop:"3px",fontFamily:"'IBM Plex Mono',monospace"}}>{inventory.filter(i=>i.stock>0).length} خامة متوفرة</div>
+              <div style={{fontSize:"0.60rem",color:"rgba(90,148,80,0.65)",marginTop:"3px",fontFamily:"'IBM Plex Mono',monospace"}}>{inv.filter(i=>i.stock>0).length} خامة متوفرة</div>
             </div>
             <div style={{display:"flex",gap:"6px",flexWrap:"wrap",justifyContent:"flex-end"}}>
               <button className="btn-ghost" onClick={()=>setShowPurchaseForm(true)} style={{fontSize:"0.75rem"}}>📦 شراء</button>
