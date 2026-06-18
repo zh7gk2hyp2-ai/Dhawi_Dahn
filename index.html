@@ -2484,17 +2484,17 @@ function App(){
               {editCostId===ing.id&&<div style={{marginBottom:"8px",padding:"10px",background:"rgba(0,0,0,0.05)",borderRadius:"11px",border:"1px solid rgba(201,168,76,0.12)"}}>
                 <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
                   <span style={{fontSize:"0.70rem",color:"#8A6A1E"}}>السعر الكلي:</span>
-                  <input type="number" value={ing.price} onChange={e=>setPrice(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(26,18,8,0.85)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#1A1208",fontSize:"0.8rem",padding:"4px"}}/>
+                  <input type="number" value={ing.price} onChange={e=>setPrice(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(201,168,76,0.10)",border:"1px solid rgba(201,168,76,0.45)",borderRadius:"6px",color:"#C9A84C",fontSize:"0.8rem",padding:"4px",fontWeight:700}}/>
                   <span style={{fontSize:"0.68rem",color:"#7a5a20"}}>ر / {ing.qty}{ing.unit}</span>
                 </div>
                 <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
                   <span style={{fontSize:"0.70rem",color:"#8A6A1E"}}>الكمية الأصلية:</span>
-                  <input type="number" value={ing.qty} onChange={e=>setQty(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(26,18,8,0.85)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#1A1208",fontSize:"0.8rem",padding:"4px"}}/>
+                  <input type="number" value={ing.qty} onChange={e=>setQty(ing.id,+e.target.value)} style={{width:"70px",textAlign:"center",background:"rgba(201,168,76,0.10)",border:"1px solid rgba(201,168,76,0.45)",borderRadius:"6px",color:"#C9A84C",fontSize:"0.8rem",padding:"4px",fontWeight:700}}/>
                   <span style={{fontSize:"0.68rem",color:"#7a5a20"}}>{ing.unit}</span>
                 </div>
                 <div style={{display:"flex",gap:"6px",alignItems:"center",marginBottom:"6px"}}>
                   <span style={{fontSize:"0.70rem",color:"#8A6A1E"}}>تاريخ الانتهاء:</span>
-                  <input type="date" value={ing.expiry||""} onChange={e=>setExpiry(ing.id,e.target.value)} style={{background:"rgba(26,18,8,0.85)",border:"1px solid #D4AF37",borderRadius:"6px",color:"#1A1208",fontSize:"0.75rem",padding:"4px",colorScheme:"light"}}/>
+                  <input type="date" value={ing.expiry||""} onChange={e=>setExpiry(ing.id,e.target.value)} style={{background:"rgba(201,168,76,0.10)",border:"1px solid rgba(201,168,76,0.45)",borderRadius:"6px",color:"#C9A84C",fontSize:"0.75rem",padding:"4px",colorScheme:"light"}}/>
                 </div>
                 <button onClick={()=>deleteIng(ing.id)} style={{width:"100%",background:"rgba(200,60,60,0.12)",border:"1px solid rgba(200,60,60,0.35)",color:"#e08080",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>🗑️ حذف</button>
               </div>}
@@ -2504,7 +2504,7 @@ function App(){
                   <div style={{height:"100%",borderRadius:"4px",width:`${pct}%`,background:pct>50?"linear-gradient(90deg,#4A8A30,#5AA840)":pct>20?"linear-gradient(90deg,#C9A84C,#E8C460)":"linear-gradient(90deg,#8A2020,#C04040)",transition:"width 0.5s ease"}}/>
                 </div>
                 <button onClick={()=>updateStock(ing.id,-5)} style={{background:"rgba(170,40,40,0.14)",border:"1px solid rgba(180,50,50,0.28)",color:"#C06868",width:"28px",height:"28px",borderRadius:"50%",cursor:"pointer",fontSize:"1rem",lineHeight:"1",display:"flex",alignItems:"center",justifyContent:"center"}}>−</button>
-                <input type="number" value={ing.stock} onChange={e=>setStock(ing.id,+e.target.value)} className="mono" style={{width:"52px",textAlign:"center",background:"rgba(26,18,8,0.85)",border:"1px solid rgba(201,168,76,0.30)",borderRadius:"9px",color:"#1A1208",fontSize:"0.78rem",padding:"5px"}}/>
+                <input type="number" value={ing.stock} onChange={e=>setStock(ing.id,+e.target.value)} className="mono" style={{width:"52px",textAlign:"center",background:"rgba(201,168,76,0.10)",border:"1px solid rgba(201,168,76,0.35)",borderRadius:"9px",color:"#C9A84C",fontSize:"0.78rem",padding:"5px",fontWeight:700}}/>
                 <button onClick={()=>updateStock(ing.id,5)} style={{background:"rgba(60,130,60,0.14)",border:"1px solid rgba(70,150,70,0.28)",color:"#68B068",width:"28px",height:"28px",borderRadius:"50%",cursor:"pointer",fontSize:"1rem",lineHeight:"1",display:"flex",alignItems:"center",justifyContent:"center"}}>+</button>
               </div>
             </div>);
@@ -4018,7 +4018,7 @@ function App(){
           })()}
           <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"12px",background:"rgba(0,0,0,0.04)",borderRadius:"10px",padding:"10px"}}>
             <span style={{fontSize:"0.78rem",color:"#8A6A1E",whiteSpace:"nowrap"}}>💰 سعر البيع:</span>
-            <input type="number" placeholder="0" value={recipePrices[catalogView.id]||""} onChange={e=>{const v=+e.target.value;setRecipePrices(p=>v>0?{...p,[catalogView.id]:v}:(({[catalogView.id]:_,...rest})=>rest)(p));}} style={{flex:1,background:"rgba(26,18,8,0.85)",border:"1px solid rgba(214,175,55,0.4)",borderRadius:"8px",color:"#1A1208",fontSize:"0.9rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif",textAlign:"center"}}/>
+            <input type="number" placeholder="0" value={recipePrices[catalogView.id]||""} onChange={e=>{const v=+e.target.value;setRecipePrices(p=>v>0?{...p,[catalogView.id]:v}:(({[catalogView.id]:_,...rest})=>rest)(p));}} style={{flex:1,background:"rgba(201,168,76,0.10)",border:"1px solid rgba(214,175,55,0.45)",borderRadius:"8px",color:"#C9A84C",fontSize:"0.9rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif",textAlign:"center",fontWeight:700}}/>
             <span style={{fontSize:"0.8rem",color:"#8A6A1E"}}>ريال</span>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"8px"}}>
@@ -4445,7 +4445,7 @@ function SellEntry({id,onSell}){
   return(
     <div style={{display:"flex",gap:"6px",alignItems:"center",marginTop:"6px"}}>
       <input type="number" placeholder="سعر البيع (ريال)" value={price} onChange={e=>setPrice(e.target.value)}
-        style={{flex:1,background:"rgba(26,18,8,0.85)",border:"1px solid rgba(214,175,55,0.4)",borderRadius:"8px",color:"#1A1208",fontSize:"0.75rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif"}}/>
+        style={{flex:1,background:"rgba(201,168,76,0.10)",border:"1px solid rgba(214,175,55,0.45)",borderRadius:"8px",color:"#C9A84C",fontSize:"0.75rem",padding:"5px 8px",outline:"none",fontFamily:"'Alexandria',sans-serif",fontWeight:700}}/>
       <button onClick={()=>{if(price)onSell(id,+price);}} style={{background:"rgba(80,160,80,0.2)",border:"1px solid rgba(80,160,80,0.4)",color:"#80c080",borderRadius:"8px",padding:"5px 10px",fontSize:"0.72rem",cursor:"pointer",fontWeight:"600",whiteSpace:"nowrap"}}>✓ بيع</button>
     </div>
   );
