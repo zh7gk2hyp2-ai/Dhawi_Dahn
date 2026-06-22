@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-17-v3"/>
+<meta name="app-version" content="2026-06-22-v4"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -689,7 +689,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_49";
+const PENDING_RECIPES_VERSION="rec_50";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",price_sar:175,hero:true,
@@ -952,9 +952,9 @@ const PENDING_RECIPES=[
    ing:[["lux_suyufi",55],["artessence",15],["sandal_indi",12],["iso_e",8],["benzoin_b",5],["wild_petal",3],["labdanum",2]],
    steps:["⚡ بري-بلند السيوفي (12 ساعة مسبقاً): في زجاجة 10مل: Oud Suyufi 7مل + Artessence 3مل","ذب في بيكر 60°: لبدانوم 2جم + بنزوين B 5مل — 12 دقيقة ← اترك يبرد لـ 40°","على تحريك بارد: أضف Sandal Hindi 12مل ← ISO E Super 8مل ← Wild Petal 3مل ← خليط بري-بلند","أضف باقي Oud Suyufi (48مل) ← حرّك 5 دقائق","انقل لزجاجة — عتّق 14 يوماً (مُحدَّث من 7 — السيوفي يكمل تكامله الحقيقي في الأسبوع الثاني) | 💡 مناسب للاستخدام اليومي"]},
   {id:"r_khalifa",name:"مخلط الخليفة المُكثَّف",icon:"✨",season:"مناسبات",gender:"رجالي",stability:"48 ساعة",
-   desc:"مخلط الخليفة اللوكسودور محسَّن بعود طبيعي — فخامة الديوانيات والمناسبات الكبرى",
-   ing:[["lux_khalifa",60],["artessence",15],["iso_e",10],["benzoin_b",7],["labdanum",5],["sandal_indi",3]],
-   steps:["⚡ بري-بلند الخليفة (12 ساعة مسبقاً): في زجاجة 10مل: Mukhallat Khalifa 8مل + Artessence 2مل — يُعمّق الطابع العودي الطبيعي","ذب في بيكر 60°: لبدانوم 5جم + بنزوين B 7مل — 15 دقيقة ← اترك يبرد لـ 45°","على تحريك بارد: أضف ISO E Super 10مل ← Sandal Hindi 3مل ← خليط بري-بلند","أضف باقي Mukhallat Khalifa (52مل) ← حرّك 5 دقائق","انقل لزجاجة داكنة — عتّق 14 يوماً (مُحدَّث من 10 — الراتنجات الثقيلة تحتاج أسبوعين كاملين) | 💡 مناسب للمجالس الكبيرة والاحتفالات"]},
+   desc:"مخلط الخليفة اللوكسودور محسَّن — الورد مكسور بالباتشولي والفيتيفير والدخان | فخامة الديوانيات",
+   ing:[["lux_khalifa",52],["artessence",15],["iso_e",8],["benzoin_b",7],["labdanum",6],["sandal_indi",3],["patchouli",2],["vetiver",1],["cmp91",2],["dpg",4]],
+   steps:["⚡ بري-بلند الخليفة (12 ساعة مسبقاً): في زجاجة 10مل: Mukhallat Khalifa 8مل + Artessence 2مل — يُعمّق الطابع العودي ويُهدّئ طغيان الورد","ذب في بيكر 60°: لبدانوم 6جم + بنزوين B 7مل + DPG 4مل — 18 دقيقة ← اترك يبرد لـ 45°","على تحريك بارد: أضف ISO E Super 8مل ← Patchouli Sumatra 2مل ← Vetiver EO 1مل — الثلاثي الأرضي يدفن حدة الورد ويؤرّضها","أضف CMP91 2مل + Sandalwood INDI 3مل — الدخاني والكريمي يُوازنان الزهري","أضف خليط بري-بلند الخليفة (Khalifa + Artessence من الخطوة الأولى) ← حرّك 5 دقائق","أضف باقي Mukhallat Khalifa (44مل) ← حرّك 5 دقائق إضافية","انقل لزجاجة داكنة — عتّق 21 يوماً | ⚠️ الورد يهدأ تدريجياً — لا تحكم قبل 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | حرّك برفق كل 2-3 أيام"]},
   // ── rec_39: 7 وصفات تجارية موسمية جديدة — نموذج نسمات نجد ──────────────────────────
   {id:"r_hindi_soul",name:"الروح الهندية",icon:"🔥",season:"شتاء",gender:"رجالي",stability:"40 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:220,
    story:"مستوحى من أعماق غابات الأسام الهندية، حيث يجمع الهواء بين أنفاس الخشب المعتّق وحرارة الأرض البكر. قلبه آرتيسانس حيواني أصيل يُعبّر عن فخر الرجل الخليجي وثقته بنفسه. مثبت العنبرمور يبقيه على الثياب أربعين ساعة — عطر لا تنساه البيئة المحيطة.",
@@ -992,6 +992,11 @@ const PENDING_RECIPES=[
    desc:"شتوي ❄️ — عود+ورد طائفي+زعفران+عنبر+هيل | مستوحى من فاء-نسمات-نجد | منتج المناسبات الكبرى",
    ing:[["artessence",5],["lux_cambodi",6],["black_agar",2],["pea",2.5],["wild_petal",3],["safraleine",0.5],["ambermor",3],["labdanum",2],["cardamom",0.8],["benzoin_b",2.5],["sandal_indi",5],["cashmeran",1.8],["iso_e",0.4],["dpg",5],["jojoba",3]],
    steps:["⚡ بري-بلند الملوك (12 ساعة مسبقاً): في زجاجة 15مل: Artessence 5مل + Lux Cambodi 6مل — أغلق في بارد مظلم | الهندي+الكمبودي يبنيان أساساً ملكياً عميقاً قبل الورد والزعفران","⚡ رابط الورد (20 دق): Wild Petal 3مل + Benzoin B 2.5مل في كوب مغلق — 20 دقيقة | في كوب صغير: أذب Ambermor شمعي 3جم في 50° مع 1.5مل DPG (3جم للثبات الشتوي الأعلى) ← اترك يبرد تماماً","في بيكر بارد: DPG 3.5مل + Jojoba 3مل","أضف خليط بري-بلند الملوك دفعة واحدة — حرّك دائرياً 3 دقائق","أضف Black Agar 2مل — عمق اللبان + لألأ الكمبودي","أضف خليط الورد-البنزوين المُعدّ ← ثم PEA 2.5مل ⚠️ (مقبول في الشتاء)","أضف Safraleine 0.5مل (💡 5مل محلول 10%) + Cardamom 0.8مل — زعفران+هيل يُعطيان الهوية الخليجية","أضف Sandalwood INDI 5مل + محلول Ambermor المُبرَّد (من الخطوة الثانية)","سرنجة: Cashmeran 1.8مل + ISO E Super 0.4مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1.5مل (شرفان) + مسك رمان 1مل (شرفان)","⚠️ عتّق 4 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام — البري-بلند+الورد+الزعفران يتوحّدون في الدفء | حرّك برفق كل 2-3 أيام | ضع جوجوبا على البشرة أولاً"]},
+  // ── rec_50: Voice of Snake ─────────────────────────────────────
+  {id:"r_snake",name:"صوت الأفعى",icon:"🐍",season:"مناسبات",gender:"للجنسين",stability:"36 ساعة",
+   desc:"مستوحى من Gucci The Voice of the Snake | زعفران+جلد+باتشولي دخاني+عود داكن | نيش غربي-شرقي",
+   ing:[["lux_snake",8],["lux_black",4],["artessence",3],["safraleine",0.5],["patchouli",1.5],["cmp91",1.5],["labdanum",2],["benzoin_b",1.5],["sandal_indi",2],["ambermor",1],["lux_fixative",2],["cashmeran",0.5],["iso_e",0.3],["dpg",2.2]],
+   steps:["⚡ بري-بلند الأفعى (12 ساعة مسبقاً): في زجاجة 10مل: Voice of Snake 8مل + Artessence 3مل — أغلق في بارد مظلم | الدمج المسبق يُوحّد الطابع الجلدي الدخاني مع الأصالة العودية — يصير أعمق وأكثر تعقيداً","ذب في بيكر 50°: لبدانوم 2جم + بنزوين B 1.5مل + DPG 2.2مل — 15 دقيقة مع قضيب ← اترك يبرد لـ 40°","على تحريك بارد: أضف Lux Black 4مل — العمود الداكن، حرّك 3 دقائق","أضف Patchouli Sumatra 1.5مل + CMP91 1.5مل — الثنائي الدخاني الأرضي يبني جسر الجلد-العود","أضف Sandalwood INDI 2مل + Ambermor شمعي 1جم (⚠️ أذبه على 50° أولاً) + Lux Fixative 2مل","أضف خليط بري-بلند الأفعى (Voice of Snake + Artessence من الخطوة الأولى) دفعة واحدة — حرّك دائرياً 3 دقائق","سرنجة: Safraleine 0.5مل (💡 5مل محلول 10%: 0.1مل+0.9مل DPG) + Cashmeran 0.5مل + ISO E Super 0.3مل","انقل لزجاجة داكنة 30مل + قضيب ← عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | الجلد والزعفران يتطوران كاملاً في الأسبوع الثالث | بشرة رطبة بالجوجوبا للثبات الأقصى"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -1136,7 +1141,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-17-v3";
+const APP_BUILD="2026-06-22-v4";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1257,7 +1262,7 @@ function applyRecipeDeduct(inv){
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
 const INVENTORY_REMOVE_VERSION="ir_02";
 const INVENTORY_REMOVE=["lux_hindi_sweety","benzoin_a"];
-const INVENTORY_ADD_VERSION="ia_02";
+const INVENTORY_ADD_VERSION="ia_03";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // Luxodor Invoice #000472 — Jun 2026 (1 USD = 3.75 SAR)
@@ -1268,6 +1273,8 @@ const INVENTORY_ADD_ITEMS=[
   {id:"lux_hindi",name:"Oud Hindi (عود هندي)",brand:"Luxodor",cat:"عود",price:0,qty:100,unit:"مل"},
   {id:"lux_opus14",name:"Opus XIV Royal Tobacco (أوبوس رويال توباكو)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
   {id:"lux_existence",name:"Existence Amouage (إكزيستنس أموج)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
+  // Luxodor — Jun 2026 individual purchase ($12 = 45 SAR)
+  {id:"lux_snake",name:"The Voice of Snake (صوت الأفعى — Gucci)",brand:"Luxodor",cat:"مستوحى",price:45,qty:10,unit:"مل"},
 ];
 function applyInventoryAdd(inv){
   if(lsGet("dw_ia_ver","")===INVENTORY_ADD_VERSION)return inv;
@@ -1287,7 +1294,7 @@ function applyInventoryRemove(inv){
   lsSet("dw_ir_ver",INVENTORY_REMOVE_VERSION);
   return result;
 }
-const NAME_FIX_VERSION="nm_fix_05";
+const NAME_FIX_VERSION="nm_fix_06";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
   "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
@@ -1343,6 +1350,7 @@ const NAME_FIX={
   "dpg":"DPG Dipropylene Glycol (ديوبي)",
   "blend1":"Blend No.1 (الخلطة الأولى)",
   "blend2":"Blend No.2 (الخلطة الثانية)",
+  "lux_snake":"The Voice of Snake (صوت الأفعى — Gucci)",
 };
 function applyNameFix(inv){
   if(lsGet("dw_nm_ver","")===NAME_FIX_VERSION)return inv;
@@ -1403,7 +1411,7 @@ function fmtDate(iso){
 
 // ─── notes classification (Top / Middle / Base) ─────────────────
 const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake']);
 const NOTES_CARRIER=new Set(['dpg','jojoba','benzyl']); // diluents — excluded from layer ratio
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 // scale a number and format it cleanly
