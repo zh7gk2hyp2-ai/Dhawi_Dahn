@@ -1141,7 +1141,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-22-v6";
+const APP_BUILD="2026-06-22-v7";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1497,6 +1497,7 @@ function App(){
   const [recipeSearch,setRecipeSearch]=useState("");
   const [recipeSeasonF,setRecipeSeasonF]=useState("الكل");
   const [recipeGenderF,setRecipeGenderF]=useState("الكل");
+  const [recipeTypeF,setRecipeTypeF]=useState("الكل");
   const [batchNote,setBatchNote]=useState("");
   const [showDilution,setShowDilution]=useState(false);
   const [dilConc,setDilConc]=useState(10);
@@ -2112,10 +2113,12 @@ function App(){
     if(recipeSearch.trim()){const q=recipeSearch.trim().toLowerCase();f=f.filter(r=>r.name.toLowerCase().includes(q)||(r.desc||"").toLowerCase().includes(q));}
     if(recipeSeasonF!=="الكل")f=f.filter(r=>r.season===recipeSeasonF);
     if(recipeGenderF!=="الكل")f=f.filter(r=>r.gender===recipeGenderF);
+    if(recipeTypeF==="دهن")f=f.filter(r=>!r.ing.some(([id])=>id==="ipa"));
+    if(recipeTypeF==="عطر")f=f.filter(r=>r.ing.some(([id])=>id==="ipa"));
     if(readyFilter)f=f.filter(r=>canMake(r));
     if(heroFilter)f=f.filter(r=>r.hero);
     return f;
-  },[sortedRecipes,recipeSearch,recipeSeasonF,recipeGenderF,readyFilter,heroFilter,inv]);
+  },[sortedRecipes,recipeSearch,recipeSeasonF,recipeGenderF,recipeTypeF,readyFilter,heroFilter,inv]);
   const _m=new Date().getMonth();
   const currentSeason=_m>=5&&_m<=7?"صيف":_m>=2&&_m<=4?"ربيع":_m>=8&&_m<=10?"خريف":"شتاء";
   const _ready=useMemo(()=>sortedRecipes.filter(r=>canMake(r)),[sortedRecipes,inv]);
@@ -2835,6 +2838,12 @@ function App(){
               <input value={recipeSearch} onChange={e=>setRecipeSearch(e.target.value)} placeholder="ابحث باسم الوصفة أو الوصف..." className="inp" style={{paddingRight:"36px",fontSize:"0.82rem"}}/>
               {recipeSearch&&<button onClick={()=>setRecipeSearch("")} style={{position:"absolute",left:"10px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"rgba(26,18,8,0.35)",cursor:"pointer",fontSize:"0.75rem",padding:0}}>✕</button>}
             </div>
+            {/* ── Type tabs: دهن / عطر ── */}
+            <div style={{display:"flex",gap:"0",marginBottom:"10px",borderRadius:"12px",overflow:"hidden",border:"1px solid rgba(201,168,76,0.25)",background:"rgba(201,168,76,0.05)"}}>
+              {[["الكل","🔎 الكل"],["دهن","🫙 دهون"],["عطر","🌸 عطور بخاخ"]].map(([v,l])=>(
+                <button key={v} onClick={()=>setRecipeTypeF(v)} style={{flex:1,padding:"9px 4px",border:"none",cursor:"pointer",fontSize:"0.75rem",fontFamily:"'Alexandria',sans-serif",fontWeight:recipeTypeF===v?"700":"400",background:recipeTypeF===v?"#C9A84C":"transparent",color:recipeTypeF===v?"#1A1208":"rgba(138,106,30,0.70)",transition:"all 0.18s"}}>{l}</button>
+              ))}
+            </div>
             {/* ── Season chips ── */}
             <div className="filter-row" style={{marginBottom:"7px"}}>
               {[["الكل","🔎"],["صيف","🌞"],["شتاء","❄️"],["ربيع","🌸"],["خريف","🍂"],["مناسبات","✨"],["للجنسين","🌿"]].map(([s,em])=>(
@@ -2857,9 +2866,9 @@ function App(){
               ))}
             </div>
             {/* ── Active filters summary ── */}
-            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||readyFilter||heroFilter)&&<div style={{marginTop:"6px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            {(recipeSearch||recipeSeasonF!=="الكل"||recipeGenderF!=="الكل"||recipeTypeF!=="الكل"||readyFilter||heroFilter)&&<div style={{marginTop:"6px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <span style={{fontSize:"0.65rem",color:"rgba(138,106,30,0.55)"}}>{filteredRecipes.length} وصفة</span>
-              <button onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setReadyFilter(false);setHeroFilter(false);}} style={{background:"none",border:"none",color:"rgba(201,168,76,0.55)",fontSize:"0.65rem",cursor:"pointer",fontWeight:"600",padding:0}}>✕ مسح الفلاتر</button>
+              <button onClick={()=>{setRecipeSearch("");setRecipeSeasonF("الكل");setRecipeGenderF("الكل");setRecipeTypeF("الكل");setReadyFilter(false);setHeroFilter(false);}} style={{background:"none",border:"none",color:"rgba(201,168,76,0.55)",fontSize:"0.65rem",cursor:"pointer",fontWeight:"600",padding:0}}>✕ مسح الفلاتر</button>
             </div>}
           </div>}
           {suggestedRecipe&&!catalogMode&&!showCustomerStore&&<div className="suggest-card">
