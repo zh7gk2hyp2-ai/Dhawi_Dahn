@@ -1141,13 +1141,13 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-22-v4";
+const APP_BUILD="2026-06-22-v5";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
     localStorage.removeItem("dw_build");
     // clear only version keys so apply-functions re-run on next load
-    ["dw_nm_ver","dw_pr_ver","dw_xs_ver","dw_sf_ver","dw_ir_ver","dw_rc_ver","dw_ia_ver"].forEach(k=>localStorage.removeItem(k));
+    ["dw_nm_ver","dw_pr_ver","dw_ir_ver","dw_rc_ver","dw_ia_ver"].forEach(k=>localStorage.removeItem(k));
     localStorage.setItem("dw_build",APP_BUILD);
     if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(sw=>sw.unregister())).then(()=>navigator.serviceWorker.register('/sw.js'));}
   } else if(!stored){
@@ -1294,6 +1294,39 @@ function applyInventoryRemove(inv){
   lsSet("dw_ir_ver",INVENTORY_REMOVE_VERSION);
   return result;
 }
+
+// ─── stock snapshot: set exact stock levels once, never overwritten by build bumps ───
+const STOCK_SNAPSHOT_VERSION="ss_01";
+const STOCK_SNAPSHOT=[
+  {id:"cambodi_fawah",stock:50},{id:"rose_taif",stock:60},{id:"rose_istanbul",stock:50},
+  {id:"amber_2000",stock:50},{id:"amber_700",stock:40},{id:"musk_ruman",stock:43.58},
+  {id:"oud_earthy",stock:70},{id:"musk_climb",stock:40},{id:"sandal_ham",stock:80},
+  {id:"vanilla",stock:80},{id:"shamma",stock:27.88},{id:"lux_cambodi",stock:77.8},
+  {id:"lux_black",stock:60},{id:"lux_fixative",stock:60},{id:"lux_greatness",stock:90},
+  {id:"lux_exclusif",stock:90},{id:"lux_symphony",stock:80},{id:"lux_afternoon",stock:80},
+  {id:"lux_khalifa",stock:0},{id:"lux_bormi",stock:0},{id:"lux_suyufi",stock:0},
+  {id:"lux_muattaq",stock:0},{id:"lux_hindi",stock:0},{id:"lux_opus14",stock:0},
+  {id:"lux_existence",stock:0},{id:"lux_snake",stock:10},
+  {id:"artessence",stock:150},{id:"iso_e",stock:900},{id:"sandal_indi",stock:450},
+  {id:"oud_synth",stock:75},{id:"black_agar",stock:30},{id:"cmp91",stock:170},
+  {id:"cmp90",stock:75},{id:"cmp173",stock:80},{id:"pretty_oud",stock:35},
+  {id:"pea",stock:900},{id:"wild_petal",stock:70},{id:"amber_oud",stock:20},
+  {id:"white_oudh",stock:20},{id:"tonquitone",stock:7},{id:"cashmeran",stock:400},
+  {id:"patchouli",stock:70},{id:"ambermor",stock:70},{id:"oliffac",stock:4},
+  {id:"labdanum",stock:150},{id:"benzoin_b",stock:900},{id:"benzyl",stock:30},
+  {id:"safraleine",stock:80},{id:"vetiver",stock:75},{id:"crimson",stock:900},
+  {id:"cardamom",stock:30},{id:"cmp121",stock:90},{id:"metal_made",stock:900},
+  {id:"civettone",stock:3},{id:"maracuja",stock:80},{id:"sleek_oud",stock:80},
+  {id:"jojoba",stock:30},{id:"dpg",stock:2900},{id:"ipa",stock:400},
+  {id:"blend1",stock:50},{id:"blend2",stock:30},{id:"oud_xx",stock:150},
+];
+function applyStockSnapshot(inv){
+  if(lsGet("dw_ss_ver","")===STOCK_SNAPSHOT_VERSION)return inv;
+  const map=new Map(inv.map(i=>[i.id,{...i}]));
+  STOCK_SNAPSHOT.forEach(f=>{if(map.has(f.id)){const i=map.get(f.id);map.set(f.id,{...i,stock:f.stock});}});
+  lsSet("dw_ss_ver",STOCK_SNAPSHOT_VERSION);
+  return [...map.values()];
+}
 const NAME_FIX_VERSION="nm_fix_06";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
@@ -1437,7 +1470,7 @@ function App(){
   const [logged,setLogged]=useState(false);
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
-  const [inv,setInv]=useState(()=>applyOudXxFix(applyNameFix(applyInventoryRemove(applyInventoryAdd(applyRecipeDeduct(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))))))))));
+  const [inv,setInv]=useState(()=>applyStockSnapshot(applyOudXxFix(applyNameFix(applyInventoryRemove(applyInventoryAdd(applyRecipeDeduct(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv())))))))))));
   const [recipes,setRecipes]=useState(()=>applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES))));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
