@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-22-v4"/>
+<meta name="app-version" content="2026-06-26-v1"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -689,7 +689,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_54";
+const PENDING_RECIPES_VERSION="rec_55";
 const PENDING_RECIPES=[
   // ── وصفات الخلطة الأولى والثانية ──────────────────────────────
   {id:"r_blend1_fixed",name:"سر الطائف",icon:"🌹",season:"للجنسين",gender:"للجنسين",stability:"3 أسابيع",price_sar:175,hero:true,
@@ -964,8 +964,8 @@ const PENDING_RECIPES=[
   {id:"r_cambodi_nights",name:"ليالي الكمبودي",icon:"🌙",season:"صيف",gender:"للجنسين",stability:"34 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:190,
    story:"إلهام من جوهر عود كمبودي فاخر تحت ليلٍ صيفي هادئ، تصاحبه بتلات الورد البرية والزعفران الخليجي. يفتح القلبَ بالخفّة قبل أن يستقر في الصندل الكريمي الدافئ. عطر النهار والأصدقاء — خفيف بما يكفي للسيارة، عميق بما يكفي للمجلس.",
    desc:"قمة: زعفران+بتلات ورد | قلب: كمبودي+Pretty Oud+Black Agar | قاعدة: صندل+بنزوين+عنبرمور | يحاكي Ajmal Dahn Al Moattaq",
-   ing:[["lux_cambodi",7],["pretty_oud",4],["black_agar",2],["wild_petal",4],["pea",2],["safraleine",0.5],["ambermor",2.5],["sandal_indi",5],["benzoin_b",3],["cashmeran",1.5],["tonquitone",0.5],["iso_e",0.3],["dpg",6],["jojoba",5]],
-   steps:["⚡ بري-بلند الكمبودي (12 ساعة مسبقاً): في زجاجة 15مل: Lux Cambodi 7مل + Pretty Oud 4مل + Black Agar 2مل — أغلق في بارد مظلم | الثلاثي الكمبودي يُطوّر شخصية حلوة-عميقة أصيلة لا تتحقق بالإضافة المنفصلة","⚡ رابط الورد (20 دق): Wild Petal 4مل + Benzoin B 3مل في كوب مغلق — 20 دقيقة","في بيكر بارد: DPG 6مل + Jojoba 5مل","أضف خليط بري-بلند الكمبودي دفعة واحدة — حرّك دائرياً 3 دقائق","أضف خليط الورد-البنزوين المُعدّ ← ثم PEA 2مل فقط ⚠️ (تعطي معدنية حادة إذا زادت)","أضف Safraleine 0.5مل (💡 5مل محلول 10%: 0.1مل+0.9مل DPG — لا تتجاوز) — الزعفران يُجلّي الكمبودي ويمنحه هوية خليجية","أضف Sandalwood INDI 5مل + Ambermor شمعي 2.5جم (⚠️ أذبه على 50° أولاً)","سرنجة: Cashmeran 1.5مل + Tonquitone 0.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1.5مل (شرفان) + مسك رمان 1مل (شرفان)","⚠️ عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | حرّك برفق كل 2-3 أيام | ضع جوجوبا على البشرة أولاً"]},
+   ing:[["lux_cambodi",7],["pretty_oud",4],["black_agar",2],["wild_petal",4],["pea",2],["safraleine",0.5],["ambermor",2.5],["sandal_indi",3],["sandal_ward",2],["benzoin_b",3],["cashmeran",1.5],["tonquitone",0.5],["iso_e",0.3],["dpg",6],["jojoba",5]],
+   steps:["⚡ بري-بلند الكمبودي (12 ساعة مسبقاً): في زجاجة 15مل: Lux Cambodi 7مل + Pretty Oud 4مل + Black Agar 2مل — أغلق في بارد مظلم | الثلاثي الكمبودي يُطوّر شخصية حلوة-عميقة أصيلة لا تتحقق بالإضافة المنفصلة","⚡ رابط الورد (20 دق): Wild Petal 4مل + Benzoin B 3مل في كوب مغلق — 20 دقيقة","في بيكر بارد: DPG 6مل + Jojoba 5مل","أضف خليط بري-بلند الكمبودي دفعة واحدة — حرّك دائرياً 3 دقائق","أضف خليط الورد-البنزوين المُعدّ ← ثم PEA 2مل فقط ⚠️ (تعطي معدنية حادة إذا زادت)","أضف Safraleine 0.5مل (💡 5مل محلول 10%: 0.1مل+0.9مل DPG — لا تتجاوز) — الزعفران يُجلّي الكمبودي ويمنحه هوية خليجية","أضف Sandalwood INDI 3مل + Rose Sandal Ward 2مل (مخلط صندل ورد — يُضيف زهرية الورد للكمبودي ↑ انطباع أول وفوحان) + Ambermor شمعي 2.5جم (⚠️ أذبه على 50° أولاً)","سرنجة: Cashmeran 1.5مل + Tonquitone 0.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1.5مل (شرفان) + مسك رمان 1مل (شرفان)","⚠️ عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | حرّك برفق كل 2-3 أيام | ضع جوجوبا على البشرة أولاً"]},
   {id:"r_malaki",name:"الملكي",icon:"👑",season:"مناسبات",gender:"رجالي",stability:"38 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:250,
    story:"ثلاث شخصيات عودية في تركيبة واحدة — الهند في قوّتها، والكمبودي في حريره، والسليك في أناقته المعاصرة. يُقدَّم في مناسبات الفرح والفخر، حيث يصنع صاحبه أثراً لا يُنسى في كل مجلس. خزينة العطار الخاصة في زجاجة واحدة.",
    desc:"قمة: زعفران+ورد | قلب: هندي+كمبودي+Sleek | قاعدة: Black Agar+لبدانوم+عنبرمور | 3 شخصيات عودية في تركيبة واحدة — المنتج التجاري الأمثل",
@@ -975,13 +975,13 @@ const PENDING_RECIPES=[
   {id:"r_nasmat_ward",name:"نسمة الورد",icon:"🌸",season:"صيف",gender:"للجنسين",stability:"30 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:175,
    story:"تستيقظ مع ورد الطائف في فجر صيفي ناعم، ثم تنضج مع الكمبودي الذي يمنح الورد عمقاً وهوية خليجية. عطر يلائم كل صباح ومنتصف النهار، للرجل والمرأة على حدٍّ سواء. رائحة البيت والطمأنينة في جيبك.",
    desc:"صيفي ☀️ — كمبودي+ورد+زعفران | مستوحى من روز-نسمات-نجد | خفيف أنيق للاستخدام اليومي",
-   ing:[["lux_cambodi",7],["pretty_oud",3],["wild_petal",5],["pea",2],["safraleine",0.4],["ambermor",2],["sandal_indi",4],["benzoin_b",2],["cashmeran",1.5],["iso_e",0.3],["jojoba",8],["dpg",5]],
-   steps:["⚡ رابط الورد (20 دق): Wild Petal 5مل + Benzoin B 2مل في كوب مغلق — 20 دقيقة | في كوب آخر: أذب Ambermor شمعي 2جم في 50° مع 1مل DPG ← اترك يبرد تماماً","في بيكر بارد: DPG 4مل + Jojoba 8مل (جوجوبا أكثر = ثبات القماش الصيفي)","أضف Lux Cambodi 7مل + Pretty Oud 3مل — الكمبودي الزهري الحلو الصيفي","أضف خليط الورد-البنزوين المُعدّ ← ثم PEA 2مل فقط ⚠️","أضف Safraleine 0.4مل (💡 4مل محلول 10%: 0.1مل+0.9مل DPG)","أضف Sandalwood INDI 4مل + محلول Ambermor المُبرَّد","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1مل (شرفان) + مسك رمان 0.5مل (شرفان)","⚠️ عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | حرّك برفق كل 2-3 أيام | جوجوبا على البشرة أولاً"]},
+   ing:[["lux_cambodi",7],["pretty_oud",3],["wild_petal",5],["pea",2],["safraleine",0.4],["ambermor",2],["sandal_indi",2],["sandal_ward",2],["benzoin_b",2],["cashmeran",1.5],["iso_e",0.3],["jojoba",8],["dpg",5]],
+   steps:["⚡ رابط الورد (20 دق): Wild Petal 5مل + Benzoin B 2مل في كوب مغلق — 20 دقيقة | في كوب آخر: أذب Ambermor شمعي 2جم في 50° مع 1مل DPG ← اترك يبرد تماماً","في بيكر بارد: DPG 4مل + Jojoba 8مل (جوجوبا أكثر = ثبات القماش الصيفي)","أضف Lux Cambodi 7مل + Pretty Oud 3مل — الكمبودي الزهري الحلو الصيفي","أضف خليط الورد-البنزوين المُعدّ ← ثم PEA 2مل فقط ⚠️","أضف Safraleine 0.4مل (💡 4مل محلول 10%: 0.1مل+0.9مل DPG)","أضف Sandalwood INDI 2مل + Rose Sandal Ward 2مل (مخلط صندل ورد — يُعزّز الورد ويُعمّق الصندل ↑ نعومة وانطباع أول) + محلول Ambermor المُبرَّد","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1مل (شرفان) + مسك رمان 0.5مل (شرفان)","⚠️ عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | حرّك برفق كل 2-3 أيام | جوجوبا على البشرة أولاً"]},
   {id:"r_nasmat_sayf",name:"نسمة الصيف",icon:"🌴",season:"صيف",gender:"للجنسين",stability:"28 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:165,
    story:"روح استوائية خليجية — حيث الماراكويا الطازجة تلتقي بسليك عود ناعم في مزيج لم تشمّه الجزيرة من قبل. مناسب للأجواء الحارة والرحلات الصيفية، يبقى خفيفاً دون أن يفقد بصمته. جرأة معاصرة بأصول عريقة.",
    desc:"صيفي ☀️ — كمبودي+ماراكويا استوائي+Sleek Oud | عود استوائي فاخر خفيف للأجواء الصيفية",
-   ing:[["lux_cambodi",6],["maracuja",6],["sleek_oud",3],["wild_petal",3],["pea",1],["ambermor",2],["sandal_indi",4],["benzoin_b",2],["cashmeran",1.5],["iso_e",0.3],["jojoba",7],["dpg",5]],
-   steps:["في كوب صغير: أذب Ambermor شمعي 2جم في 50° مع 1مل DPG ← اترك يبرد تماماً","في بيكر بارد: DPG 4مل + Jojoba 7مل","أضف Lux Cambodi 6مل + Sleek Oud 3مل — الكمبودي الناعم الصيفي","أضف Maracuja 6مل ببطء وحرّك دائرياً — الاستوائي الفاخر","⚡ رابط الورد: Wild Petal 3مل + Benzoin B 2مل في كوب مغلق 15 دق ← أضفهما ← ثم PEA 1مل فقط ⚠️ (ماراكويا+معدنية = ثقيل)","أضف Sandalwood INDI 4مل + محلول Ambermor المُبرَّد","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل","⚠️ عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام — الماراكويا يتفتّح بالدفء الخفيف | حرّك برفق كل 2-3 أيام | الأجمل من الأسبوع الثاني"]},
+   ing:[["lux_cambodi",6],["maracuja",6],["sleek_oud",3],["wild_petal",3],["pea",1],["ambermor",2],["sandal_indi",2],["sandal_ward",2],["benzoin_b",2],["cashmeran",1.5],["iso_e",0.3],["jojoba",7],["dpg",5]],
+   steps:["في كوب صغير: أذب Ambermor شمعي 2جم في 50° مع 1مل DPG ← اترك يبرد تماماً","في بيكر بارد: DPG 4مل + Jojoba 7مل","أضف Lux Cambodi 6مل + Sleek Oud 3مل — الكمبودي الناعم الصيفي","أضف Maracuja 6مل ببطء وحرّك دائرياً — الاستوائي الفاخر","⚡ رابط الورد: Wild Petal 3مل + Benzoin B 2مل في كوب مغلق 15 دق ← أضفهما ← ثم PEA 1مل فقط ⚠️ (ماراكويا+معدنية = ثقيل)","أضف Sandalwood INDI 2مل + Rose Sandal Ward 2مل (مخلط صندل ورد — يُنعّم الخلطة الصيفية ويُضيف ورديّة خفيفة) + محلول Ambermor المُبرَّد","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل","⚠️ عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام — الماراكويا يتفتّح بالدفء الخفيف | حرّك برفق كل 2-3 أيام | الأجمل من الأسبوع الثاني"]},
   {id:"r_nasmat_bakhoor",name:"نسمة البخور",icon:"🕌",season:"شتاء",gender:"رجالي",stability:"38 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:200,
    story:"الهيل السعودي والزعفران الفارسي يفتحان طريق الروائح قبل أن يستلم العود الهندي الأصيل الزمام. مستوحى من بخور المجالس الكبرى في الرياض والقصيم، يُعيد الهوية العربية إلى قلب العطر. شتوي خالص يعيش على الثياب ثمانية وثلاثين ساعة.",
    desc:"شتوي ❄️ — هيل+زعفران+عود هندي+بخور | مستوحى من أورك-نسمات-نجد | هوية سعودية 100%",
@@ -990,13 +990,19 @@ const PENDING_RECIPES=[
   {id:"r_nasmat_malook",name:"نسمة الملوك",icon:"🏆",season:"شتاء",gender:"رجالي",stability:"40 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:240,
    story:"تاج المجموعة وخلاصة فن العطار — عود وورد طائفي وزعفران وعنبر وهيل في مزيج يستحق المناسبات الكبرى. لا يُصنع لكل يوم؛ يُصنع للأعياد والأفراح وعقود الأعمال. أطول وصفة في المجموعة في الثبات — أربعون ساعة من الكرامة والحضور.",
    desc:"شتوي ❄️ — عود+ورد طائفي+زعفران+عنبر+هيل | مستوحى من فاء-نسمات-نجد | منتج المناسبات الكبرى",
-   ing:[["artessence",5],["lux_cambodi",6],["black_agar",2],["pea",2.5],["wild_petal",3],["safraleine",0.5],["ambermor",3],["labdanum",2],["cardamom",0.8],["benzoin_b",2.5],["sandal_indi",5],["cashmeran",1.8],["iso_e",0.4],["dpg",5],["jojoba",3]],
-   steps:["⚡ بري-بلند الملوك (12 ساعة مسبقاً): في زجاجة 15مل: Artessence 5مل + Lux Cambodi 6مل — أغلق في بارد مظلم | الهندي+الكمبودي يبنيان أساساً ملكياً عميقاً قبل الورد والزعفران","⚡ رابط الورد (20 دق): Wild Petal 3مل + Benzoin B 2.5مل في كوب مغلق — 20 دقيقة | في كوب صغير: أذب Ambermor شمعي 3جم في 50° مع 1.5مل DPG (3جم للثبات الشتوي الأعلى) ← اترك يبرد تماماً","في بيكر بارد: DPG 3.5مل + Jojoba 3مل","أضف خليط بري-بلند الملوك دفعة واحدة — حرّك دائرياً 3 دقائق","أضف Black Agar 2مل — عمق اللبان + لألأ الكمبودي","أضف خليط الورد-البنزوين المُعدّ ← ثم PEA 2.5مل ⚠️ (مقبول في الشتاء)","أضف Safraleine 0.5مل (💡 5مل محلول 10%) + Cardamom 0.8مل — زعفران+هيل يُعطيان الهوية الخليجية","أضف Sandalwood INDI 5مل + محلول Ambermor المُبرَّد (من الخطوة الثانية)","سرنجة: Cashmeran 1.8مل + ISO E Super 0.4مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1.5مل (شرفان) + مسك رمان 1مل (شرفان)","⚠️ عتّق 4 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام — البري-بلند+الورد+الزعفران يتوحّدون في الدفء | حرّك برفق كل 2-3 أيام | ضع جوجوبا على البشرة أولاً"]},
+   ing:[["artessence",5],["lux_cambodi",6],["black_agar",2],["pea",2.5],["wild_petal",3],["safraleine",0.5],["ambermor",3],["labdanum",2],["cardamom",0.8],["benzoin_b",2.5],["sandal_indi",3],["sandal_ward",2],["cashmeran",1.8],["iso_e",0.4],["dpg",5],["jojoba",3]],
+   steps:["⚡ بري-بلند الملوك (12 ساعة مسبقاً): في زجاجة 15مل: Artessence 5مل + Lux Cambodi 6مل — أغلق في بارد مظلم | الهندي+الكمبودي يبنيان أساساً ملكياً عميقاً قبل الورد والزعفران","⚡ رابط الورد (20 دق): Wild Petal 3مل + Benzoin B 2.5مل في كوب مغلق — 20 دقيقة | في كوب صغير: أذب Ambermor شمعي 3جم في 50° مع 1.5مل DPG (3جم للثبات الشتوي الأعلى) ← اترك يبرد تماماً","في بيكر بارد: DPG 3.5مل + Jojoba 3مل","أضف خليط بري-بلند الملوك دفعة واحدة — حرّك دائرياً 3 دقائق","أضف Black Agar 2مل — عمق اللبان + لألأ الكمبودي","أضف خليط الورد-البنزوين المُعدّ ← ثم PEA 2.5مل ⚠️ (مقبول في الشتاء)","أضف Safraleine 0.5مل (💡 5مل محلول 10%) + Cardamom 0.8مل — زعفران+هيل يُعطيان الهوية الخليجية","أضف Sandalwood INDI 3مل + Rose Sandal Ward 2مل (مخلط صندل ورد — يُكمل الورد الطائفي بعمق كريمي ↑ ثبات ونعومة) + محلول Ambermor المُبرَّد (من الخطوة الثانية)","سرنجة: Cashmeran 1.8مل + ISO E Super 0.4مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1.5مل (شرفان) + مسك رمان 1مل (شرفان)","⚠️ عتّق 4 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام — البري-بلند+الورد+الزعفران يتوحّدون في الدفء | حرّك برفق كل 2-3 أيام | ضع جوجوبا على البشرة أولاً"]},
   // ── rec_50: Voice of Snake ─────────────────────────────────────
   {id:"r_snake",name:"صوت الأفعى",icon:"🐍",season:"مناسبات",gender:"للجنسين",stability:"36 ساعة",
    desc:"مستوحى من Gucci The Voice of the Snake | زعفران+جلد+باتشولي دخاني+عود داكن | نيش غربي-شرقي",
    ing:[["lux_snake",8],["lux_black",4],["artessence",3],["safraleine",0.5],["patchouli",1.5],["cmp91",1.5],["labdanum",2],["benzoin_b",1.5],["sandal_indi",2],["ambermor",1],["lux_fixative",2],["cashmeran",0.5],["iso_e",0.3],["dpg",2.2]],
    steps:["⚡ بري-بلند الأفعى (12 ساعة مسبقاً): في زجاجة 10مل: Voice of Snake 8مل + Artessence 3مل — أغلق في بارد مظلم | الدمج المسبق يُوحّد الطابع الجلدي الدخاني مع الأصالة العودية — يصير أعمق وأكثر تعقيداً","ذب في بيكر 50°: لبدانوم 2جم + بنزوين B 1.5مل + DPG 2.2مل — 15 دقيقة مع قضيب ← اترك يبرد لـ 40°","على تحريك بارد: أضف Lux Black 4مل — العمود الداكن، حرّك 3 دقائق","أضف Patchouli Sumatra 1.5مل + CMP91 1.5مل — الثنائي الدخاني الأرضي يبني جسر الجلد-العود","أضف Sandalwood INDI 2مل + Ambermor شمعي 1جم (⚠️ أذبه على 50° أولاً) + Lux Fixative 2مل","أضف خليط بري-بلند الأفعى (Voice of Snake + Artessence من الخطوة الأولى) دفعة واحدة — حرّك دائرياً 3 دقائق","سرنجة: Safraleine 0.5مل (💡 5مل محلول 10%: 0.1مل+0.9مل DPG) + Cashmeran 0.5مل + ISO E Super 0.3مل","انقل لزجاجة داكنة 30مل + قضيب ← عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | الجلد والزعفران يتطوران كاملاً في الأسبوع الثالث | بشرة رطبة بالجوجوبا للثبات الأقصى"]},
+  // ── rec_55: مخلط صندل ورد — منتج جديد ──────────────────────────────────────
+  {id:"r_sandal_ward",name:"مخلط صندل ورد",icon:"🌹",season:"صيف",gender:"للجنسين",stability:"24+ ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:85,
+   story:"ورد الطائف والصندل الهندي في تناغم عطري أصيل — رقّة تُلامس الروح قبل الجلد. يفتح بنضارة الورد الطائفي الفاخر ثم يستقر في دفء الصندل الكريمي. الاختيار اليومي لمن يبحث عن نعومة حقيقية بثمن مناسب.",
+   desc:"قمة: ورد طائفي ناعم | قلب: مخلط صندل ورد كريمي | قاعدة: بنزوين+مسك كشميري | رقي يومي للجنسين — 100مل | 85 ريال",
+   ing:[["sandal_ward",72],["benzoin_b",10],["cashmeran",5],["iso_e",0.5],["jojoba",5],["dpg",7.5]],
+   steps:["في كوب صغير: Benzoin B 10مل + DPG 4مل — على 50° حتى يذوب البنزوين ← اترك يبرد لـ 35° تماماً (⚠️ لا تُضف للعطر وهو ساخن)","في بيكر بارد: Rose Sandal Ward (مخلط صندل ورد) 72مل ← أضف محلول البنزوين البارد ← Jojoba 5مل ← DPG 3.5مل المتبقي — حرّك دائرياً برفق","سرنجة: Cashmeran 5مل (الناعم الكشميري — يُعمّق الصندل) ← ISO E Super 0.5مل (يُضخّم الفوحان بدون طغيان) — أضفهما بالترتيب وحرّك 2 دقيقة","انقل لزجاجة 100مل داكنة ← أحكم الغطاء ← بارد مظلم أسبوعاً | ⚠️ لا حرارة إطلاقاً | الرائحة تتكامل من اليوم الخامس | جرّب على البشرة الرطبة للثبات الأقصى"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -1076,6 +1082,7 @@ const RAW=[
   ["civettone","Intense Musk Civettone ⚠️ (سيفيتون — جيفودان)","Bulkaroma","مسك",260,5,"جم"],
   ["maracuja","Oud Maracuja (عود ماراكويا — باشن فروت)","Bulkaroma","مستوحى",420,100,"جم"],
   ["sleek_oud","Smooth Oud Sleek Oud (سليك عود)","Bulkaroma","مستوحى",380,100,"جم"],
+  ["sandal_ward","Rose Sandal Blend (مخلط صندل ورد)","محلي","صندل",85,100,"مل"],
   ["jojoba","Jojoba Oil (زيت جوجوبا)","محلي","حامل",60,50,"مل"],
   ["dpg","DPG Dipropylene Glycol (ديوبي)","محلي","حامل",40,200,"مل"],
   ["ipa","Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)","محلي","حامل",30,0,"مل"],
@@ -1141,7 +1148,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-23-v2";
+const APP_BUILD="2026-06-26-v1";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1319,6 +1326,7 @@ const STOCK_SNAPSHOT=[
   {id:"civettone",stock:3},{id:"maracuja",stock:80},{id:"sleek_oud",stock:80},
   {id:"jojoba",stock:30},{id:"dpg",stock:2900},{id:"ipa",stock:400},
   {id:"blend1",stock:50},{id:"blend2",stock:30},{id:"oud_xx",stock:150},
+  {id:"sandal_ward",stock:100},
 ];
 function applyStockSnapshot(inv){
   if(lsGet("dw_ss_ver","")===STOCK_SNAPSHOT_VERSION)return inv;
@@ -1327,7 +1335,7 @@ function applyStockSnapshot(inv){
   lsSet("dw_ss_ver",STOCK_SNAPSHOT_VERSION);
   return [...map.values()];
 }
-const NAME_FIX_VERSION="nm_fix_08";
+const NAME_FIX_VERSION="nm_fix_09";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
   "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
@@ -1389,6 +1397,7 @@ const NAME_FIX={
   "lux_khalifa":"Mukhallat Khalifa (مخلط الخليفة — لوكسودور)",
   "lux_muattaq":"Oud Muattaq Qadeem (عود معتّق قديم — لوكسودور)",
   "lux_hindi":"Sweet Oud Hindi (عود هندي حلو — لوكسودور)",
+  "sandal_ward":"Floral Sandalwood Rose Sandal Blend (مخلط صندل ورد)",
 };
 function applyNameFix(inv){
   if(lsGet("dw_nm_ver","")===NAME_FIX_VERSION)return inv;

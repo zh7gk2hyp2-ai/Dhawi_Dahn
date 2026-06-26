@@ -931,6 +931,16 @@ html { scroll-behavior:smooth; }
       </div>
       <div class="layering-score">8.8 ★</div>
     </div>
+    <div class="layering-pair" onclick="openProductModal('r_sandal_ward')">
+      <div class="layering-pair-icons">🌹</div>
+      <div class="layering-pair-plus">+</div>
+      <div class="layering-pair-icons">🌴</div>
+      <div class="layering-pair-info">
+        <div class="layering-pair-names">مخلط صندل ورد + نسمة الصيف</div>
+        <div class="layering-pair-result">صندل ورد + استوائي = نعومة لا تُنسى</div>
+      </div>
+      <div class="layering-score">8.5 ★</div>
+    </div>
     <div style="margin-top:12px;padding:10px 14px;background:rgba(200,72,128,0.06);border:1px solid rgba(200,72,128,0.16);border-radius:10px;font-size:0.70rem;color:rgba(200,72,128,0.65);text-align:center;">
       💡 التمازج فن — جرّب واصنع توقيعك الخاص. أضف كلا العطرين للسلة وجرّبهما معاً.
     </div>
@@ -1044,7 +1054,8 @@ function loadFromLab(){
     r_blend1_fixed:175,
     summer:175,
     taif_rose_oud:200,
-    r_hindi_soul:220
+    r_hindi_soul:220,
+    r_sandal_ward:85
   };
   try{
     const raw=localStorage.getItem('dw_recipes');
@@ -1107,6 +1118,10 @@ const P_STATIC=[
    top:15,mid:57,base:28,stab:'خفيف · 28 ساعة',
    story:'روح استوائية خليجية — حيث الماراكويا الطازجة تلتقي بسليك عود ناعم في مزيج لم تشمّه الجزيرة من قبل. مناسب للأجواء الحارة والرحلات الصيفية، يبقى خفيفاً دون أن يفقد بصمته. جرأة معاصرة بأصول عريقة.',
    desc:'عود كمبودي · ماراكويا استوائي · سليك عود · ورد · صندل هندي'},
+  {id:'r_sandal_ward',name:'مخلط صندل ورد',icon:'🌹',season:'صيف',gender:'للجنسين',price:85,priceQ:30,priceH:50,priceT:85,
+   top:30,mid:48,base:22,stab:'ناعم · 24 ساعة',
+   story:'ورد الطائف والصندل الهندي في تناغم عطري أصيل — رقّة تُلامس الروح قبل الجلد. يفتح بنضارة الورد الطائفي الفاخر ثم يستقر في دفء الصندل الكريمي. الاختيار اليومي لمن يبحث عن نعومة حقيقية بثمن مناسب.',
+   desc:'مخلط صندل ورد · بنزوين · مسك كشميري ناعم'},
 ];
 const LAB=loadFromLab();
 const P=LAB?LAB.produced:P_STATIC;
@@ -1680,8 +1695,8 @@ const FAMILY_MAP={
   royal:['royal','sheikhs_oud','r_hindi_soul'],
   animalic:['r_hindi_soul','sheikhs_oud','royal'],
   smoky:['sheikhs_oud','royal','r_hindi_soul'],
-  floral:['taif_rose_oud','summer','r_blend2_fixed'],
-  light:['summer','taif_rose_oud','r_blend2_fixed']
+  floral:['r_sandal_ward','taif_rose_oud','summer','r_blend2_fixed'],
+  light:['r_sandal_ward','summer','taif_rose_oud','r_blend2_fixed']
 };
 
 let finderOpen=false,finderStep=0,finderAnswers={};
