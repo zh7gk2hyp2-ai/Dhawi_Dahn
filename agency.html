@@ -1190,8 +1190,9 @@ const P_STATIC=[
    desc:'مخلط صندل ورد · بنزوين · مسك كشميري ناعم'},
 ];
 const LAB=loadFromLab();
-const P=LAB?LAB.produced:P_STATIC;
-const P_ALL=LAB?LAB.all:P_STATIC;
+// عرض المنتجات: دفعات نشطة ← وإلا وصفات منشورة مسعّرة ← وإلا القائمة الثابتة (لا يظهر متجر فارغ أبداً)
+const P=(LAB&&LAB.produced.length)?LAB.produced:((LAB&&LAB.all.length)?LAB.all:P_STATIC);
+const P_ALL=(LAB&&LAB.all.length)?LAB.all:P_STATIC;
 
 // ── BATCH SIZES ─────────────────────────────────────────────────────────────
 const BATCH={
