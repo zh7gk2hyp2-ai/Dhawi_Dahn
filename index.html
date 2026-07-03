@@ -5,14 +5,14 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-06-26-v1"/>
+<meta name="app-version" content="2026-06-30-v1"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="ضاوي دهن العود"/>
-<meta name="theme-color" content="#FAF8F3"/>
+<meta name="theme-color" content="#F7F1E6"/>
 <link rel="manifest" href="/manifest.json"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1208'/><text x='90' y='125' text-anchor='middle' font-size='100'>🪬</text></svg>"/>
@@ -656,6 +656,73 @@ body.dark-mode .suggest-card{background:linear-gradient(135deg,rgba(30,60,30,0.1
 body.dark-mode .similar-chip{background:rgba(22,14,6,0.85);border-color:rgba(201,168,76,0.10);}
 body.dark-mode .product-card{background:rgba(22,14,6,0.90);}
 body.dark-mode #splash{background:#0D0A06 !important;}
+
+/* ═══════════════════════════════════════════════════════════
+   DHAWI MAISON — Quiet-Luxury Redesign Layer (Lab)
+   cream studio · matte gold · burgundy silk — light mode only,
+   dark mode untouched. Visual overrides only, no logic.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --mz-burg:#6E2B39; --mz-burg-deep:#54202B;
+  --mz-gold:#B8934A; --mz-gold-deep:#8A6A1E;
+  --mz-cream:#F7F1E6; --mz-card:#FFFDF8; --mz-ink:#2B1D12;
+  --c-rose-arabic:#6E2B39;
+}
+body:not(.dark-mode){
+  background:var(--mz-cream);
+  background-image:
+    radial-gradient(ellipse 140% 60% at 50% -10%, rgba(184,147,74,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 95% 110%, rgba(110,43,57,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 45% at 5% 65%, rgba(184,147,74,0.06) 0%, transparent 55%);
+  background-attachment:fixed;
+}
+body:not(.dark-mode) .glass{
+  background:var(--mz-card);
+  border:1px solid rgba(138,106,30,0.16);
+  box-shadow:0 10px 30px rgba(43,29,18,0.06),0 2px 8px rgba(43,29,18,0.04);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+}
+body:not(.dark-mode) .glass-gold{
+  background:linear-gradient(160deg,#FFFDF8,#FBF5E8);
+  border:1px solid rgba(138,106,30,0.26);
+  box-shadow:0 12px 34px rgba(43,29,18,0.08),0 0 24px rgba(184,147,74,0.08);
+}
+body:not(.dark-mode) .recipe-card{
+  background:var(--mz-card);
+  border:1px solid rgba(138,106,30,0.15);
+  box-shadow:0 8px 26px rgba(43,29,18,0.06);
+}
+body:not(.dark-mode) .recipe-card.ready-card{border-color:rgba(138,106,30,0.32);}
+body:not(.dark-mode) .quick-action{background:var(--mz-card);border:1px solid rgba(138,106,30,0.14);}
+body:not(.dark-mode) .ing-card{background:var(--mz-card);border:1px solid rgba(138,106,30,0.13);}
+body:not(.dark-mode) .stat-card,
+body:not(.dark-mode) .kpi-mini,
+body:not(.dark-mode) .rec-stat{background:var(--mz-card);border:1px solid rgba(138,106,30,0.13);}
+body:not(.dark-mode) .inp{background:#FFFEFB;border:1px solid rgba(138,106,30,0.20);}
+body:not(.dark-mode) .inp:focus{border-color:rgba(110,43,57,0.45);background:#FFFEFB;box-shadow:0 0 0 4px rgba(110,43,57,0.05);}
+body:not(.dark-mode) .bottom-nav{
+  background:rgba(250,246,238,0.96);
+  border:1px solid rgba(138,106,30,0.20);
+  box-shadow:0 24px 64px rgba(43,29,18,0.14),inset 0 1px 0 rgba(255,255,255,0.7);
+}
+body:not(.dark-mode) .modal-sheet{background:#FBF7EE;}
+body:not(.dark-mode) .product-card{background:var(--mz-card);border:1px solid rgba(138,106,30,0.15);}
+body:not(.dark-mode) .similar-chip{background:var(--mz-card);border:1px solid rgba(138,106,30,0.13);}
+body:not(.dark-mode) #splash{background:var(--mz-cream);}
+/* buttons & accents — all modes */
+.btn-gold{
+  background:linear-gradient(135deg,#C2A055,#8A6A1E);
+  color:#FFFDF8;
+  box-shadow:0 4px 16px rgba(138,106,30,0.26),inset 0 1px 0 rgba(255,255,255,0.22);
+}
+.btn-danger{border-color:rgba(110,43,57,0.34);color:var(--mz-burg);}
+.btn-danger:active{background:rgba(110,43,57,0.08);}
+.nav-btn.active{color:var(--mz-gold-deep);}
+.rev-hero{background:linear-gradient(135deg,#241109 0%,#2C1A0E 55%,#3A1620 100%);}
+.rev-hero::before{background:linear-gradient(90deg,transparent,rgba(184,147,74,0.60),rgba(110,43,57,0.45),transparent);}
+.product-card-banner{background:linear-gradient(135deg,#241109,#3A1620,#8A6A1E);}
+.step-num{background:linear-gradient(135deg,rgba(184,147,74,0.9),rgba(110,43,57,0.85));color:#FFFDF8;}
+.recipe-card::before{background:linear-gradient(90deg,transparent,rgba(184,147,74,0.30) 45%,rgba(110,43,57,0.25) 60%,transparent);}
 </style>
 </head>
 <body>
@@ -1148,7 +1215,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-06-26-v1";
+const APP_BUILD="2026-06-30-v1";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
