@@ -10,7 +10,7 @@
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="ضاوي دهن العود — أتيلييه العطور السعودي الفاخر"/>
 <meta property="og:description" content="سبعة عطور حصرية من أجود مواد العود الهندي والكمبودي. ثبات يصل 40 ساعة. تواصل على واتساب للطلب."/>
-<meta property="og:image" content="https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/brand_poster.jpg"/>
+<meta property="og:image" content="https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/media/og_share.jpg"/>
 <meta property="og:url" content="https://zh7gk2hyp2-ai.github.io/Dhawi_Dahn/agency"/>
 <meta property="og:locale" content="ar_SA"/>
 <meta name="twitter:card" content="summary_large_image"/>
@@ -833,6 +833,12 @@ body{ background:var(--mz-cream); color:var(--mz-ink); }
 .cinema-strip-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.6rem,5vw,2.6rem);color:#EADFC8;text-shadow:0 2px 24px rgba(0,0,0,0.55);}
 .cinema-strip-sub{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.42em;color:rgba(214,188,126,0.82);margin-top:10px;text-transform:uppercase;}
 @media (prefers-reduced-motion:reduce){.hero-video,.cinema-strip video{display:none;}}
+/* ── real product photos on cards & modal ── */
+.pcard-photo{width:100%;aspect-ratio:4/5;overflow:hidden;background:#1A0E08;}
+.pcard-photo img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block;transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);}
+.pcard:hover .pcard-photo img{transform:scale(1.04);}
+.prod-modal-photo{width:100%;aspect-ratio:1/1;overflow:hidden;background:#1A0E08;}
+.prod-modal-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;}
 </style>
 </head>
 <body>
@@ -1231,6 +1237,18 @@ const LAB=loadFromLab();
 const P=(LAB&&LAB.produced.length)?LAB.produced:((LAB&&LAB.all.length)?LAB.all:P_STATIC);
 const P_ALL=(LAB&&LAB.all.length)?LAB.all:P_STATIC;
 
+// ── صور المنتجات الحقيقية (بوسترات الحملة) ──────────────────────────
+const PRODUCT_IMG={
+  r_malaki:'media/products/r_malaki.jpg',
+  r_hindi_soul:'media/products/r_hindi_soul.jpg',
+  r_nasmat_malook:'media/products/r_nasmat_malook.jpg',
+  r_cambodi_nights:'media/products/r_cambodi_nights.jpg',
+  r_nasmat_bakhoor:'media/products/r_nasmat_bakhoor.jpg',
+  r_nasmat_ward:'media/products/r_nasmat_ward.jpg',
+  r_nasmat_sayf:'media/products/r_nasmat_sayf.jpg',
+  r_sandal_ward:'media/products/r_sandal_ward.jpg',
+};
+
 // ── BATCH SIZES ─────────────────────────────────────────────────────────────
 const BATCH={
   quarter:{label:'ربع تولة',ml:'2.9 مل',factor:0.30},
@@ -1307,9 +1325,10 @@ function render(){
     return`<div class="pcard${oos?' pcard-oos':''}" onclick="openProductModal('${p.id}')">
 <div class="pcard-bar"></div>
 ${oos?'<div class="pcard-oos-badge">نفذ المخزون</div>':''}
+${PRODUCT_IMG[p.id]?`<div class="pcard-photo"><img src="${PRODUCT_IMG[p.id]}" alt="${p.name}" loading="lazy"/></div>`:''}
 <div class="pcard-body">
 <div class="pcard-badge">${p.season}</div>
-<div class="pcard-icon">${p.icon}</div>
+${PRODUCT_IMG[p.id]?'':`<div class="pcard-icon">${p.icon}</div>`}
 <div class="pcard-brand">ATELIER DHAWI</div>
 <div class="pcard-name">${p.name}</div>
 <div class="lbar"><div class="lt" style="flex:${p.top||0.1}"></div><div class="lm" style="flex:${p.mid||0.1}"></div><div class="lb" style="flex:${p.base||0.1}"></div></div>
@@ -1714,8 +1733,9 @@ function renderProductModal(){
   const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
   document.getElementById('prodModalContent').innerHTML=`
     <div class="prod-modal-bar"></div>
+    ${PRODUCT_IMG[p.id]?`<div class="prod-modal-photo"><img src="${PRODUCT_IMG[p.id]}" alt="${p.name}"/></div>`:''}
     <div class="prod-modal-body">
-      <span class="prod-modal-icon">${p.icon}</span>
+      ${PRODUCT_IMG[p.id]?'':`<span class="prod-modal-icon">${p.icon}</span>`}
       <div class="prod-modal-badge">${p.season}</div>
       <div class="prod-modal-name">${p.name}</div>
       <div class="prod-modal-meta">${p.gender} · ${p.stab}</div>

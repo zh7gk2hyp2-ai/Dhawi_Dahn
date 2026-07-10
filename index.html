@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-07-03-v1"/>
+<meta name="app-version" content="2026-07-10-v1"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -1220,7 +1220,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-07-03-v1";
+const APP_BUILD="2026-07-10-v1";
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -1860,7 +1860,24 @@ function App(){
     const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     const url=URL.createObjectURL(blob);
     const a=document.createElement("a");a.href=url;a.download="ضاوي_دهن_العود_نسخة_احتياطية.json";a.click();
-    URL.revokeObjectURL(url);show("💾 تم تصدير البيانات");
+    URL.revokeObjectURL(url);
+    try{localStorage.setItem("dw_last_backup",String(Date.now()));}catch(_){}
+    show("💾 تم تصدير البيانات");
+  };
+  // ── QR batch label printing (uses loaded qrcodejs lib) ──────
+  const printLabel=(e)=>{
+    const tmp=document.createElement("div");tmp.style.display="none";document.body.appendChild(tmp);
+    try{new QRCode(tmp,{text:`DHAWI|${e.batchNo}|${e.recipeName}|${(e.readyDate||"").slice(0,10)}`,width:110,height:110});}catch(_){}
+    setTimeout(()=>{
+      const img=tmp.querySelector("img");const cv=tmp.querySelector("canvas");
+      const src=(img&&img.src)||(cv&&cv.toDataURL())||"";
+      document.body.removeChild(tmp);
+      const w=window.open("","_blank","width=420,height=560");
+      if(!w){show("⚠️ اسمح بالنوافذ المنبثقة لطباعة الملصق");return;}
+      w.document.write(`<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>ملصق ${e.batchNo}</title><style>body{font-family:-apple-system,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#fff}.lbl{width:58mm;border:1.2px solid #8A6A1E;border-radius:10px;padding:12px 10px;text-align:center}.b{font-size:0.60rem;letter-spacing:0.30em;color:#8A6A1E;margin-bottom:6px}.n{font-size:1.02rem;font-weight:800;color:#1A1208;margin-bottom:2px}.m{font-size:0.66rem;color:#555;margin-bottom:8px}img{width:100px;height:100px}.f{font-size:0.60rem;color:#777;margin-top:6px;line-height:1.6}@media print{body{min-height:auto}}</style></head><body><div class="lbl"><div class="b">ATELIER DHAWI</div><div class="n">${e.recipeIcon||""} ${e.recipeName}</div><div class="m">دفعة #${e.batchNo} · ${e.batch||""} · ${e.vol||""}مل</div>${src?`<img src="${src}"/>`:""}<div class="f">إنتاج: ${(e.date||"").slice(0,10)}<br/>جاهز: ${(e.readyDate||"").slice(0,10)}</div></div></body></html>`);
+      w.document.close();
+      setTimeout(()=>{try{w.focus();w.print();}catch(_){}} ,400);
+    },90);
   };
   const importRef=useRef();
   const importData=(e)=>{
@@ -2366,7 +2383,10 @@ function App(){
                     <div style={{fontSize:"0.86rem",color:"#1A1208",fontWeight:600}}>{e.recipeIcon} {e.recipeName}</div>
                     <div style={{fontSize:"0.62rem",color:"#8A6A1E",marginTop:"2px",fontFamily:"'IBM Plex Mono',monospace"}}>#{e.batchNo} · {e.vol}مل</div>
                   </div>
-                  <button onClick={()=>goTab("stats")} style={{background:"rgba(60,140,62,0.10)",border:"1px solid rgba(60,140,62,0.22)",color:"#68B068",borderRadius:"10px",padding:"5px 12px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700"}}>سجّل بيع</button>
+                  <div style={{display:"flex",gap:"6px",alignItems:"center"}}>
+                    <button onClick={()=>printLabel(e)} title="طباعة ملصق QR" style={{background:"none",border:"1px solid rgba(138,106,30,0.30)",borderRadius:"10px",padding:"5px 9px",cursor:"pointer",fontSize:"0.75rem"}}>🏷️</button>
+                    <button onClick={()=>goTab("stats")} style={{background:"rgba(60,140,62,0.10)",border:"1px solid rgba(60,140,62,0.22)",color:"#68B068",borderRadius:"10px",padding:"5px 12px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"700"}}>سجّل بيع</button>
+                  </div>
                 </div>
               ))}
             </div>}
@@ -2385,7 +2405,10 @@ function App(){
                 return <div key={e.id} style={{marginBottom:"12px"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"5px"}}>
                     <span style={{fontSize:"0.84rem",color:"#1A1208",fontWeight:600}}>{e.recipeIcon} {e.recipeName}</span>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.72rem",color:"#C08840",fontWeight:600,background:"rgba(192,136,64,0.09)",padding:"2px 8px",borderRadius:"8px"}}>{dl}د</span>
+                    <span style={{display:"flex",alignItems:"center",gap:"6px"}}>
+                      <button onClick={()=>printLabel(e)} title="طباعة ملصق QR" style={{background:"none",border:"1px solid rgba(138,106,30,0.28)",borderRadius:"8px",padding:"2px 7px",cursor:"pointer",fontSize:"0.68rem"}}>🏷️</button>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.72rem",color:"#C08840",fontWeight:600,background:"rgba(192,136,64,0.09)",padding:"2px 8px",borderRadius:"8px"}}>{dl}د</span>
+                    </span>
                   </div>
                   <div style={{height:"6px",background:"rgba(26,18,8,0.07)",borderRadius:"6px",overflow:"hidden"}}>
                     <div style={{height:"100%",width:pct+"%",background:"linear-gradient(90deg,#8A6A1E,#C9A84C,#E8C460)",borderRadius:"6px",transition:"width 0.6s cubic-bezier(0.22,1,0.36,1)",boxShadow:"0 0 8px rgba(201,168,76,0.40)"}}/>
@@ -2397,6 +2420,23 @@ function App(){
                 </div>;
               })}
             </div>}
+
+            {/* ── Backup Reminder ── */}
+            {(()=>{
+              const lb=+(localStorage.getItem("dw_last_backup")||0);
+              const days=(Date.now()-lb)/86400000;
+              if((prodLog.length+recipes.length)===0||(lb&&days<7))return null;
+              return(
+                <div className="glass" style={{border:"1px solid rgba(190,125,25,0.40)",background:"rgba(190,125,25,0.06)",display:"flex",alignItems:"center",gap:"11px",padding:"13px 14px",marginBottom:"12px"}}>
+                  <span style={{fontSize:"1.35rem",flexShrink:0}}>🛡️</span>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:"0.79rem",fontWeight:800,color:"#8A5A10"}}>{lb?`آخر نسخة احتياطية قبل ${Math.floor(days)} يوم`:"لا توجد نسخة احتياطية بعد"}</div>
+                    <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.45)",marginTop:"2px"}}>بياناتك محفوظة في المتصفح فقط — صدّرها لحمايتها من الضياع</div>
+                  </div>
+                  <button className="btn-gold" style={{padding:"9px 14px",fontSize:"0.72rem",flexShrink:0}} onClick={exportData}>💾 نسخ الآن</button>
+                </div>
+              );
+            })()}
 
             {/* ── Alerts Row ── */}
             {(lowStockItems.length>0||totalExpiryAlerts>0)&&<div style={{display:"grid",gridTemplateColumns:lowStockItems.length>0&&totalExpiryAlerts>0?"1fr 1fr":"1fr",gap:"8px",marginBottom:"12px"}}>
