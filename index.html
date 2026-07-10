@@ -723,6 +723,11 @@ body:not(.dark-mode) #splash{background:var(--mz-cream);}
 .product-card-banner{background:linear-gradient(135deg,#241109,#3A1620,#8A6A1E);}
 .step-num{background:linear-gradient(135deg,rgba(184,147,74,0.9),rgba(110,43,57,0.85));color:#FFFDF8;}
 .recipe-card::before{background:linear-gradient(90deg,transparent,rgba(184,147,74,0.30) 45%,rgba(110,43,57,0.25) 60%,transparent);}
+/* ── recipe card photo banner ── */
+.recipe-photo{height:118px;margin:-14px -16px 12px;overflow:hidden;position:relative;cursor:pointer;}
+.recipe-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);}
+.recipe-card:hover .recipe-photo img{transform:scale(1.04);}
+.recipe-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(20,10,5,0.14));pointer-events:none;}
 /* ── rev-hero cinematic film (mabkhara loop) ── */
 .rev-hero-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(0.55) saturate(1.05);}
 .rev-hero-veil{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(24,13,8,0.30),rgba(24,13,8,0.74));}
@@ -1235,6 +1240,21 @@ const INITIAL_RECIPES=[
 
 // ─── app version guard — forces reload when new code deployed ───
 const APP_BUILD="2026-07-10-v1";
+// ── صور الوصفات المنتجة (تظهر أعلى البطاقة إن وُجدت) ──
+const RECIPE_IMG={
+  r_hindi_soul:"media/products/r_hindi_soul.jpg",
+  royal:"media/products/royal.jpg",
+  summer:"media/products/summer.jpg",
+  sheikhs_oud:"media/products/sheikhs_oud.jpg",
+  taif_rose_oud:"media/products/taif_rose_oud.jpg",
+  r_malaki:"media/products/r_malaki.jpg",
+  r_nasmat_malook:"media/products/r_nasmat_malook.jpg",
+  r_cambodi_nights:"media/products/r_cambodi_nights.jpg",
+  r_nasmat_bakhoor:"media/products/r_nasmat_bakhoor.jpg",
+  r_nasmat_ward:"media/products/r_nasmat_ward.jpg",
+  r_nasmat_sayf:"media/products/r_nasmat_sayf.jpg",
+  r_sandal_ward:"media/products/r_sandal_ward.jpg",
+};
 (function(){
   const stored=localStorage.getItem("dw_build");
   if(stored&&stored!==APP_BUILD){
@@ -3144,6 +3164,7 @@ function App(){
             return(
             <div key={r.id} className={cardClass} style={{opacity:ready?1:0.78}}>
               <div className="recipe-card-top"/>
+              {RECIPE_IMG[r.id]&&<div className="recipe-photo" onClick={()=>setSelectedRecipe(r)}><img src={RECIPE_IMG[r.id]} alt={r.name} loading="lazy" onError={ev=>{ev.currentTarget.parentNode.style.display="none";}}/></div>}
               {/* top row */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"10px"}}>
                 <div style={{flex:1,paddingInlineEnd:"10px",cursor:"pointer"}} onClick={()=>setSelectedRecipe(r)}>

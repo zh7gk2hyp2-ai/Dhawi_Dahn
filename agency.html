@@ -1247,6 +1247,10 @@ const PRODUCT_IMG={
   r_nasmat_ward:'media/products/r_nasmat_ward.jpg',
   r_nasmat_sayf:'media/products/r_nasmat_sayf.jpg',
   r_sandal_ward:'media/products/r_sandal_ward.jpg',
+  royal:'media/products/royal.jpg',
+  summer:'media/products/summer.jpg',
+  sheikhs_oud:'media/products/sheikhs_oud.jpg',
+  taif_rose_oud:'media/products/taif_rose_oud.jpg',
 };
 
 // ── BATCH SIZES ─────────────────────────────────────────────────────────────
@@ -1325,7 +1329,7 @@ function render(){
     return`<div class="pcard${oos?' pcard-oos':''}" onclick="openProductModal('${p.id}')">
 <div class="pcard-bar"></div>
 ${oos?'<div class="pcard-oos-badge">نفذ المخزون</div>':''}
-${PRODUCT_IMG[p.id]?`<div class="pcard-photo"><img src="${PRODUCT_IMG[p.id]}" alt="${p.name}" loading="lazy"/></div>`:''}
+${PRODUCT_IMG[p.id]?`<div class="pcard-photo"><img src="${PRODUCT_IMG[p.id]}" alt="${p.name}" loading="lazy" onerror="this.parentNode.style.display='none'"/></div>`:''}
 <div class="pcard-body">
 <div class="pcard-badge">${p.season}</div>
 ${PRODUCT_IMG[p.id]?'':`<div class="pcard-icon">${p.icon}</div>`}
@@ -1733,7 +1737,7 @@ function renderProductModal(){
   const ic=cart.find(i=>i.id===p.id&&i.batch===batch);
   document.getElementById('prodModalContent').innerHTML=`
     <div class="prod-modal-bar"></div>
-    ${PRODUCT_IMG[p.id]?`<div class="prod-modal-photo"><img src="${PRODUCT_IMG[p.id]}" alt="${p.name}"/></div>`:''}
+    ${PRODUCT_IMG[p.id]?`<div class="prod-modal-photo"><img src="${PRODUCT_IMG[p.id]}" alt="${p.name}" onerror="this.parentNode.style.display='none'"/></div>`:''}
     <div class="prod-modal-body">
       ${PRODUCT_IMG[p.id]?'':`<span class="prod-modal-icon">${p.icon}</span>`}
       <div class="prod-modal-badge">${p.season}</div>
