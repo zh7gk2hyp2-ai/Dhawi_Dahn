@@ -1558,6 +1558,17 @@ function applyOudXxFix(inv){
   return [...map.values()];
 }
 
+// ─── rs_01: إعادة تخزين — شراء 50مل من كل دهن لوكسودور (يضبط هذه الخمسة فقط، لا يمس الباقي) ───
+const RESTOCK_VERSION="rs_01";
+const RESTOCK_SET=[["lux_bormi",50],["lux_muattaq",50],["lux_suyufi",50],["lux_hindi",50],["lux_khalifa",50]];
+function applyRestock(inv){
+  if(lsGet("dw_rs_ver","")===RESTOCK_VERSION)return inv;
+  const map=new Map(inv.map(i=>[i.id,{...i}]));
+  RESTOCK_SET.forEach(([id,qty])=>{if(map.has(id)){const it=map.get(id);map.set(id,{...it,stock:qty});}});
+  lsSet("dw_rs_ver",RESTOCK_VERSION);
+  return [...map.values()];
+}
+
 const Logo=({size=52})=>(
   <svg width={size} height={size} viewBox="0 0 140 140" fill="none">
     <circle cx="70" cy="70" r="68" fill="#1a0800" stroke="#D4AF37" strokeWidth="2"/>
@@ -1607,7 +1618,7 @@ function App(){
   const [logged,setLogged]=useState(false);
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
-  const [inv,setInv]=useState(()=>applyStockSnapshot(applyOudXxFix(applyNameFix(applyInventoryRemove(applyInventoryAdd(applyRecipeDeduct(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv())))))))))));
+  const [inv,setInv]=useState(()=>applyRestock(applyStockSnapshot(applyOudXxFix(applyNameFix(applyInventoryRemove(applyInventoryAdd(applyRecipeDeduct(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))))))))))));
   const [recipes,setRecipes]=useState(()=>applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES))));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
