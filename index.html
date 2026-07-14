@@ -1559,8 +1559,8 @@ function applyOudXxFix(inv){
 }
 
 // ─── rs_01: إعادة تخزين — شراء 50مل من كل دهن لوكسودور (يضبط هذه الخمسة فقط، لا يمس الباقي) ───
-const RESTOCK_VERSION="rs_01";
-const RESTOCK_SET=[["lux_bormi",50],["lux_muattaq",50],["lux_suyufi",50],["lux_hindi",50],["lux_khalifa",50]];
+const RESTOCK_VERSION="rs_02";
+const RESTOCK_SET=[["lux_bormi",50],["lux_muattaq",50],["lux_suyufi",50],["lux_hindi",50],["lux_khalifa",50],["lux_snake",50]];
 function applyRestock(inv){
   if(lsGet("dw_rs_ver","")===RESTOCK_VERSION)return inv;
   const map=new Map(inv.map(i=>[i.id,{...i}]));
