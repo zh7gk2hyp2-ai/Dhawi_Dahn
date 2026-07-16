@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>لجنة المخالفات</title>
+<title>لجنة المخالفات — جامعة الطائف</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b1220; --bg2:#111a2e; --panel:#16213a; --panel2:#1c2a47;
-    --border:#28375a; --text:#e8ecf5; --muted:#93a1c2; --accent:#d4a72c;
-    --accent2:#e8c565; --danger:#e25c5c; --ok:#3fb37f; --warn:#e2a23c;
+    --primary:#B3392A; --primary-dark:#8f2e22; --gold:#C9A227;
+    --bg:#FBF1EC; --card:#ffffff; --border:#F0DCD3; --border2:#e7cabd;
+    --text:#2b1e1a; --muted:#8a6f66; --danger:#c0392b; --ok:#2f8f5b; --warn:#c98a1c;
     --radius:14px;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -20,68 +20,73 @@
     min-height:100vh; line-height:1.6;
   }
   header{
-    background:linear-gradient(180deg,var(--bg2),var(--bg));
-    border-bottom:1px solid var(--border);
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
     padding:22px 20px 0; position:sticky; top:0; z-index:50;
-    backdrop-filter:blur(8px);
+    box-shadow:0 4px 16px rgba(0,0,0,.15);
   }
   .header-top{display:flex; align-items:center; justify-content:space-between; max-width:1100px; margin:0 auto; flex-wrap:wrap; gap:10px;}
   .brand{display:flex; align-items:center; gap:12px;}
   .brand .icon{
-    width:44px; height:44px; border-radius:12px; background:var(--panel2);
-    border:1px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:22px;
+    width:48px; height:48px; border-radius:12px; background:rgba(255,255,255,.08);
+    border:1.5px solid var(--gold); display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; font-weight:800; color:var(--gold); letter-spacing:-1px;
   }
-  .brand h1{font-size:1.15rem; font-weight:700; color:var(--accent2);}
-  .brand span{font-size:.78rem; color:var(--muted); display:block; margin-top:2px;}
-  nav.tabs{display:flex; gap:6px; max-width:1100px; margin:16px auto 0; padding-bottom:0;}
+  .brand h1{font-size:1.15rem; font-weight:700; color:#fff;}
+  .brand span{font-size:.78rem; color:var(--gold); display:block; margin-top:2px;}
+  .notice{max-width:1100px; margin:10px auto 0; font-size:.78rem; color:rgba(255,255,255,.85); padding-bottom:14px;}
+  nav.tabs{display:flex; gap:6px; max-width:1100px; margin:14px auto 0;}
   nav.tabs button{
     flex:1; padding:12px 14px; background:transparent; border:none; border-bottom:3px solid transparent;
-    color:var(--muted); font-family:inherit; font-size:.92rem; font-weight:600; cursor:pointer;
+    color:rgba(255,255,255,.65); font-family:inherit; font-size:.92rem; font-weight:600; cursor:pointer;
     transition:.2s;
   }
-  nav.tabs button.active{color:var(--accent2); border-bottom-color:var(--accent);}
-  nav.tabs button:hover{color:var(--text);}
+  nav.tabs button.active{color:#fff; border-bottom-color:var(--gold);}
+  nav.tabs button:hover{color:#fff;}
   main{max-width:1100px; margin:0 auto; padding:26px 18px 60px;}
   .view{display:none; animation:fadeIn .25s ease;}
   .view.active{display:block;}
   @keyframes fadeIn{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
 
-  .card{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:22px;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:22px; box-shadow:0 2px 10px rgba(179,57,42,.05);}
   .card + .card{margin-top:18px;}
-  .card h2{font-size:1.05rem; color:var(--accent2); margin-bottom:4px;}
+  .card h2{font-size:1.05rem; color:var(--primary-dark); margin-bottom:4px;}
   .card .sub{color:var(--muted); font-size:.85rem; margin-bottom:18px;}
 
   .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   @media (max-width:680px){.grid{grid-template-columns:1fr;}}
   .field{display:flex; flex-direction:column; gap:6px;}
   .field.full{grid-column:1/-1;}
-  .field label{font-size:.82rem; color:var(--muted); font-weight:600;}
+  .field label{font-size:.85rem; color:var(--text); font-weight:600;}
   .field label .req{color:var(--danger);}
   input,select,textarea{
-    background:var(--bg2); border:1px solid var(--border); color:var(--text);
+    background:var(--bg); border:1px solid var(--border2); color:var(--text);
     border-radius:10px; padding:11px 12px; font-family:inherit; font-size:.92rem; width:100%;
   }
-  input:focus,select:focus,textarea:focus{outline:none; border-color:var(--accent);}
+  input:focus,select:focus,textarea:focus{outline:none; border-color:var(--primary);}
   textarea{resize:vertical; min-height:90px;}
-  input[type="file"]{padding:8px;}
+  input[type="file"]{padding:8px; background:#fff;}
+  .option-list{display:flex; flex-direction:column; gap:10px;}
+  .option-row{display:flex; align-items:center; gap:8px; font-size:.9rem;}
+  .option-row input{width:auto; accent-color:var(--primary);}
+  .option-row.other input[type="text"]{width:100%; margin-inline-start:8px;}
   .checkbox-row{display:flex; align-items:flex-start; gap:8px; font-size:.85rem; color:var(--muted);}
-  .checkbox-row input{width:auto; margin-top:3px;}
+  .checkbox-row input{width:auto; margin-top:3px; accent-color:var(--primary);}
 
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    background:var(--accent); color:#1a1305; border:none; border-radius:10px;
+    background:var(--primary); color:#fff; border:none; border-radius:10px;
     padding:12px 22px; font-family:inherit; font-weight:700; font-size:.92rem; cursor:pointer;
     transition:.2s;
   }
-  .btn:hover{background:var(--accent2);}
-  .btn.secondary{background:transparent; color:var(--text); border:1px solid var(--border);}
-  .btn.secondary:hover{border-color:var(--accent);}
+  .btn:hover{background:var(--primary-dark);}
+  .btn.secondary{background:transparent; color:var(--text); border:1px solid var(--border2);}
+  .btn.secondary:hover{border-color:var(--primary); color:var(--primary);}
   .btn.danger{background:var(--danger); color:#fff;}
   .btn:disabled{opacity:.5; cursor:not-allowed;}
   .btn-row{display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;}
 
   .success-banner{
-    background:rgba(63,179,127,.12); border:1px solid var(--ok); color:#8fe8bb;
+    background:rgba(47,143,91,.1); border:1px solid var(--ok); color:var(--ok);
     border-radius:10px; padding:14px 16px; margin-bottom:18px; font-size:.9rem; display:none;
   }
   .success-banner.show{display:block;}
@@ -91,8 +96,8 @@
   .gate .icon-lg{font-size:2.4rem; margin-bottom:10px;}
   .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px;}
   @media (max-width:680px){.stat-row{grid-template-columns:repeat(2,1fr);}}
-  .stat{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center;}
-  .stat b{display:block; font-size:1.6rem; color:var(--accent2);}
+  .stat{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center;}
+  .stat b{display:block; font-size:1.6rem; color:var(--primary-dark);}
   .stat span{font-size:.78rem; color:var(--muted);}
 
   .toolbar{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; align-items:center;}
@@ -101,36 +106,36 @@
   table{width:100%; border-collapse:collapse; font-size:.86rem;}
   th,td{padding:10px 8px; text-align:right; border-bottom:1px solid var(--border);}
   th{color:var(--muted); font-weight:600; font-size:.78rem;}
-  tr:hover td{background:rgba(255,255,255,.02);}
+  tr:hover td{background:rgba(179,57,42,.03);}
   .badge{
     display:inline-block; padding:4px 10px; border-radius:20px; font-size:.74rem; font-weight:700;
   }
-  .badge.new{background:rgba(226,162,60,.15); color:var(--warn);}
-  .badge.review{background:rgba(120,150,230,.15); color:#7896e6;}
-  .badge.accepted{background:rgba(63,179,127,.15); color:var(--ok);}
-  .badge.rejected{background:rgba(226,92,92,.15); color:var(--danger);}
-  .row-actions button{background:none; border:none; color:var(--accent2); cursor:pointer; font-family:inherit; font-size:.82rem; text-decoration:underline;}
+  .badge.new{background:rgba(201,138,28,.15); color:var(--warn);}
+  .badge.review{background:rgba(70,110,200,.12); color:#3f5fb0;}
+  .badge.action{background:rgba(47,143,91,.15); color:var(--ok);}
+  .badge.closed{background:rgba(138,111,102,.15); color:var(--muted);}
+  .row-actions button{background:none; border:none; color:var(--primary); cursor:pointer; font-family:inherit; font-size:.82rem; text-decoration:underline;}
   .empty{text-align:center; color:var(--muted); padding:40px 0;}
 
   /* Modal */
   .overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.6); display:none;
+    position:fixed; inset:0; background:rgba(43,30,26,.55); display:none;
     align-items:center; justify-content:center; z-index:100; padding:20px;
   }
   .overlay.show{display:flex;}
   .modal{
-    background:var(--panel); border:1px solid var(--border); border-radius:16px;
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
     max-width:640px; width:100%; max-height:88vh; overflow-y:auto; padding:24px;
   }
-  .modal h3{color:var(--accent2); margin-bottom:14px; font-size:1.05rem;}
+  .modal h3{color:var(--primary-dark); margin-bottom:14px; font-size:1.05rem;}
   .detail-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px 16px; margin-bottom:16px; font-size:.88rem;}
   .detail-grid .k{color:var(--muted); font-size:.76rem;}
   .detail-grid .full{grid-column:1/-1;}
   .modal img{max-width:100%; border-radius:10px; border:1px solid var(--border); margin-top:6px;}
   .modal-close{position:absolute; left:20px; top:16px;}
-  .modal-header{display:flex; justify-content:space-between; align-items:flex-start;}
 
-  ::placeholder{color:#5b6a8f;}
+  ::placeholder{color:#b79b8f;}
+  .hidden{display:none !important;}
 </style>
 </head>
 <body>
@@ -138,14 +143,15 @@
 <header>
   <div class="header-top">
     <div class="brand">
-      <div class="icon">⚖️</div>
+      <div class="icon">TU</div>
       <div>
-        <h1>لجنة المخالفات</h1>
-        <span>منصّة تقديم البلاغات ومتابعة القرارات</span>
+        <h1>جامعة الطائف</h1>
+        <span>لجنة متابعة مخالفات الملبس والمظهر</span>
       </div>
     </div>
-    <button class="btn secondary" id="logoutBtn" style="display:none" onclick="logoutDashboard()">تسجيل الخروج</button>
+    <button class="btn secondary" id="logoutBtn" style="display:none; border-color:rgba(255,255,255,.4); color:#fff;" onclick="logoutDashboard()">تسجيل الخروج</button>
   </div>
+  <p class="notice">هذا النموذج خاص بإدخال المخالفات الخاصة بالملبس والمظهر فقط.</p>
   <nav class="tabs">
     <button class="active" data-view="submit" onclick="switchView('submit')">تقديم بلاغ</button>
     <button data-view="dashboard" onclick="switchView('dashboard')">لوحة اللجنة</button>
@@ -157,8 +163,8 @@
   <!-- ============ SUBMIT VIEW ============ -->
   <section class="view active" id="view-submit">
     <div class="card">
-      <h2>تقديم بلاغ مخالفة جديد</h2>
-      <p class="sub">يرجى تعبئة كافة الحقول بدقة. سيتم مراجعة البلاغ من قبل اللجنة المختصة.</p>
+      <h2>نموذج جمع بيانات الطالبات المخالفات</h2>
+      <p class="sub">عند إرسال هذا النموذج، لن تُجمع تفاصيلك تلقائياً مثل الاسم وعنوان البريد الإلكتروني إلا إذا قدمتها بنفسك.</p>
 
       <div class="success-banner" id="successBanner">
         ✅ تم استلام البلاغ بنجاح، رقم المتابعة: <b id="successRef"></b>
@@ -166,70 +172,92 @@
 
       <form id="reportForm">
         <div class="grid">
-          <div class="field">
-            <label>اسم مقدم البلاغ <span class="req">*</span></label>
-            <input type="text" name="reporterName" required placeholder="الاسم الكامل"/>
-          </div>
-          <div class="field">
-            <label>رقم الجوال <span class="req">*</span></label>
-            <input type="tel" name="reporterPhone" required placeholder="05xxxxxxxx"/>
-          </div>
-          <div class="field">
-            <label>الرقم الوظيفي / الهوية (اختياري)</label>
-            <input type="text" name="reporterId" placeholder="اختياري"/>
-          </div>
-          <div class="field">
-            <label>القسم / الجهة</label>
-            <input type="text" name="department" placeholder="مثال: قسم المبيعات"/>
+          <div class="field full">
+            <label>1. اسم الطالبة <span class="req">*</span></label>
+            <input type="text" name="studentName" required placeholder="أدخل إجابتك"/>
           </div>
 
-          <div class="field full"><hr style="border-color:var(--border); opacity:.5;"/></div>
-
           <div class="field">
-            <label>الشخص / الجهة محل المخالفة <span class="req">*</span></label>
-            <input type="text" name="violatorName" required placeholder="الاسم"/>
+            <label>2. الرقم الجامعي <span class="req">*</span></label>
+            <input type="number" inputmode="numeric" name="universityId" required placeholder="يجب أن تكون القيمة رقماً"/>
           </div>
           <div class="field">
-            <label>نوع المخالفة <span class="req">*</span></label>
-            <select name="violationType" required>
-              <option value="">اختر النوع</option>
-              <option value="سلوك غير لائق">سلوك غير لائق</option>
-              <option value="غياب أو تأخر">غياب أو تأخر</option>
-              <option value="مخالفة مالية">مخالفة مالية</option>
-              <option value="مخالفة إدارية">مخالفة إدارية</option>
-              <option value="إساءة استخدام ممتلكات">إساءة استخدام ممتلكات</option>
-              <option value="أخرى">أخرى</option>
+            <label>3. الكلية <span class="req">*</span></label>
+            <select name="college" id="collegeSelect" required>
+              <option value="">حدد إجابتك</option>
+              <option>كلية التربية</option>
+              <option>كلية الآداب</option>
+              <option>كلية الشريعة والأنظمة</option>
+              <option>كلية إدارة الأعمال</option>
+              <option>كلية العلوم</option>
+              <option>كلية الحاسبات</option>
+              <option>كلية التصاميم والفنون التطبيقية</option>
+              <option>كلية الطب</option>
+              <option>كلية الصيدلة</option>
+              <option>كلية الهندسة</option>
+              <option>كلية التمريض</option>
+              <option>الكلية التطبيقية / الدبلوم</option>
+              <option>كلية العلوم الطبية التطبيقية</option>
+              <option value="غير ذلك">غير ذلك</option>
             </select>
           </div>
-          <div class="field">
-            <label>تاريخ المخالفة <span class="req">*</span></label>
-            <input type="date" name="violationDate" required/>
-          </div>
-          <div class="field">
-            <label>مكان المخالفة</label>
-            <input type="text" name="location" placeholder="مثال: الفرع الرئيسي"/>
+          <div class="field full hidden" id="collegeOtherWrap">
+            <label>يرجى تحديد الكلية</label>
+            <input type="text" name="collegeOther" placeholder="أدخل إجابتك"/>
           </div>
 
           <div class="field full">
-            <label>وصف المخالفة <span class="req">*</span></label>
-            <textarea name="description" required placeholder="اشرح تفاصيل المخالفة بدقة..."></textarea>
+            <label>4. القسم <span class="req">*</span></label>
+            <input type="text" name="department" required placeholder="أدخل إجابتك"/>
           </div>
 
           <div class="field full">
-            <label>إرفاق مستند أو صورة (اختياري)</label>
-            <input type="file" name="evidence" accept="image/*,.pdf"/>
+            <label>5. المبنى/البوابة <span class="req">*</span></label>
+            <div class="option-list" id="buildingGateList">
+              <label class="option-row"><input type="radio" name="buildingGate" value="بوابة 16" required/> بوابة 16</label>
+              <label class="option-row"><input type="radio" name="buildingGate" value="بوابة 2"/> بوابة 2</label>
+              <label class="option-row"><input type="radio" name="buildingGate" value="بوابة 27"/> بوابة 27</label>
+              <label class="option-row"><input type="radio" name="buildingGate" value="مبنى 18"/> مبنى 18</label>
+              <label class="option-row"><input type="radio" name="buildingGate" value="مبنى 9"/> مبنى 9</label>
+              <label class="option-row"><input type="radio" name="buildingGate" value="مبنى 13"/> مبنى 13</label>
+              <label class="option-row"><input type="radio" name="buildingGate" value="الكلية الصحية"/> الكلية الصحية</label>
+              <label class="option-row"><input type="radio" name="buildingGate" value="كليه العلوم الطبية التطبيقية"/> كليه العلوم الطبية التطبيقية</label>
+              <label class="option-row other"><input type="radio" name="buildingGate" value="غير ذلك" id="buildingGateOtherRadio"/> غير ذلك</label>
+            </div>
+          </div>
+          <div class="field full hidden" id="buildingGateOtherWrap">
+            <label>يرجى تحديد المبنى/البوابة</label>
+            <input type="text" name="buildingGateOther" placeholder="أدخل إجابتك"/>
           </div>
 
           <div class="field full">
-            <label class="checkbox-row">
-              <input type="checkbox" required/>
-              أقر بأن المعلومات المذكورة أعلاه صحيحة وأتحمل مسؤولية أي بلاغ كيدي.
-            </label>
+            <label>6. اسم من ضبط المخالفة <span class="req">*</span></label>
+            <input type="text" name="recorderName" required placeholder="أدخل إجابتك"/>
+          </div>
+
+          <div class="field full">
+            <label>7. نوع المخالفة <span class="req">*</span></label>
+            <div class="option-list" id="violationTypeList">
+              <label class="option-row"><input type="checkbox" name="violationType" value="لبس مخالف"/> لبس مخالف</label>
+              <label class="option-row"><input type="checkbox" name="violationType" value="ذوق عام"/> ذوق عام</label>
+              <label class="option-row"><input type="checkbox" name="violationType" value="تخريم"/> تخريم</label>
+              <label class="option-row"><input type="checkbox" name="violationType" value="عباية ملونة"/> عباية ملونة</label>
+              <label class="option-row other"><input type="checkbox" name="violationType" value="غير ذلك" id="violationOtherCheck"/> غير ذلك</label>
+            </div>
+          </div>
+          <div class="field full hidden" id="violationOtherWrap">
+            <label>يرجى تحديد نوع المخالفة</label>
+            <input type="text" name="violationTypeOther" placeholder="أدخل إجابتك"/>
+          </div>
+
+          <div class="field full">
+            <label>8. ملاحظات اضافية</label>
+            <textarea name="notes" placeholder="أدخل إجابتك"></textarea>
           </div>
         </div>
 
         <div class="btn-row">
-          <button type="submit" class="btn">إرسال البلاغ</button>
+          <button type="submit" class="btn">إرسال</button>
           <button type="reset" class="btn secondary">تفريغ الحقول</button>
         </div>
       </form>
@@ -258,19 +286,19 @@
       <div class="stat-row">
         <div class="stat"><b id="statTotal">0</b><span>إجمالي البلاغات</span></div>
         <div class="stat"><b id="statNew">0</b><span>جديدة</span></div>
-        <div class="stat"><b id="statReview">0</b><span>قيد الدراسة</span></div>
-        <div class="stat"><b id="statDone">0</b><span>تم البت</span></div>
+        <div class="stat"><b id="statReview">0</b><span>قيد المراجعة</span></div>
+        <div class="stat"><b id="statDone">0</b><span>تم اتخاذ إجراء</span></div>
       </div>
 
       <div class="card">
         <div class="toolbar">
-          <input type="text" id="searchInput" placeholder="بحث بالاسم أو الوصف..." oninput="renderTable()"/>
+          <input type="text" id="searchInput" placeholder="بحث بالاسم أو الرقم الجامعي..." oninput="renderTable()"/>
           <select id="statusFilter" onchange="renderTable()">
             <option value="">كل الحالات</option>
             <option value="جديد">جديد</option>
-            <option value="قيد الدراسة">قيد الدراسة</option>
-            <option value="مقبول">مقبول</option>
-            <option value="مرفوض">مرفوض</option>
+            <option value="قيد المراجعة">قيد المراجعة</option>
+            <option value="تم اتخاذ إجراء">تم اتخاذ إجراء</option>
+            <option value="إغلاق دون إجراء">إغلاق دون إجراء</option>
           </select>
           <button class="btn secondary" onclick="exportCSV()">تصدير CSV</button>
         </div>
@@ -279,7 +307,7 @@
           <table>
             <thead>
               <tr>
-                <th>التاريخ</th><th>مقدّم البلاغ</th><th>المخالِف</th><th>النوع</th><th>الحالة</th><th></th>
+                <th>التاريخ</th><th>اسم الطالبة</th><th>الرقم الجامعي</th><th>الكلية</th><th>نوع المخالفة</th><th>الحالة</th><th></th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -307,9 +335,9 @@
       <label>الحالة</label>
       <select id="statusSelect">
         <option value="جديد">جديد</option>
-        <option value="قيد الدراسة">قيد الدراسة</option>
-        <option value="مقبول">مقبول</option>
-        <option value="مرفوض">مرفوض</option>
+        <option value="قيد المراجعة">قيد المراجعة</option>
+        <option value="تم اتخاذ إجراء">تم اتخاذ إجراء</option>
+        <option value="إغلاق دون إجراء">إغلاق دون إجراء</option>
       </select>
     </div>
     <div class="btn-row">
@@ -320,7 +348,7 @@
 </div>
 
 <script>
-const STORAGE_KEY = 'lajnat_mukhalafat_reports_v1';
+const STORAGE_KEY = 'lajnat_mukhalafat_reports_v2';
 const AUTH_KEY = 'lajnat_mukhalafat_auth_v1';
 const COMMITTEE_PASSCODE = '2580'; // غيّر هذا الرمز قبل النشر الفعلي
 let activeReportId = null;
@@ -362,47 +390,54 @@ function logoutDashboard(){
   refreshDashboard();
 }
 
+// ---- Conditional "other" fields ----
+document.getElementById('collegeSelect').addEventListener('change', function(){
+  document.getElementById('collegeOtherWrap').classList.toggle('hidden', this.value !== 'غير ذلك');
+});
+document.getElementById('buildingGateList').addEventListener('change', function(){
+  const other = document.getElementById('buildingGateOtherRadio').checked;
+  document.getElementById('buildingGateOtherWrap').classList.toggle('hidden', !other);
+});
+document.getElementById('violationTypeList').addEventListener('change', function(){
+  const other = document.getElementById('violationOtherCheck').checked;
+  document.getElementById('violationOtherWrap').classList.toggle('hidden', !other);
+});
+
 // ---- Submit form ----
 document.getElementById('reportForm').addEventListener('submit', function(e){
   e.preventDefault();
   const form = e.target;
   const fd = new FormData(form);
-  const fileInput = form.querySelector('input[type="file"]');
-  const file = fileInput.files[0];
 
-  const finish = (evidenceDataUrl) => {
-    const reports = loadReports();
-    const id = 'RPT-' + Date.now().toString(36).toUpperCase();
-    reports.unshift({
-      id,
-      createdAt: new Date().toISOString(),
-      reporterName: fd.get('reporterName'),
-      reporterPhone: fd.get('reporterPhone'),
-      reporterId: fd.get('reporterId'),
-      department: fd.get('department'),
-      violatorName: fd.get('violatorName'),
-      violationType: fd.get('violationType'),
-      violationDate: fd.get('violationDate'),
-      location: fd.get('location'),
-      description: fd.get('description'),
-      evidence: evidenceDataUrl || null,
-      status: 'جديد',
-      committeeNotes: ''
-    });
-    saveReports(reports);
-    document.getElementById('successRef').textContent = id;
-    document.getElementById('successBanner').classList.add('show');
-    form.reset();
-    window.scrollTo({top:0, behavior:'smooth'});
-  };
+  const violationTypes = fd.getAll('violationType');
 
-  if(file){
-    const reader = new FileReader();
-    reader.onload = () => finish(reader.result);
-    reader.readAsDataURL(file);
-  } else {
-    finish(null);
-  }
+  const reports = loadReports();
+  const id = 'RPT-' + Date.now().toString(36).toUpperCase();
+  reports.unshift({
+    id,
+    createdAt: new Date().toISOString(),
+    studentName: fd.get('studentName'),
+    universityId: fd.get('universityId'),
+    college: fd.get('college'),
+    collegeOther: fd.get('collegeOther') || '',
+    department: fd.get('department'),
+    buildingGate: fd.get('buildingGate'),
+    buildingGateOther: fd.get('buildingGateOther') || '',
+    recorderName: fd.get('recorderName'),
+    violationTypes,
+    violationTypeOther: fd.get('violationTypeOther') || '',
+    notes: fd.get('notes') || '',
+    status: 'جديد',
+    committeeNotes: ''
+  });
+  saveReports(reports);
+  document.getElementById('successRef').textContent = id;
+  document.getElementById('successBanner').classList.add('show');
+  form.reset();
+  document.getElementById('collegeOtherWrap').classList.add('hidden');
+  document.getElementById('buildingGateOtherWrap').classList.add('hidden');
+  document.getElementById('violationOtherWrap').classList.add('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
 });
 
 // ---- Dashboard rendering ----
@@ -410,12 +445,23 @@ function renderStats(){
   const reports = loadReports();
   document.getElementById('statTotal').textContent = reports.length;
   document.getElementById('statNew').textContent = reports.filter(r=>r.status==='جديد').length;
-  document.getElementById('statReview').textContent = reports.filter(r=>r.status==='قيد الدراسة').length;
-  document.getElementById('statDone').textContent = reports.filter(r=>r.status==='مقبول'||r.status==='مرفوض').length;
+  document.getElementById('statReview').textContent = reports.filter(r=>r.status==='قيد المراجعة').length;
+  document.getElementById('statDone').textContent = reports.filter(r=>r.status==='تم اتخاذ إجراء').length;
 }
 
 function statusBadgeClass(status){
-  return {'جديد':'new','قيد الدراسة':'review','مقبول':'accepted','مرفوض':'rejected'}[status] || 'new';
+  return {'جديد':'new','قيد المراجعة':'review','تم اتخاذ إجراء':'action','إغلاق دون إجراء':'closed'}[status] || 'new';
+}
+
+function collegeLabel(r){
+  return r.college === 'غير ذلك' ? (r.collegeOther || 'غير ذلك') : r.college;
+}
+function buildingGateLabel(r){
+  return r.buildingGate === 'غير ذلك' ? (r.buildingGateOther || 'غير ذلك') : r.buildingGate;
+}
+function violationTypesLabel(r){
+  const list = (r.violationTypes || []).map(v => v === 'غير ذلك' ? (r.violationTypeOther || 'غير ذلك') : v);
+  return list.join('، ');
 }
 
 function renderTable(){
@@ -424,7 +470,7 @@ function renderTable(){
   const statusFilter = document.getElementById('statusFilter').value;
 
   const filtered = reports.filter(r=>{
-    const matchesQ = !q || (r.reporterName+r.violatorName+r.description).includes(q);
+    const matchesQ = !q || (r.studentName + r.universityId).includes(q);
     const matchesStatus = !statusFilter || r.status === statusFilter;
     return matchesQ && matchesStatus;
   });
@@ -436,10 +482,11 @@ function renderTable(){
   filtered.forEach(r=>{
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${r.violationDate || '-'}</td>
-      <td>${escapeHtml(r.reporterName)}</td>
-      <td>${escapeHtml(r.violatorName)}</td>
-      <td>${escapeHtml(r.violationType)}</td>
+      <td>${new Date(r.createdAt).toLocaleDateString('ar-SA')}</td>
+      <td>${escapeHtml(r.studentName)}</td>
+      <td>${escapeHtml(r.universityId)}</td>
+      <td>${escapeHtml(collegeLabel(r))}</td>
+      <td>${escapeHtml(violationTypesLabel(r))}</td>
       <td><span class="badge ${statusBadgeClass(r.status)}">${r.status}</span></td>
       <td class="row-actions"><button onclick="openModal('${r.id}')">عرض</button></td>
     `;
@@ -460,18 +507,14 @@ function openModal(id){
   document.getElementById('modalDetails').innerHTML = `
     <div><div class="k">رقم البلاغ</div>${r.id}</div>
     <div><div class="k">تاريخ التقديم</div>${new Date(r.createdAt).toLocaleString('ar-SA')}</div>
-    <div><div class="k">مقدّم البلاغ</div>${escapeHtml(r.reporterName)}</div>
-    <div><div class="k">رقم الجوال</div>${escapeHtml(r.reporterPhone)}</div>
-    <div><div class="k">الرقم الوظيفي</div>${escapeHtml(r.reporterId)||'-'}</div>
-    <div><div class="k">القسم</div>${escapeHtml(r.department)||'-'}</div>
-    <div><div class="k">الشخص المخالِف</div>${escapeHtml(r.violatorName)}</div>
-    <div><div class="k">نوع المخالفة</div>${escapeHtml(r.violationType)}</div>
-    <div><div class="k">تاريخ المخالفة</div>${r.violationDate}</div>
-    <div><div class="k">المكان</div>${escapeHtml(r.location)||'-'}</div>
-    <div class="full"><div class="k">الوصف</div>${escapeHtml(r.description)}</div>
-    ${r.evidence ? `<div class="full"><div class="k">المرفق</div>${
-      r.evidence.startsWith('data:image') ? `<img src="${r.evidence}"/>` : `<a href="${r.evidence}" download style="color:var(--accent2)">تحميل المرفق</a>`
-    }</div>` : ''}
+    <div><div class="k">اسم الطالبة</div>${escapeHtml(r.studentName)}</div>
+    <div><div class="k">الرقم الجامعي</div>${escapeHtml(r.universityId)}</div>
+    <div><div class="k">الكلية</div>${escapeHtml(collegeLabel(r))}</div>
+    <div><div class="k">القسم</div>${escapeHtml(r.department)}</div>
+    <div><div class="k">المبنى/البوابة</div>${escapeHtml(buildingGateLabel(r))}</div>
+    <div><div class="k">اسم من ضبط المخالفة</div>${escapeHtml(r.recorderName)}</div>
+    <div class="full"><div class="k">نوع المخالفة</div>${escapeHtml(violationTypesLabel(r))}</div>
+    ${r.notes ? `<div class="full"><div class="k">ملاحظات اضافية</div>${escapeHtml(r.notes)}</div>` : ''}
   `;
   document.getElementById('committeeNotes').value = r.committeeNotes || '';
   document.getElementById('statusSelect').value = r.status;
@@ -503,8 +546,11 @@ function deleteReport(){
 
 function exportCSV(){
   const reports = loadReports();
-  const headers = ['رقم البلاغ','تاريخ التقديم','مقدم البلاغ','الجوال','المخالف','النوع','تاريخ المخالفة','المكان','الوصف','الحالة','ملاحظات اللجنة'];
-  const rows = reports.map(r=>[r.id,r.createdAt,r.reporterName,r.reporterPhone,r.violatorName,r.violationType,r.violationDate,r.location,r.description,r.status,r.committeeNotes]);
+  const headers = ['رقم البلاغ','تاريخ التقديم','اسم الطالبة','الرقم الجامعي','الكلية','القسم','المبنى/البوابة','اسم من ضبط المخالفة','نوع المخالفة','ملاحظات اضافية','الحالة','ملاحظات اللجنة'];
+  const rows = reports.map(r=>[
+    r.id, r.createdAt, r.studentName, r.universityId, collegeLabel(r), r.department,
+    buildingGateLabel(r), r.recorderName, violationTypesLabel(r), r.notes, r.status, r.committeeNotes
+  ]);
   let csv = '﻿' + headers.join(',') + '\n';
   rows.forEach(row=>{
     csv += row.map(cell => `"${String(cell||'').replace(/"/g,'""')}"`).join(',') + '\n';
