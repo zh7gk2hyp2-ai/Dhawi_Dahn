@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-07-16-v2"/>
+<meta name="app-version" content="2026-07-16-v3"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -766,7 +766,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_61";
+const PENDING_RECIPES_VERSION="rec_62";
 const PENDING_RECIPES=[
   // ── rec_56: دساتير ربع التولة — مرجع التحسين السريع لأدهان لوكسودور الصافية ──
   {id:"r_qtola_ref",name:"دساتير ربع التولة — مرجع سريع",icon:"💧",season:"مناسبات",gender:"للجنسين",stability:"حسب الدهن",
@@ -1106,6 +1106,12 @@ const PENDING_RECIPES=[
    desc:"قمة: عنبر خشبي + زعفران خفي | قلب: كمبودي ناعم + صندل كريمي | قاعدة: لبدانوم+بنزوين+تبغ حلو+كشميري | مسائي حسّي بلا ورد | نسائي",
    ing:[["amber_oud",3],["lux_cambodi",2],["sandal_indi",5],["benzoin_b",3],["labdanum",1.5],["ambermor",2],["cashmeran",2],["tonquitone",0.6],["safraleine",0.3],["iso_e",1],["jojoba",5],["dpg",5]],
    steps:["رابط العنبر: أذب Ambermor شمعي 2جم + لبدانوم 1.5جم + بنزوين B 3مل في 55° مع تحريك (الراتنجات الثلاثة تتوحّد بالحرارة) ← برّد لـ 40° تماماً","في بيكر بارد: Jojoba 5مل + DPG 5مل — الحامل الحسّي للمساء","أضف Amber Oud K1204 3مل — قلب العنبر الخشبي الدافئ، عمود العطر","أضف Lux Cambodi 2مل — عود ناعم تحت العنبر (جرعة خفيفة — يعطي شرقية بلا أن يطغى)","أضف Sandalwood INDI 5مل — الجسم الكريمي الذي يحمل العنبر بحسّية","أضف محلول الراتنجات المُبرَّد (Ambermor + لبدانوم + بنزوين) — التثبيت والدفء العميق","سرنجة: Safraleine 0.3مل (💡 3مل محلول 10%: 0.1مل+0.9مل DPG — زعفران خفي يُدفّئ العنبر بلا أن يظهر) + Cashmeran 2مل + Tonquitone 0.6مل (تبغ حلو دافئ يقوم مقام الفانيلا) + ISO E Super 1مل — كلها بارداً","سرنجة ثانوية (اختياري — درجة ثانية): فانيلا دانتيل 1.5مل (الحميدي) + مسك رمان 0.5مل (شرفان) — لحلاوة أنثوية أعمق للمساء، والوصفة تعمل كاملة بدونها","⚠️ عتّق 3 أسابيع في بارد مظلم — العنبر واللبدانوم يزدادان دفئاً وعمقاً | 💡 مسائي حسّي: ضعيه على نقاط الدفء (العنق + خلف الأذن + الصدر) على بشرة رطبة بالجوجوبا"]},
+  // ── مقارب Gucci Rosa Incandescente — وردة بحرية لها ─────────────
+  {id:"r_wahj_ward",name:"وهج الورد",icon:"🌹",season:"ربيع",gender:"نسائي",stability:"20-24 ساعة",perfumer:"ضاوي",
+   story:"وردةٌ دمشقية تتوهّج على شاطئ عند الغروب — ملحُ البحر ونفحةُ فلفلٍ وردي يفتحان الطريق، ثم يستقر الورد على عنبرٍ معدني وطحلبٍ أخضر. مقاربٌ لـ Gucci Rosa Incandescente بروح دار ضاوي: أنوثةٌ منعشة لا تُشبه الشرقيات الثقيلة — خفيفة، مالحة، مشرقة كوردةٍ تحت الشمس.",
+   desc:"قمة: افتتاحية بحرية مالحة + فلفل وردي (هيل) | قلب: ورد دمشقي (بتلات) | قاعدة: عنبر معدني + طحلب (باتشولي+فيتيفير) | مقارب Gucci Rosa Incandescente | نسائي",
+   ing:[["lux_afternoon",4],["wild_petal",6],["pea",2],["cardamom",0.3],["ambermor",2],["patchouli",1.5],["vetiver",0.8],["labdanum",1],["benzoin_b",2],["cashmeran",1.5],["lux_fixative",2],["iso_e",0.8],["jojoba",4],["dpg",4]],
+   steps:["⚡ رابط الورد (20 دق): Wild Petal 6مل + Benzoin B 2مل في كوب مغلق — 20 دقيقة | في كوب آخر: أذب Ambermor شمعي 2جم + لبدانوم 1جم في 50° ← اترك يبرد تماماً","في بيكر بارد: Jojoba 4مل + DPG 4مل — الحامل الخفيف المنعش","أضف Lux Afternoon Swim 4مل — الافتتاحية البحرية المالحة المنعشة (حمضيات + مائي) — هي روح «روزا إنكانديسنتي» البحرية","أضف خليط رابط الورد (Wild Petal + Benzoin) ← ثم PEA 2مل فقط ⚠️ (لا تزد — معدنية حادة) — الورد الدمشقي في القلب","أضف Cardamom 0.3مل بارداً ⚠️ (لا تزد — يقوم مقام الفلفل الوردي: نفحة حارّة منعشة في القمة)","أضف محلول العنبر-اللبدانوم المُبرَّد — العنبر المعدني يقوم مقام الآمبرغريس/أوركانوكس","أضف Patchouli 1.5مل + Vetiver 0.8مل — القاعدة الطحلبية الخضراء تقوم مقام طحلب البلوط والطحالب البحرية (روح الشيبر المائي) | ⚠️ ملاحظة: الفيتيفير هنا آمن — مع الورد لا مع العود الحلو","سرنجة: Cashmeran 1.5مل + Lux Fixative 2مل + ISO E Super 0.8مل — بارداً دائماً","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 2مل (شرفان) + مسك رمان 1مل (شرفان) — يُعمّقان الورد الدمشقي، والوصفة تعمل كاملة بدونها","⚠️ عتّق 3 أسابيع في بارد مظلم | 💡 خفيف بحري نهاري-مسائي — رشّة على الرسغ والعنق | 🎯 للمطابقة الأقرب: أضف Ambroxan (من سلة PerfumersWorld) 0.5مل بدل جزء من العنبرمور — يعطي الوهج المعدني-المالح الحقيقي لأوركانوكس"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -1251,7 +1257,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-07-16-v2";
+const APP_BUILD="2026-07-16-v3";
 // ── صور الوصفات المنتجة (تظهر أعلى البطاقة إن وُجدت) ──
 const RECIPE_IMG={
   r_hindi_soul:"media/products/r_hindi_soul.jpg",
