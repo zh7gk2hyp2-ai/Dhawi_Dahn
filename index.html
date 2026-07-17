@@ -733,6 +733,46 @@ body:not(.dark-mode) #splash{background:var(--mz-cream);}
 .rev-hero-veil{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(24,13,8,0.30),rgba(24,13,8,0.74));}
 .rev-hero>*:not(.rev-hero-film):not(.rev-hero-veil){position:relative;z-index:1;}
 @media (prefers-reduced-motion:reduce){.rev-hero-film{display:none;}}
+/* ═══════════════════════════════════════════════════════════
+   MONOCHROME (أسود و أبيض) THEME — unifies every accent to a
+   single grayscale system and removes the scattered gold/green/
+   blue/burgundy inconsistencies. Applied last so it wins.
+   ═══════════════════════════════════════════════════════════ */
+/* 1 ─ Neutralize the warm background glows in both modes */
+body:not(.dark-mode){
+  background:#f4f4f4 !important;
+  background-image:radial-gradient(ellipse 140% 60% at 50% -10%,rgba(0,0,0,0.045) 0%,transparent 55%) !important;
+}
+body.dark-mode{
+  background:#0a0a0a !important;
+  background-image:radial-gradient(ellipse 140% 60% at 50% -10%,rgba(255,255,255,0.05) 0%,transparent 55%) !important;
+  color:#e9e9e9;
+}
+/* 2 ─ Retune brand tokens to a grayscale ramp */
+:root{
+  --mz-burg:#333 !important; --mz-burg-deep:#111 !important;
+  --mz-gold:#1a1a1a !important; --mz-gold-deep:#000 !important;
+  --mz-cream:#f4f4f4 !important; --mz-card:#ffffff !important; --mz-ink:#111 !important;
+}
+/* 3 ─ Primary action: solid ink on light, solid white on dark */
+.btn-gold{background:#141414 !important;color:#fff !important;box-shadow:0 4px 14px rgba(0,0,0,0.20) !important;}
+body.dark-mode .btn-gold{background:#f0f0f0 !important;color:#0a0a0a !important;box-shadow:0 4px 14px rgba(0,0,0,0.5) !important;}
+/* 4 ─ Active nav + selected chips → monochrome */
+.nav-btn.active,.nav-btn.active .nav-icon{color:#111 !important;}
+body.dark-mode .nav-btn.active,body.dark-mode .nav-btn.active .nav-icon{color:#fff !important;}
+.fchip.on,.cat-chip.on,.sort-chip.active{color:#111 !important;border-color:#111 !important;background:rgba(0,0,0,0.06) !important;}
+body.dark-mode .fchip.on,body.dark-mode .cat-chip.on,body.dark-mode .sort-chip.active{color:#fff !important;border-color:rgba(255,255,255,0.55) !important;background:rgba(255,255,255,0.10) !important;}
+/* 5 ─ Fix pre-existing low-contrast inline headings (recipe of the day) */
+.rd-title{color:#111 !important;}
+body.dark-mode .rd-title{color:#f2f2f2 !important;}
+.rd-desc{color:#555 !important;}
+body.dark-mode .rd-desc{color:#b8b8b8 !important;}
+/* 6 ─ Neutralize the splash gold ring while we're at it */
+#splash-ring{border-color:rgba(255,255,255,0.35) !important;}
+#splash-line{background:linear-gradient(90deg,transparent,#bbb,transparent) !important;}
+/* 7 ─ SAFETY NET: force every remaining hue (inline colors, emoji,
+       status greens/reds/blues) to true grayscale for total consistency */
+#root{filter:grayscale(1) contrast(1.045);}
 </style>
 </head>
 <body>
@@ -2578,8 +2618,8 @@ function App(){
               <div style={{fontSize:"0.50rem",color:"rgba(74,103,65,0.65)",letterSpacing:"0.5em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"8px"}}>RECIPE OF THE DAY</div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:"1.0rem",fontWeight:700,color:"#1A1208",marginBottom:"3px"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
-                  <div style={{fontSize:"0.70rem",color:"#4A6741",marginBottom:"6px"}}>{(suggestedRecipe.desc||"").substring(0,55)}{suggestedRecipe.desc?.length>55?"…":""}</div>
+                  <div className="rd-title" style={{fontSize:"1.0rem",fontWeight:700,color:"#1A1208",marginBottom:"3px"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
+                  <div className="rd-desc" style={{fontSize:"0.70rem",color:"#4A6741",marginBottom:"6px"}}>{(suggestedRecipe.desc||"").substring(0,55)}{suggestedRecipe.desc?.length>55?"…":""}</div>
                   <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
                     <span className="stat-chip" style={{fontSize:"0.58rem",background:"rgba(74,103,65,0.08)",borderColor:"rgba(74,103,65,0.18)",color:"#4A6741"}}>{suggestedRecipe.season}</span>
                     {ratings[suggestedRecipe.id]&&<span style={{fontSize:"0.7rem",color:"#E8C860"}}>{"★".repeat(ratings[suggestedRecipe.id].stars)}</span>}
@@ -3115,8 +3155,8 @@ function App(){
             <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{flex:1}}>
-                <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#1A1208"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
-                <div style={{fontSize:"0.72rem",color:"#8A6A1E",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
+                <div className="rd-title" style={{fontSize:"0.95rem",fontWeight:"700",color:"#1A1208"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
+                <div className="rd-desc" style={{fontSize:"0.72rem",color:"#8A6A1E",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
                 {ratings[suggestedRecipe.id]&&<div style={{fontSize:"0.7rem",color:"#e8c860",marginTop:"4px"}}>{"⭐".repeat(ratings[suggestedRecipe.id].stars)}{ratings[suggestedRecipe.id].note&&` — ${ratings[suggestedRecipe.id].note}`}</div>}
               </div>
               <button className="btn-ghost" style={{borderColor:"rgba(80,160,80,0.5)",color:"#80c080",marginRight:"8px",whiteSpace:"nowrap"}} onClick={()=>setSelectedRecipe(suggestedRecipe)}>ابدأ ←</button>
