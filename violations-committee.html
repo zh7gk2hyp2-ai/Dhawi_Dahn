@@ -238,8 +238,34 @@
 
   <!-- ============ SUBMIT VIEW ============ -->
   <section class="view active" id="view-submit">
+
+    <div class="gate" id="recorderGateBox">
+      <div class="icon-lg">🔒</div>
+      <div class="card">
+        <h2>دخول تسجيل المخالفات</h2>
+        <p class="sub">الرجاء تسجيل الدخول باسم العضو وكلمة السر لتسجيل مخالفة</p>
+        <div class="field">
+          <label>اسم العضو</label>
+          <input type="text" id="recorderUsername" placeholder="اسم المستخدم"/>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>كلمة السر</label>
+          <input type="password" id="recorderPassword" placeholder="كلمة السر"/>
+        </div>
+        <div class="btn-row" style="justify-content:center">
+          <button class="btn" onclick="tryRecorderLogin()">دخول</button>
+        </div>
+        <p class="sub" id="recorderGateError" style="color:var(--danger); display:none; margin-top:10px;">اسم المستخدم أو كلمة السر غير صحيحة</p>
+      </div>
+    </div>
+
+    <div id="recorderFormWrap" style="display:none">
     <div class="card">
-      <h2>نموذج جمع بيانات الطالبات المخالفات</h2>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+        <h2>نموذج جمع بيانات الطالبات المخالفات</h2>
+        <button class="btn secondary" onclick="logoutRecorder()">تسجيل الخروج</button>
+      </div>
+      <p class="sub" style="margin-bottom:4px">مسجّلة الدخول باسم: <b id="recorderNameDisplay"></b></p>
       <p class="sub">عند إرسال هذا النموذج، لن تُجمع تفاصيلك تلقائياً مثل الاسم وعنوان البريد الإلكتروني إلا إذا قدمتها بنفسك.</p>
 
       <div class="success-banner" id="successBanner">
@@ -308,7 +334,7 @@
 
           <div class="field full">
             <label>6. اسم من ضبط المخالفة <span class="req">*</span></label>
-            <input type="text" name="recorderName" required placeholder="أدخل إجابتك"/>
+            <input type="text" name="recorderName" id="recorderNameField" required readonly style="background:#eef0f2; cursor:not-allowed;"/>
           </div>
 
           <div class="field full">
@@ -338,6 +364,7 @@
         </div>
       </form>
     </div>
+    </div>
   </section>
 
   <!-- ============ COMMITTEE PLATFORM VIEW ============ -->
@@ -347,14 +374,19 @@
       <div class="icon-lg">🔒</div>
       <div class="card">
         <h2>دخول أعضاء اللجنة</h2>
-        <p class="sub">الرجاء إدخال رمز الدخول الخاص باللجنة</p>
+        <p class="sub">الرجاء تسجيل الدخول باسم العضو وكلمة السر</p>
         <div class="field">
-          <input type="password" id="passInput" placeholder="رمز الدخول"/>
+          <label>اسم العضو</label>
+          <input type="text" id="committeeUsername" placeholder="اسم المستخدم"/>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>كلمة السر</label>
+          <input type="password" id="passInput" placeholder="كلمة السر"/>
         </div>
         <div class="btn-row" style="justify-content:center">
           <button class="btn" onclick="tryLogin()">دخول</button>
         </div>
-        <p class="sub" id="gateError" style="color:var(--danger); display:none; margin-top:10px;">رمز الدخول غير صحيح</p>
+        <p class="sub" id="gateError" style="color:var(--danger); display:none; margin-top:10px;">اسم المستخدم أو كلمة السر غير صحيحة</p>
       </div>
     </div>
 
@@ -365,6 +397,7 @@
         <button data-sub="reports" onclick="switchSubView('reports')">البلاغات</button>
         <button data-sub="actions" onclick="switchSubView('actions')">الإجراءات</button>
         <button data-sub="student" onclick="switchSubView('student')">سجل الطالبة</button>
+        <button data-sub="members" onclick="switchSubView('members')">الأعضاء</button>
       </div>
 
       <!-- ---- Overview sub-view ---- -->
@@ -474,6 +507,49 @@
         <div id="studentHistoryResult"></div>
       </div>
 
+      <!-- ---- Members management sub-view ---- -->
+      <div class="subview" id="sub-members">
+        <div class="card">
+          <h2>إدارة حسابات الأعضاء</h2>
+          <p class="sub">أضيفي أو عدّلي حسابات الأعضاء المخوّلين بتسجيل المخالفات و/أو الدخول للوحة اللجنة.</p>
+          <div class="grid">
+            <div class="field">
+              <label>اسم المستخدم</label>
+              <input type="text" id="memberUsernameInput" placeholder="username"/>
+            </div>
+            <div class="field">
+              <label>كلمة السر</label>
+              <input type="text" id="memberPasswordInput" placeholder="كلمة السر"/>
+            </div>
+            <div class="field">
+              <label>الاسم الظاهر</label>
+              <input type="text" id="memberDisplayNameInput" placeholder="مثال: أ. سارة القحطاني"/>
+            </div>
+            <div class="field">
+              <label>الصلاحية</label>
+              <select id="memberRoleInput">
+                <option value="both">تسجيل مخالفات + لوحة اللجنة</option>
+                <option value="recorder">تسجيل مخالفات فقط</option>
+                <option value="committee">لوحة اللجنة فقط</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="saveMemberForm()">إضافة / حفظ العضو</button>
+            <button class="btn secondary" onclick="resetMemberForm()">تفريغ الحقول</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="section-title">الأعضاء الحاليون</h3>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr><th>اسم المستخدم</th><th>الاسم الظاهر</th><th>الصلاحية</th><th></th></tr></thead>
+              <tbody id="membersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -559,15 +635,37 @@
 
 <script>
 const STORAGE_KEY = 'lajnat_mukhalafat_reports_v2';
-const AUTH_KEY = 'lajnat_mukhalafat_auth_v1';
-const COMMITTEE_PASSCODE = '2580'; // غيّر هذا الرمز قبل النشر الفعلي
+const MEMBERS_KEY = 'lajnat_mukhalafat_members_v1';
+const RECORDER_SESSION_KEY = 'lajnat_recorder_session_v1';
+const COMMITTEE_SESSION_KEY = 'lajnat_committee_session_v1';
 let activeReportId = null;
+let editingMemberUsername = null;
 
 const COLLEGES = [
   'كلية التربية','كلية الآداب','كلية الشريعة والأنظمة','كلية إدارة الأعمال','كلية العلوم',
   'كلية الحاسبات','كلية التصاميم والفنون التطبيقية','كلية الطب','كلية الصيدلة','كلية الهندسة',
   'كلية التمريض','الكلية التطبيقية / الدبلوم','كلية العلوم الطبية التطبيقية'
 ];
+
+const ROLE_LABELS = {both:'تسجيل مخالفات + لوحة اللجنة', recorder:'تسجيل مخالفات فقط', committee:'لوحة اللجنة فقط'};
+
+// NOTE: this is a client-only access gate (no server) — good for tracking who logged
+// what within a trusted team, not real security against someone reading the page source.
+function loadMembers(){
+  let m;
+  try { m = JSON.parse(localStorage.getItem(MEMBERS_KEY)); } catch(e){ m = null; }
+  if(!m || !m.length){
+    m = [{username:'admin', password:'2580', displayName:'المشرف العام', role:'both'}];
+    saveMembers(m);
+  }
+  return m;
+}
+function saveMembers(list){ localStorage.setItem(MEMBERS_KEY, JSON.stringify(list)); }
+function findMember(username, password){
+  return loadMembers().find(m => m.username === username && m.password === password);
+}
+function getRecorderSession(){ try { return JSON.parse(sessionStorage.getItem(RECORDER_SESSION_KEY)); } catch(e){ return null; } }
+function getCommitteeSession(){ try { return JSON.parse(sessionStorage.getItem(COMMITTEE_SESSION_KEY)); } catch(e){ return null; } }
 
 function loadReports(){
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
@@ -579,8 +677,9 @@ function switchView(name){
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
-  document.getElementById('logoutBtn').style.display = (name==='dashboard' && sessionStorage.getItem(AUTH_KEY)) ? 'inline-flex' : 'none';
+  document.getElementById('logoutBtn').style.display = (name==='dashboard' && getCommitteeSession()) ? 'inline-flex' : 'none';
   if(name==='dashboard') refreshDashboard();
+  if(name==='submit') refreshRecorderGate();
 }
 
 function switchSubView(name){
@@ -590,25 +689,29 @@ function switchSubView(name){
   if(name==='overview') renderOverview();
   if(name==='reports') renderTable();
   if(name==='actions') renderActionsTable();
+  if(name==='members') renderMembersTable();
 }
 
 function refreshDashboard(){
-  const loggedIn = sessionStorage.getItem(AUTH_KEY) === '1';
-  document.getElementById('gateBox').style.display = loggedIn ? 'none' : 'block';
-  document.getElementById('dashboardContent').style.display = loggedIn ? 'block' : 'none';
-  document.getElementById('logoutBtn').style.display = loggedIn ? 'inline-flex' : 'none';
-  if(loggedIn){
+  const session = getCommitteeSession();
+  document.getElementById('gateBox').style.display = session ? 'none' : 'block';
+  document.getElementById('dashboardContent').style.display = session ? 'block' : 'none';
+  document.getElementById('logoutBtn').style.display = session ? 'inline-flex' : 'none';
+  if(session){
     populateCollegeFilter();
     renderOverview();
     renderTable();
     renderActionsTable();
+    renderMembersTable();
   }
 }
 
 function tryLogin(){
-  const val = document.getElementById('passInput').value;
-  if(val === COMMITTEE_PASSCODE){
-    sessionStorage.setItem(AUTH_KEY, '1');
+  const u = document.getElementById('committeeUsername').value.trim();
+  const p = document.getElementById('passInput').value;
+  const member = findMember(u, p);
+  if(member && (member.role === 'committee' || member.role === 'both')){
+    sessionStorage.setItem(COMMITTEE_SESSION_KEY, JSON.stringify({username: member.username, displayName: member.displayName}));
     document.getElementById('gateError').style.display='none';
     refreshDashboard();
   } else {
@@ -616,8 +719,91 @@ function tryLogin(){
   }
 }
 function logoutDashboard(){
-  sessionStorage.removeItem(AUTH_KEY);
+  sessionStorage.removeItem(COMMITTEE_SESSION_KEY);
   refreshDashboard();
+}
+
+// ---- Recorder (submit-form) login ----
+function refreshRecorderGate(){
+  const session = getRecorderSession();
+  document.getElementById('recorderGateBox').style.display = session ? 'none' : 'block';
+  document.getElementById('recorderFormWrap').style.display = session ? 'block' : 'none';
+  if(session){
+    document.getElementById('recorderNameDisplay').textContent = session.displayName;
+    const rf = document.getElementById('recorderNameField');
+    if(rf) rf.value = session.displayName;
+  }
+}
+function tryRecorderLogin(){
+  const u = document.getElementById('recorderUsername').value.trim();
+  const p = document.getElementById('recorderPassword').value;
+  const member = findMember(u, p);
+  if(member && (member.role === 'recorder' || member.role === 'both')){
+    sessionStorage.setItem(RECORDER_SESSION_KEY, JSON.stringify({username: member.username, displayName: member.displayName}));
+    document.getElementById('recorderGateError').style.display='none';
+    refreshRecorderGate();
+  } else {
+    document.getElementById('recorderGateError').style.display='block';
+  }
+}
+function logoutRecorder(){
+  sessionStorage.removeItem(RECORDER_SESSION_KEY);
+  refreshRecorderGate();
+}
+
+// ---- Member accounts management ----
+function renderMembersTable(){
+  const tbody = document.getElementById('membersTableBody');
+  if(!tbody) return;
+  tbody.innerHTML = loadMembers().map(m => `
+    <tr>
+      <td>${escapeHtml(m.username)}</td>
+      <td>${escapeHtml(m.displayName)}</td>
+      <td>${ROLE_LABELS[m.role] || m.role}</td>
+      <td class="row-actions">
+        <button onclick="editMember('${m.username}')">تعديل</button>
+        <button onclick="deleteMember('${m.username}')">حذف</button>
+      </td>
+    </tr>
+  `).join('');
+}
+function saveMemberForm(){
+  const username = document.getElementById('memberUsernameInput').value.trim();
+  const password = document.getElementById('memberPasswordInput').value.trim();
+  const displayName = document.getElementById('memberDisplayNameInput').value.trim();
+  const role = document.getElementById('memberRoleInput').value;
+  if(!username || !password || !displayName){ alert('يرجى تعبئة كل الحقول'); return; }
+
+  const members = loadMembers();
+  const targetUsername = editingMemberUsername || username;
+  const idx = members.findIndex(m => m.username === targetUsername);
+  const record = {username, password, displayName, role};
+  if(idx > -1) members[idx] = record; else members.push(record);
+  saveMembers(members);
+  resetMemberForm();
+  renderMembersTable();
+}
+function editMember(username){
+  const m = loadMembers().find(x=>x.username===username);
+  if(!m) return;
+  editingMemberUsername = username;
+  document.getElementById('memberUsernameInput').value = m.username;
+  document.getElementById('memberPasswordInput').value = m.password;
+  document.getElementById('memberDisplayNameInput').value = m.displayName;
+  document.getElementById('memberRoleInput').value = m.role;
+}
+function resetMemberForm(){
+  editingMemberUsername = null;
+  document.getElementById('memberUsernameInput').value = '';
+  document.getElementById('memberPasswordInput').value = '';
+  document.getElementById('memberDisplayNameInput').value = '';
+  document.getElementById('memberRoleInput').value = 'both';
+}
+function deleteMember(username){
+  if(!confirm('هل تريدين حذف هذا العضو؟')) return;
+  const members = loadMembers().filter(m=>m.username!==username);
+  saveMembers(members);
+  renderMembersTable();
 }
 
 // ---- Conditional "other" fields (submit form) ----
@@ -668,6 +854,7 @@ document.getElementById('reportForm').addEventListener('submit', function(e){
   document.getElementById('collegeOtherWrap').classList.add('hidden');
   document.getElementById('buildingGateOtherWrap').classList.add('hidden');
   document.getElementById('violationOtherWrap').classList.add('hidden');
+  refreshRecorderGate();
   window.scrollTo({top:0, behavior:'smooth'});
 });
 
@@ -921,7 +1108,7 @@ function openModal(id){
   document.getElementById('statusSelect').value = r.status;
   document.getElementById('actionTypeSelect').value = r.actionType || '';
   document.getElementById('actionDateInput').value = r.actionDate || '';
-  document.getElementById('actionByInput').value = r.actionBy || '';
+  document.getElementById('actionByInput').value = r.actionBy || (getCommitteeSession() ? getCommitteeSession().displayName : '');
   toggleActionBox();
   document.getElementById('modalOverlay').classList.add('show');
 }
@@ -987,7 +1174,11 @@ function downloadCSV(headers, rows, filenamePrefix){
 }
 
 document.getElementById('passInput').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+document.getElementById('committeeUsername').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+document.getElementById('recorderUsername').addEventListener('keydown', e => { if(e.key==='Enter') tryRecorderLogin(); });
+document.getElementById('recorderPassword').addEventListener('keydown', e => { if(e.key==='Enter') tryRecorderLogin(); });
 document.getElementById('studentSearchInput').addEventListener('keydown', e => { if(e.key==='Enter') renderStudentHistory(); });
+refreshRecorderGate();
 </script>
 
 </body>
