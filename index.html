@@ -1585,6 +1585,16 @@ function applyRecipeCleanup(recipes){
   lsSet("dw_rc_ver",RECIPE_CLEANUP_VERSION);
   return cleaned;
 }
+// ── one-time forced price override — sets exact price_sar for specific recipes for ALL users
+// (applyPendingRecipes preserves a user's saved price, so this is needed to push a new price to everyone)
+const PRICE_OVERRIDE_VERSION="po_01";
+const PRICE_OVERRIDE={r_sandal_ward:50};
+function applyPriceOverride(recipes){
+  if(lsGet("dw_po_ver","")===PRICE_OVERRIDE_VERSION)return recipes;
+  const overridden=recipes.map(r=>PRICE_OVERRIDE[r.id]!==undefined?{...r,price_sar:PRICE_OVERRIDE[r.id]}:r);
+  lsSet("dw_po_ver",PRICE_OVERRIDE_VERSION);
+  return overridden;
+}
 const OUD_XX_VERSION="oud_xx_01";
 function applyOudXxFix(inv){
   if(lsGet("dw_oudxx_ver","")===OUD_XX_VERSION)return inv;
@@ -1657,7 +1667,7 @@ function App(){
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
   const [inv,setInv]=useState(()=>applyRestock(applyStockSnapshot(applyOudXxFix(applyNameFix(applyInventoryRemove(applyInventoryAdd(applyRecipeDeduct(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))))))))))));
-  const [recipes,setRecipes]=useState(()=>applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES))));
+  const [recipes,setRecipes]=useState(()=>applyPriceOverride(applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES)))));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
   const [search,setSearch]=useState("");
