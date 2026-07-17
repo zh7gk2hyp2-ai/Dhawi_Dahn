@@ -171,6 +171,44 @@
 
   ::placeholder{color:#b79b8f;}
   .hidden{display:none !important;}
+
+  /* Student history */
+  .student-profile{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:6px;}
+  .student-profile h2{margin-bottom:0;}
+  .student-profile .mini-stats{display:flex; gap:18px;}
+  .student-profile .mini-stats div{text-align:center;}
+  .student-profile .mini-stats b{display:block; font-size:1.3rem; color:var(--primary-dark);}
+  .student-profile .mini-stats span{font-size:.74rem; color:var(--muted);}
+  .timeline{margin-top:10px;}
+  .timeline-item{border-right:3px solid var(--primary); padding:10px 16px; margin-bottom:12px; background:var(--bg); border-radius:0 10px 10px 0;}
+  .timeline-item .row1{display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:6px;}
+  .timeline-item .date{font-size:.76rem; color:var(--muted);}
+  .timeline-item .types{font-size:.88rem; font-weight:600;}
+  .timeline-item .action-line{font-size:.8rem; color:var(--ok); margin-top:4px;}
+
+  /* Print area: hidden on screen, only shown for printing */
+  #printArea{display:none;}
+  @media print{
+    body *{visibility:hidden;}
+    #printArea, #printArea *{visibility:visible;}
+    #printArea{
+      display:block; position:absolute; top:0; right:0; left:0; margin:0 auto; padding:24px; width:100%;
+    }
+    .print-header{display:flex; justify-content:space-between; align-items:center; direction:ltr; border-bottom:3px solid var(--gold); padding-bottom:10px;}
+    .print-wordmark{display:flex; flex-direction:column;}
+    .print-wordmark hr{border:none; height:2px; background:var(--primary);}
+    .print-wordmark .ar{font-size:1.3rem; font-weight:800; color:var(--primary); margin:3px 0;}
+    .print-wordmark .en{font-size:.75rem; font-weight:800; letter-spacing:2px; color:var(--primary); text-transform:uppercase;}
+    .print-tu{font-size:2.6rem; font-weight:900; color:var(--primary); line-height:.8;}
+    .print-committee{direction:rtl; text-align:center; color:var(--muted); font-size:.85rem; margin:10px 0;}
+    .print-title{direction:rtl; text-align:center; color:var(--primary-dark); margin:14px 0; font-size:1.2rem;}
+    .print-table{direction:rtl; width:100%; border-collapse:collapse; margin-top:10px;}
+    .print-table td{border:1px solid #ccc; padding:8px 10px; font-size:.88rem;}
+    .print-table td.k{background:#f6efe9; font-weight:700; width:32%;}
+    .print-signatures{direction:rtl; display:flex; justify-content:space-between; margin-top:60px; gap:20px;}
+    .print-signatures div{flex:1; text-align:center; font-size:.85rem;}
+    .print-signatures hr{margin-top:40px; border:none; border-top:1px solid #999;}
+  }
 </style>
 </head>
 <body>
@@ -326,6 +364,7 @@
         <button class="active" data-sub="overview" onclick="switchSubView('overview')">نظرة عامة</button>
         <button data-sub="reports" onclick="switchSubView('reports')">البلاغات</button>
         <button data-sub="actions" onclick="switchSubView('actions')">الإجراءات</button>
+        <button data-sub="student" onclick="switchSubView('student')">سجل الطالبة</button>
       </div>
 
       <!-- ---- Overview sub-view ---- -->
@@ -422,6 +461,19 @@
         </div>
       </div>
 
+      <!-- ---- Student history sub-view ---- -->
+      <div class="subview" id="sub-student">
+        <div class="card">
+          <h2>سجل الطالبة</h2>
+          <p class="sub">ابحثي بالرقم الجامعي (الأدق) أو باسم الطالبة لعرض كل مخالفاتها وإجراءاتها السابقة مجمّعة.</p>
+          <div class="toolbar">
+            <input type="text" id="studentSearchInput" placeholder="الرقم الجامعي أو اسم الطالبة..."/>
+            <button class="btn" onclick="renderStudentHistory()">بحث</button>
+          </div>
+        </div>
+        <div id="studentHistoryResult"></div>
+      </div>
+
     </div>
   </section>
 
@@ -478,8 +530,30 @@
 
     <div class="btn-row">
       <button class="btn" onclick="saveReport()">حفظ</button>
+      <button class="btn secondary" onclick="printReport()">🖨️ طباعة المحضر</button>
       <button class="btn danger" onclick="deleteReport()">حذف البلاغ</button>
     </div>
+  </div>
+</div>
+
+<!-- Printable official case report (hidden on screen, shown only via print) -->
+<div id="printArea">
+  <div class="print-header">
+    <div class="print-wordmark">
+      <hr/>
+      <span class="ar">جامعة الطائف</span>
+      <span class="en">Taif University</span>
+      <hr/>
+    </div>
+    <div class="print-tu">TU</div>
+  </div>
+  <p class="print-committee">لجنة متابعة مخالفات الملبس والمظهر</p>
+  <h2 class="print-title">محضر بلاغ مخالفة</h2>
+  <table class="print-table" id="printTable"></table>
+  <div class="print-signatures">
+    <div><span>رئيسة اللجنة</span><hr/></div>
+    <div><span>عضو اللجنة</span><hr/></div>
+    <div><span>الطالبة (بالعلم)</span><hr/></div>
   </div>
 </div>
 
@@ -740,6 +814,87 @@ function renderActionsTable(){
   });
 }
 
+// ---- Student history ----
+function renderStudentHistory(){
+  const q = (document.getElementById('studentSearchInput').value || '').trim();
+  const resultEl = document.getElementById('studentHistoryResult');
+  if(!q){ resultEl.innerHTML = ''; return; }
+
+  const all = loadReports();
+  const byId = all.filter(r => String(r.universityId) === q);
+  const matches = byId.length ? byId : all.filter(r => (r.studentName||'').includes(q));
+
+  if(!matches.length){
+    resultEl.innerHTML = `<div class="card"><div class="empty">لا توجد أي مخالفات مسجّلة لهذه الطالبة</div></div>`;
+    return;
+  }
+
+  const sorted = matches.slice().sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+  const latest = sorted[0];
+  const actionsCount = matches.filter(r => r.status === 'تم اتخاذ إجراء').length;
+
+  resultEl.innerHTML = `
+    <div class="card">
+      <div class="student-profile">
+        <div>
+          <h2>${escapeHtml(latest.studentName)}</h2>
+          <p class="sub" style="margin-bottom:0">الرقم الجامعي: ${escapeHtml(latest.universityId)} — ${escapeHtml(collegeLabel(latest))}</p>
+        </div>
+        <div class="mini-stats">
+          <div><b>${matches.length}</b><span>إجمالي المخالفات</span></div>
+          <div><b>${actionsCount}</b><span>إجراءات متخذة</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 class="section-title">السجل الزمني</h3>
+      <div class="timeline">
+        ${sorted.map(r => `
+          <div class="timeline-item">
+            <div class="row1">
+              <span class="types">${escapeHtml(violationTypesLabel(r))}</span>
+              <span class="badge ${statusBadgeClass(r.status)}">${r.status}</span>
+            </div>
+            <div class="date">${new Date(r.createdAt).toLocaleDateString('ar-SA')} — ${escapeHtml(buildingGateLabel(r))}</div>
+            ${r.actionType ? `<div class="action-line">✔ ${escapeHtml(r.actionType)} — ${r.actionDate||''} (${escapeHtml(r.actionBy)||'غير محدد'})</div>` : ''}
+            <div style="margin-top:8px"><button class="btn secondary" style="padding:6px 14px; font-size:.78rem" onclick="openModal('${r.id}')">عرض التفاصيل</button></div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ---- Print ----
+function printReport(){
+  if(!activeReportId) return;
+  const r = loadReports().find(x=>x.id===activeReportId);
+  if(!r) return;
+  const rows = [
+    ['رقم البلاغ', r.id],
+    ['تاريخ التقديم', new Date(r.createdAt).toLocaleString('ar-SA')],
+    ['اسم الطالبة', r.studentName],
+    ['الرقم الجامعي', r.universityId],
+    ['الكلية', collegeLabel(r)],
+    ['القسم', r.department],
+    ['المبنى/البوابة', buildingGateLabel(r)],
+    ['اسم من ضبط المخالفة', r.recorderName],
+    ['نوع المخالفة', violationTypesLabel(r)],
+    ['ملاحظات اضافية', r.notes || '-'],
+    ['حالة البلاغ', r.status],
+    ['قرار اللجنة / ملاحظات', r.committeeNotes || '-'],
+  ];
+  if(r.actionType){
+    rows.push(['نوع الإجراء', r.actionType]);
+    rows.push(['تاريخ الإجراء', r.actionDate || '-']);
+    rows.push(['المسؤول عن الإجراء', r.actionBy || '-']);
+  }
+  document.getElementById('printTable').innerHTML = rows.map(([k,v]) =>
+    `<tr><td class="k">${escapeHtml(k)}</td><td>${escapeHtml(String(v||'-'))}</td></tr>`
+  ).join('');
+  window.print();
+}
+
 // ---- Modal ----
 function toggleActionBox(){
   const show = document.getElementById('statusSelect').value === 'تم اتخاذ إجراء';
@@ -832,6 +987,7 @@ function downloadCSV(headers, rows, filenamePrefix){
 }
 
 document.getElementById('passInput').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+document.getElementById('studentSearchInput').addEventListener('keydown', e => { if(e.key==='Enter') renderStudentHistory(); });
 </script>
 
 </body>
