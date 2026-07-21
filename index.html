@@ -1738,6 +1738,7 @@ function App(){
   const [batchUnit,setBatchUnit]=useState(()=>lsGet("dw_batchunit","quarter"));
   const [batchInspUnit,setBatchInspUnit]=useState(()=>lsGet("dw_batchinsp","ml30"));
   const [profitMult,setProfitMult]=useState(()=>lsGet("dw_margin",3));
+  const [pkgCost,setPkgCost]=useState(()=>lsGet("dw_pkgcost",8)); // packaging (bottle+cap+box+label) per unit
   const [showAddIng,setShowAddIng]=useState(false);
   const [showAddRec,setShowAddRec]=useState(false);
   const [editCostId,setEditCostId]=useState(null);
@@ -1853,6 +1854,7 @@ function App(){
   useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
   useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
   useEffect(()=>lsSet("dw_margin",profitMult),[profitMult]);
+  useEffect(()=>lsSet("dw_pkgcost",pkgCost),[pkgCost]);
   useEffect(()=>lsSet("dw_batchunit",batchUnit),[batchUnit]);
   useEffect(()=>lsSet("dw_batchinsp",batchInspUnit),[batchInspUnit]);
   useEffect(()=>{
@@ -1900,7 +1902,7 @@ function App(){
   const canMake=r=>{const sc=recipeScale(r);return (r.ing||[]).every(([id,a])=>{const ing=getIng(id);return ing&&ing.stock>=a*sc;});};
 
   // ── cart & store ─────────────────────────────────────────────
-  const storePrice=r=>Math.ceil(recipeCost(r)*profitMult/5)*5;
+  const storePrice=r=>Math.ceil((recipeCost(r)+pkgCost)*profitMult/5)*5;
   const addToCart=(r,e)=>{e&&e.stopPropagation();const price=storePrice(r);setCartItems(p=>{const ex=p.find(i=>i.id===r.id);return ex?p.map(i=>i.id===r.id?{...i,qty:(i.qty||0)+1}:i):[...p,{id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,stability:r.stability,price,vol:BATCH[batchUnit],batchName:BATCH_NAME[batchUnit],qty:1}];});show(`🛒 ${r.name} أُضيف للسلة`);};
   const removeFromCart=id=>setCartItems(p=>p.filter(i=>i.id!==id));
   const updateQty=(id,d)=>setCartItems(p=>p.map(i=>i.id===id?{...i,qty:Math.max(1,i.qty+d)}:i));
@@ -3493,6 +3495,7 @@ function App(){
         {tab==="recipes"&&selectedRecipe&&!showAddRec&&!showCompare&&!showMixer&&(()=>{
           const r=selectedRecipe;const activeBU=r.inspired?batchInspUnit:batchUnit;const sc=(()=>{const base=r.ing.reduce((s,[,a])=>s+a,0)||11.6;return BATCH[activeBU]/base;})();const cost=r.ing.reduce((s,[id,a])=>{const ing=getIng(id);return s+(ing?ing.unitCost*a*sc:0);},0);const vol=BATCH[activeBU];
           const mlCost=vol>0?cost/vol:0;const sellMl=mlCost*profitMult;
+          const fullCost=cost+(+pkgCost||0);const sellBatch=Math.ceil(fullCost*profitMult/5)*5;const marginPct=sellBatch>0?Math.round((sellBatch-fullCost)/sellBatch*100):0;
           // render a step string with amounts scaled to current batch; highlights numbers in gold
           const renderStep=txt=>{
             const out=[];let last=0;
@@ -3738,11 +3741,17 @@ function App(){
                   <div className="p-num" style={{fontSize:"1.25rem"}}>{mlCost.toFixed(2)}<span style={{fontSize:"0.65rem",opacity:0.6,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div>
                 </div>
               </div>
-              <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"10px",padding:"10px",background:"rgba(0,0,0,0.05)",borderRadius:"12px",border:"1px solid rgba(201,168,76,0.10)"}}>
+              <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"8px",padding:"10px",background:"rgba(0,0,0,0.05)",borderRadius:"12px",border:"1px solid rgba(201,168,76,0.10)"}}>
                 <span style={{fontSize:"0.75rem",color:"#8A6830",whiteSpace:"nowrap"}}>هامش الربح:</span>
                 <input type="range" min="1.5" max="6" step="0.5" value={profitMult} onChange={e=>setProfitMult(+e.target.value)} style={{flex:1,accentColor:"#C9A84C"}}/>
                 <span className="mono" style={{color:"#C9A84C",fontWeight:"600",fontSize:"0.88rem",minWidth:"32px"}}>×{profitMult}</span>
               </div>
+              <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"10px",padding:"10px",background:"rgba(0,0,0,0.05)",borderRadius:"12px",border:"1px solid rgba(201,168,76,0.10)"}}>
+                <span style={{fontSize:"0.75rem",color:"#8A6830",whiteSpace:"nowrap"}}>💼 تغليف/قارورة (للوحدة):</span>
+                <input type="number" inputMode="decimal" min="0" step="0.5" value={pkgCost} onChange={e=>setPkgCost(e.target.value===""?0:+e.target.value)} className="inp" style={{flex:1,textAlign:"center",fontSize:"0.9rem",padding:"6px"}}/>
+                <span style={{fontSize:"0.72rem",color:"#8A6830"}}>ر</span>
+              </div>
+              <div style={{textAlign:"center",fontSize:"0.68rem",color:"#8A6830",marginBottom:"10px"}}>التكلفة الكاملة (خام + تغليف): <b style={{color:"#C9A84C"}}>{fullCost.toFixed(1)} ر</b> · الهامش الصافي: <b style={{color:marginPct>=50?"#68B068":marginPct>=30?"#C9A84C":"#E08080"}}>{marginPct}%</b></div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px"}}>
                 <div style={{background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.22)",borderRadius:"12px",padding:"14px 12px",textAlign:"center",position:"relative",overflow:"hidden"}}>
                   <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.35),transparent)"}}/>
@@ -3751,8 +3760,8 @@ function App(){
                 </div>
                 <div style={{background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.22)",borderRadius:"12px",padding:"14px 12px",textAlign:"center",position:"relative",overflow:"hidden"}}>
                   <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.35),transparent)"}}/>
-                  <div style={{fontSize:"0.50rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.5px",textTransform:"uppercase",marginBottom:"5px",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>سعر بيع الدفعة</div>
-                  <div className="p-num" style={{fontSize:"1.55rem",lineHeight:1}}>{(sellMl*vol).toFixed(0)}<span style={{fontSize:"0.60rem",opacity:0.55,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div>
+                  <div style={{fontSize:"0.50rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.5px",textTransform:"uppercase",marginBottom:"5px",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>سعر بيع الدفعة (شامل التغليف)</div>
+                  <div className="p-num" style={{fontSize:"1.55rem",lineHeight:1}}>{sellBatch.toFixed(0)}<span style={{fontSize:"0.60rem",opacity:0.55,fontFamily:"'Alexandria',sans-serif"}}> ر</span></div>
                 </div>
               </div>
               <div style={{marginTop:"9px",textAlign:"center",fontSize:"0.68rem",color:"rgba(26,18,8,0.35)"}}>الربح الصافي للدفعة: <span className="mono" style={{color:"#6AAA48",fontWeight:"700"}}>{(sellMl*vol-cost).toFixed(0)} ريال</span></div>
