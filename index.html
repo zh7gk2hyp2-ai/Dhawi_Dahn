@@ -2335,8 +2335,11 @@ function App(){
   const totalInvValue=inv.reduce((s,i)=>s+(i.price+(i.ship||0)),0);
   const totalProduced=prodLog.length;
   const totalSold=prodLog.filter(e=>e.sold).length;
-  const totalRevenue=prodLog.filter(e=>e.sold&&e.sellPrice).reduce((s,e)=>s+e.sellPrice,0);
-  const totalCostOfSold=prodLog.filter(e=>e.sold).reduce((s,e)=>s+e.cost,0);
+  const _storeDone=storeOrders.filter(o=>o.status==='done');
+  const storeRev=_storeDone.reduce((s,o)=>s+(+o.subtotal||0),0);
+  const storeCogs=_storeDone.reduce((s,o)=>s+(+o.cogs||0),0);
+  const totalRevenue=prodLog.filter(e=>e.sold&&e.sellPrice).reduce((s,e)=>s+e.sellPrice,0)+storeRev;
+  const totalCostOfSold=prodLog.filter(e=>e.sold).reduce((s,e)=>s+e.cost,0)+storeCogs;
   const netProfit=totalRevenue-totalCostOfSold;
   const recipeFreq=prodLog.reduce((acc,e)=>{acc[e.recipeName]=(acc[e.recipeName]||0)+1;return acc;},{});
   const topRecipe=Object.entries(recipeFreq).sort((a,b)=>b[1]-a[1])[0];
@@ -4635,7 +4638,23 @@ function App(){
       {tab==="orders"&&(()=>{
         const newCount=storeOrders.filter(o=>o.status==='new').length;
         const PAY_LABEL={mada:'مدى',apple:'Apple Pay',stc:'STC Pay',cod:'عند الاستلام'};
-        const markDone=(id)=>{const upd=storeOrders.map(o=>o.id===id?{...o,status:'done'}:o);setStoreOrders(upd);try{localStorage.setItem('dw_agency_orders',JSON.stringify(upd))}catch(e){}};
+        const markDone=(id)=>{
+          const o=storeOrders.find(x=>x.id===id);
+          if(!o||o.status==='done')return;
+          // deduct raw materials for each ordered item (matched to its recipe & tola size) and compute COGS
+          const SIZE_ML={'ربع تولة':2.9,'نص تولة':5.8,'تولة':11.6};
+          let cogs=0;const deductions={};
+          (o.items||[]).forEach(it=>{
+            const r=recipes.find(x=>x.id===it.id)||recipes.find(x=>x.name===it.name);
+            if(!r)return;
+            const ml=SIZE_ML[it.batchLabel]||11.6;const base=recipeBaseVol(r);
+            (r.ing||[]).forEach(([iid,amt])=>{const need=amt*(ml/base)*(+it.qty||1);deductions[iid]=(deductions[iid]||0)+need;const ing=getIng(iid);if(ing)cogs+=ing.unitCost*need;});
+          });
+          if(Object.keys(deductions).length)setInv(pi=>pi.map(i=>deductions[i.id]?{...i,stock:Math.max(0,+(i.stock-deductions[i.id]).toFixed(2))}:i));
+          const upd=storeOrders.map(x=>x.id===id?{...x,status:'done',cogs:+cogs.toFixed(1),doneAt:new Date().toISOString()}:x);
+          setStoreOrders(upd);try{localStorage.setItem('dw_agency_orders',JSON.stringify(upd))}catch(e){}
+          show(cogs>0?`✅ تمت المعالجة — خُصم المخزون (تكلفة ${cogs.toFixed(0)} ر) ودخلت الإيراد`:"✅ تمت المعالجة ودخلت الإيراد");
+        };
         const deleteOrder=(id)=>{const upd=storeOrders.filter(o=>o.id!==id);setStoreOrders(upd);try{localStorage.setItem('dw_agency_orders',JSON.stringify(upd))}catch(e){}};
         return(<div className="fade" style={{padding:"14px 14px 100px"}}>
           <div className="section-hdr">

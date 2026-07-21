@@ -1733,7 +1733,7 @@ function submitOrder(){
   const tot=sub+deliveryCost+codFee+vat;
   coOrderId='DW-'+Math.floor(100000+Math.random()*900000);
   const order={id:coOrderId,date:new Date().toISOString(),customer:{...coData},
-    items:cart.map(i=>({icon:i.icon,name:i.name,batchLabel:i.batchLabel,price:i.price,qty:i.qty})),
+    items:cart.map(i=>({id:i.id,icon:i.icon,name:i.name,batchLabel:i.batchLabel,price:i.price,qty:i.qty})),
     subtotal:sub,deliveryCost,codFee,vat,total:tot,delivery:coDelivery,payment:coPayment,status:'new'};
   try{const existing=JSON.parse(localStorage.getItem('dw_agency_orders')||'[]');existing.unshift(order);localStorage.setItem('dw_agency_orders',JSON.stringify(existing));}catch(e){}
   // Real fulfillment channel: hand the order to the merchant over WhatsApp.
