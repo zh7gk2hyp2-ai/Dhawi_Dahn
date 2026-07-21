@@ -10,7 +10,7 @@
 <meta name="app-version" content="2026-07-16-v3"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="ضاوي عود"/>
@@ -1942,9 +1942,15 @@ function App(){
     setInv(p=>p.map(i=>{const ri=r.ing.find(x=>x[0]===i.id);return ri?{...i,stock:Math.max(0,+(i.stock-ri[1]*sc).toFixed(2))}:i;}));
     const aging=agingDaysOf(r.stability);
     const readyDate=new Date(Date.now()+aging*86400000).toISOString();
-    const bNo="D-"+String(batchCounter).padStart(4,"0");
-    const entry={id:"p_"+Date.now(),batchNo:bNo,recipeId:r.id,recipeName:r.name,recipeIcon:r.icon,batch:BATCH_NAME[batchUnit],vol,cost:+cost.toFixed(1),date:new Date().toISOString(),agingDays:aging,readyDate,sold:false,sellPrice:null,customerId:null,note:batchNote.trim()||null};
-    setProdLog(p=>[entry,...p]);
+    const note=batchNote.trim()||null;
+    setProdLog(p=>{
+      // derive the next batch number from the actual log so two rapid produces never collide
+      const maxNo=p.reduce((m,e)=>Math.max(m,parseInt(String(e.batchNo||"").replace(/\D/g,""))||0),batchCounter-1);
+      const nextNo=maxNo+1;
+      const bNo="D-"+String(nextNo).padStart(4,"0");
+      const entry={id:"p_"+Date.now()+"_"+nextNo,batchNo:bNo,recipeId:r.id,recipeName:r.name,recipeIcon:r.icon,batch:BATCH_NAME[batchUnit],vol,cost:+cost.toFixed(1),date:new Date().toISOString(),agingDays:aging,readyDate,sold:false,sellPrice:null,customerId:null,note};
+      return [entry,...p];
+    });
     setBatchCounter(p=>p+1);
     setBatchNote("");
     show("🏭 أُنتجت "+BATCH_NAME[batchUnit]+" من "+r.name);
@@ -2053,13 +2059,18 @@ function App(){
     const file=e.target.files[0];if(!file)return;
     const reader=new FileReader();
     reader.onload=ev=>{try{
-      const data=JSON.parse(ev.target.result);
-      if(data.inv)setInv(data.inv);
-      if(data.recipes)setRecipes(data.recipes);
-      if(data.prodLog)setProdLog(data.prodLog);
-      if(data.purchases)setPurchases(data.purchases);
-      if(data.customers)setCustomers(data.customers);
-      if(data.favoriteIds)setFavoriteIds(data.favoriteIds);
+      const raw=JSON.parse(ev.target.result);
+      if(!raw||typeof raw!=="object")throw new Error("bad");
+      // deep-strip angle brackets from every string → prevents injected markup surfacing in the print/label windows
+      const clean=v=>Array.isArray(v)?v.map(clean):(v&&typeof v==="object")?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,clean(x)])):(typeof v==="string"?v.replace(/[<>]/g,""):v);
+      const data=clean(raw);
+      const arr=x=>Array.isArray(x)?x:[];
+      if(data.inv)setInv(arr(data.inv).filter(i=>i&&i.id).map(i=>({...i,qty:+i.qty||0,stock:+i.stock||0,price:+i.price||0,unitCost:+i.unitCost||0})));
+      if(data.recipes)setRecipes(arr(data.recipes).filter(r=>r&&r.id&&Array.isArray(r.ing)));
+      if(data.prodLog)setProdLog(arr(data.prodLog));
+      if(data.purchases)setPurchases(arr(data.purchases));
+      if(data.customers)setCustomers(arr(data.customers));
+      if(Array.isArray(data.favoriteIds))setFavoriteIds(data.favoriteIds);
       show("✅ استُعيدت البيانات بنجاح");setShowBackup(false);
     }catch{show("❌ ملف غير صالح",true);}};
     reader.readAsText(file);
@@ -2083,7 +2094,7 @@ function App(){
     const totalRev=soldBatches.reduce((s,e)=>s+e.sellPrice,0);
     const totalCost=soldBatches.reduce((s,e)=>s+(e.cost||0),0);
     const totalProfit=totalRev-totalCost;
-    const invRows=inv.map(i=>`<tr><td>${i.name}</td><td style="text-align:center">${i.stock} ${i.unit}</td><td style="text-align:center">${i.unitCost?.toFixed(2)||"—"}</td><td style="text-align:center;color:${(i.stock/i.qty)<0.2?"#c00":"#060"}">${((i.stock/i.qty)*100).toFixed(0)}%</td></tr>`).join("");
+    const invRows=inv.map(i=>{const pct=i.qty>0?(i.stock/i.qty):null;return `<tr><td>${sanitize(i.name)}</td><td style="text-align:center">${i.stock} ${sanitize(i.unit||"")}</td><td style="text-align:center">${i.unitCost?.toFixed(2)||"—"}</td><td style="text-align:center;color:${pct!==null&&pct<0.2?"#c00":"#060"}">${pct!==null?(pct*100).toFixed(0)+"%":"—"}</td></tr>`;}).join("");
     const batchRows=prodLog.slice(0,20).map(e=>`<tr><td>${e.recipeIcon} ${e.recipeName}</td><td>${e.batchNo}</td><td>${e.vol}مل</td><td>${fmtDate(e.date)}</td><td style="color:${e.sold?"#060":"#880"}">${e.sold?`${e.sellPrice} ر`:"جار"}</td></tr>`).join("");
     const w=window.open("","_blank","width=800,height=1000");
     w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><title>تقرير ضاوي عود</title><style>
@@ -2239,9 +2250,9 @@ function App(){
         headers:{"x-api-key":aiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true","content-type":"application/json"},
         body:JSON.stringify({model:"claude-haiku-4-5",max_tokens:maxTokens,messages:[{role:"user",content:prompt}]})
       });
-      if(!res.ok){const e=await res.json();show("❌ "+(e.error?.message||"خطأ API"),true);return null;}
-      const data=await res.json();
-      return data.content[0]?.text||null;
+      if(!res.ok){const e=await res.json().catch(()=>({}));show("❌ "+(e.error?.message||("خطأ API "+res.status)),true);return null;}
+      const data=await res.json().catch(()=>({}));
+      return data.content?.[0]?.text||null;
     }catch(e){show("❌ تعذّر الاتصال بـ Claude",true);return null;}
     finally{setAiLoading(false);}
   };
@@ -2464,7 +2475,7 @@ function App(){
                 <span style={{fontSize:"0.44rem",color:meta.color,letterSpacing:"0.40em",textTransform:"uppercase",fontFamily:"'IBM Plex Mono',monospace",fontWeight:600,transition:"color 0.3s"}}>{meta.label}</span>
               </div>
             </div>
-            <div style={{width:32}}/>
+            <button onClick={()=>{setTab("heritage");setSelectedRecipe(null);setSelectedCustomer(null);setShowCustomerStore(false);setCatalogView(null);}} aria-label="الإعدادات · الذكاء الاصطناعي · النسخ الاحتياطي" title="الإعدادات والذكاء الاصطناعي" style={{width:34,height:34,borderRadius:"50%",border:`1px solid ${tab==="heritage"?"#8A6A1E":"rgba(138,106,30,0.3)"}`,background:tab==="heritage"?"rgba(138,106,30,0.10)":"transparent",color:"#8A6A1E",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,padding:0}}>⚙️</button>
           </div>
           <div style={{margin:"0 18px 4px",height:"1px",background:`linear-gradient(90deg,transparent,${meta.color},transparent)`,transition:"background 0.35s ease"}}/>
         </>;

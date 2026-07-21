@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#f2f2f2"/>
 <title>ضاوي عود — أتيلييه العطور السعودي الفاخر</title>
 <meta name="description" content="ضاوي عود — سبعة عطور حصرية من أجود مواد العود الهندي والكمبودي. ثبات يصل 40 ساعة. صناعة سعودية فاخرة تنافس العلامات العالمية."/>
@@ -1631,7 +1631,7 @@ function renderCheckout(){
     document.getElementById('coBody').innerHTML=`
       <div class="co-success">
         <span class="co-success-icon">✅</span>
-        <div class="co-success-title">شكراً ${coData.name||'لك'}!</div>
+        <div class="co-success-title">شكراً ${_esc(coData.name||'لك')}!</div>
         <div class="co-success-sub">تم استلام طلبك بنجاح. سيتم التواصل معك على الرقم ${coData.phone?'+966'+coData.phone:''} لتأكيد الطلب وتحديد موعد التوصيل.</div>
         <div class="co-order-no">${no}</div>
         <div style="margin-top:32px;display:flex;flex-direction:column;gap:10px">
@@ -1664,7 +1664,7 @@ function renderCheckout(){
       <div class="co-sec-title">👤 بيانات العميل</div>
       <div class="co-field">
         <label class="co-label">الاسم الكامل *</label>
-        <input class="co-inp" id="f-name" placeholder="مثال: محمد عبدالله الأحمد" value="${coData.name}" oninput="coData.name=this.value"/>
+        <input class="co-inp" id="f-name" placeholder="مثال: محمد عبدالله الأحمد" value="${_esc(coData.name)}" oninput="coData.name=this.value"/>
       </div>
       <div class="co-field">
         <label class="co-label">رقم الجوال *</label>
