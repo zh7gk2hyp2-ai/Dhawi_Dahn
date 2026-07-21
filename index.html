@@ -1621,7 +1621,8 @@ function applyPendingRecipes(recipes){
   const map=new Map(recipes.map(r=>[r.id,r]));
   PENDING_RECIPES.forEach(r=>{
     const ex=map.get(r.id);
-    map.set(r.id,ex?{...r,published:ex.published,story:ex.story||r.story,price_sar:ex.price_sar>0?ex.price_sar:(r.price_sar||0),hero:ex.hero!==undefined?ex.hero:r.hero}:r);
+    // if the user manually edited this recipe, keep their version untouched; otherwise merge canonical fields
+    map.set(r.id,ex?(ex.userEdited?ex:{...r,published:ex.published,story:ex.story||r.story,price_sar:ex.price_sar>0?ex.price_sar:(r.price_sar||0),hero:ex.hero!==undefined?ex.hero:r.hero}):r);
   });
   lsSet("dw_pr_ver",PENDING_RECIPES_VERSION);
   return [...map.values()];
@@ -2144,7 +2145,7 @@ function App(){
   const deleteRecipe=id=>{if(!window.confirm("حذف هذه الوصفة نهائياً؟ لا يمكن التراجع"))return;setRecipes(p=>p.filter(r=>r.id!==id));setSelectedRecipe(null);show("🗑️ حُذفت الوصفة");};
   const cloneRecipe=r=>{const newId="clone_"+Date.now();const copy={...r,id:newId,name:r.name+" (نسخة)",hero:false,published:false,price_sar:r.price_sar||0,story:"",rating:undefined};setRecipes(p=>[copy,...p]);setSelectedRecipe(copy);show("📋 تم نسخ الوصفة — يمكنك التعديل الآن");};
   const openEditRecipe=r=>{setEditRecName(r.name);setEditRecDesc(r.desc||"");setEditRecSeason(r.season||"صيف");setEditRecGender(r.gender||"للجنسين");setEditRecStab(r.stability||"");setEditRecipe(r);};
-  const saveEditRecipe=()=>{if(!editRecipe)return;const ic={"صيف":"☀️","شتاء":"❄️","ربيع":"🌸","خريف":"🍂","مناسبات":"👑"};const upd={name:editRecName,desc:editRecDesc,season:editRecSeason,gender:editRecGender,stability:editRecStab,icon:ic[editRecSeason]||editRecipe.icon};setRecipes(p=>p.map(r=>r.id!==editRecipe.id?r:{...r,...upd}));setSelectedRecipe(prev=>prev&&prev.id===editRecipe.id?{...prev,...upd}:prev);setEditRecipe(null);show("✅ تم تعديل الوصفة");};
+  const saveEditRecipe=()=>{if(!editRecipe)return;const ic={"صيف":"☀️","شتاء":"❄️","ربيع":"🌸","خريف":"🍂","مناسبات":"👑"};const upd={name:editRecName,desc:editRecDesc,season:editRecSeason,gender:editRecGender,stability:editRecStab,icon:ic[editRecSeason]||editRecipe.icon,userEdited:true};setRecipes(p=>p.map(r=>r.id!==editRecipe.id?r:{...r,...upd}));setSelectedRecipe(prev=>prev&&prev.id===editRecipe.id?{...prev,...upd}:prev);setEditRecipe(null);show("✅ تم تعديل الوصفة");};
   const deleteCustomer=id=>{if(!window.confirm("حذف هذا العميل نهائياً؟"))return;setCustomers(p=>p.filter(c=>c.id!==id));setSelectedCustomer(null);show("🗑️ حُذف العميل");};
 
   // ── notifications ──────────────────────────────────────────────
