@@ -1549,29 +1549,22 @@ function invoice(){
 const CITIES=['الرياض','جدة','مكة المكرمة','المدينة المنورة','الدمام','الخبر','الظهران','الطائف','تبوك','أبها','بريدة','حائل','نجران','جازان','الأحساء','القطيف','ينبع','عرعر','سكاكا','الجبيل'];
 let coStep='info'; // info | success
 let coDelivery='standard';
-let coPayment='mada';
+let coPayment='whatsapp';
 let coData={name:'',phone:'',city:'الرياض',district:'',street:''};
-let coCardNum='', coCardExp='', coCardCvv='', coCardName='', coStcPhone='';
+let coStcPhone='';
 let coPayExpanded=false;
 let coOrderId='';
+let coLastMsg='';
 
 const PAY_METHODS=[
-  {id:'mada',
-   logo:`<div style="background:#444444;color:#fff;padding:7px 10px;border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:900;letter-spacing:1px;min-width:54px;text-align:center">mada</div>`,
-   logoLg:`<div style="background:#444444;color:#fff;padding:18px 36px;border-radius:12px;font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:900;letter-spacing:3px">mada</div>`,
-   name:'مدى', desc:'بطاقات مدى السعودية'},
-  {id:'apple',
-   logo:`<div style="background:#000;color:#fff;padding:6px 8px;border-radius:5px;font-size:10px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;min-width:54px;text-align:center;letter-spacing:-0.3px">&#63743; Pay</div>`,
-   logoLg:`<div style="background:#000;color:#fff;padding:18px 36px;border-radius:12px;font-size:26px;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:-0.5px">&#63743; Pay</div>`,
-   name:'Apple Pay', desc:'ادفع بسرعة وأمان مع Apple Pay'},
-  {id:'stc',
-   logo:`<div style="background:linear-gradient(135deg,#3d3d3d,#686868);color:#fff;padding:4px 6px;border-radius:5px;text-align:center;min-width:54px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:900">STC</div><div style="font-size:8px;opacity:0.85">pay</div></div>`,
-   logoLg:`<div style="background:linear-gradient(135deg,#3d3d3d,#686868);color:#fff;padding:18px 36px;border-radius:12px;text-align:center"><div style="font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:900">STC</div><div style="font-size:14px;opacity:0.90;margin-top:2px">pay</div></div>`,
-   name:'STC Pay', desc:'ادفع من محفظة STC Pay'},
+  {id:'whatsapp',
+   logo:`<div style="background:#128C7E;color:#fff;padding:6px 8px;border-radius:5px;font-size:8px;font-weight:700;text-align:center;min-width:54px;line-height:1.5">💬<br>واتساب</div>`,
+   logoLg:`<div style="background:#128C7E;color:#fff;padding:18px 36px;border-radius:12px;text-align:center"><div style="font-size:38px">💬</div><div style="font-size:15px;font-weight:700;margin-top:6px">تأكيد عبر واتساب</div></div>`,
+   name:'تأكيد عبر واتساب', desc:'نستقبل طلبك على واتساب ونؤكّد التوفّر والدفع والتوصيل معك مباشرة'},
   {id:'cod',
    logo:`<div style="background:linear-gradient(135deg,#4d4d4d,#747474);color:#fff;padding:6px 8px;border-radius:5px;font-size:8px;font-weight:700;text-align:center;min-width:54px;line-height:1.5">💵<br>نقداً</div>`,
-   logoLg:`<div style="background:linear-gradient(135deg,#4d4d4d,#747474);color:#fff;padding:18px 36px;border-radius:12px;text-align:center"><div style="font-size:42px">💵</div><div style="font-size:15px;font-weight:700;margin-top:8px">الدفع نقداً</div></div>`,
-   name:'عند الاستلام', desc:'ادفع نقداً أو بالبطاقة عند استلام طلبك'},
+   logoLg:`<div style="background:linear-gradient(135deg,#4d4d4d,#747474);color:#fff;padding:18px 36px;border-radius:12px;text-align:center"><div style="font-size:42px">💵</div><div style="font-size:15px;font-weight:700;margin-top:8px">الدفع عند الاستلام</div></div>`,
+   name:'عند الاستلام', desc:'ادفع نقداً أو بالبطاقة عند استلام طلبك (+15 ر.س)'},
 ];
 
 function expandedPaymentView(){
@@ -1587,24 +1580,9 @@ function expandedPaymentView(){
 }
 
 function paymentDetailsHtml(){
-  if(coPayment==='mada') return `<div class="card-form">
-    <div class="co-field"><label class="co-label">رقم البطاقة</label><input class="co-inp" id="f-cn" placeholder="•••• •••• •••• ••••" maxlength="19" value="${coCardNum}" oninput="coCardNum=fmtCardNum(this.value);this.value=coCardNum" style="direction:ltr;letter-spacing:2px"/></div>
-    <div class="co-row2">
-      <div class="co-field"><label class="co-label">تاريخ الانتهاء</label><input class="co-inp" id="f-ce" placeholder="MM/YY" maxlength="5" value="${coCardExp}" oninput="let v=this.value.replace(/\D/g,'').slice(0,4);coCardExp=v.length>2?v.slice(0,2)+'/'+v.slice(2):v;this.value=coCardExp" style="direction:ltr"/></div>
-      <div class="co-field"><label class="co-label">CVV</label><input class="co-inp" id="f-cv" placeholder="•••" maxlength="4" value="${coCardCvv}" oninput="coCardCvv=this.value" style="direction:ltr" type="password"/></div>
-    </div>
-    <div class="co-field"><label class="co-label">اسم حامل البطاقة</label><input class="co-inp" id="f-cname" placeholder="FULL NAME" value="${coCardName}" oninput="coCardName=this.value" style="direction:ltr;text-transform:uppercase"/></div>
-    <div style="margin-top:10px;padding:10px 12px;background:rgba(170,170,170,0.08);border:1px solid rgba(170,170,170,0.20);border-radius:10px;font-size:0.68rem;color:rgba(19,19,19,0.55);line-height:1.8;text-align:right">💚 سيتم التواصل معك على واتساب لإتمام الدفع</div>
-  </div>`;
-  if(coPayment==='apple'){
-    const hasAP=typeof ApplePaySession!=='undefined'&&ApplePaySession.canMakePayments();
-    return hasAP
-      ? `<div style="margin-top:14px;-webkit-appearance:-apple-pay-button;-apple-pay-button-type:pay;-apple-pay-button-style:white;width:100%;height:52px;border-radius:14px;cursor:pointer;border:none" onclick="startApplePay()"></div>`
-      : `<div style="margin-top:14px;background:rgba(19,19,19,0.04);border:1px dashed rgba(255,255,255,0.14);border-radius:14px;padding:20px;text-align:center;color:rgba(19,19,19,0.30);font-size:0.74rem;line-height:2.2"><div style="font-size:1.6rem;margin-bottom:6px">&#63743;</div>Apple Pay متاح فقط على Safari<br>في iPhone أو Mac</div>`;
-  }
-  if(coPayment==='stc') return `<div class="card-form"><div class="co-field"><label class="co-label">رقم جوال STC Pay</label><input class="co-inp" id="f-stc" placeholder="05XXXXXXXX" maxlength="10" value="${coStcPhone}" oninput="coStcPhone=this.value.replace(/[^0-9]/g,'')" style="direction:ltr"/></div><div class="stc-note">ستصلك رسالة تأكيد على رقم STC Pay المرتبط</div><div style="margin-top:8px;padding:8px 12px;background:rgba(170,170,170,0.08);border:1px solid rgba(170,170,170,0.20);border-radius:10px;font-size:0.68rem;color:rgba(19,19,19,0.55);text-align:right">💚 سيتم التواصل معك على واتساب لإتمام الدفع</div></div>`;
   if(coPayment==='cod') return `<div class="cod-note">💵 ادفع نقداً أو بالبطاقة عند استلام طلبك<br><span style="opacity:0.7;font-size:0.62rem">تُضاف رسوم 15 ر.س على إجمالي طلبك</span></div>`;
-  return '';
+  // whatsapp (default) — honest: no card capture on the page
+  return `<div style="margin-top:12px;padding:12px 14px;background:rgba(18,140,126,0.08);border:1px solid rgba(18,140,126,0.28);border-radius:12px;font-size:0.72rem;color:rgba(19,19,19,0.62);line-height:1.9;text-align:right">💬 بالضغط على «إرسال الطلب» يفتح واتساب برسالة طلبك جاهزة. نؤكّد التوفّر ونتفق على الدفع والتوصيل مباشرة — <strong>لا نطلب بيانات بطاقتك على الموقع</strong>.</div>`;
 }
 
 function openCheckout(){
@@ -1626,17 +1604,17 @@ function renderCheckout(){
   const tot=sub+deliveryCost+codFee+vat;
 
   if(coStep==='success'){
-    document.getElementById('coTitle').textContent='تم الطلب ✓';
+    document.getElementById('coTitle').textContent='تم إرسال الطلب ✓';
     const no=coOrderId;
     document.getElementById('coBody').innerHTML=`
       <div class="co-success">
-        <span class="co-success-icon">✅</span>
+        <span class="co-success-icon">💬</span>
         <div class="co-success-title">شكراً ${_esc(coData.name||'لك')}!</div>
-        <div class="co-success-sub">تم استلام طلبك بنجاح. سيتم التواصل معك على الرقم ${coData.phone?'+966'+coData.phone:''} لتأكيد الطلب وتحديد موعد التوصيل.</div>
+        <div class="co-success-sub">فتحنا لك واتساب برسالة طلبك — <strong>أرسلها لنا</strong> لنؤكّد التوفّر والدفع وموعد التوصيل. إذا ما فتح واتساب تلقائياً، اضغط الزر أدناه.</div>
         <div class="co-order-no">${no}</div>
         <div style="margin-top:32px;display:flex;flex-direction:column;gap:10px">
-          <button class="btn-g" onclick="cart=[];syncUI();closeCheckout();render()">العودة للمتجر</button>
-          <button class="btn-gh" onclick="invoiceFromCheckout('${no}')">🧾 طباعة الفاتورة</button>
+          <button class="btn-g" onclick="window.open('https://wa.me/966503716775?text='+encodeURIComponent(coLastMsg),'_blank')">💬 إرسال الطلب عبر واتساب</button>
+          <button class="btn-gh" onclick="closeCheckout();render()">العودة للمتجر</button>
         </div>
       </div>`;
     return;
@@ -1747,12 +1725,7 @@ function renderCheckout(){
 
 function submitOrder(){
   if(!coData.name.trim()){toast('⚠️ الرجاء إدخال الاسم الكامل');return;}
-  if(!coData.phone.trim()||coData.phone.length<9){toast('⚠️ رقم الجوال غير صحيح');return;}
-  if(coPayment==='mada'&&!luhn(coCardNum)){toast('⚠️ رقم البطاقة غير صحيح');return;}
-  if(coPayment==='mada'&&!validExpiry(coCardExp)){toast('⚠️ تاريخ الانتهاء غير صحيح (MM/YY)');return;}
-  if(coPayment==='mada'&&coCardCvv.length<3){toast('⚠️ رمز CVV غير صحيح');return;}
-  if(coPayment==='mada'&&!coCardName.trim()){toast('⚠️ أدخل اسم حامل البطاقة');return;}
-  if(coPayment==='stc'&&(coStcPhone.length<10||!coStcPhone.startsWith('05'))){toast('⚠️ رقم STC Pay غير صحيح');return;}
+  if(!/^0?5\d{8}$/.test(coData.phone.replace(/\s/g,''))){toast('⚠️ رقم الجوال غير صحيح (05XXXXXXXX)');return;}
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const deliveryCost=coDelivery==='express'?45:25;
   const codFee=coPayment==='cod'?15:0;
@@ -1763,6 +1736,12 @@ function submitOrder(){
     items:cart.map(i=>({icon:i.icon,name:i.name,batchLabel:i.batchLabel,price:i.price,qty:i.qty})),
     subtotal:sub,deliveryCost,codFee,vat,total:tot,delivery:coDelivery,payment:coPayment,status:'new'};
   try{const existing=JSON.parse(localStorage.getItem('dw_agency_orders')||'[]');existing.unshift(order);localStorage.setItem('dw_agency_orders',JSON.stringify(existing));}catch(e){}
+  // Real fulfillment channel: hand the order to the merchant over WhatsApp.
+  const phone=coData.phone.replace(/^0/,'');
+  const addr=[coData.district,coData.street,coData.city].filter(Boolean).join('، ');
+  const lines=cart.map(i=>`• ${i.name} (${i.batchLabel} ${i.batchMl}) ×${i.qty} = ${i.price*i.qty} ر.س`).join('\n');
+  coLastMsg=`🛍️ طلب جديد — ضاوي عود\nرقم الطلب: ${coOrderId}\n\n${lines}\n\nالمجموع: ${sub} ر.س\nالشحن: ${deliveryCost} ر.س${codFee?'\nرسوم الاستلام: 15 ر.س':''}\nالضريبة (15%): ${vat} ر.س\nالإجمالي: ${tot} ر.س\n\n👤 ${coData.name}\n📱 0${phone}\n📍 ${addr}\n🚚 ${coDelivery==='express'?'سريع 1-2 يوم':'عادي 3-5 أيام'}\n💳 ${coPayment==='cod'?'عند الاستلام':'تأكيد الدفع عبر واتساب'}`;
+  window.open('https://wa.me/966503716775?text='+encodeURIComponent(coLastMsg),'_blank');
   cart.forEach(i=>_decrStock(i.id,i.qty));
   cart=[];_saveCart();syncUI();
   coStep='success';
