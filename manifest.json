@@ -1,17 +1,17 @@
 {
-  "name": "ضاوي الدهن — معمل العود الخاص",
-  "short_name": "ضاوي الدهن",
+  "name": "ضاوي عود — معمل العود الخاص",
+  "short_name": "ضاوي عود",
   "description": "معمل إنتاج وإدارة عطور العود الفاخرة",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#1A1208",
-  "background_color": "#FAF8F3",
+  "theme_color": "#0a0a0a",
+  "background_color": "#f4f4f4",
   "lang": "ar",
   "dir": "rtl",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='32' fill='%231A1208'/><text x='96' y='130' text-anchor='middle' font-size='110'>🪬</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='0' fill='%230a0a0a'/><path d='M50 64 C42 56 57 49 50 40 C44 33 56 28 50 20' fill='none' stroke='%23f2f2f2' stroke-width='3.2' stroke-linecap='round'/><path d='M50 82 C47 77 46.5 74 46.5 72 a3.5 3.5 0 1 0 7 0 c0-2 -0.5 -5 -3.5 -10 Z' fill='%23f2f2f2'/></svg>",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"

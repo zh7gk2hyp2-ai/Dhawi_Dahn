@@ -2,31 +2,33 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet"/>
+<meta name="googlebot" content="noindex, nofollow"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 <meta name="app-version" content="2026-07-16-v3"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="ضاوي دهن العود"/>
+<meta name="apple-mobile-web-app-title" content="ضاوي عود"/>
 <meta name="theme-color" content="#F7F1E6"/>
 <link rel="manifest" href="/manifest.json"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1208'/><text x='90' y='125' text-anchor='middle' font-size='100'>🪬</text></svg>"/>
-<title>ضاوي دهن العود — مختبر العطور التراثي</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0a'/><path d='M50 64 C42 56 57 49 50 40 C44 33 56 28 50 20' fill='none' stroke='%23f2f2f2' stroke-width='3.2' stroke-linecap='round'/><path d='M50 82 C47 77 46.5 74 46.5 72 a3.5 3.5 0 1 0 7 0 c0-2 -0.5 -5 -3.5 -10 Z' fill='%23f2f2f2'/></svg>"/>
+<title>ضاوي عود — مختبر العطور التراثي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;600;700;800&family=Amiri:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <style>
-/* ═══════════ ATELIER DHAWI — Obsidian Edition ═══════════ */
+/* ═══════════ DHAWI OUD — Obsidian Edition ═══════════ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{height:100%;}
 body{
@@ -658,7 +660,7 @@ body.dark-mode .product-card{background:rgba(22,14,6,0.90);}
 body.dark-mode #splash{background:#0D0A06 !important;}
 
 /* ═══════════════════════════════════════════════════════════
-   DHAWI MAISON — Quiet-Luxury Redesign Layer (Lab)
+   DHAWI OUD MAISON — Quiet-Luxury Redesign Layer (Lab)
    cream studio · matte gold · burgundy silk — light mode only,
    dark mode untouched. Visual overrides only, no logic.
    ═══════════════════════════════════════════════════════════ */
@@ -733,6 +735,51 @@ body:not(.dark-mode) #splash{background:var(--mz-cream);}
 .rev-hero-veil{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(24,13,8,0.30),rgba(24,13,8,0.74));}
 .rev-hero>*:not(.rev-hero-film):not(.rev-hero-veil){position:relative;z-index:1;}
 @media (prefers-reduced-motion:reduce){.rev-hero-film{display:none;}}
+/* ═══════════════════════════════════════════════════════════
+   MONOCHROME (أسود و أبيض) THEME — unifies every accent to a
+   single grayscale system and removes the scattered gold/green/
+   blue/burgundy inconsistencies. Applied last so it wins.
+   ═══════════════════════════════════════════════════════════ */
+/* 1 ─ Neutralize the warm background glows in both modes */
+body:not(.dark-mode){
+  background:#f4f4f4 !important;
+  background-image:radial-gradient(ellipse 140% 60% at 50% -10%,rgba(0,0,0,0.045) 0%,transparent 55%) !important;
+}
+body.dark-mode{
+  background:#0a0a0a !important;
+  background-image:radial-gradient(ellipse 140% 60% at 50% -10%,rgba(255,255,255,0.05) 0%,transparent 55%) !important;
+  color:#e9e9e9;
+}
+/* 2 ─ Retune brand tokens to a grayscale ramp */
+:root{
+  --mz-burg:#333 !important; --mz-burg-deep:#111 !important;
+  --mz-gold:#1a1a1a !important; --mz-gold-deep:#000 !important;
+  --mz-cream:#f4f4f4 !important; --mz-card:#ffffff !important; --mz-ink:#111 !important;
+}
+/* 3 ─ Primary action: solid ink on light, solid white on dark */
+.btn-gold{background:#141414 !important;color:#fff !important;box-shadow:0 4px 14px rgba(0,0,0,0.20) !important;}
+body.dark-mode .btn-gold{background:#f0f0f0 !important;color:#0a0a0a !important;box-shadow:0 4px 14px rgba(0,0,0,0.5) !important;}
+/* 4 ─ Active nav + selected chips → monochrome */
+.nav-btn.active,.nav-btn.active .nav-icon{color:#111 !important;}
+body.dark-mode .nav-btn.active,body.dark-mode .nav-btn.active .nav-icon{color:#fff !important;}
+.fchip.on,.cat-chip.on,.sort-chip.active{color:#111 !important;border-color:#111 !important;background:rgba(0,0,0,0.06) !important;}
+body.dark-mode .fchip.on,body.dark-mode .cat-chip.on,body.dark-mode .sort-chip.active{color:#fff !important;border-color:rgba(255,255,255,0.55) !important;background:rgba(255,255,255,0.10) !important;}
+/* 5 ─ Fix pre-existing low-contrast inline headings (recipe of the day) */
+.rd-title{color:#111 !important;}
+body.dark-mode .rd-title{color:#f2f2f2 !important;}
+.rd-desc{color:#555 !important;}
+body.dark-mode .rd-desc{color:#b8b8b8 !important;}
+/* 6 ─ Neutralize the splash gold ring while we're at it */
+#splash-ring{border-color:rgba(255,255,255,0.35) !important;}
+#splash-line{background:linear-gradient(90deg,transparent,#bbb,transparent) !important;}
+/* 7 ─ Brand marks — ink on light, off-white on dark (and the inverting Monolith tile) */
+.brand-logo{color:#141414;}
+body.dark-mode .brand-logo{color:#f2f2f2;}
+.brand-tile{fill:#141414;} .brand-smoke{stroke:#f7f7f7;} .brand-ember{fill:#f7f7f7;}
+body.dark-mode .brand-tile{fill:#f2f2f2;} body.dark-mode .brand-smoke{stroke:#111;} body.dark-mode .brand-ember{fill:#111;}
+/* 8 ─ SAFETY NET: force every remaining hue (inline colors, emoji,
+       status greens/reds/blues) to true grayscale for total consistency */
+#root{filter:grayscale(1) contrast(1.045);}
 </style>
 </head>
 <body>
@@ -741,13 +788,16 @@ body:not(.dark-mode) #splash{background:var(--mz-cream);}
   <div style="position:relative;margin-bottom:4px;display:flex;align-items:center;justify-content:center;">
     <div id="splash-ring"></div>
     <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#2C1A0E,#1A0E06);border:1px solid rgba(201,168,76,0.30);display:flex;align-items:center;justify-content:center;box-shadow:0 0 48px rgba(201,168,76,0.14),0 8px 32px rgba(0,0,0,0.55);position:relative;z-index:1;">
-      <span style="font-size:2.2rem">🪬</span>
+      <svg width="42" height="42" viewBox="0 0 100 100" fill="none" style="color:#EDE6D6">
+        <path d="M50 64 C42 56 57 49 50 40 C44 33 56 28 50 20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        <path d="M50 82 C47 77 46.5 74 46.5 72 a3.5 3.5 0 1 0 7 0 c0-2 -0.5 -5 -3.5 -10 Z" fill="currentColor"/>
+      </svg>
     </div>
   </div>
   <div id="splash-line"></div>
-  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.2rem;font-weight:300;color:#E8C870;letter-spacing:0.06em;line-height:1">ضاوي</div>
-  <div style="font-family:'Alexandria',sans-serif;font-size:0.62rem;font-weight:700;color:rgba(201,168,76,0.50);letter-spacing:0.65em;text-transform:uppercase;margin-top:4px">دهن العود</div>
-  <div style="margin-top:20px;font-family:'IBM Plex Mono',monospace;font-size:0.40rem;color:rgba(201,168,76,0.22);letter-spacing:0.38em;text-transform:uppercase">Private Oud Laboratory · Est. 2025</div>
+  <div style="font-family:'Alexandria',sans-serif;font-size:2rem;font-weight:800;color:#EDE6D6;letter-spacing:0.02em;line-height:1">ضاوي عود</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.78rem;font-weight:600;color:rgba(237,230,214,0.62);letter-spacing:0.42em;text-transform:uppercase;margin-top:6px">Dhawi Oud</div>
+  <div style="margin-top:20px;font-family:'IBM Plex Mono',monospace;font-size:0.40rem;color:rgba(237,230,214,0.30);letter-spacing:0.38em;text-transform:uppercase">Private Oud Atelier · Est. 2025</div>
 </div>
 <div id="root"></div>
 <script type="text/babel">
@@ -766,7 +816,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_62";
+const PENDING_RECIPES_VERSION="rec_63";
 const PENDING_RECIPES=[
   // ── rec_56: دساتير ربع التولة — مرجع التحسين السريع لأدهان لوكسودور الصافية ──
   {id:"r_qtola_ref",name:"دساتير ربع التولة — مرجع سريع",icon:"💧",season:"مناسبات",gender:"للجنسين",stability:"حسب الدهن",
@@ -1089,11 +1139,11 @@ const PENDING_RECIPES=[
    ing:[["lux_snake",8],["lux_black",4],["artessence",3],["safraleine",0.5],["patchouli",1.5],["cmp91",1.5],["labdanum",2],["benzoin_b",1.5],["sandal_indi",2],["ambermor",1],["lux_fixative",2],["cashmeran",0.5],["iso_e",0.3],["dpg",2.2]],
    steps:["⚡ بري-بلند الأفعى (12 ساعة مسبقاً): في زجاجة 10مل: Voice of Snake 8مل + Artessence 3مل — أغلق في بارد مظلم | الدمج المسبق يُوحّد الطابع الجلدي الدخاني مع الأصالة العودية — يصير أعمق وأكثر تعقيداً","ذب في بيكر 50°: لبدانوم 2جم + بنزوين B 1.5مل + DPG 2.2مل — 15 دقيقة مع قضيب ← اترك يبرد لـ 40°","على تحريك بارد: أضف Lux Black 4مل — العمود الداكن، حرّك 3 دقائق","أضف Patchouli Sumatra 1.5مل + CMP91 1.5مل — الثنائي الدخاني الأرضي يبني جسر الجلد-العود","أضف Sandalwood INDI 2مل + Ambermor شمعي 1جم (⚠️ أذبه على 50° أولاً) + Lux Fixative 2مل","أضف خليط بري-بلند الأفعى (Voice of Snake + Artessence من الخطوة الأولى) دفعة واحدة — حرّك دائرياً 3 دقائق","سرنجة: Safraleine 0.5مل (💡 5مل محلول 10%: 0.1مل+0.9مل DPG) + Cashmeran 0.5مل + ISO E Super 0.3مل","انقل لزجاجة داكنة 30مل + قضيب ← عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | الجلد والزعفران يتطوران كاملاً في الأسبوع الثالث | بشرة رطبة بالجوجوبا للثبات الأقصى"]},
   // ── rec_55: مخلط صندل ورد — منتج جديد ──────────────────────────────────────
-  {id:"r_sandal_ward",name:"مخلط صندل ورد",icon:"🌹",season:"صيف",gender:"للجنسين",stability:"24+ ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:85,
+  {id:"r_sandal_ward",name:"مخلط صندل ورد",icon:"🌹",season:"صيف",gender:"للجنسين",stability:"24+ ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:50,
    story:"ورد الطائف والصندل الهندي في تناغم عطري أصيل — رقّة تُلامس الروح قبل الجلد. يفتح بنضارة الورد الطائفي الفاخر ثم يستقر في دفء الصندل الكريمي. الاختيار اليومي لمن يبحث عن نعومة حقيقية بثمن مناسب.",
-   desc:"قمة: بتلات ورد + ورد طائفي فعلي | قلب: مخلط صندل ورد كريمي | قاعدة: بنزوين+كشميري خفيف | صيفي أنيق للجنسين — 100مل | 85 ريال",
-   ing:[["sandal_ward",58],["wild_petal",5],["pea",2],["benzoin_b",7],["cashmeran",4],["iso_e",2],["rose_taif",2],["jojoba",15],["dpg",5]],
-   steps:["⚡ رابط الورد (20 دق): Wild Petal 5مل + Benzoin B 3مل في كوب مغلق — 20 دقيقة | 🎯 تحليل: أضيفت بتلات الورد الفعلية (Bulkaroma) بدل الاعتماد على ISO E وحده — الورد الطائفي حاضر أخيراً في مزيج يحمل اسمه","في كوب صغير: Benzoin B 4مل المتبقي + DPG 3مل — على 50° حتى يذوب ← اترك يبرد لـ 35° تماماً (⚠️ لا تُضف للعطر وهو ساخن)","في بيكر بارد: Rose Sandal Ward 58مل (🎯 مُخفَّض من 72 — قاعدة أخف للصيف) ← أضف محلول البنزوين البارد ← Jojoba 15مل (🎯 مرفوع من 5 — توازن صيفي أخف) ← DPG 2مل المتبقي","أضف خليط رابط الورد (Wild Petal + Benzoin) ← ثم PEA 2مل فقط ⚠️ (وردية عليا — لا تزد فتعطي معدنية)","سرنجة: Cashmeran 4مل (كشميري خفيف — مُخفَّض من 5) ← ISO E Super 2مل (🎯 مرفوع من 0.5 — قمة نفّاثة أخيراً، بارد دائماً) — حرّك 2 دقيقة","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 2مل (شرفان) — يُعزّز الورد الفعلي لكن الوصفة تعمل كاملة بدونه","انقل لزجاجة 100مل داكنة ← أحكم الغطاء ← بارد مظلم أسبوعاً | ⚠️ لا حرارة إطلاقاً | الورد يتفتّح من اليوم الخامس | جرّب على البشرة الرطبة"]},
+   desc:"قمة: بتلات ورد + ورد طائفي فعلي | قلب: مخلط صندل ورد كريمي | قاعدة: بنزوين+كشميري خفيف | صيفي أنيق للجنسين — 50مل | 50 ريال",
+   ing:[["sandal_ward",29],["wild_petal",2.5],["pea",1],["benzoin_b",3.5],["cashmeran",2],["iso_e",1],["rose_taif",1],["jojoba",7.5],["dpg",2.5]],
+   steps:["⚡ رابط الورد (20 دق): Wild Petal 2.5مل + Benzoin B 1.5مل في كوب مغلق — 20 دقيقة | 🎯 بتلات الورد الفعلية (Bulkaroma) بدل الاعتماد على ISO E وحده — الورد الطائفي حاضر في مزيج يحمل اسمه","في كوب صغير: Benzoin B 2مل المتبقي + DPG 1.5مل — على 50° حتى يذوب ← اترك يبرد لـ 35° تماماً (⚠️ لا تُضف للعطر وهو ساخن)","في بيكر بارد: Rose Sandal Ward 29مل ← أضف محلول البنزوين البارد ← Jojoba 7.5مل (توازن صيفي أخف) ← DPG 1مل المتبقي","أضف خليط رابط الورد (Wild Petal + Benzoin) ← ثم PEA 1مل فقط ⚠️ (وردية عليا — لا تزد فتعطي معدنية)","سرنجة: Cashmeran 2مل (كشميري خفيف) ← ISO E Super 1مل (قمة نفّاثة، بارد دائماً) — حرّك 2 دقيقة","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1مل (شرفان) — يُعزّز الورد الفعلي لكن الوصفة تعمل كاملة بدونه","انقل لزجاجة 50مل داكنة ← أحكم الغطاء ← بارد مظلم أسبوعاً | ⚠️ لا حرارة إطلاقاً | الورد يتفتّح من اليوم الخامس | جرّب على البشرة الرطبة"]},
   // ── هدية شخصية — صباحي بالهيل بلا ورد ─────────────────────────
   {id:"r_sabah_rooh",name:"صباح الرُّوح",icon:"☕",season:"ربيع",gender:"نسائي",stability:"10-12 ساعة",perfumer:"ضاوي",
    story:"هيلٌ شرقيٌّ يُشرق كأول ضوء صباح، يلتفّ حول عودٍ كمبودي ناعم وصندلٍ كريمي يحملانه بدفءٍ لا يُثقل. عطرٌ للعمل والنهار — حاضرٌ قربها دون أن يصرخ، يبقى على معصمها كهمسةٍ تعود إليها بين اجتماعٍ وآخر. بلا ورد، بل دفءٌ شرقيٌّ خالص لروحٍ عزيزة.",
@@ -1112,6 +1162,20 @@ const PENDING_RECIPES=[
    desc:"قمة: افتتاحية بحرية مالحة + فلفل وردي (هيل) | قلب: ورد دمشقي (بتلات) | قاعدة: عنبر معدني + طحلب (باتشولي+فيتيفير) | مقارب Gucci Rosa Incandescente | نسائي",
    ing:[["lux_afternoon",4],["wild_petal",6],["pea",2],["cardamom",0.3],["ambermor",2],["patchouli",1.5],["vetiver",0.8],["labdanum",1],["benzoin_b",2],["cashmeran",1.5],["lux_fixative",2],["iso_e",0.8],["jojoba",4],["dpg",4]],
    steps:["⚡ رابط الورد (20 دق): Wild Petal 6مل + Benzoin B 2مل في كوب مغلق — 20 دقيقة | في كوب آخر: أذب Ambermor شمعي 2جم + لبدانوم 1جم في 50° ← اترك يبرد تماماً","في بيكر بارد: Jojoba 4مل + DPG 4مل — الحامل الخفيف المنعش","أضف Lux Afternoon Swim 4مل — الافتتاحية البحرية المالحة المنعشة (حمضيات + مائي) — هي روح «روزا إنكانديسنتي» البحرية","أضف خليط رابط الورد (Wild Petal + Benzoin) ← ثم PEA 2مل فقط ⚠️ (لا تزد — معدنية حادة) — الورد الدمشقي في القلب","أضف Cardamom 0.3مل بارداً ⚠️ (لا تزد — يقوم مقام الفلفل الوردي: نفحة حارّة منعشة في القمة)","أضف محلول العنبر-اللبدانوم المُبرَّد — العنبر المعدني يقوم مقام الآمبرغريس/أوركانوكس","أضف Patchouli 1.5مل + Vetiver 0.8مل — القاعدة الطحلبية الخضراء تقوم مقام طحلب البلوط والطحالب البحرية (روح الشيبر المائي) | ⚠️ ملاحظة: الفيتيفير هنا آمن — مع الورد لا مع العود الحلو","سرنجة: Cashmeran 1.5مل + Lux Fixative 2مل + ISO E Super 0.8مل — بارداً دائماً","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 2مل (شرفان) + مسك رمان 1مل (شرفان) — يُعمّقان الورد الدمشقي، والوصفة تعمل كاملة بدونها","⚠️ عتّق 3 أسابيع في بارد مظلم | 💡 خفيف بحري نهاري-مسائي — رشّة على الرسغ والعنق | 🎯 للمطابقة الأقرب: أضف Ambroxan (من سلة PerfumersWorld) 0.5مل بدل جزء من العنبرمور — يعطي الوهج المعدني-المالح الحقيقي لأوركانوكس"]},
+  // ── نسخة بخاخ كحولية (إيثانول عطري — للبشرة) لـ«وهج الورد» — بلا جوجوبا | 100مل EDP ~20% ──
+  {id:"s_wahj_ward",name:"وهج الورد — بخاخ",icon:"🌹",season:"ربيع",gender:"نسائي",stability:"8-12 ساعة",perfumer:"ضاوي",inspired:true,
+   story:"النسخة الكحولية من «وهج الورد» — وردةٌ بحرية تنتشر في الهواء لحظة الرش. بلا زيت جوجوبا (لا يمتزج بالكحول)، بل كحولٌ عطريٌّ نقيّ يحمل الورد الدمشقي والملح البحري إلى مدى أوسع من الدهن. أنوثةٌ منعشة تُرَشّ على البشرة والثياب — مقاربٌ لـ Gucci Rosa Incandescente بروح دار ضاوي.",
+   desc:"بخاخ EDP ~20% على كحول عطري (إيثانول 96%) | قمة: بحري مالح + فلفل وردي (هيل) | قلب: ورد دمشقي | قاعدة: عنبر معدني + طحلب | بلا جوجوبا | نسائي — 100مل | ⚠️ يحتاج كحولاً عطرياً (لا IPA)",
+   ing:[["lux_afternoon",4],["wild_petal",5],["pea",1.5],["cardamom",0.25],["ambermor",1.5],["patchouli",1.2],["vetiver",0.6],["labdanum",0.8],["benzoin_b",1.5],["cashmeran",1.2],["lux_fixative",1.5],["iso_e",0.45],["ethanol",80.5]],
+   steps:["⚡ رابط الراتنج في الكحول (مسبقاً): في كوب زجاجي صغير أذب Ambermor شمعي 1.5جم + لبدانوم 0.8جم + Benzoin B 1.5مل في ~10مل كحول عطري على حمام ماء دافئ 40° مع تحريك حتى يصفو تماماً ← اترك يبرد (⚠️ الكحول قابل للاشتعال — سخّن على حمام ماء بعيداً عن اللهب المباشر)","في زجاجة/بيكر نظيف: أضف بقية الكحول العطري (~70مل) في حرارة الغرفة","أضف Lux Afternoon Swim 4مل — الافتتاحية البحرية المالحة (تذوب في الكحول مباشرة ✓)","أضف Wild Petal 5مل + PEA 1.5مل ⚠️ (الورد الدمشقي — لا تزد الـPEA فتعطي معدنية حادة) + Cardamom 0.25مل بارداً (يقوم مقام الفلفل الوردي)","أضف محلول الراتنج المُبرَّد (Ambermor+لبدانوم+Benzoin) ← Patchouli 1.2مل + Vetiver 0.6مل (القاعدة الطحلبية الخضراء)","سرنجة: Cashmeran 1.2مل + Lux Fixative 1.5مل + ISO E Super 0.45مل","أكمل بالكحول العطري حتى 100مل بالضبط ← أغلق وهزّ برفق دقيقة","⚠️ عتّق 3-4 أسابيع في بارد مظلم (الكحول يحتاج نضجاً أطول من الدهن) | 💡 الراتنجات قد تُعكّر السائل: صفِّ بفلتر قهوة/ورق قبل التعبئة ← عبّي في أتومايزر | رشّة على الرسغ والعنق | 🎯 للمطابقة الأقرب لـ Gucci Rosa: أضف Ambroxan 0.5مل بدل جزء من العنبرمور"],
+   stepsAlt:{ml8:["في زجاجة 10مل: أضف المواد العطرية بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أذب الراتنجات (Ambermor+لبدانوم+Benzoin) في جزء من الكحول على حمام ماء 40° أولاً (بعيداً عن اللهب) ← أضف بقية الكحول العطري تدريجياً مع رج خفيف","أغلق محكماً — عتّق أسبوعاً في بارد مظلم","صفِّ بفلتر ورق ← اختبر على الرسغ: توب 15 دق ← قلب ساعة ← قاعدة"],ml12:["في بيكر 25مل: المواد العطرية بالقطارة (الكميات × 0.12)","أذب الراتنجات في جزء كحول على 40° ← أضف بقية الكحول العطري مع التحريك","عتّق 10-14 يوم في بارد مظلم ← صفِّ بفلتر ورق ← أتومايزر 12مل"],ml30:["في بيكر 50مل: قس المواد العطرية بدقة (الكميات × 0.30)","أذب الراتنجات في ~3مل كحول على 40° ← برّد ← أضف بقية الكحول العطري ببطء مع التحريك","عتّق 2-3 أسابيع في بارد مظلم","صفِّ بفلتر قهوة ← أتومايزر داكن 30مل — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة 6+ ساعة"],ml50:["في بيكر 100مل: قس المواد العطرية بدقة (الكميات × 0.50)","أذب الراتنجات في ~5مل كحول على 40° ← برّد تماماً","أضف نصف الكحول العطري ← حرّك ← الباقي ← حرّك","عتّق 3 أسابيع في بارد مظلم — الأسبوع الثالث نضج الفوحان","صفِّ بفلتر قطن/ورق ← أتومايزر 50مل"],ml100:["في بيكر 250مل: صب المواد العطرية بالترتيب (الأثقل أولاً — الكحول أخيراً)","أذب الراتنجات في ~10مل كحول على حمام ماء 40° (بعيداً عن اللهب) ← برّد تماماً","أضف الكحول العطري تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق 3-4 أسابيع في بارد مظلم","صفِّ بفلتر قهوة/ورق (يشيل عكارة الراتنج) ← زجاجة داكنة للتخزين","عبّي في أتومايزر 100مل بعد اكتمال التعتيق"]}},
+  // ── نسخة بخاخ كحولية (إيثانول عطري — للبشرة) لـ«صباح الرُّوح» — بلا جوجوبا | 100مل ~14% نهاري خفيف ──
+  {id:"s_sabah_rooh",name:"صباح الرُّوح — بخاخ",icon:"☕",season:"ربيع",gender:"نسائي",stability:"6-9 ساعات",perfumer:"ضاوي",inspired:true,
+   story:"النسخة الكحولية من «صباح الرُّوح» — هيلٌ شرقيٌّ مشرق يُرَشّ كأول ضوء صباح، خفيفٌ نهاريٌّ يلفّ صندلاً كريمياً وعوداً كمبودياً ناعماً. بلا زيت جوجوبا، بل كحولٌ عطريٌّ يمنحه انتشاراً أنيقاً للعمل دون أن يُثقل. بلا ورد، دفءٌ شرقيٌّ خالص لروحٍ عزيزة.",
+   desc:"بخاخ خفيف ~14% على كحول عطري (إيثانول 96%) | قمة: هيل شرقي مشرق | قلب: كمبودي ناعم + صندل كريمي | قاعدة: بنزوين+كشميري+تبغ خفيف | بلا ورد | نسائي — 100مل | ⚠️ يحتاج كحولاً عطرياً (لا IPA)",
+   ing:[["cardamom",1],["lux_cambodi",2.5],["sandal_indi",5.5],["benzoin_b",1.5],["cashmeran",1.3],["tonquitone",0.4],["safraleine",0.15],["ambermor",0.85],["iso_e",0.8],["ethanol",86]],
+   steps:["⚡ رابط الراتنج في الكحول (مسبقاً): أذب Ambermor شمعي 0.85جم + Benzoin B 1.5مل في ~8مل كحول عطري على حمام ماء دافئ 40° حتى يصفو ← برّد (⚠️ بعيداً عن اللهب المباشر — الكحول قابل للاشتعال)","في بيكر نظيف: بقية الكحول العطري (~76مل) في حرارة الغرفة","أضف Sandalwood INDI 5.5مل — الجسم الكريمي الذي يحمل الهيل ويمنحه دفئاً ناعماً","أضف Lux Cambodi 2.5مل — عود كمبودي ناعم تحت الصندل (بلا حِدّة)","أضف Cardamom 1مل ⚠️ بارداً (النجم الصباحي — لا تزد أبداً، الهيل يطغى بسرعة)","أضف محلول الراتنج المُبرَّد ← سرنجة: Safraleine 0.15مل (💡 محلول 10%: 0.05مل مركّز مذاب في 0.45مل DPG للدقة) + Cashmeran 1.3مل + Tonquitone 0.4مل (تبغ حلو خفيف) + ISO E Super 0.8مل","أكمل بالكحول العطري حتى 100مل بالضبط ← أغلق وهزّ برفق","⚠️ عتّق أسبوعين-3 في بارد مظلم ← صفِّ بفلتر ورق (الراتنج قد يُعكّر السائل) ← أتومايزر | 💡 خفيف نهاري للعمل — رشّة على الرسغ والعنق، حاضرٌ قربها دون أن يصرخ"],
+   stepsAlt:{ml8:["في زجاجة 10مل: أضف المواد العطرية بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أذب الراتنجات (Ambermor+Benzoin) في جزء من الكحول على حمام ماء 40° أولاً (بعيداً عن اللهب) ← أضف بقية الكحول العطري تدريجياً مع رج خفيف","أغلق محكماً — عتّق أسبوعاً في بارد مظلم","صفِّ بفلتر ورق ← اختبر على الرسغ: توب 15 دق ← قلب ساعة ← قاعدة"],ml12:["في بيكر 25مل: المواد العطرية بالقطارة (الكميات × 0.12)","أذب الراتنجات في جزء كحول على 40° ← أضف بقية الكحول العطري مع التحريك","عتّق 10-14 يوم في بارد مظلم ← صفِّ بفلتر ورق ← أتومايزر 12مل"],ml30:["في بيكر 50مل: قس المواد العطرية بدقة (الكميات × 0.30)","أذب الراتنجات في ~2مل كحول على 40° ← برّد ← أضف بقية الكحول العطري ببطء مع التحريك","عتّق أسبوعين-3 في بارد مظلم","صفِّ بفلتر قهوة ← أتومايزر داكن 30مل — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة"],ml50:["في بيكر 100مل: قس المواد العطرية بدقة (الكميات × 0.50)","أذب الراتنجات في ~4مل كحول على 40° ← برّد تماماً","أضف نصف الكحول العطري ← حرّك ← الباقي ← حرّك","عتّق 3 أسابيع في بارد مظلم","صفِّ بفلتر قطن/ورق ← أتومايزر 50مل"],ml100:["في بيكر 250مل: صب المواد العطرية بالترتيب (الأثقل أولاً — الكحول أخيراً)","أذب الراتنجات في ~8مل كحول على حمام ماء 40° (بعيداً عن اللهب) ← برّد تماماً","أضف الكحول العطري تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق أسبوعين-3 في بارد مظلم","صفِّ بفلتر قهوة/ورق (يشيل عكارة الراتنج) ← زجاجة داكنة للتخزين","عبّي في أتومايزر 100مل بعد اكتمال التعتيق"]}},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -1195,6 +1259,7 @@ const RAW=[
   ["jojoba","Jojoba Oil (زيت جوجوبا)","محلي","حامل",60,50,"مل"],
   ["dpg","DPG Dipropylene Glycol (ديوبي)","محلي","حامل",40,200,"مل"],
   ["ipa","Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)","محلي","حامل",30,0,"مل"],
+  ["ethanol","Perfumer's Alcohol Ethanol 96% (كحول عطري إيثانول 96% — للبشرة)","محلي","حامل",55,0,"مل"],
   ["blend1","Blend No.1 (الخلطة الأولى)","صناعتي","خلطة",300,95,"مل"],
   ["blend2","Blend No.2 (الخلطة الثانية)","صناعتي","خلطة",300,70,"مل"],
 ];
@@ -1413,9 +1478,11 @@ function applyRecipeDeduct(inv){
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
 const INVENTORY_REMOVE_VERSION="ir_02";
 const INVENTORY_REMOVE=["lux_hindi_sweety","benzoin_a"];
-const INVENTORY_ADD_VERSION="ia_03";
+const INVENTORY_ADD_VERSION="ia_04";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
+  // كحول عطري (إيثانول) لبخاخات العطر النسائية — للبشرة (بديل IPA غير المناسب للجلد) | stock 0 = يُشترى قبل التصنيع
+  {id:"ethanol",name:"Perfumer's Alcohol Ethanol 96% (كحول عطري إيثانول 96% — للبشرة)",brand:"محلي",cat:"حامل",price:55,qty:0,unit:"مل"},
   // Luxodor Invoice #000472 — Jun 2026 (1 USD = 3.75 SAR)
   {id:"lux_khalifa",name:"Mukhallat Khalifa (مخلط الخليفة)",brand:"Luxodor",cat:"عود",price:319,qty:100,unit:"مل"},
   {id:"lux_bormi",name:"Oud Bormi (عود بورمي)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
@@ -1568,6 +1635,16 @@ function applyRecipeCleanup(recipes){
   lsSet("dw_rc_ver",RECIPE_CLEANUP_VERSION);
   return cleaned;
 }
+// ── one-time forced price override — sets exact price_sar for specific recipes for ALL users
+// (applyPendingRecipes preserves a user's saved price, so this is needed to push a new price to everyone)
+const PRICE_OVERRIDE_VERSION="po_01";
+const PRICE_OVERRIDE={r_sandal_ward:50};
+function applyPriceOverride(recipes){
+  if(lsGet("dw_po_ver","")===PRICE_OVERRIDE_VERSION)return recipes;
+  const overridden=recipes.map(r=>PRICE_OVERRIDE[r.id]!==undefined?{...r,price_sar:PRICE_OVERRIDE[r.id]}:r);
+  lsSet("dw_po_ver",PRICE_OVERRIDE_VERSION);
+  return overridden;
+}
 const OUD_XX_VERSION="oud_xx_01";
 function applyOudXxFix(inv){
   if(lsGet("dw_oudxx_ver","")===OUD_XX_VERSION)return inv;
@@ -1590,19 +1667,28 @@ function applyRestock(inv){
   return [...map.values()];
 }
 
+// ضاوي عود — "Monolith": negative-space oud-smoke tile that inverts by mode (ink tile / paper smoke, and vice-versa)
 const Logo=({size=52})=>(
-  <svg width={size} height={size} viewBox="0 0 140 140" fill="none">
-    <circle cx="70" cy="70" r="68" fill="#1a0800" stroke="#D4AF37" strokeWidth="2"/>
-    <path d="M44 60 Q34 50 30 36 Q42 40 50 50 Q54 56 52 64 Z" fill="#2d6a1b" opacity="0.75"/>
-    <path d="M96 60 Q106 50 110 36 Q98 40 90 50 Q86 56 88 64 Z" fill="#2d6a1b" opacity="0.75"/>
-    <rect x="60" y="34" width="20" height="12" rx="2" fill="#D4AF37"/>
-    <rect x="64" y="46" width="12" height="8" fill="#b8921e"/>
-    <path d="M54 56 Q54 52 60 52 L80 52 Q86 52 86 56 L86 96 Q86 110 70 112 Q54 110 54 96 Z" fill="#8B4513" stroke="#D4AF37" strokeWidth="1.5"/>
-    <path d="M58 78 Q58 74 62 74 L78 74 Q82 74 82 78 L82 96 Q82 106 70 108 Q58 106 58 96 Z" fill="#D4AF37" opacity="0.55"/>
-    <path d="M70 16 Q66 24 66 28 Q66 33 70 33 Q74 33 74 28 Q74 24 70 16 Z" fill="#D4AF37"/>
-    <circle cx="48" cy="100" r="2" fill="#D4AF37" opacity="0.8"/><circle cx="94" cy="96" r="2.4" fill="#D4AF37" opacity="0.8"/><circle cx="100" cy="74" r="1.6" fill="#D4AF37" opacity="0.7"/>
-    <path d="M70 118 L72 124 L78 124 L73 128 L75 134 L70 130 L65 134 L67 128 L62 124 L68 124 Z" fill="#D4AF37" opacity="0.7"/>
+  <svg width={size} height={size} viewBox="0 0 100 100">
+    <rect className="brand-tile" width="100" height="100" rx="27"/>
+    <path className="brand-smoke" d="M50 64 C42 56 57 49 50 40 C44 33 56 28 50 20" fill="none" strokeWidth="3" strokeLinecap="round"/>
+    <path className="brand-ember" d="M50 82 C47 77 46.5 74 46.5 72 a3.5 3.5 0 1 0 7 0 c0-2 -0.5 -5 -3.5 -10 Z"/>
   </svg>
+);
+// bare oud-smoke gesture (currentColor) — for splash/dark circles
+const LogoMark=({size=46})=>(
+  <svg className="brand-logo" width={size} height={size} viewBox="0 0 100 100" fill="none">
+    <path d="M50 64 C42 56 57 49 50 40 C44 33 56 28 50 20" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+    <path d="M50 82 C47 77 46.5 74 46.5 72 a3.5 3.5 0 1 0 7 0 c0-2 -0.5 -5 -3.5 -10 Z" fill="currentColor"/>
+  </svg>
+);
+// wordmark lockup — the modern bilingual signature (mark + ضاوي عود + DHAWI OUD)
+const LogoSeal=({size=132})=>(
+  <div className="brand-logo" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:`${size*0.05}px`}}>
+    <LogoMark size={size*0.30}/>
+    <div style={{fontFamily:"'Alexandria',sans-serif",fontWeight:800,fontSize:`${size*0.28}px`,letterSpacing:"1px",lineHeight:0.9}}>ضاوي عود</div>
+    <div style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:500,fontSize:`${size*0.108}px`,letterSpacing:"0.55em",paddingInlineStart:"0.55em",opacity:0.82}}>DHAWI OUD</div>
+  </div>
 );
 
 // ─── date helper ────────────────────────────────────────────────
@@ -1640,7 +1726,7 @@ function App(){
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
   const [inv,setInv]=useState(()=>applyRestock(applyStockSnapshot(applyOudXxFix(applyNameFix(applyInventoryRemove(applyInventoryAdd(applyRecipeDeduct(applyExtraStock(applyStockFix(applyPendingPurchases(lsGet("dw_inv",buildInv()))))))))))));
-  const [recipes,setRecipes]=useState(()=>applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES))));
+  const [recipes,setRecipes]=useState(()=>applyPriceOverride(applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES)))));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
   const [search,setSearch]=useState("");
@@ -1825,7 +1911,7 @@ function App(){
     const dateStr=now.toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
     const rows=cartItems.map(i=>`<tr><td>${i.icon} ${i.name}<br><span style="font-size:9px;color:#888">${i.batchName||""}</span></td><td style="text-align:center">${i.qty}</td><td style="text-align:left">${i.price}</td><td style="text-align:left;font-weight:700">${i.price*i.qty}</td></tr>`).join("");
     const w=window.open("","_blank","width=390,height=720");
-    w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>فاتورة Atelier Dhawi</title>
+    w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>فاتورة Dhawi Oud</title>
     <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 22px;max-width:340px;margin:0 auto;font-size:13px}
     .hdr{text-align:center;padding-bottom:14px;margin-bottom:14px;border-bottom:3px double #000}
     .brand{font-size:22px;font-weight:900;letter-spacing:5px}
@@ -1838,7 +1924,7 @@ function App(){
     .tot-final{font-size:16px;font-weight:900;border-top:1px dashed #000;margin-top:6px;padding-top:6px}
     .ftr{text-align:center;margin-top:20px;padding-top:14px;border-top:1px dashed #aaa;font-size:9px;color:#777;letter-spacing:2px;line-height:1.9}
     .stars{color:#C9A84C;font-size:15px;letter-spacing:4px}</style></head><body>
-    <div class="hdr"><div class="brand">ATELIER DHAWI</div><div class="sub">دهن العود الفاخر</div><div style="font-size:10px;margin-top:6px;color:#444">${dateStr}</div></div>
+    <div class="hdr"><div class="brand">DHAWI OUD</div><div class="sub">دهن العود الفاخر</div><div style="font-size:10px;margin-top:6px;color:#444">${dateStr}</div></div>
     <div class="meta"><span>فاتورة: ${invNo}</span></div>
     <table><thead><tr><th style="text-align:right">المنتج</th><th>ك</th><th style="text-align:left">السعر</th><th style="text-align:left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="tot">
@@ -1846,7 +1932,7 @@ function App(){
       <div class="tot-row" style="color:#777;font-size:11px"><span>ضريبة القيمة المضافة 15%</span><span>${Math.round(cartTotal*0.15)} ر</span></div>
       <div class="tot-row tot-final"><span>الإجمالي شامل الضريبة</span><span>${Math.round(cartTotal*1.15)} ر</span></div>
     </div>
-    <div class="ftr"><div class="stars">★ ★ ★ ★ ★</div><div>شكراً لتعاملكم معنا</div><div>Atelier Dhawi · Private Oud Lab</div><div style="margin-top:8px;direction:ltr;font-size:8px;letter-spacing:0">${invNo} — ${cartItems.length} منتج</div></div>
+    <div class="ftr"><div class="stars">★ ★ ★ ★ ★</div><div>شكراً لتعاملكم معنا</div><div>Dhawi Oud · Private Oud Lab</div><div style="margin-top:8px;direction:ltr;font-size:8px;letter-spacing:0">${invNo} — ${cartItems.length} منتج</div></div>
     <script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
   };
 
@@ -1856,9 +1942,15 @@ function App(){
     setInv(p=>p.map(i=>{const ri=r.ing.find(x=>x[0]===i.id);return ri?{...i,stock:Math.max(0,+(i.stock-ri[1]*sc).toFixed(2))}:i;}));
     const aging=agingDaysOf(r.stability);
     const readyDate=new Date(Date.now()+aging*86400000).toISOString();
-    const bNo="D-"+String(batchCounter).padStart(4,"0");
-    const entry={id:"p_"+Date.now(),batchNo:bNo,recipeId:r.id,recipeName:r.name,recipeIcon:r.icon,batch:BATCH_NAME[batchUnit],vol,cost:+cost.toFixed(1),date:new Date().toISOString(),agingDays:aging,readyDate,sold:false,sellPrice:null,customerId:null,note:batchNote.trim()||null};
-    setProdLog(p=>[entry,...p]);
+    const note=batchNote.trim()||null;
+    setProdLog(p=>{
+      // derive the next batch number from the actual log so two rapid produces never collide
+      const maxNo=p.reduce((m,e)=>Math.max(m,parseInt(String(e.batchNo||"").replace(/\D/g,""))||0),batchCounter-1);
+      const nextNo=maxNo+1;
+      const bNo="D-"+String(nextNo).padStart(4,"0");
+      const entry={id:"p_"+Date.now()+"_"+nextNo,batchNo:bNo,recipeId:r.id,recipeName:r.name,recipeIcon:r.icon,batch:BATCH_NAME[batchUnit],vol,cost:+cost.toFixed(1),date:new Date().toISOString(),agingDays:aging,readyDate,sold:false,sellPrice:null,customerId:null,note};
+      return [entry,...p];
+    });
     setBatchCounter(p=>p+1);
     setBatchNote("");
     show("🏭 أُنتجت "+BATCH_NAME[batchUnit]+" من "+r.name);
@@ -1957,7 +2049,7 @@ function App(){
       document.body.removeChild(tmp);
       const w=window.open("","_blank","width=420,height=560");
       if(!w){show("⚠️ اسمح بالنوافذ المنبثقة لطباعة الملصق");return;}
-      w.document.write(`<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>ملصق ${e.batchNo}</title><style>body{font-family:-apple-system,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#fff}.lbl{width:58mm;border:1.2px solid #8A6A1E;border-radius:10px;padding:12px 10px;text-align:center}.b{font-size:0.60rem;letter-spacing:0.30em;color:#8A6A1E;margin-bottom:6px}.n{font-size:1.02rem;font-weight:800;color:#1A1208;margin-bottom:2px}.m{font-size:0.66rem;color:#555;margin-bottom:8px}img{width:100px;height:100px}.f{font-size:0.60rem;color:#777;margin-top:6px;line-height:1.6}@media print{body{min-height:auto}}</style></head><body><div class="lbl"><div class="b">ATELIER DHAWI</div><div class="n">${e.recipeIcon||""} ${e.recipeName}</div><div class="m">دفعة #${e.batchNo} · ${e.batch||""} · ${e.vol||""}مل</div>${src?`<img src="${src}"/>`:""}<div class="f">إنتاج: ${(e.date||"").slice(0,10)}<br/>جاهز: ${(e.readyDate||"").slice(0,10)}</div></div></body></html>`);
+      w.document.write(`<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>ملصق ${e.batchNo}</title><style>body{font-family:-apple-system,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#fff}.lbl{width:58mm;border:1.2px solid #8A6A1E;border-radius:10px;padding:12px 10px;text-align:center}.b{font-size:0.60rem;letter-spacing:0.30em;color:#8A6A1E;margin-bottom:6px}.n{font-size:1.02rem;font-weight:800;color:#1A1208;margin-bottom:2px}.m{font-size:0.66rem;color:#555;margin-bottom:8px}img{width:100px;height:100px}.f{font-size:0.60rem;color:#777;margin-top:6px;line-height:1.6}@media print{body{min-height:auto}}</style></head><body><div class="lbl"><div class="b">DHAWI OUD</div><div class="n">${e.recipeIcon||""} ${e.recipeName}</div><div class="m">دفعة #${e.batchNo} · ${e.batch||""} · ${e.vol||""}مل</div>${src?`<img src="${src}"/>`:""}<div class="f">إنتاج: ${(e.date||"").slice(0,10)}<br/>جاهز: ${(e.readyDate||"").slice(0,10)}</div></div></body></html>`);
       w.document.close();
       setTimeout(()=>{try{w.focus();w.print();}catch(_){}} ,400);
     },90);
@@ -1967,13 +2059,18 @@ function App(){
     const file=e.target.files[0];if(!file)return;
     const reader=new FileReader();
     reader.onload=ev=>{try{
-      const data=JSON.parse(ev.target.result);
-      if(data.inv)setInv(data.inv);
-      if(data.recipes)setRecipes(data.recipes);
-      if(data.prodLog)setProdLog(data.prodLog);
-      if(data.purchases)setPurchases(data.purchases);
-      if(data.customers)setCustomers(data.customers);
-      if(data.favoriteIds)setFavoriteIds(data.favoriteIds);
+      const raw=JSON.parse(ev.target.result);
+      if(!raw||typeof raw!=="object")throw new Error("bad");
+      // deep-strip angle brackets from every string → prevents injected markup surfacing in the print/label windows
+      const clean=v=>Array.isArray(v)?v.map(clean):(v&&typeof v==="object")?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,clean(x)])):(typeof v==="string"?v.replace(/[<>]/g,""):v);
+      const data=clean(raw);
+      const arr=x=>Array.isArray(x)?x:[];
+      if(data.inv)setInv(arr(data.inv).filter(i=>i&&i.id).map(i=>({...i,qty:+i.qty||0,stock:+i.stock||0,price:+i.price||0,unitCost:+i.unitCost||0})));
+      if(data.recipes)setRecipes(arr(data.recipes).filter(r=>r&&r.id&&Array.isArray(r.ing)));
+      if(data.prodLog)setProdLog(arr(data.prodLog));
+      if(data.purchases)setPurchases(arr(data.purchases));
+      if(data.customers)setCustomers(arr(data.customers));
+      if(Array.isArray(data.favoriteIds))setFavoriteIds(data.favoriteIds);
       show("✅ استُعيدت البيانات بنجاح");setShowBackup(false);
     }catch{show("❌ ملف غير صالح",true);}};
     reader.readAsText(file);
@@ -1985,7 +2082,7 @@ function App(){
     const lines=r.ing.map(([id,a])=>{const ing=getIng(id);const need=a*sc;return `${ing?.name||id}: ${need.toFixed(2)} ${ing?.unit||''} (${(ing?ing.unitCost*need:0).toFixed(2)} ر)`;}).join('\n');
     const scStep=txt=>txt.replace(/(\d+(?:\.\d+)?)\s*(مل|جم)/g,(_,n,u)=>`${fmtAmt(parseFloat(n)*sc)}${u}`);
     const steps=r.steps.map((s,i)=>`${i+1}. ${scStep(s)}`).join('\n');
-    const txt=`ضاوي دهن العود — ${r.name} ${r.icon}\n${'='.repeat(35)}\n${r.desc}\n\nالدفعة: ${BATCH_NAME[batchUnit]} (${vol} مل)\nالتكلفة: ${cost.toFixed(1)} ريال\n\nالمكونات:\n${lines}\n\nالخطوات:\n${steps}\n\nالثبات: ${r.stability} | ${r.gender} | ${r.season}`;
+    const txt=`ضاوي عود — ${r.name} ${r.icon}\n${'='.repeat(35)}\n${r.desc}\n\nالدفعة: ${BATCH_NAME[batchUnit]} (${vol} مل)\nالتكلفة: ${cost.toFixed(1)} ريال\n\nالمكونات:\n${lines}\n\nالخطوات:\n${steps}\n\nالثبات: ${r.stability} | ${r.gender} | ${r.season}`;
     const w=window.open('','_blank','width=600,height=700');
     w.document.write(`<html dir="rtl"><body style="font-family:Arial;padding:24px;white-space:pre-wrap;font-size:14px;direction:rtl;">${txt.replace(/</g,'&lt;')}</body></html>`);
     w.document.close();w.print();
@@ -1997,10 +2094,10 @@ function App(){
     const totalRev=soldBatches.reduce((s,e)=>s+e.sellPrice,0);
     const totalCost=soldBatches.reduce((s,e)=>s+(e.cost||0),0);
     const totalProfit=totalRev-totalCost;
-    const invRows=inv.map(i=>`<tr><td>${i.name}</td><td style="text-align:center">${i.stock} ${i.unit}</td><td style="text-align:center">${i.unitCost?.toFixed(2)||"—"}</td><td style="text-align:center;color:${(i.stock/i.qty)<0.2?"#c00":"#060"}">${((i.stock/i.qty)*100).toFixed(0)}%</td></tr>`).join("");
+    const invRows=inv.map(i=>{const pct=i.qty>0?(i.stock/i.qty):null;return `<tr><td>${sanitize(i.name)}</td><td style="text-align:center">${i.stock} ${sanitize(i.unit||"")}</td><td style="text-align:center">${i.unitCost?.toFixed(2)||"—"}</td><td style="text-align:center;color:${pct!==null&&pct<0.2?"#c00":"#060"}">${pct!==null?(pct*100).toFixed(0)+"%":"—"}</td></tr>`;}).join("");
     const batchRows=prodLog.slice(0,20).map(e=>`<tr><td>${e.recipeIcon} ${e.recipeName}</td><td>${e.batchNo}</td><td>${e.vol}مل</td><td>${fmtDate(e.date)}</td><td style="color:${e.sold?"#060":"#880"}">${e.sold?`${e.sellPrice} ر`:"جار"}</td></tr>`).join("");
     const w=window.open("","_blank","width=800,height=1000");
-    w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><title>تقرير ضاوي الدهن</title><style>
+    w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><title>تقرير ضاوي عود</title><style>
       body{font-family:Arial,sans-serif;padding:28px 32px;color:#111;direction:rtl;font-size:13px}
       h1{font-size:22px;border-bottom:3px double #8A6A1E;padding-bottom:10px;margin-bottom:6px;color:#2C1A0E}
       h2{font-size:15px;color:#8A6A1E;margin:20px 0 8px;border-right:3px solid #C9A84C;padding-right:8px}
@@ -2016,7 +2113,7 @@ function App(){
       .footer{margin-top:28px;border-top:1px dashed #aaa;padding-top:12px;font-size:10px;color:#999;text-align:center;letter-spacing:2px}
       @media print{body{padding:10px}}
     </style></head><body>
-    <h1>🪬 تقرير مختبر ضاوي دهن العود</h1>
+    <h1>🪬 تقرير مختبر ضاوي عود</h1>
     <div class="meta">تاريخ التقرير: ${new Date().toLocaleDateString("ar-SA")} · ${prodLog.length} دفعة منتجة · ${inv.length} مادة في المخزون</div>
     <div class="kpi">
       <div class="kpi-box"><div class="kpi-val">${totalRev.toFixed(0)}</div><div class="kpi-lbl">إجمالي الإيرادات (ر)</div></div>
@@ -2028,7 +2125,7 @@ function App(){
     <table><thead><tr><th>الوصفة</th><th>الدفعة</th><th>الحجم</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody>${batchRows}</tbody></table>
     <h2>🧪 حالة المخزون</h2>
     <table><thead><tr><th>المادة</th><th>المتوفر</th><th>تكلفة/وحدة</th><th>نسبة المخزون</th></tr></thead><tbody>${invRows}</tbody></table>
-    <div class="footer">Atelier Dhawi · Private Oud Lab · تقرير سري</div>
+    <div class="footer">Dhawi Oud · Private Oud Lab · تقرير سري</div>
     <script>window.onload=()=>window.print();<\/script></body></html>`);
     w.document.close();
   };
@@ -2104,7 +2201,7 @@ function App(){
     const pending=prodLog.filter(e=>!e.sold&&e.readyDate&&daysLeft(e.readyDate)<=0);
     if(!pending.length){show("لا توجد دفعات جاهزة للبيع",true);return;}
     const lines=pending.map(e=>`${e.recipeIcon} ${e.recipeName} — ${e.vol}مل (#${e.batchNo})`).join("\n");
-    const msg=`🪬 *ضاوي الدهن — المتوفر الآن*\n\n${lines}\n\nللطلب تواصل معنا 🌿`;
+    const msg=`🪬 *ضاوي عود — المتوفر الآن*\n\n${lines}\n\nللطلب تواصل معنا 🌿`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank");
   };
   // ── customers ──────────────────────────────────────────────────
@@ -2153,9 +2250,9 @@ function App(){
         headers:{"x-api-key":aiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true","content-type":"application/json"},
         body:JSON.stringify({model:"claude-haiku-4-5",max_tokens:maxTokens,messages:[{role:"user",content:prompt}]})
       });
-      if(!res.ok){const e=await res.json();show("❌ "+(e.error?.message||"خطأ API"),true);return null;}
-      const data=await res.json();
-      return data.content[0]?.text||null;
+      if(!res.ok){const e=await res.json().catch(()=>({}));show("❌ "+(e.error?.message||("خطأ API "+res.status)),true);return null;}
+      const data=await res.json().catch(()=>({}));
+      return data.content?.[0]?.text||null;
     }catch(e){show("❌ تعذّر الاتصال بـ Claude",true);return null;}
     finally{setAiLoading(false);}
   };
@@ -2200,7 +2297,7 @@ function App(){
     if(mode==="story"){
       prompt=`أنت خبير في كتابة القصص التسويقية لعطور دهن العود الفاخرة في السوق الخليجي.\n\nاكتب قصة تسويقية مؤثرة لعطر:\nالاسم: ${r.name} ${r.icon}\nالوصف: ${r.desc}\nالموسم: ${r.season} | الجنس: ${r.gender} | الثبات: ${r.stability}\nالمكونات: ${ingList}\n\nالقصة يجب أن:\n- تكون 3 جمل بالعربية الفصيحة الجميلة\n- تبدأ بصورة حسية (لون أو صوت أو رائحة)\n- تُذكر الطابع الرئيسي للعطر\n- تُحدّد المناسبة أو الشخصية المستهدفة\n- تكون شاعرية لكن موجزة\n\nأرجع القصة فقط بدون أي تعليق.`;
     } else if(mode==="campaign"){
-      prompt=`أنت مدير إبداعي لعلامة ضاوي دهن العود الفاخرة.\n\nأنشئ محتوى حملة تسويقية لعطر:\nالاسم: ${r.name} ${r.icon}\nالوصف: ${r.desc}\nالموسم: ${r.season} | الجنس: ${r.gender} | السعر: ${r.price_sar||"؟"} ريال\n\nأنشئ:\n1. 🏷️ شعار رئيسي (tagline) — جملة واحدة تحفر في الذاكرة\n2. 📱 بوست انستقرام — 3-4 أسطر + 5 هاشتاقات خليجية\n3. 💬 رسالة واتساب مبيعات — محادثة طبيعية غير رسمية لا تتجاوز 4 أسطر\n4. 🎯 جملة البيع (pitch) — جملة واحدة للمقابلات والمعارض\n\nأرجع المحتوى مباشرة منسقاً.`;
+      prompt=`أنت مدير إبداعي لعلامة ضاوي عود الفاخرة.\n\nأنشئ محتوى حملة تسويقية لعطر:\nالاسم: ${r.name} ${r.icon}\nالوصف: ${r.desc}\nالموسم: ${r.season} | الجنس: ${r.gender} | السعر: ${r.price_sar||"؟"} ريال\n\nأنشئ:\n1. 🏷️ شعار رئيسي (tagline) — جملة واحدة تحفر في الذاكرة\n2. 📱 بوست انستقرام — 3-4 أسطر + 5 هاشتاقات خليجية\n3. 💬 رسالة واتساب مبيعات — محادثة طبيعية غير رسمية لا تتجاوز 4 أسطر\n4. 🎯 جملة البيع (pitch) — جملة واحدة للمقابلات والمعارض\n\nأرجع المحتوى مباشرة منسقاً.`;
     } else if(mode==="stability"){
       const sc=recipeScale(r);
       const ingDetail=r.ing.map(([id,a])=>{const ing=getIng(id);const tier=noteTier(id);return `${ing?.name||id}(${NOTE_LABEL[tier]||"حامل"}، ${(a*sc).toFixed(2)}مل)`;}).join("\n");
@@ -2217,7 +2314,7 @@ function App(){
     return acc;
   },{});
   const copyShopList=()=>{
-    let txt="🛒 قائمة تسوق — ضاوي دهن العود\n"+"=".repeat(30)+"\n";
+    let txt="🛒 قائمة تسوق — ضاوي عود\n"+"=".repeat(30)+"\n";
     Object.entries(shopBySupplier).forEach(([brand,items])=>{
       txt+=`\n【 ${brand} 】\n`;
       items.forEach(i=>{txt+=`• ${i.name}: ${i.recommend} ${i.unit} (المتبقي ${i.stock})\n`;});
@@ -2299,8 +2396,8 @@ function App(){
     if(recipeSearch.trim()){const q=recipeSearch.trim().toLowerCase();f=f.filter(r=>r.name.toLowerCase().includes(q)||(r.desc||"").toLowerCase().includes(q));}
     if(recipeSeasonF!=="الكل")f=f.filter(r=>r.season===recipeSeasonF);
     if(recipeGenderF!=="الكل")f=f.filter(r=>r.gender===recipeGenderF);
-    if(recipeTypeF==="دهن")f=f.filter(r=>!r.ing.some(([id])=>id==="ipa"));
-    if(recipeTypeF==="عطر")f=f.filter(r=>r.ing.some(([id])=>id==="ipa"));
+    if(recipeTypeF==="دهن")f=f.filter(r=>!r.ing.some(([id])=>id==="ipa"||id==="ethanol"));
+    if(recipeTypeF==="عطر")f=f.filter(r=>r.ing.some(([id])=>id==="ipa"||id==="ethanol"));
     if(readyFilter)f=f.filter(r=>canMake(r));
     if(heroFilter)f=f.filter(r=>r.hero);
     return f;
@@ -2323,8 +2420,7 @@ function App(){
       <div style={{position:"relative",zIndex:1,maxWidth:"340px",width:"100%",textAlign:"center"}}>
         {/* brand header */}
         <div style={{marginBottom:"36px"}}>
-          <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"3.4rem",letterSpacing:"0.04em",color:"#8A6A1E",lineHeight:1,marginBottom:"6px"}}>Atelier Dhawi</div>
-          <div style={{fontFamily:"'Alexandria',sans-serif",fontSize:"0.92rem",fontWeight:700,color:"#1A1208",letterSpacing:"0.10em",marginBottom:"6px"}}>ضاوي دهن العود</div>
+          <div style={{display:"flex",justifyContent:"center",marginBottom:"14px"}}><LogoSeal size={140}/></div>
           <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.42rem",color:"rgba(138,106,30,0.55)",letterSpacing:"0.5em",textTransform:"uppercase"}}>PRIVATE LAB ACCESS</div>
           <div style={{height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.40),transparent)",maxWidth:"120px",margin:"16px auto 0"}}/>
         </div>
@@ -2343,7 +2439,7 @@ function App(){
           <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{verifyPin(pin).then(ok=>{if(ok)setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);});}}>دخول المعمل ←</button>
         </div>
         {/* footer */}
-        <div style={{marginTop:"24px",fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.40rem",color:"rgba(138,106,30,0.35)",letterSpacing:"0.3em",textTransform:"uppercase"}}>Dhawi Heritage Lab · Est. 2025</div>
+        <div style={{marginTop:"24px",fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.40rem",color:"rgba(138,106,30,0.35)",letterSpacing:"0.3em",textTransform:"uppercase"}}>Dhawi Oud · Atelier · Est. 2025</div>
       </div>
       {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",left:"50%",transform:"translateX(-50%)",background:toastErr?"rgba(255,245,245,0.98)":"rgba(255,252,245,0.98)",border:`1.5px solid ${toastErr?"rgba(200,60,60,0.50)":"rgba(201,168,76,0.50)"}`,color:toastErr?"#B03030":"#7A5C10",padding:"12px 28px",borderRadius:"30px",fontWeight:"700",fontSize:"0.85rem",whiteSpace:"nowrap",boxShadow:"0 4px 20px rgba(0,0,0,0.08)"}}>{toast}</div>}
     </div>
@@ -2373,13 +2469,13 @@ function App(){
           <div style={{padding:"18px 18px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
             <Logo size={32}/>
             <div style={{flex:1,textAlign:"center"}}>
-              <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"1.50rem",letterSpacing:"0.04em",color:"#8A6A1E",lineHeight:1.1}}>Atelier Dhawi</div>
+              <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"1.50rem",letterSpacing:"0.04em",color:"#8A6A1E",lineHeight:1.1}}>Dhawi Oud</div>
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"5px",marginTop:"3px"}}>
                 <span style={{fontSize:"0.62rem"}}>{meta.icon}</span>
                 <span style={{fontSize:"0.44rem",color:meta.color,letterSpacing:"0.40em",textTransform:"uppercase",fontFamily:"'IBM Plex Mono',monospace",fontWeight:600,transition:"color 0.3s"}}>{meta.label}</span>
               </div>
             </div>
-            <div style={{width:32}}/>
+            <button onClick={()=>{setTab("heritage");setSelectedRecipe(null);setSelectedCustomer(null);setShowCustomerStore(false);setCatalogView(null);}} aria-label="الإعدادات · الذكاء الاصطناعي · النسخ الاحتياطي" title="الإعدادات والذكاء الاصطناعي" style={{width:34,height:34,borderRadius:"50%",border:`1px solid ${tab==="heritage"?"#8A6A1E":"rgba(138,106,30,0.3)"}`,background:tab==="heritage"?"rgba(138,106,30,0.10)":"transparent",color:"#8A6A1E",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,padding:0}}>⚙️</button>
           </div>
           <div style={{margin:"0 18px 4px",height:"1px",background:`linear-gradient(90deg,transparent,${meta.color},transparent)`,transition:"background 0.35s ease"}}/>
         </>;
@@ -2400,7 +2496,7 @@ function App(){
                 <source src="media/hero_mabkhara.mp4" type="video/mp4"/>
               </video>
               <div className="rev-hero-veil" aria-hidden="true"></div>
-              <div style={{fontSize:"0.46rem",color:"rgba(201,168,76,0.50)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'IBM Plex Mono',monospace",marginBottom:"10px"}}>ATELIER DHAWI · LAB DASHBOARD</div>
+              <div style={{fontSize:"0.46rem",color:"rgba(201,168,76,0.50)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'IBM Plex Mono',monospace",marginBottom:"10px"}}>DHAWI OUD · LAB DASHBOARD</div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:"14px"}}>
                 <div>
                   <div style={{fontSize:"0.65rem",color:"rgba(201,168,76,0.45)",marginBottom:"3px"}}>إجمالي الإيرادات</div>
@@ -2551,8 +2647,8 @@ function App(){
               <div style={{fontSize:"0.50rem",color:"rgba(74,103,65,0.65)",letterSpacing:"0.5em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"8px"}}>RECIPE OF THE DAY</div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:"1.0rem",fontWeight:700,color:"#1A1208",marginBottom:"3px"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
-                  <div style={{fontSize:"0.70rem",color:"#4A6741",marginBottom:"6px"}}>{(suggestedRecipe.desc||"").substring(0,55)}{suggestedRecipe.desc?.length>55?"…":""}</div>
+                  <div className="rd-title" style={{fontSize:"1.0rem",fontWeight:700,color:"#1A1208",marginBottom:"3px"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
+                  <div className="rd-desc" style={{fontSize:"0.70rem",color:"#4A6741",marginBottom:"6px"}}>{(suggestedRecipe.desc||"").substring(0,55)}{suggestedRecipe.desc?.length>55?"…":""}</div>
                   <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
                     <span className="stat-chip" style={{fontSize:"0.58rem",background:"rgba(74,103,65,0.08)",borderColor:"rgba(74,103,65,0.18)",color:"#4A6741"}}>{suggestedRecipe.season}</span>
                     {ratings[suggestedRecipe.id]&&<span style={{fontSize:"0.7rem",color:"#E8C860"}}>{"★".repeat(ratings[suggestedRecipe.id].stars)}</span>}
@@ -2564,8 +2660,7 @@ function App(){
 
             {/* ── Onboarding ── */}
             {prodLog.length===0&&!suggestedRecipe&&<div className="glass-gold" style={{textAlign:"center",padding:"32px 20px",marginBottom:"12px"}}>
-              <div style={{fontSize:"2.8rem",marginBottom:"8px"}}>🪬</div>
-              <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",color:"#C9A84C",fontSize:"1.5rem",marginBottom:"4px"}}>Atelier Dhawi</div>
+              <div style={{display:"flex",justifyContent:"center",marginBottom:"10px"}}><LogoSeal size={96}/></div>
               <div style={{color:"#8A6A1E",fontSize:"0.80rem",marginBottom:"16px",lineHeight:1.8}}>مرحباً بك في مختبر دهن العود الخاص</div>
               <button className="btn-gold" style={{padding:"13px 32px"}} onClick={()=>goTab("recipes")}>← استعرض الوصفات</button>
             </div>}
@@ -2958,7 +3053,7 @@ function App(){
                 <div style={{width:"3px",height:"28px",background:"linear-gradient(180deg,#C9A84C,transparent)",borderRadius:"2px",flexShrink:0}}/>
                 <div>
                   <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.15rem",color:"#E8C870",lineHeight:1}}>لوحة التحكم</div>
-                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.48rem",letterSpacing:"0.22em",color:"rgba(201,168,76,0.35)",marginTop:"2px"}}>LAB CONTROL · ATELIER DHAWI</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.48rem",letterSpacing:"0.22em",color:"rgba(201,168,76,0.35)",marginTop:"2px"}}>LAB CONTROL · DHAWI OUD</div>
                 </div>
               </div>
               {/* ── الأرقام الرئيسية ── */}
@@ -3088,8 +3183,8 @@ function App(){
             <div style={{fontSize:"0.68rem",color:"#80c080",fontWeight:"700",marginBottom:"6px"}}>✨ وصفة اليوم — {suggestedRecipe.season===currentSeason?"تناسب موسم "+currentSeason+" الآن":"المخزون يكفيها الآن"}</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{flex:1}}>
-                <div style={{fontSize:"0.95rem",fontWeight:"700",color:"#1A1208"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
-                <div style={{fontSize:"0.72rem",color:"#8A6A1E",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
+                <div className="rd-title" style={{fontSize:"0.95rem",fontWeight:"700",color:"#1A1208"}}>{suggestedRecipe.icon} {suggestedRecipe.name}</div>
+                <div className="rd-desc" style={{fontSize:"0.72rem",color:"#8A6A1E",marginTop:"2px"}}>{suggestedRecipe.desc}</div>
                 {ratings[suggestedRecipe.id]&&<div style={{fontSize:"0.7rem",color:"#e8c860",marginTop:"4px"}}>{"⭐".repeat(ratings[suggestedRecipe.id].stars)}{ratings[suggestedRecipe.id].note&&` — ${ratings[suggestedRecipe.id].note}`}</div>}
               </div>
               <button className="btn-ghost" style={{borderColor:"rgba(80,160,80,0.5)",color:"#80c080",marginRight:"8px",whiteSpace:"nowrap"}} onClick={()=>setSelectedRecipe(suggestedRecipe)}>ابدأ ←</button>
@@ -3109,7 +3204,7 @@ function App(){
             return(<div className="fade">
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"14px"}}>
                 <div>
-                  <div style={{fontSize:"0.42rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>Atelier Dhawi · Private Collection</div>
+                  <div style={{fontSize:"0.42rem",color:"rgba(201,168,76,0.40)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>Dhawi Oud · Private Collection</div>
                   <div style={{fontSize:"0.68rem",color:"rgba(26,18,8,0.28)",marginTop:"2px"}}>اختر منتجاتك وأضفها للسلة</div>
                 </div>
                 {cartCount>0
@@ -3135,7 +3230,7 @@ function App(){
                     <div style={{padding:"14px 12px 12px",textAlign:"center"}}>
                       <div className="pkg-badge">{r.season}</div>
                       <div style={{fontSize:"2.6rem",filter:"drop-shadow(0 4px 16px rgba(0,0,0,0.12))",marginBottom:"6px",marginTop:"8px"}}>{r.icon}</div>
-                      <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"0.40rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.35em",textTransform:"uppercase",marginBottom:"3px"}}>ATELIER DHAWI</div>
+                      <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"0.40rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.35em",textTransform:"uppercase",marginBottom:"3px"}}>DHAWI OUD</div>
                       <div style={{fontSize:"0.82rem",fontWeight:"800",color:"#1A1208",letterSpacing:"-0.01em",lineHeight:1.25,marginBottom:"6px"}}>{r.name}</div>
                       {/* layer mini bar */}
                       <div style={{display:"flex",height:"3px",borderRadius:"2px",overflow:"hidden",gap:"1px",marginBottom:"8px"}}>
@@ -3715,7 +3810,7 @@ function App(){
         {tab==="stats"&&<div className="fade">
           <div style={{marginBottom:"16px",background:"linear-gradient(135deg,rgba(26,18,8,0.06),rgba(201,168,76,0.04))",border:"1px solid rgba(201,168,76,0.14)",borderRadius:"20px",padding:"16px 18px",position:"relative",overflow:"hidden"}}>
             <div style={{position:"absolute",top:0,left:0,right:0,height:"2px",background:"linear-gradient(90deg,transparent,rgba(104,176,104,0.60),transparent)"}}/>
-            <div style={{fontSize:"0.44rem",color:"rgba(138,106,30,0.42)",letterSpacing:"0.50em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"8px"}}>LAB ANALYTICS · DHAWI</div>
+            <div style={{fontSize:"0.44rem",color:"rgba(138,106,30,0.42)",letterSpacing:"0.50em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",marginBottom:"8px"}}>LAB ANALYTICS · DHAWI OUD</div>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div>
                 <div style={{fontSize:"0.65rem",color:"rgba(104,176,104,0.60)",marginBottom:"2px"}}>إجمالي الإيرادات</div>
@@ -3980,7 +4075,7 @@ function App(){
               </div>
               {!e.sold&&<SellEntry id={e.id} onSell={markSold}/>}
               {e.sold&&<span className="tag tag-green">✅ مباع</span>}
-              <button onClick={()=>{const custName=e.customerId?customers.find(c=>c.id===e.customerId)?.name:"";const w=window.open('','_blank','width=400,height=320');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:340px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي دهن العود</div><div style="text-align:center;font-size:22px;margin:4px 0">${e.recipeIcon}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${e.recipeName}</div><hr style="border-color:#D4AF37;opacity:0.3"/>${custName?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">العميل</span><span style="color:#80c0ff;font-weight:700">${custName}</span></div>`:""}<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${e.batchNo}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${e.vol} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.sold&&e.sellPrice?`<div style="display:flex;justify-content:space-between;font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid rgba(214,175,55,0.3)"><span style="color:#c8a46a">سعر البيع</span><span style="color:#80c080;font-weight:700">${e.sellPrice} ريال</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${e.note}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
+              <button onClick={()=>{const custName=e.customerId?customers.find(c=>c.id===e.customerId)?.name:"";const w=window.open('','_blank','width=400,height=320');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:340px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي عود</div><div style="text-align:center;font-size:22px;margin:4px 0">${e.recipeIcon}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${e.recipeName}</div><hr style="border-color:#D4AF37;opacity:0.3"/>${custName?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">العميل</span><span style="color:#80c0ff;font-weight:700">${custName}</span></div>`:""}<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${e.batchNo}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${e.vol} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.sold&&e.sellPrice?`<div style="display:flex;justify-content:space-between;font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid rgba(214,175,55,0.3)"><span style="color:#c8a46a">سعر البيع</span><span style="color:#80c080;font-weight:700">${e.sellPrice} ريال</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${e.note}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
               {!e.customerId&&customers.length>0&&<select value="" onChange={ev=>{if(ev.target.value)linkOrderToCustomer(e.id,ev.target.value);}} style={{marginTop:"6px",background:"rgba(26,18,8,0.85)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"8px",color:"#8A6A1E",fontSize:"0.72rem",padding:"4px 8px",fontFamily:"'Alexandria',sans-serif",width:"100%"}}><option value="">🔗 اربط بعميل...</option>{customers.map(c=><option key={c.id} value={c.id} style={{background:"#FAF8F3"}}>{c.name}</option>)}</select>}
               {!e.sold&&<button onClick={()=>deleteProdEntry(e.id)} style={{marginTop:"5px",background:"rgba(200,60,60,0.1)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🗑️ حذف الدفعة</button>}
             </div>
@@ -4425,7 +4520,7 @@ function App(){
         <div className="cart-sheet" style={{maxHeight:"90vh"}}>
           <div className="cart-sheet-handle"/>
           <div style={{textAlign:"center",marginBottom:"20px"}}>
-            <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.35rem",color:"#E8C870",lineHeight:1}}>Atelier Dhawi</div>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:"1.35rem",color:"#E8C870",lineHeight:1}}>Dhawi Oud</div>
             <div style={{fontSize:"0.55rem",letterSpacing:"0.5em",color:"rgba(201,168,76,0.40)",textTransform:"uppercase",marginTop:"3px"}}>E-COMMERCE ROADMAP</div>
           </div>
 
@@ -4649,7 +4744,7 @@ function PublicView({payload}){
         boxShadow:"0 20px 72px rgba(0,0,0,0.12),inset 0 1px 0 rgba(201,168,76,0.12)"
       }}>
         <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.50),transparent)",borderRadius:"24px 24px 0 0"}}/>
-        <div style={{fontSize:"0.60rem",color:"rgba(201,168,76,0.65)",letterSpacing:"0.38em",marginBottom:"14px",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>Dhawi Oud Oil Heritage Lab</div>
+        <div style={{fontSize:"0.60rem",color:"rgba(201,168,76,0.65)",letterSpacing:"0.38em",marginBottom:"14px",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>Dhawi Oud · Atelier</div>
         <div style={{fontSize:"3.6rem",filter:"drop-shadow(0 4px 14px rgba(0,0,0,0.12))",marginBottom:"4px"}}>{payload.i}</div>
         <h1 style={{color:"#D4AF37",fontSize:"1.55rem",fontWeight:"800",margin:"8px 0 4px",letterSpacing:"-0.01em"}}>{payload.n}</h1>
         <div style={{height:"1px",background:"linear-gradient(90deg,transparent,rgba(201,168,76,0.35),transparent)",margin:"12px auto",maxWidth:"140px"}}/>
@@ -4665,7 +4760,7 @@ function PublicView({payload}){
           <Row label="💫 القلب" arr={payload.mid}/>
           <Row label="🪨 القاعدة" arr={payload.base}/>
         </div>
-        <div style={{marginTop:"16px",fontSize:"0.52rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.3em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>ضاوي دهن العود · حرفة وإتقان</div>
+        <div style={{marginTop:"16px",fontSize:"0.52rem",color:"rgba(201,168,76,0.45)",letterSpacing:"0.3em",textTransform:"uppercase",fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic"}}>ضاوي عود · حرفة وإتقان</div>
       </div>
     </div>
   );
