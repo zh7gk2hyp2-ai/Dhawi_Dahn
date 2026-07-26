@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="theme-color" content="#0a0a0c"/>
+<title>AB Studio — المكتبة الإبداعية (خاص)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0c'/><text x='50' y='68' text-anchor='middle' font-size='44' fill='%23C9A24B' font-family='Georgia,serif' font-weight='700'>AB</text></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,600;1,500;1,600&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0c;--bg2:#111015;--card:#16141b;--ink:#ece7de;--soft:#a49d92;--faint:#726c64;
+  --gold:#c9a24b;--champ:#e4cd8f;--gold-d:#9a7826;--coral:#c4623d;--sage:#8a936f;
+  --line:rgba(233,222,201,.10);--line2:rgba(233,222,201,.055);--shadow:0 24px 60px rgba(0,0,0,.5);
+  --serif:'Cormorant Garamond',Georgia,serif;--body:'Alexandria','Segoe UI',Tahoma,system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:radial-gradient(60% 45% at 82% -5%,rgba(201,162,75,.10),transparent 60%),radial-gradient(55% 40% at 0% 100%,rgba(196,98,61,.08),transparent 60%)}
+::selection{background:var(--gold);color:#0a0a0c}
+.wrap{max-width:1240px;margin:0 auto;padding:0 22px}
+.hidden{display:none!important}
+/* gate */
+#gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(60% 55% at 70% 20%,rgba(201,162,75,.12),transparent 60%),#0a0a0c}
+.gate-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:38px 32px;max-width:390px;width:100%;text-align:center}
+.mark{width:64px;height:64px;border-radius:16px;margin:0 auto 18px;display:grid;place-items:center;background:linear-gradient(135deg,#1b1922,#0a0a0c);
+  box-shadow:inset 0 0 0 1px rgba(201,162,75,.45);font-family:var(--serif);font-weight:600;font-size:1.8rem;color:var(--champ);letter-spacing:1px}
+.gate-card h1{font-family:var(--serif);font-size:1.5rem;font-weight:600;margin-bottom:4px}
+.gate-card p{color:var(--soft);font-size:.84rem;margin-bottom:20px}
+.inp{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font-family:var(--body);font-size:.95rem;margin-bottom:10px;outline:none;transition:.2s}
+.inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,75,.12)}
+.btn{width:100%;padding:13px;border-radius:100px;border:none;cursor:pointer;font-weight:700;font-family:var(--body);font-size:.92rem;
+  color:#0a0a0c;background:linear-gradient(120deg,var(--champ),var(--gold) 60%,var(--gold-d));transition:.2s;margin-top:6px}
+.btn:hover{transform:translateY(-2px)}
+.err{color:#e8908a;font-size:.8rem;min-height:1.1em;margin-top:8px}
+.gate-note{font-size:.7rem;color:var(--faint);margin-top:14px}
+/* header */
+header{padding:34px 0 8px}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;margin-inline-end:auto}
+.brand .m{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#1b1922,#0a0a0c);box-shadow:inset 0 0 0 1px rgba(201,162,75,.45);font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--champ)}
+.brand b{font-size:1.02rem;letter-spacing:1px;display:block;line-height:1.1}
+.brand span{font-size:.62rem;color:var(--champ);letter-spacing:2px;text-transform:uppercase}
+.logout{padding:9px 16px;border-radius:100px;border:1px solid var(--line);background:transparent;color:var(--soft);font-family:var(--body);font-size:.78rem;cursor:pointer}
+.logout:hover{border-color:var(--gold-d);color:var(--ink)}
+.lead{margin:22px 0 6px}
+.eyebrow{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d)}
+h2.title{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,4.5vw,2.8rem);line-height:1.1;margin-top:8px}
+h2.title .it{font-style:italic;color:var(--champ)}
+/* tabs + controls */
+.tabs{display:flex;gap:8px;margin-top:20px}
+.tab{padding:11px 22px;border-radius:100px;border:1px solid var(--line);background:transparent;color:var(--soft);font-family:var(--body);font-size:.9rem;cursor:pointer;transition:.2s}
+.tab.on{background:linear-gradient(120deg,var(--champ),var(--gold));color:#0a0a0c;border-color:transparent;font-weight:700}
+.controls{position:sticky;top:0;z-index:20;padding:14px 0;margin-top:16px;background:rgba(10,10,12,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.search{display:flex;align-items:center;gap:10px;max-width:520px;margin:0 auto 12px;background:var(--card);border:1px solid var(--line);border-radius:100px;padding:10px 18px}
+.search input{flex:1;background:none;border:none;color:var(--ink);font-family:var(--body);font-size:.95rem;outline:none}
+.search input::placeholder{color:var(--faint)}
+.search .ic{color:var(--gold)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 4px 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:8px 15px;border-radius:100px;border:1px solid var(--line);background:transparent;color:var(--soft);font-family:var(--body);font-size:.82rem;cursor:pointer;transition:.2s;flex:0 0 auto}
+.chip:hover{color:var(--ink);border-color:var(--gold-d)}
+.chip.on{background:linear-gradient(120deg,var(--champ),var(--gold));color:#0a0a0c;border-color:transparent;font-weight:600}
+.count-line{text-align:center;color:var(--faint);font-size:.8rem;letter-spacing:1px;margin:18px 0 6px}
+.grid{display:grid;gap:18px;padding:12px 0 60px}
+.grid.ideas{grid-template-columns:repeat(3,1fr)}
+.grid.mood{grid-template-columns:repeat(2,1fr)}
+.card{background:linear-gradient(165deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,box-shadow .35s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);border-color:rgba(201,162,75,.4);box-shadow:var(--shadow)}
+.card-body{padding:22px;display:flex;flex-direction:column;gap:12px;flex:1}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.num{font-family:var(--serif);font-size:1.4rem;font-weight:600;color:var(--gold-d);font-variant-numeric:tabular-nums}
+.tag{font-size:.62rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--champ);padding:4px 10px;border-radius:100px;background:rgba(201,162,75,.1);border:1px solid rgba(201,162,75,.22)}
+.card h3{font-family:var(--serif);font-weight:600;font-size:1.4rem;line-height:1.22}
+.card p{color:var(--soft);font-size:.9rem}
+.prompt{margin-top:auto;background:#0c0b10;border:1px solid var(--line2);border-radius:13px;padding:13px 14px}
+.prompt .lbl{font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:6px;display:block}
+.prompt code{font-family:var(--mono);font-size:.73rem;line-height:1.6;color:#c9c2b6;display:block;direction:ltr;text-align:left;white-space:pre-wrap;word-break:break-word}
+.copy{margin-top:11px;width:100%;padding:9px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--champ);font-family:var(--body);font-size:.78rem;cursor:pointer;transition:.2s}
+.copy:hover{background:rgba(201,162,75,.1);border-color:var(--gold-d)}
+.copy.done{background:var(--sage);color:#0a0a0c;border-color:transparent}
+.pal{display:flex;height:60px}.pal span{flex:1}
+.cover{height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#111116}
+.cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease,ease)}
+.card:hover .cover img{transform:scale(1.05)}
+.cover .ico{font-size:2.9rem;opacity:.9;filter:drop-shadow(0 6px 16px rgba(0,0,0,.55))}
+.cover::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.35))}
+.pfold{margin-top:auto}
+.pdet{margin-top:10px;border-top:1px solid var(--line2);padding-top:9px}
+.pdet summary{cursor:pointer;color:var(--gold-d);font-size:.7rem;letter-spacing:.5px;list-style:none}
+.pdet summary::-webkit-details-marker{display:none}
+.pdet code{display:block;direction:ltr;text-align:left;font-family:var(--mono);font-size:.7rem;line-height:1.55;color:#c9c2b6;background:#0c0b10;border:1px solid var(--line2);border-radius:10px;padding:10px;margin-top:8px;white-space:pre-wrap;word-break:break-word}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px}
+.spec{display:flex;flex-direction:column;gap:2px}.spec .k{font-size:.62rem;letter-spacing:.5px;color:var(--gold-d);text-transform:uppercase}.spec .v{font-size:.82rem;color:var(--soft);line-height:1.5}
+.empty{grid-column:1/-1;text-align:center;color:var(--faint);padding:60px 20px;font-style:italic;font-family:var(--serif);font-size:1.3rem}
+footer{border-top:1px solid var(--line);padding:30px 0 60px;text-align:center;color:var(--faint);font-size:.8rem}
+@media(max-width:900px){.grid.ideas{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.grid.ideas,.grid.mood{grid-template-columns:1fr}}
+.subframe{width:100%;height:84vh;border:1px solid var(--line);border-radius:16px;background:var(--bg);display:block;margin-top:6px}
+@media(max-width:760px){.subframe{height:80vh}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-card">
+    <div class="mark">AB</div>
+    <h1>AB Studio</h1>
+    <p>المكتبة الإبداعية — دخول خاص</p>
+    <input class="inp" id="gu" placeholder="اسم المستخدم" autocomplete="username"/>
+    <input class="inp" id="gp" type="password" placeholder="كلمة المرور" autocomplete="current-password"/>
+    <button class="btn" onclick="tryLogin()">دخول</button>
+    <div class="err" id="gerr"></div>
+    <div class="gate-note">صفحة داخلية خاصة بفريق AB Events</div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <div class="brand"><div class="m">AB</div><div><b>AB STUDIO</b><span>Creative Library</span></div></div>
+        <button class="logout" onclick="logout()">خروج ⏻</button>
+      </div>
+      <div class="lead">
+        <span class="eyebrow">AB EVENTS · INTERNAL</span>
+        <h2 class="title">المكتبة <span class="it">الإبداعية</span></h2>
+      </div>
+      <div class="tabs">
+        <button class="tab on" id="tab-ideas" onclick="switchTab('ideas')">💡 الأفكار + Prompts</button>
+        <button class="tab" id="tab-mood" onclick="switchTab('mood')">🎨 لوحات المزاج</button>
+        <button class="tab" id="tab-lib" onclick="switchTab('lib')">🗂️ ٣٠٠ فكرة</button>
+        <button class="tab" id="tab-ref" onclick="switchTab('ref')">🖼️ المراجع البصرية</button>
+      </div>
+    </header>
+  </div>
+
+  <div class="controls" id="controls">
+    <div class="wrap">
+      <div class="search"><span class="ic">⌕</span><input id="q" type="search" placeholder="ابحث… (زواج، نجدي، ورد، رمضان، شركات…)" aria-label="بحث"></div>
+      <div class="chips" id="chips"></div>
+    </div>
+  </div>
+
+  <div class="wrap" id="gridWrap">
+    <div class="count-line" id="countLine"></div>
+    <div class="grid ideas" id="grid"></div>
+  </div>
+
+  <div class="wrap hidden" id="frameWrap">
+    <iframe id="subframe" class="subframe" title="مكتبة AB" loading="lazy"></iframe>
+  </div>
+
+  <footer><div class="wrap">© 2026 AB Events — The Art of Luxury Events · مكتبة الاستوديو الداخلية</div></footer>
+</div>
+
+<script>
+/* ══ CONFIG: غيّر بيانات الدخول من هنا ══ */
+const AUTH = { user: "abevents", pass: "studio2026" };
+const SS_KEY = "ab_studio_auth";
+
+const S="photorealistic, cinematic warm editorial lighting, soft shadows, shallow depth of field, ultra-detailed, 8k";
+/* IDEAS: [cat,title,desc,prompt] */
+const IDEAS=[
+["زواج","زفاف أوبسيديان وذهب","كوشة سوداء فخمة بورد أبيض وممر مرايا وشموع.",`Ultra-luxury Saudi wedding stage in obsidian black and champagne gold, towering white rose and orchid installation, mirrored aisle lined with hundreds of candles, crystal chandeliers overhead, ${S} --ar 16:9`],
+["زواج","زفاف ورد الطائف","كوشة مرجانية بالورد الطائفي والأوكالبتوس.",`Romantic wedding backdrop overflowing with Taif coral and terracotta roses and sage eucalyptus, warm gold uplighting, elegant seated area, ${S} --ar 4:5`],
+["زواج","زفاف نجدي فاخر","لمسات تراثية نجدية عصرية بالسدو والذهب.",`Contemporary Najdi heritage wedding, Sadu geometric patterns, brass lanterns, cream and gold palette with terracotta roses, luxurious majlis seating, ${S} --ar 16:9`],
+["زواج","زفاف حديقة ليلي","أشجار زيتون منارة وطاولة طويلة وفوانيس.",`Outdoor night garden wedding under illuminated olive trees, long banquet table, hanging fairy lights and lanterns, ivory linen, eucalyptus runner, ${S} --ar 16:9`],
+["زواج","زفاف أبيض نقي","مينمال فاخر: رخام وأوركيد وحرير منسدل.",`Minimal luxury white wedding, marble plinths, cascading white orchids, draped silk fabric, negative space, museum-like elegance, ${S} --ar 4:5`],
+["زواج","نفق دخول درامي","ممر بنفق ورد معلّق وإضاءة سفلية.",`Dramatic wedding entrance tunnel of suspended roses and greenery, uplit walkway, guests silhouette, cinematic depth, ${S} --ar 16:9`],
+["زواج","طاولة العروسين","كنب مخمل وخلفية ورد كثيف للعروسين.",`Sweetheart table for bride and groom, plush velvet loveseat, dense floral wall of blush and coral roses, gold cutlery, candlelight, ${S} --ar 4:5`],
+["زواج","كيك الزفاف الفاخر","كيك متعدد الطبقات بورق ذهب وورد طازج.",`Luxury multi-tier wedding cake with gold leaf and fresh roses, on a marble pedestal, soft spotlight, dark elegant background, ${S} --ar 4:5`],
+["ملكة","ليلة الحناء النجدية","جلسة أرضية بالسدو والنحاسيات والورد.",`Najdi henna night, floor majlis seating with Sadu cushions, brass trays and coffee pots, terracotta roses, candle glow, warm intimate mood, ${S} --ar 16:9`],
+["ملكة","ملكة مرجانية","تدرّج تراكوتا وذهب وشموع كثيفة.",`Bride pre-wedding queen night setup, terracotta-to-gold ombre florals, abundant candles, gold throne area, opulent and warm, ${S} --ar 4:5`],
+["ملكة","كرسي الملكة","كرسي مذهّب وقوس ورد خلفه.",`Ornate gilded throne chair framed by a lush arch of coral and cream roses, dark velvet backdrop, regal spotlight, ${S} --ar 4:5`],
+["ملكة","ركن الحناء","طاولة نحاسية وشموع وتفاصيل ذهبية.",`Elegant henna corner, engraved brass table, gold henna cones, candles and rose petals, moody warm lighting, ${S} --ar 1:1`],
+["ملكة","ملكة رخام وذهب","مودرن ناعم بالرخام والأوركيد.",`Modern soft queen night, white marble and gold accents, white orchids and blush roses, sleek luxury minimalism, ${S} --ar 4:5`],
+["ملكة","ليلة الزيتون","أغصان زيتون وشموع وسدو.",`Olive-branch themed henna night, greenery and beige linens, brass and candles, earthy heritage luxury, ${S} --ar 16:9`],
+["ملكة","مدخل الملكة","بخور وورد وسجاد فاخر للاستقبال.",`Grand entrance for the bride, incense smoke, rose-lined pathway, luxurious patterned carpet, golden glow, cinematic, ${S} --ar 16:9`],
+["ميلاد","ميلاد شامبين","بالون كروم ذهبي أنيق مع ورد.",`Sophisticated adult birthday, chrome gold balloons arranged artfully with fresh roses, black and gold palette, chic lounge, ${S} --ar 4:5`],
+["ميلاد","ميلاد مرجاني","تدرّج تراكوتا وخوخي دافئ.",`Warm coral and peach birthday styling, terracotta roses, layered candles, boho-luxe dessert setup, ${S} --ar 4:5`],
+["ميلاد","طاولة حلويات فاخرة","Dessert table إيديتوريال بالورد.",`Editorial luxury dessert table, tiered cakes and macarons, floral centerpiece, gold stands, soft styled lighting, ${S} --ar 16:9`],
+["ميلاد","ميلاد أسود وذهبي","راقٍ للكبار بلمسة درامية.",`Elegant black-and-gold birthday celebration, dramatic dark backdrop, gold marquee number lights, roses, moody glamour, ${S} --ar 16:9`],
+["ميلاد","رقم مضاء بالورد","Marquee number مغطّى بالورد.",`Large marquee light-up number covered in fresh roses, glowing warmly against dark backdrop, luxury party detail, ${S} --ar 1:1`],
+["ميلاد","ميلاد حديقة نهاري","باستيل وأوكالبتوس نهاري.",`Daytime garden birthday, pastel palette, eucalyptus and soft roses, natural light, airy elegant tablescape, ${S} --ar 16:9`],
+["ميلاد","ركن الكيك الدرامي","كيك بطولي وإضاءة مركّزة.",`Hero birthday cake moment, sculptural cake on pedestal, focused spotlight, floral accents, dark luxe background, ${S} --ar 4:5`],
+["مواليد","استقبال نجدي دافئ","ثيم تراثي هادئ للمولود.",`Warm Najdi-themed baby welcome, neutral tones, brass and wood details, soft roses, cozy heritage luxury, ${S} --ar 16:9`],
+["مواليد","سحابة وذهب","ثيم غيمة ناعم بلمسة ذهبية.",`Baby welcome with soft cloud motif and gold accents, pastel florals, dreamy gentle lighting, elegant not childish, ${S} --ar 4:5`],
+["مواليد","عربة المولود بالورد","عربة مزيّنة بالورد الطبيعي.",`Vintage baby bassinet decorated with fresh roses and greenery, soft neutral setting, tender editorial lighting, ${S} --ar 4:5`],
+["مواليد","اسم بالورد","حرف/اسم المولود بالورد الطبيعي.",`Baby name spelled in fresh flowers mounted on a soft backdrop, blush and sage palette, boutique styling, ${S} --ar 1:1`],
+["مواليد","ثيم زيتوني هادئ","أخضر زيتوني وبيج ناعم.",`Serene olive-green and beige baby welcome, eucalyptus, candles, understated organic luxury, ${S} --ar 16:9`],
+["مواليد","ركن توزيعات المولود","ضيافة وهدايا مصغّرة أنيقة.",`Elegant baby favor and treat corner, mini gift boxes, soft florals, gold trays, styled boutique look, ${S} --ar 1:1`],
+["مواليد","اسم Neon أنيق","خلفية اسم مضاءة نيون + ورد.",`Chic neon name sign glowing softly above a floral cluster, dark elegant backdrop, modern baby welcome, ${S} --ar 4:5`],
+["تخرّج","تخرّج ذهبي فخم","ثيم أسود وذهبي للإنجاز.",`Luxury graduation celebration, black and gold theme, gold balloons and graduation cap decor, roses, celebratory glamour, ${S} --ar 16:9`],
+["تخرّج","تخرّج بثيم الكلية","ألوان مخصّصة حسب التخصّص.",`Graduation party themed in custom college colors, coordinated florals and signage, elegant modern styling, ${S} --ar 16:9`],
+["تخرّج","جدارية الإنجاز","Achievement wall للصور والاسم.",`Achievement photo wall for graduate, name in lights, framed moments, roses, sophisticated congratulatory setup, ${S} --ar 4:5`],
+["تخرّج","ركن القبعة والشهادة","بروب تصوير أنيق للتخرّج.",`Graduation photo corner with cap, diploma and gold props on a styled table, floral accent, warm lighting, ${S} --ar 1:1`],
+["تخرّج","ضيافة التخرّج","طاولة ضيافة راقية بثيم موحّد.",`Refined graduation hospitality table, coordinated desserts, gold accents, florals, editorial styling, ${S} --ar 16:9`],
+["تخرّج","عبارة مبروك مضاءة","Marquee letters تهنئة.",`Glowing marquee letters spelling congratulations in Arabic style, roses at the base, dark luxe backdrop, ${S} --ar 16:9`],
+["تخرّج","تخرّج مرجاني ذهبي","دمج التراكوتا مع الذهب.",`Coral and gold graduation styling, terracotta roses, warm celebratory mood, modern elegant decor, ${S} --ar 4:5`],
+["أطفال","عالم أطفال فاخر","ثيم طفولي راقٍ غير مبتذل.",`Luxury children party, tasteful whimsical theme, soft balloon garland, elegant dessert table, refined pastel palette, ${S} --ar 16:9`],
+["أطفال","ثيم سفاري راقٍ","حيوانات وأخضر بلمسة فاخرة.",`Upscale safari-themed kids party, lush greenery, tasteful animal accents, warm neutral palette, boutique styling, ${S} --ar 16:9`],
+["أطفال","ثيم أميرات ذهبي","وردي وذهبي أنيق للبنات.",`Elegant princess theme, blush and gold, soft florals and drapery, refined not gaudy, magical warm lighting, ${S} --ar 4:5`],
+["أطفال","غيمة وبالون باستيل","سحابة وبالونات ناعمة.",`Pastel cloud and balloon kids setup, soft dreamy palette, organic balloon garland, gentle styling, ${S} --ar 4:5`],
+["أطفال","ركن ألعاب مصمّم","Play corner منسّق بذوق.",`Designed play corner for children, coordinated toys and soft seating, elegant decor, bright airy lighting, ${S} --ar 16:9`],
+["أطفال","حلويات أطفال أنيقة","Dessert table مرح وراقٍ.",`Playful yet elegant kids dessert table, colorful but curated, floral touches, styled boutique look, ${S} --ar 16:9`],
+["أطفال","مدخل بالونات عضوي","Organic balloon garland للمدخل.",`Organic balloon garland arch at party entrance, blended pastel and neutral tones with greenery, editorial, ${S} --ar 4:5`],
+["شركات","إطلاق منتج سينمائي","منصة LED وإضاءة درامية.",`Cinematic corporate product launch stage, large LED screen, dramatic beam lighting, sleek modern design, audience silhouettes, ${S} --ar 16:9`],
+["شركات","مؤتمر بإضاءة","قاعة مؤتمر بمنصة وإضاءة راقية.",`Premium conference hall, elegant stage with LED backdrop, ambient lighting, branded podium, professional atmosphere, ${S} --ar 16:9`],
+["شركات","حفل تكريم أنيق","Gala بطاولات مدوّرة وإضاءة دافئة.",`Elegant corporate awards gala, round tables with floral centerpieces, warm uplighting, gold and black palette, ${S} --ar 16:9`],
+["شركات","جناح معرض فاخر","Booth تفاعلي بهوية موحّدة.",`Luxury exhibition booth, clean modern architecture, integrated branding, backlit displays, sophisticated finish, ${S} --ar 16:9`],
+["شركات","تفعيل علامة تجارية","Brand activation تفاعلي وجذّاب.",`Interactive brand activation space, eye-catching installation, branded photo moment, polished experiential design, ${S} --ar 16:9`],
+["شركات","عشاء VIP","طاولة طويلة فاخرة لكبار الضيوف.",`VIP corporate dinner, long banquet table, refined tablescape, candles and florals, intimate luxury lighting, ${S} --ar 16:9`],
+["شركات","ركن تسجيل الحضور","Registration desk راقٍ بالهوية.",`Elegant event registration desk, branded signage, floral accent, warm welcoming lighting, premium finish, ${S} --ar 4:5`],
+["شركات","جدارية شعار بالورد","Logo مصنوع من الورد الطبيعي.",`Company logo crafted from fresh flowers on a styled wall, sophisticated corporate floral installation, ${S} --ar 4:5`],
+["افتتاح","قص شريط ذهبي","لحظة الافتتاح بشريط وذهب.",`Grand opening ribbon-cutting moment, gold ribbon and scissors, floral arrangements, celebratory elegant setup, ${S} --ar 16:9`],
+["افتتاح","مدخل احتفالي بالورد","سجاد وورد للمدخل الرئيسي.",`Festive grand opening entrance, rose-lined carpet, floral columns, welcoming golden light, ${S} --ar 16:9`],
+["افتتاح","جدارية افتتاح مضاءة","Backdrop مضاء للتصوير الإعلامي.",`Illuminated opening backdrop wall for media photos, branding and florals, polished professional look, ${S} --ar 16:9`],
+["افتتاح","ركن ضيافة عربي","قهوة وتمر لاستقبال الضيوف.",`Arabic hospitality corner at opening, brass coffee pots, dates, elegant styling, warm inviting mood, ${S} --ar 1:1`],
+["افتتاح","بالونات افتتاح راقية","Organic garland بألوان الهوية.",`Sophisticated opening balloon installation in brand colors blended with neutrals and greenery, ${S} --ar 4:5`],
+["افتتاح","لوحة إطلاق","Countdown/launch board درامي.",`Dramatic launch reveal moment, glowing countdown display, sleek staging, anticipation mood, ${S} --ar 16:9`],
+["افتتاح","جدار إعلامي","Media wall للتغطية والصور.",`Branded media wall for press photos at opening, clean repeating logo pattern, floral accent, spotlighting, ${S} --ar 16:9`],
+["خارجية","جلسة صحراوية فاخرة","سجاد وشموع وجلسة أرضية في الرمال.",`Luxury desert majlis at dusk, layered rugs, floor cushions, brass lanterns and candles, golden sand dunes, ${S} --ar 16:9`],
+["خارجية","جلسة بين الزيتون","جلسة تحت أشجار الزيتون.",`Intimate outdoor seating beneath olive trees, wooden low table, linen cushions, dappled warm light, ${S} --ar 16:9`],
+["خارجية","جلسة سطح غروب","Rooftop بإطلالة وقت الغروب.",`Rooftop lounge setup at sunset, low seating, ambient string lights, city skyline, golden hour glow, ${S} --ar 16:9`],
+["خارجية","جلسة حديقة طويلة","طاولة طويلة وسط الحديقة.",`Long garden dinner table set among greenery, florals and candles, natural dusk lighting, elegant al-fresco, ${S} --ar 16:9`],
+["خارجية","جلسة شتوية بالنار","موقد نار وسجاد وبطانيات.",`Cozy winter outdoor setup, fire pit, layered rugs and throws, warm lanterns, intimate luxe atmosphere, ${S} --ar 16:9`],
+["خارجية","جلسة قهوة عربية","ركن قهوة تراثي في الهواء الطلق.",`Outdoor Arabic coffee majlis, brass dallah pots, floor seating, palm shade, warm heritage styling, ${S} --ar 16:9`],
+["خارجية","جلسة مزرعة الورد","جلسة وسط مزرعة ورد الطائف.",`Seating amid a blooming Taif rose farm, low table, roses everywhere, soft morning light, romantic editorial, ${S} --ar 16:9`],
+["تصوير","جلسة عروس إيديتوريال","بورتريه عروس بإضاءة سينمائية.",`Editorial bridal portrait session, elegant gown, dramatic soft lighting, floral setting, magazine-quality composition, ${S} --ar 4:5`],
+["تصوير","جلسة عائلية فاخرة","عائلة بلوك متناسق وخلفية راقية.",`Luxury family portrait session, coordinated neutral outfits, elegant styled backdrop, warm natural light, ${S} --ar 4:5`],
+["تصوير","جلسة مولود ناعمة","Newborn بإضاءة ناعمة ودافئة.",`Soft newborn photography setup, neutral wraps, gentle props, warm diffused lighting, tender mood, ${S} --ar 4:5`],
+["تصوير","بورتريه درامي","إضاءة جانبية وخلفية داكنة.",`Dramatic portrait session, single side light, dark backdrop, rich shadows, fine-art mood, ${S} --ar 4:5`],
+["تصوير","جلسة حمل راقية","Maternity أنيقة بقماش منسدل.",`Elegant maternity photo session, flowing fabric, soft florals, warm backlight, artistic silhouette, ${S} --ar 4:5`],
+["تصوير","جلسة مع ورد الطائف","بورتريه محاط بالورد الطائفي.",`Portrait session surrounded by Taif roses, coral and blush blooms, soft romantic light, editorial styling, ${S} --ar 4:5`],
+["تصوير","كواليس سينمائية","BTS للفريق أثناء التجهيز.",`Cinematic behind-the-scenes of an event styling team at work, motion and detail, moody documentary lighting, ${S} --ar 16:9`],
+["منتجات","تصوير عطر فاخر","Product shot لعطر بإضاءة درامية.",`Luxury perfume bottle product shot, dramatic lighting, reflective surface, subtle florals and gold, dark elegant background, ${S} --ar 1:1`],
+["منتجات","تصوير شوكولاتة","حلويات وشوكولاتة فاخرة مقرّبة.",`Premium chocolate and confectionery product shot, macro detail, gold accents, soft directional light, ${S} --ar 1:1`],
+["منتجات","تصوير توزيعات","Favors مغلّفة بأناقة.",`Elegant event favors product photography, styled boxes and ribbons, floral accent, boutique flat composition, ${S} --ar 1:1`],
+["منتجات","تصوير باقات الورد","Bouquet بإضاءة إيديتوريال.",`Editorial bouquet product shot, coral and cream roses with eucalyptus, soft window light, refined backdrop, ${S} --ar 4:5`],
+["منتجات","أدوات القهوة العربية","Dallah وفناجين بلقطة راقية.",`Arabic coffee set product shot, brass dallah and cups on dark textured surface, warm spotlight, heritage luxury, ${S} --ar 1:1`],
+["منتجات","هدايا مغلّفة","Gift boxes بتغليف فاخر.",`Luxury wrapped gift boxes product shot, premium paper and ribbon, gold and terracotta, styled arrangement, ${S} --ar 1:1`],
+["منتجات","Flat-lay إيديتوريال","تنسيق علوي لعناصر المناسبة.",`Editorial flat-lay of event styling elements, invitation, florals, ribbons and props, curated top-down composition, ${S} --ar 1:1`],
+["ركن تصوير","بوث ورد كثيف","خلفية ورد كاملة للتصوير.",`Photo booth with a dense fresh-flower wall backdrop, coral and cream roses, warm even lighting, luxe styling, ${S} --ar 4:5`],
+["ركن تصوير","خلفية مرايا وذهب","Mirror + gold للتصوير الأنيق.",`Chic photo backdrop of antique mirrors and gold frames, soft glam lighting, luxurious reflective setup, ${S} --ar 4:5`],
+["ركن تصوير","خلفية Neon أنيق","اسم مضاء نيون مع ورد.",`Modern photo corner with elegant neon sign and floral cluster, dark backdrop, trendy luxe vibe, ${S} --ar 4:5`],
+["ركن تصوير","ركن بولارويد","جدار ذكريات بصور فورية.",`Polaroid memory wall photo corner, strings of instant photos, warm bulbs, cozy curated styling, ${S} --ar 1:1`],
+["ركن تصوير","بوث ٣٦٠°","360 platform محاط بالورد.",`360-degree video booth platform surrounded by floral arch, dramatic lighting, modern luxury event tech, ${S} --ar 4:5`],
+["ركن تصوير","قماش منسدل درامي","Draped fabric backdrop سينمائي.",`Photo backdrop of dramatically draped luxurious fabric, warm side light, sculptural folds, editorial mood, ${S} --ar 4:5`],
+["ركن تصوير","ركن نجدي تراثي","خلفية تراثية للصور التذكارية.",`Heritage Najdi photo corner, Sadu textiles, brass and pottery, warm lantern light, cultural luxury styling, ${S} --ar 4:5`],
+["ضيافة","ركن قهوة وتمر نجدي","دلال نحاس وتمر وفناجين.",`Najdi coffee and dates hospitality station, brass dallah pots, dates on ornate trays, warm heritage styling, ${S} --ar 4:5`],
+["ضيافة","ركن حلويات فرنسية","Macarons وحلويات راقية.",`Elegant French pastry station, macarons and petit fours on gold stands, floral accent, boutique presentation, ${S} --ar 16:9`],
+["ضيافة","ركن معجنات صباحي","Breakfast corner أنيق.",`Refined morning pastry and breakfast corner, warm bread and viennoiserie, linen and florals, natural light, ${S} --ar 16:9`],
+["ضيافة","ركن بوظة راقٍ","Gelato station أنيق.",`Upscale gelato station, elegant cart, styled toppings, soft florals, boutique dessert corner, ${S} --ar 4:5`],
+["ضيافة","ركن عصائر وموكتيل","Drinks bar بألوان زاهية أنيقة.",`Elegant mocktail and juice bar, colorful drinks in glassware, garnish and florals, chic styled counter, ${S} --ar 16:9`],
+["ضيافة","نافورة شوكولاتة","Chocolate fountain بعرض راقٍ.",`Luxury chocolate fountain display with fruit and treats, gold accents, warm inviting lighting, ${S} --ar 4:5`],
+["ضيافة","ركن ضيافة رمضاني","تمر وقمر الدين ولمسات رمضانية.",`Ramadan hospitality corner, dates, qamar al-din, brass lanterns, crescent motifs, warm spiritual ambiance, ${S} --ar 16:9`],
+["ورد","جدار ورد كامل","Flower wall كثيف للتصوير.",`Full fresh-flower wall, dense coral cream and blush roses with greenery, even soft light, luxe backdrop, ${S} --ar 4:5`],
+["ورد","سقف ورد معلّق","Floral ceiling درامي فوق الطاولة.",`Dramatic suspended floral ceiling installation above a dining table, cascading roses and greenery, warm glow, ${S} --ar 16:9`],
+["ورد","ممر ورد أرضي","Aisle مبطّن بالورد.",`Aisle lined with low fresh-flower arrangements and petals, elegant walkway, candlelight, romantic mood, ${S} --ar 16:9`],
+["ورد","عمود ورد","Floral pedestal مرتفع للمدخل.",`Tall floral pedestal arrangement, coral and cream roses spilling over a gold column, dark elegant backdrop, ${S} --ar 4:5`],
+["ورد","قوس ورد للمدخل","Entrance floral arch فخم.",`Grand floral entrance arch of roses and eucalyptus, framing a doorway, warm uplighting, luxurious, ${S} --ar 4:5`],
+["ورد","تنسيق طاولة ممتد","Floral runner على طول الطاولة.",`Long low floral runner down a banquet table, coral roses and greenery, candles between, editorial tablescape, ${S} --ar 16:9`],
+["ورد","باقة العروس","Bridal bouquet فاخرة مقرّبة.",`Luxury bridal bouquet close-up, coral and blush roses with trailing eucalyptus, soft light, editorial detail, ${S} --ar 4:5`],
+["قهوة","ركن قهوة مختصّة","Specialty coffee bar أنيق.",`Elegant specialty coffee bar, espresso machine, styled counter with florals, warm ambient light, artisanal luxe, ${S} --ar 16:9`],
+["قهوة","عربة قهوة متنقلة","Coffee cart أنيقة بالورد.",`Charming mobile coffee cart decorated with fresh flowers, vintage-luxe style, warm inviting setup, ${S} --ar 4:5`],
+["قهوة","قهوة عربية بدلّة نحاس","ركن قهوة تراثي فاخر.",`Traditional Arabic coffee corner, gleaming brass dallah pots and finjan cups, dates, warm heritage lighting, ${S} --ar 4:5`],
+["قهوة","ركن قهوة صباحي","Coffee + florals بإضاءة نهارية.",`Bright morning coffee station with fresh florals, pastries, linen, airy natural light, boutique styling, ${S} --ar 16:9`],
+["قهوة","باريستا لايف","Live barista station تفاعلي.",`Live barista station at an event, latte art in progress, elegant branded cups, warm focused lighting, ${S} --ar 4:5`],
+["قهوة","ركن شاي وأعشاب","Tea bar فاخر بأعشاب وزهور.",`Luxury tea and herbal infusion bar, glass teapots, dried flowers and herbs, elegant styled counter, ${S} --ar 16:9`],
+["موسمية","سفرة رمضان فاخرة","Iftar tablescape راقٍ.",`Luxurious Ramadan iftar table, brass lanterns, crescent details, rich linens, dates and florals, warm golden glow, ${S} --ar 16:9`],
+["موسمية","ركن العيدية","Eid gifting corner أنيق.",`Elegant Eid gifting corner, eidiyah envelopes and sweets, gold and jewel tones, festive refined styling, ${S} --ar 1:1`],
+["موسمية","تنسيق العيد الذهبي","Eid decor بلمسة ذهبية.",`Golden Eid celebration decor, elegant sweets display, crescent and lantern motifs, warm festive luxury, ${S} --ar 16:9`],
+["موسمية","اليوم الوطني الفاخر","أخضر وأبيض راقٍ (السعودية).",`Sophisticated Saudi National Day styling, refined green and white palette, elegant florals, tasteful patriotic luxe, ${S} --ar 16:9`],
+["موسمية","جلسة شتوية دافئة","Cozy luxe بألوان دافئة.",`Cozy winter luxe gathering, warm caramel and rust tones, candles, textured throws, intimate glow, ${S} --ar 16:9`],
+["موسمية","جلسة صيفية منعشة","Citrus وتراكوتا منعش.",`Fresh summer setup, citrus and terracotta palette, airy linens, bright florals, sunny elegant tablescape, ${S} --ar 16:9`],
+["موسمية","ثيم موسم ورد الطائف","احتفال بموسم قطاف الورد.",`Taif rose season celebration, abundant coral roses, farm-to-table styling, golden morning light, romantic luxury, ${S} --ar 16:9`],
+];
+/* MOOD: [cat,title,[pal],light,flowers,fabric,chairs,tables,backdrop,layout,photo] */
+const MOOD=[
+["زواج","زفاف أوبسيديان وذهب",["#0b0b0d","#1a1620","#c9a24b","#e4cd8f","#f5f2ec"],"شموع كثيفة + سبوت ذهبي دافئ","ورد أبيض + أوركيد + جبسوفيليا","مخمل أسود + حرير عاجي","أكريليك شفاف بمخدة مخمل","زجاج مرايا + قواعد ذهبية","جدار مرايا وشموع + ورد علوي","تماثل محوري حول الممر","سينمائي واسع + ماكرو شموع"],
+["زواج","زفاف ورد الطائف",["#7a1f2b","#c4623d","#e8a17d","#8a936f","#f3e3d3"],"إضاءة عسلية + غروب صناعي","ورد طائفي مرجاني + أوكالبتوس","كتان عاجي + جدائل خوخي","خشب فاتح بوسائد كتان","خشب ريفي + عدّاءة ورد","كوشة ورد مرجاني كثيف","انسياب عضوي غير متماثل","إيديتوريال دافئ + بتلات"],
+["زواج","زفاف نجدي فاخر",["#3a2418","#9a6b3f","#c9a24b","#8a936f","#e8ddc7"],"فوانيس نحاسية كهرمانية","ورد ترابي + نخيل","سدو منقوش + كتان بيج","مجالس أرضية + خشب محفور","طاولات نحاس منخفضة","جدار طيني بنقوش نجدية","مجالس دائرية حميمة","تراثي دافئ + نحاس"],
+["زواج","زفاف حديقة ليلي",["#14210f","#2f3524","#7c8464","#c9a24b","#eef0e6"],"إنارة أشجار + سلاسل ضوء","ورد أبيض + أوكالبتوس","كتان أبيض + شاش","خشب طبيعي + وسائد","طاولة طويلة خشب","أشجار زيتون منارة","محور طاولة ممتد","ليلي سينمائي + بوكيه"],
+["زواج","زفاف أبيض نقي",["#f5f2ec","#e6e1d6","#cfc7b8","#c9a24b","#1a1a1e"],"ضوء ناعم منتشر + سبوت","أوركيد أبيض + كالا","حرير أبيض منسدل","أكريليك أو رخام","رخام أبيض + معدن","أعمدة رخام + فراغ سالب","مينمال متناظر","نظيف + ظلال ناعمة"],
+["زواج","نفق دخول درامي",["#0b0b0d","#5a2333","#c4623d","#c9a24b","#f3e3d3"],"إضاءة سفلية + ضباب","ورد معلّق كثيف + خضرة","تركيب معلّق","—","—","نفق ورد وخضرة","خط ممر مركزي","سينمائي + سيلويت"],
+["زواج","طاولة العروسين",["#2a0f1a","#7a1f2b","#c4623d","#e7c2c2","#c9a24b"],"سبوت دافئ + شموع","جدار ورد بلاش ومرجاني","مخمل عنّابي","كنب مخمل للعروسين","طاولة زجاج ذهبية","جدار ورد كثيف","تركيز على الثنائي","بورتريه + ماكرو"],
+["زواج","كيك الزفاف الفاخر",["#0b0b0d","#c9a24b","#e4cd8f","#f5f2ec","#c4623d"],"سبوت مركّز","ورد صغير + ورق ذهب","قاعدة رخام","—","قاعدة رخام","خلفية داكنة","تكوين مركزي بطولي","ماكرو منتج"],
+["ملكة","ليلة الحناء النجدية",["#3a2418","#9a6b3f","#c4623d","#c9a24b","#e8ddc7"],"شموع + فوانيس نحاس","ورد مرجاني + نخيل","سدو + كتان ترابي","مجالس أرضية سدو","صواني ودلال نحاس","نقوش نجدية + خشب","دائري حميم","تراثي دافئ + حناء"],
+["ملكة","ملكة مرجانية",["#5a2333","#c4623d","#e8a17d","#c9a24b","#f3e3d3"],"شموع + تدرّج دافئ","ورد تراكوتا متدرّج","مخمل خوخي","كرسي مذهّب","طاولة ذهبية","تدرّج ورد تراكوتا","تدرّج متصاعد","إيديتوريال دافئ"],
+["ملكة","كرسي الملكة",["#1a1620","#7a1f2b","#c4623d","#c9a24b","#e7c2c2"],"سبوت ملكي","قوس ورد مرجاني","مخمل داكن","كرسي مذهّب فخم","—","قوس ورد + مخمل","مركزي متناظر","بورتريه ملكي"],
+["ملكة","ركن الحناء",["#2a1a10","#9a6b3f","#c9a24b","#e4cd8f","#f3e3d3"],"شموع + كهرماني","بتلات + خضرة","سدو + كتان","—","طاولة نحاس محفورة","سدو + خشب","ركن مقرّب","ماكرو دافئ"],
+["ملكة","ملكة رخام وذهب",["#f5f2ec","#e6e1d6","#c9a24b","#e4cd8f","#b56b6b"],"ناعم + سبوت ذهبي","أوركيد + بلاش","حرير عاجي","أكريليك + حرير","رخام + ذهبي","رخام وذهب مينمال","نظيف متناظر","إيديتوريال نظيف"],
+["ملكة","ليلة الزيتون",["#2f3524","#7c8464","#b8bfa1","#c9a24b","#eef0e6"],"شموع + فوانيس","زيتون + ورد كريمي","كتان + سدو","مجالس أرضية","طاولات خشب","زيتون + خشب","عضوي حميم","طبيعي دافئ"],
+["ملكة","مدخل الملكة",["#0b0b0d","#5a2333","#c4623d","#c9a24b","#e8ddc7"],"سبوت + بخور","ورد مرجاني جانبي","سجاد منقوش","—","—","ممر ورد + بخور","خط ممر مركزي","درامي + دخان"],
+["ميلاد","ميلاد شامبين",["#0b0b0d","#1a1620","#c9a24b","#e4cd8f","#f5f2ec"],"سبوت + بريق ذهبي","ورد أبيض + جبسوفيليا","مخمل أسود","لاونج مخمل","طاولة زجاج ذهبية","بالون كروم + ورد","لاونج متوازن","شيك + ماكرو"],
+["ميلاد","ميلاد مرجاني",["#7a1f2b","#c4623d","#e8a17d","#f3e3d3","#c9a24b"],"دافئ + شموع","ورد تراكوتا وخوخي","كتان خوخي","خشب + وسائد","خشب ريفي","تدرّج ورد تراكوتا","بوهو-لوكس","دافئ عضوي"],
+["ميلاد","طاولة حلويات فاخرة",["#1a1620","#c9a24b","#e4cd8f","#b56b6b","#f5f2ec"],"سبوت ستايلد","تنسيق ورد مركزي","كتان + ركنر","—","طاولة + ستاندات ذهب","خلفية داكنة/قماش","تدرّج ارتفاعات","منتجات حلويات"],
+["ميلاد","ميلاد أسود وذهبي",["#0b0b0d","#141018","#c9a24b","#e4cd8f","#c4623d"],"درامي + Marquee","ورد أحمر داكن","مخمل أسود","لاونج داكن","طاولة مرايا","خلفية داكنة + رقم","درامي متوازن","غلامور داكن"],
+["ميلاد","رقم مضاء بالورد",["#0b0b0d","#c9a24b","#c4623d","#e7c2c2","#f5f2ec"],"توهّج لمبات","ورد يغطّي الرقم","—","—","—","خلفية داكنة","مركزي للرقم","ماكرو توهّج"],
+["ميلاد","ميلاد حديقة نهاري",["#eef0e6","#b8bfa1","#7c8464","#e7c2c2","#c9a24b"],"ضوء نهار","ورد باستيل + أوكالبتوس","كتان فاتح + شاش","خشب فاتح","خشب طبيعي","خضرة + قماش فاتح","مفتوح مهوّى","نهاري مشرق"],
+["ميلاد","ركن الكيك الدرامي",["#0b0b0d","#5a2333","#c9a24b","#c4623d","#f5f2ec"],"سبوت درامي","ورد حول القاعدة","قماش داكن","—","قاعدة مرتفعة","خلفية داكنة","بطولي مركزي","بطولي عمق ضحل"],
+["مواليد","استقبال نجدي دافئ",["#3a2418","#9a6b3f","#c9a24b","#b8bfa1","#e8ddc7"],"فوانيس ناعمة","ورد ترابي ناعم","سدو + كتان","مجالس منخفضة","خشب ونحاس","نقوش نجدية ناعمة","حميم دافئ","دافئ ناعم"],
+["مواليد","سحابة وذهب",["#eaf0f4","#cdd8e0","#c9a24b","#e4cd8f","#f5f2ec"],"حالمة ناعمة","ورد باستيل","شاش + قطن","أكريليك ناعم","أبيض + ذهبي","سحابة قطنية + ذهب","حالم ناعم","ناعم حالم"],
+["مواليد","عربة المولود بالورد",["#f6e7ea","#e7c2c2","#b8bfa1","#c9a24b","#faf6f0"],"ضوء ناعم","ورد + خضرة","قطن + دانتيل","—","—","خلفية محايدة","تركيز على العربة","دافئ ناعم"],
+["مواليد","اسم بالورد",["#f6e7ea","#e7c2c2","#8a936f","#c9a24b","#fbf7f3"],"منتشر ناعم","اسم من ورد","خلفية قماش","—","—","خلفية بلاش","مركزي للاسم","بوتيك ماكرو"],
+["مواليد","ثيم زيتوني هادئ",["#2f3524","#7c8464","#b8bfa1","#e8ddc7","#c9a24b"],"شموع هادئة","أوكالبتوس + كريمي","كتان بيج","خشب طبيعي","خشب منخفض","خضرة هادئة","عضوي بسيط","هادئ دافئ"],
+["مواليد","ركن توزيعات المولود",["#f5f2ec","#e6e1d6","#c9a24b","#e7c2c2","#8a936f"],"سبوت ناعم","ورد صغير","كتان ناعم","—","صواني ذهبية","خلفية ناعمة","ركن أنيق","منتجات بوتيك"],
+["مواليد","اسم Neon أنيق",["#0b0b0d","#b56b6b","#c9a24b","#e7c2c2","#f5f2ec"],"توهّج نيون","ورد أسفل الاسم","خلفية داكنة","—","—","خلفية داكنة","اسم فوق الورد","عصري + توهج"],
+["تخرّج","تخرّج ذهبي فخم",["#0b0b0d","#141018","#c9a24b","#e4cd8f","#f5f2ec"],"سبوت + بالون مضيء","ورد أبيض + ذهبي","مخمل أسود","لاونج داكن","طاولة زجاج ذهب","خلفية + قبعة","متوازن راقٍ","غلامور احتفالي"],
+["تخرّج","تخرّج بثيم الكلية",["#12233f","#1f4d3a","#c9a24b","#e4cd8f","#f5f2ec"],"إضاءة بالألوان","ورد بلون التخصّص","قماش بألوان الكلية","لاونج محايد","طاولة داكنة","لوحة الهوية","تنسيق موحّد","احترافي موحّد"],
+["تخرّج","جدارية الإنجاز",["#0b0b0d","#5a2333","#c9a24b","#e7c2c2","#f5f2ec"],"اسم مضيء","ورد حول الإطارات","خلفية داكنة","—","—","جدار صور + اسم","شبكة صور","بورتريه أمام الجدار"],
+["تخرّج","ركن القبعة والشهادة",["#1a1620","#c9a24b","#e4cd8f","#8a936f","#f5f2ec"],"سبوت ناعم","ورد صغير","كتان + ذهبي","—","طاولة ستايلد","خلفية بسيطة","ركن بروبس","منتجات دافئة"],
+["تخرّج","ضيافة التخرّج",["#0b0b0d","#c9a24b","#e4cd8f","#b56b6b","#f5f2ec"],"سبوت دافئ","ورد موحّد","كتان + ركنر","—","طاولة + ستاندات","خلفية موحّدة","تدرّج حلويات","إيديتوريال ضيافة"],
+["تخرّج","عبارة مبروك مضاءة",["#0b0b0d","#c9a24b","#c4623d","#e4cd8f","#f5f2ec"],"توهّج Marquee","ورد أسفل الحروف","خلفية داكنة","—","—","حروف مضيئة","مركزي للعبارة","ماكرو توهّج"],
+["تخرّج","تخرّج مرجاني ذهبي",["#7a1f2b","#c4623d","#c9a24b","#e8a17d","#f3e3d3"],"دافئ احتفالي","ورد تراكوتا + ذهبي","كتان خوخي","خشب + وسائد","خشب ذهبي","تراكوتا وذهب","دافئ متوازن","دافئ احتفالي"],
+["أطفال","عالم أطفال فاخر",["#f6e7ea","#e7c2c2","#b8bfa1","#c9a24b","#fbf7f3"],"مرحة ناعمة","بالون + ورد باستيل","قطن ملوّن","خشب + وسائد","خشب فاتح","Organic garland","مرح منسّق","مرح بوتيك"],
+["أطفال","ثيم سفاري راقٍ",["#3a2418","#7c8464","#b8bfa1","#c9a24b","#e8ddc7"],"دافئ طبيعي","خضرة + قش","كتان ترابي","خشب + سعف","خشب طبيعي","خضرة + حيوانات","عضوي دافئ","دافئ طبيعي"],
+["أطفال","ثيم أميرات ذهبي",["#f6e7ea","#e7c2c2","#c9a24b","#e4cd8f","#fbf7f3"],"توهّج ذهبي حالم","ورد بلاش","تُل + حرير","كراسي مذهّبة","طاولة بلاش وذهب","درابيه + ذهب","حالم متناظر","حالم ناعم"],
+["أطفال","غيمة وبالون باستيل",["#eaf0f4","#f6e7ea","#cdd8e0","#c9a24b","#f5f2ec"],"ناعم حالم","ورد باستيل خفيف","قطن ناعم","خشب فاتح","خشب فاتح","سحابة + بالون","عضوي ناعم","ناعم حالم"],
+["أطفال","ركن ألعاب مصمّم",["#eef0e6","#b8bfa1","#e7c2c2","#c9a24b","#fbf7f3"],"مشرقة مهوّاة","لمسات خضرة","قطن هادئ","وسائد أرضية","طاولة أطفال","خلفية بسيطة","مناطق منظّمة","مشرق مهوّى"],
+["أطفال","حلويات أطفال أنيقة",["#f6e7ea","#e7c2c2","#c9a24b","#8a936f","#fbf7f3"],"سبوت ستايلد","ورد صغير مرح","ركنر هادئ","—","طاولة + ستاندات","خلفية باستيل","تدرّج منسّق","حلويات مرح"],
+["أطفال","مدخل بالونات عضوي",["#eaf0f4","#f6e7ea","#b8bfa1","#c9a24b","#f5f2ec"],"ناعم نهاري","خضرة بين البالون","—","—","—","Organic garland","قوس مدخل عضوي","نهاري مهوّى"],
+["شركات","إطلاق منتج سينمائي",["#0b0b0d","#12233f","#c9a24b","#e4cd8f","#f5f2ec"],"أشعة درامية + LED","خطوط نظيفة","معدن وزجاج","صفوف كراسي سوداء","منصة + بوديوم","شاشة LED عملاقة","مسرح مركزي","سينمائي + سيلويت"],
+["شركات","مؤتمر بإضاءة",["#0b0b0d","#1a1620","#c9a24b","#8a936f","#f5f2ec"],"إضاءة محيطة","خضرة خفيفة","معدن + زجاج","كراسي مؤتمر","طاولات + بوديوم","خلفية LED","صفوف منظّمة","احترافي مؤسسي"],
+["شركات","حفل تكريم أنيق",["#0b0b0d","#5a2333","#c9a24b","#e4cd8f","#f5f2ec"],"Uplighting دافئ","ورد مركزي للطاولات","مفارش داكنة","شيافاري ذهبية","طاولات مدوّرة","خلفية مسرح","توزيع جالا","سينمائي دافئ"],
+["شركات","جناح معرض فاخر",["#141018","#2f3524","#c9a24b","#e4cd8f","#f5f2ec"],"Backlit","خضرة معمارية","خامات فاخرة","لاونج أنيق","كاونتر استقبال","عمارة + هوية","تدفّق زائر","معماري نظيف"],
+["شركات","تفعيل علامة تجارية",["#0b0b0d","#c4623d","#c9a24b","#e4cd8f","#f5f2ec"],"تفاعلية جذّابة","خضرة/ورد بالهوية","خامات عصرية","مقاعد تفاعلية","محطات تفاعل","تركيب لافت","مسار تجربة","تجريبي حيوي"],
+["شركات","عشاء VIP",["#0b0b0d","#1a1620","#c9a24b","#c4623d","#f5f2ec"],"شموع حميمة","عدّاءة ورد منخفضة","كتان راقٍ","كراسي مخمل","طاولة طويلة","خلفية داكنة","محور طاولة","حميم فاخر"],
+["شركات","ركن تسجيل الحضور",["#141018","#c9a24b","#e4cd8f","#8a936f","#f5f2ec"],"ترحيب دافئ","ورد أنيق","خامة راقية","—","كاونتر تسجيل","لوحة هوية","ركن ترحيبي","احترافي دافئ"],
+["شركات","جدارية شعار بالورد",["#0b0b0d","#c4623d","#8a936f","#c9a24b","#f5f2ec"],"سبوت على الجدار","شعار من ورد","خلفية قماش","—","—","جدار ورد بالشعار","متناظر للشعار","منتجات + بورتريه"],
+["افتتاح","قص شريط ذهبي",["#0b0b0d","#c9a24b","#e4cd8f","#c4623d","#f5f2ec"],"سبوت احتفالي","ورد جانبي","شريط ذهبي + سجاد","—","طاولة المقص","خلفية هوية","مركزي للحظة","توثيقي احتفالي"],
+["افتتاح","مدخل احتفالي بالورد",["#7a1f2b","#c4623d","#c9a24b","#e8a17d","#f5f2ec"],"سبوت دافئ","أعمدة ورد + قوس","سجاد فاخر","—","—","أعمدة ورد","خط مدخل مركزي","سينمائي ترحيبي"],
+["افتتاح","جدارية افتتاح مضاءة",["#0b0b0d","#c9a24b","#e4cd8f","#8a936f","#f5f2ec"],"خلفية + سبوت","ورد جانبي","خلفية هوية","—","—","جدار مضاء","نمط شعار","توثيق إعلامي"],
+["افتتاح","ركن ضيافة عربي",["#3a2418","#9a6b3f","#c9a24b","#e8ddc7","#f5f2ec"],"كهرماني","نخيل + ورد ترابي","سدو + كتان","—","طاولة نحاس","خشب ونحاس","ركن قهوة","تراثي دافئ"],
+["افتتاح","بالونات افتتاح راقية",["#0b0b0d","#c4623d","#8a936f","#c9a24b","#f5f2ec"],"نهاري/سبوت","خضرة بين البالون","—","—","—","Garland بالهوية","قوس بالون","نظيف راقٍ"],
+["افتتاح","لوحة إطلاق",["#0b0b0d","#12233f","#c9a24b","#e4cd8f","#f5f2ec"],"درامي + عدّاد","لا ورد","معدن وزجاج","—","منصة إطلاق","شاشة إطلاق","ترقّب مركزي","درامي سينمائي"],
+["افتتاح","جدار إعلامي",["#0b0b0d","#c9a24b","#8a936f","#e4cd8f","#f5f2ec"],"سبوت متساوٍ","ورد جانبي","خلفية هوية","—","—","نمط شعار","متكرّر نظيف","توثيق صحفي"],
+["خارجية","جلسة صحراوية فاخرة",["#2a1a10","#9a6b3f","#c4623d","#c9a24b","#e8ddc7"],"غروب + فوانيس","نخيل + ورد ترابي","سجاد + سدو","مجالس أرضية","نحاس منخفضة","كثبان ذهبية","دائري في الرمال","غروب سينمائي"],
+["خارجية","جلسة بين الزيتون",["#2f3524","#7c8464","#b8bfa1","#c9a24b","#eef0e6"],"منقّط دافئ","أوكالبتوس + كريمي","كتان + سدو","خشب + وسائد","خشب منخفض","أشجار زيتون","عضوي تحت الأشجار","طبيعي دافئ"],
+["خارجية","جلسة سطح غروب",["#5a2333","#c4623d","#e8a17d","#c9a24b","#f3e3d3"],"غروب + سلاسل","ورد خوخي","كتان + وسائد","لاونج منخفض","طاولات قهوة","أفق المدينة","لاونج مفتوح","Golden hour"],
+["خارجية","جلسة حديقة طويلة",["#14210f","#2f3524","#7c8464","#c9a24b","#eef0e6"],"غسق + شموع","عدّاءة ورد وخضرة","كتان أبيض","خشب + وسائد","طاولة طويلة","خضرة الحديقة","محور طاولة","Al-fresco"],
+["خارجية","جلسة شتوية بالنار",["#2a1a10","#7a1f2b","#c4623d","#c9a24b","#e8ddc7"],"نار + فوانيس","ورد ترابي + خضرة","سجاد + بطانيات","مجالس أرضية","خشب منخفض","موقد نار","دائري حول النار","دافئ حميم"],
+["خارجية","جلسة قهوة عربية",["#3a2418","#9a6b3f","#c9a24b","#8a936f","#e8ddc7"],"ظل نخيل دافئ","نخيل + ورد ترابي","سدو + كتان","مجالس أرضية","طاولة نحاس","نخيل وسعف","ركن قهوة تراثي","تراثي دافئ"],
+["خارجية","جلسة مزرعة الورد",["#7a1f2b","#c4623d","#e8a17d","#8a936f","#f3e3d3"],"صباح ناعم","ورد طائفي وفير","كتان فاتح","خشب + وسائد","خشب منخفض","مزرعة ورد","عضوي وسط الورد","رومانسي إيديتوريال"],
+["تصوير","جلسة عروس إيديتوريال",["#0b0b0d","#7a1f2b","#c4623d","#e7c2c2","#f5f2ec"],"سوفت لايت درامي","ورد مرجاني وبلاش","فستان + قماش","—","—","خلفية أنيقة/ورد","مجلّة مركزي","إيديتوريال عالي"],
+["تصوير","جلسة عائلية فاخرة",["#2f3524","#7c8464","#c9a24b","#e8ddc7","#f5f2ec"],"طبيعي دافئ","خضرة وورد","لوك محايد","مقاعد أنيقة","—","خلفية ستايلد","عائلي متوازن","دافئ طبيعي"],
+["تصوير","جلسة مولود ناعمة",["#f6e7ea","#e7c2c2","#b8bfa1","#e8ddc7","#fbf7f3"],"منتشر ناعم","ورد صغير","لفّات قطن","سلة ناعمة","—","خلفية محايدة","مقرّب رقيق","ناعم رقيق"],
+["تصوير","بورتريه درامي",["#0b0b0d","#1a1620","#c9a24b","#c4623d","#f5f2ec"],"جانبية واحدة","لمسة ورد","خلفية داكنة","—","—","خلفية داكنة","فني بالظل","Fine-art"],
+["تصوير","جلسة حمل راقية",["#5a2333","#c4623d","#e7c2c2","#c9a24b","#f3e3d3"],"Backlight دافئ","ورد ناعم","قماش منسدل","—","—","خلفية طبيعية","سيلويت فني","فني ناعم"],
+["تصوير","جلسة مع ورد الطائف",["#7a1f2b","#c4623d","#e8a17d","#e7c2c2","#f3e3d3"],"رومانسي ناعم","ورد طائفي محيط","قماش فاتح","—","—","محاط بالورد","مركزي محاط","رومانسي"],
+["تصوير","كواليس سينمائية",["#0b0b0d","#2a1a10","#c9a24b","#8a936f","#f5f2ec"],"وثائقي مزاجي","تفاصيل ورد","خامات العمل","—","طاولات تجهيز","موقع التجهيز","حركة وتفاصيل","وثائقي سينمائي"],
+["منتجات","تصوير عطر فاخر",["#0b0b0d","#1a1620","#c9a24b","#e4cd8f","#f5f2ec"],"درامية + انعكاس","ورد + ورق ذهب","سطح عاكس","—","رخام/زجاج","خلفية داكنة","مركزي منتج","ماكرو عمق ضحل"],
+["منتجات","تصوير شوكولاتة",["#2a1a10","#9a6b3f","#c9a24b","#e4cd8f","#f5f2ec"],"سبوت موجّه","لمسة ورد","سطح داكن","—","خشب/رخام","خلفية داكنة","ماكرو","ماكرو شهي"],
+["منتجات","تصوير توزيعات",["#f5f2ec","#e6e1d6","#c9a24b","#e7c2c2","#8a936f"],"ستايلد ناعم","ورد صغير","شرائط وورق","—","سطح ستايلد","خلفية بوتيك","Flat-lay","منتجات بوتيك"],
+["منتجات","تصوير باقات الورد",["#7a1f2b","#c4623d","#e8a17d","#8a936f","#f3e3d3"],"نافذة ناعم","ورد مرجاني + أوكالبتوس","قماش راقٍ","—","سطح ستايلد","خلفية محايدة","باقة مركزي","إيديتوريال ورد"],
+["منتجات","أدوات القهوة العربية",["#2a1a10","#9a6b3f","#c9a24b","#e8ddc7","#0b0b0d"],"سبوت دافئ","لمسة نخيل","سطح منسوج","—","خشب داكن","خلفية داكنة","تراثي","ماكرو تراثي"],
+["منتجات","هدايا مغلّفة",["#0b0b0d","#c9a24b","#c4623d","#e4cd8f","#f5f2ec"],"سبوت ناعم","لمسة ورد","ورق وشريط","—","سطح ستايلد","خلفية أنيقة","منسّق","منتجات فاخرة"],
+["منتجات","Flat-lay إيديتوريال",["#f5f2ec","#e6e1d6","#c9a24b","#8a936f","#c4623d"],"علوي متساوٍ","ورد + خضرة","دعوة + شرائط","—","سطح علوي","سطح منسّق","علوي متوازن","Top-down"],
+["ركن تصوير","بوث ورد كثيف",["#7a1f2b","#c4623d","#e7c2c2","#c9a24b","#f3e3d3"],"متساوية دافئة","جدار ورد كامل","—","—","—","جدار ورد","مليء متساوٍ","بورتريه أمام الورد"],
+["ركن تصوير","خلفية مرايا وذهب",["#0b0b0d","#c9a24b","#e4cd8f","#c4623d","#f5f2ec"],"غلام لايت","لمسة ورد","إطارات ذهب ومرايا","—","—","مرايا وإطارات","عاكس فخم","غلامور"],
+["ركن تصوير","خلفية Neon أنيق",["#0b0b0d","#b56b6b","#c9a24b","#e7c2c2","#f5f2ec"],"توهّج نيون","ورد أسفل","خلفية داكنة","—","—","نيون + ورد","اسم فوق الورد","عصري + توهج"],
+["ركن تصوير","ركن بولارويد",["#2a1a10","#c9a24b","#e8ddc7","#8a936f","#f5f2ec"],"لمبات دافئة","لمسة خضرة","خيوط وصور","—","طاولة صغيرة","جدار ذكريات","ركن دافئ","دافئ حميم"],
+["ركن تصوير","بوث ٣٦٠°",["#0b0b0d","#c4623d","#c9a24b","#e4cd8f","#f5f2ec"],"درامية متحرّكة","قوس ورد حول المنصة","—","—","منصة 360","قوس ورد + تقنية","منصة مركزية","فيديو عصري"],
+["ركن تصوير","قماش منسدل درامي",["#0b0b0d","#5a2333","#c4623d","#c9a24b","#f3e3d3"],"سايد لايت","لمسة ورد","قماش فاخر منسدل","—","—","طيّات نحتية","نحتي","إيديتوريال درامي"],
+["ركن تصوير","ركن نجدي تراثي",["#3a2418","#9a6b3f","#c9a24b","#8a936f","#e8ddc7"],"فوانيس دافئة","ورد ترابي","سدو + خزف","—","خشب ونحاس","سدو ونحاس","ركن تراثي","تراثي دافئ"],
+["ضيافة","ركن قهوة وتمر نجدي",["#3a2418","#9a6b3f","#c9a24b","#e8ddc7","#0b0b0d"],"كهرماني دافئ","ورد ترابي","سدو + كتان","—","طاولة نحاس","خشب ونحاس","ركن تراثي","تراثي + ماكرو"],
+["ضيافة","ركن حلويات فرنسية",["#f5f2ec","#e6e1d6","#c9a24b","#b56b6b","#e7c2c2"],"سبوت ستايلد","تنسيق ورد","كتان + ركنر","—","طاولة + ستاندات","خلفية أنيقة","تدرّج ارتفاعات","منتجات حلويات"],
+["ضيافة","ركن معجنات صباحي",["#eef0e6","#e6e1d6","#c9a24b","#8a936f","#fbf7f3"],"نهار طبيعي","ورد ريفي","كتان فاتح","—","طاولة خشب","خلفية فاتحة","صباحي وفير","نهاري مهوّى"],
+["ضيافة","ركن بوظة راقٍ",["#f6e7ea","#e7c2c2","#c9a24b","#8a936f","#fbf7f3"],"ناعمة","ورد صغير","لمسة كتان","—","عربة/كاونتر","خلفية ناعمة","ركن أنيق","بوتيك ناعم"],
+["ضيافة","ركن عصائر وموكتيل",["#c4623d","#e8a17d","#8a936f","#c9a24b","#f3e3d3"],"زاهية أنيقة","ورد + خضرة","كتان","—","كاونتر مشروبات","خلفية أنيقة","صف مشروبات","حيوي أنيق"],
+["ضيافة","نافورة شوكولاتة",["#2a1a10","#9a6b3f","#c9a24b","#e4cd8f","#f5f2ec"],"دافئ جذّاب","لمسة ورد","كتان داكن","—","طاولة عرض","خلفية داكنة","نافورة مركزي","شهي دافئ"],
+["ضيافة","ركن ضيافة رمضاني",["#2a1a10","#5a2333","#c9a24b","#8a936f","#e8ddc7"],"فوانيس + هلال","نخيل + ورد ترابي","سدو + كتان غني","—","طاولة نحاس","فوانيس وهلال","رمضاني دافئ","روحاني دافئ"],
+["ورد","جدار ورد كامل",["#7a1f2b","#c4623d","#e7c2c2","#8a936f","#f3e3d3"],"متساوية ناعمة","ورد مرجاني كثيف","—","—","—","جدار ورد كامل","مليء متساوٍ","خلفية بورتريه"],
+["ورد","سقف ورد معلّق",["#7a1f2b","#c4623d","#8a936f","#c9a24b","#f3e3d3"],"توهّج من الأسفل","ورد متدلٍّ + خضرة","—","—","طاولة أسفل","تركيب سقفي","محور فوق الطاولة","درامي واسع"],
+["ورد","ممر ورد أرضي",["#7a1f2b","#c4623d","#e7c2c2","#c9a24b","#f3e3d3"],"شموع على الممر","تنسيقات + بتلات","—","—","—","ممر ورد وبتلات","خط ممر مركزي","رومانسي"],
+["ورد","عمود ورد",["#5a2333","#c4623d","#e8a17d","#c9a24b","#f3e3d3"],"سبوت على العمود","ورد متدفّق","—","—","عمود ذهبي","خلفية داكنة","عمودي مرتفع","منتج/ديتيل"],
+["ورد","قوس ورد للمدخل",["#7a1f2b","#c4623d","#8a936f","#c9a24b","#f3e3d3"],"Uplighting دافئ","ورد + أوكالبتوس","—","—","—","قوس ورد للمدخل","متناظر للمدخل","سينمائي ترحيبي"],
+["ورد","تنسيق طاولة ممتد",["#7a1f2b","#c4623d","#8a936f","#c9a24b","#f3e3d3"],"شموع بين الورد","عدّاءة ورد منخفضة","مفرش كتان","—","طاولة طويلة","خلفية محايدة","محور ممتد","إيديتوريال طاولة"],
+["ورد","باقة العروس",["#7a1f2b","#c4623d","#e7c2c2","#8a936f","#f3e3d3"],"ضوء ناعم","ورد مرجاني + أوكالبتوس","لمسة حرير","—","—","خلفية ناعمة","باقة مقرّب","ماكرو إيديتوريال"],
+["قهوة","ركن قهوة مختصّة",["#2a1a10","#9a6b3f","#c9a24b","#8a936f","#f5f2ec"],"محيطة دافئة","لمسة ورد وخضرة","كتان","—","كاونتر + إسبريسو","خلفية أنيقة","بار قهوة","حِرفي دافئ"],
+["قهوة","عربة قهوة متنقلة",["#2a1a10","#c4623d","#c9a24b","#e8ddc7","#f3e3d3"],"دافئ جذّاب","ورد على العربة","لمسة كتان","—","عربة فنتج","خلفية دافئة","عربة أنيقة","فنتج-لوكس"],
+["قهوة","قهوة عربية بدلّة نحاس",["#3a2418","#9a6b3f","#c9a24b","#e8ddc7","#0b0b0d"],"كهرماني تراثي","نخيل + ورد ترابي","سدو + كتان","—","طاولة نحاس","خشب ونحاس","قهوة تراثي","تراثي دافئ"],
+["قهوة","ركن قهوة صباحي",["#eef0e6","#e6e1d6","#c9a24b","#8a936f","#fbf7f3"],"نهار طبيعي","ورد + معجنات","كتان فاتح","—","كاونتر خشب","خلفية فاتحة","صباحي مشرق","نهاري مهوّى"],
+["قهوة","باريستا لايف",["#2a1a10","#9a6b3f","#c9a24b","#e4cd8f","#f5f2ec"],"سبوت على المحطة","لمسة ورد","خامة راقية","—","محطة باريستا","خلفية أنيقة","محطة تفاعلي","لاتيه آرت"],
+["قهوة","ركن شاي وأعشاب",["#2f3524","#7c8464","#c9a24b","#e8ddc7","#f5f2ec"],"دافئة ناعمة","زهور مجفّفة + أعشاب","كتان طبيعي","—","كاونتر زجاجي","خلفية طبيعية","بار شاي","دافئ طبيعي"],
+["موسمية","سفرة رمضان فاخرة",["#2a1a10","#5a2333","#c9a24b","#8a936f","#e8ddc7"],"فوانيس + هلال","نخيل + ورد ترابي","سدو غني + كتان","كراسي مخمل","طاولة طويلة","فوانيس وهلال","محور سفرة","دافئ ذهبي"],
+["موسمية","ركن العيدية",["#2a1a10","#5a2333","#c9a24b","#e4cd8f","#f5f2ec"],"دافئ احتفالي","ورد + خضرة","كتان غني","—","طاولة عرض","خلفية جوهرية","ركن هدايا","منتجات احتفالية"],
+["موسمية","تنسيق العيد الذهبي",["#0b0b0d","#c9a24b","#e4cd8f","#5a2333","#f5f2ec"],"توهّج ذهبي","ورد كريمي + ذهبي","كتان راقٍ","كراسي أنيقة","طاولة ذهبية","هلال وفوانيس","احتفالي ذهبي","دافئ احتفالي"],
+["موسمية","اليوم الوطني الفاخر",["#0b3b2e","#1f4d3a","#f5f2ec","#c9a24b","#8a936f"],"أخضر-أبيض راقٍ","ورد أبيض + خضرة","كتان أبيض","كراسي أنيقة","طاولة راقية","لمسات وطنية","موحّد راقٍ","وطني فاخر"],
+["موسمية","جلسة شتوية دافئة",["#2a1a10","#7a3b2a","#c4623d","#c9a24b","#e8ddc7"],"شموع + نار","ورد ترابي + خضرة","بطانيات + سجاد","مجالس دافئة","طاولة خشب","خلفية دافئة","دائري حميم","Cozy luxe"],
+["موسمية","جلسة صيفية منعشة",["#c4623d","#e8a17d","#8a936f","#c9a24b","#f3e3d3"],"نهار منعش","ورد حمضي زاهٍ","كتان فاتح","خشب فاتح","طاولة فاتحة","خلفية منعشة","صيفي مشرق","مشرق منعش"],
+["موسمية","ثيم موسم ورد الطائف",["#7a1f2b","#c4623d","#e8a17d","#8a936f","#f3e3d3"],"صباح ذهبي","ورد طائفي وفير","كتان فاتح","خشب + وسائد","طاولة خشب","مزرعة ورد","عضوي وفير","رومانسي إيديتوريال"],
+];
+
+/* ══ visual covers ══ */
+const CATICON={"زواج":"💍","ملكة":"👑","ميلاد":"🎂","مواليد":"👶","تخرّج":"🎓","أطفال":"🧸","شركات":"🏢","افتتاح":"✂️","خارجية":"🌙","تصوير":"📸","منتجات":"📦","ركن تصوير":"🖼️","ضيافة":"🍽️","ورد":"🌹","قهوة":"☕","موسمية":"🗓️"};
+const IMG={"ركن قهوة وتمر نجدي":"event-1.jpg","تنسيق طاولة ممتد":"event-2.jpg","جلسة قهوة عربية":"event-3.jpg","باقة العروس":"event-4.jpg","ليلة الحناء النجدية":"event-5.jpg","زفاف نجدي فاخر":"event-6.jpg","ركن نجدي تراثي":"event-7.jpg","مدخل الملكة":"event-8.jpg","قوس ورد للمدخل":"event-9.jpg"};
+
+/* ══ AUTH ══ */
+function tryLogin(){
+  const u=document.getElementById('gu').value.trim(), p=document.getElementById('gp').value;
+  if(u===AUTH.user && p===AUTH.pass){ sessionStorage.setItem(SS_KEY,"1"); reveal(); }
+  else { document.getElementById('gerr').textContent="بيانات الدخول غير صحيحة"; }
+}
+function reveal(){ document.getElementById('gate').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); }
+function logout(){ sessionStorage.removeItem(SS_KEY); location.reload(); }
+document.getElementById('gp').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin()});
+if(sessionStorage.getItem(SS_KEY)==="1") reveal();
+
+/* ══ APP ══ */
+let mode='ideas', active='الكل';
+const grid=document.getElementById('grid'),chipsEl=document.getElementById('chips'),qEl=document.getElementById('q'),countLine=document.getElementById('countLine');
+const KEYS=[['💡','الإضاءة',3],['🌹','الورد',4],['🧵','الأقمشة',5],['🪑','الكراسي',6],['🍽️','الطاولات',7],['🖼️','الخلفية',8],['📐','الديكور',9],['📸','التصوير',10]];
+function data(){ return mode==='ideas'?IDEAS:MOOD; }
+function switchTab(m){
+  ['ideas','mood','lib','ref'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('on',x===m));
+  const isGrid=(m==='ideas'||m==='mood');
+  document.getElementById('controls').classList.toggle('hidden',!isGrid);
+  document.getElementById('gridWrap').classList.toggle('hidden',!isGrid);
+  document.getElementById('frameWrap').classList.toggle('hidden',isGrid);
+  if(isGrid){
+    mode=m; active='الكل';
+    grid.className='grid '+(m==='ideas'?'ideas':'mood');
+    buildChips(); render();
+  } else {
+    const f=document.getElementById('subframe');
+    const src=(m==='lib'?'library.html':'references.html');
+    if(f.getAttribute('data-src')!==src){ f.src=src; f.setAttribute('data-src',src); }
+  }
+}
+function buildChips(){
+  const cats=[...new Set(data().map(d=>d[0]))];
+  chipsEl.innerHTML='';
+  [['الكل','الكل'],...cats.map(c=>[c,c])].forEach(([k,l])=>{
+    const b=document.createElement('button');b.className='chip'+(k==='الكل'?' on':'');b.textContent=l;b.dataset.k=k;
+    b.onclick=()=>{active=k;[...chipsEl.children].forEach(x=>x.classList.toggle('on',x.dataset.k===k));render()};
+    chipsEl.appendChild(b);
+  });
+}
+function render(){
+  const q=qEl.value.trim().toLowerCase();
+  const items=data().map((d,i)=>({d,i})).filter(({d})=>(active==='الكل'||d[0]===active)&&(!q||d.join(' ').toLowerCase().includes(q)));
+  countLine.textContent=`عرض ${items.length} `+(mode==='ideas'?'فكرة':'لوحة')+(active!=='الكل'?` · ${active}`:'');
+  if(!items.length){grid.innerHTML=`<div class="empty">لا توجد نتائج مطابقة</div>`;return;}
+  grid.innerHTML=items.map(({d,i})=> mode==='ideas'
+    ? (()=>{const img=IMG[d[1]];const pal=(MOOD[i]&&MOOD[i][2])||['#1a1620','#c9a24b','#0b0b0d','#5a2333'];
+        const cover=img
+          ?`<div class="cover"><img src="../assets/media/${img}" alt="${d[1]}" loading="lazy"></div>`
+          :`<div class="cover" style="background:linear-gradient(150deg,${pal[0]},${pal[2]||pal[1]},${pal[3]||pal[0]})"><span class="ico">${CATICON[d[0]]||'✦'}</span></div>`;
+        return `<article class="card">${cover}<div class="card-body">
+          <div class="card-top"><span class="num">${String(i+1).padStart(3,'0')}</span><span class="tag">${d[0]}</span></div>
+          <h3>${d[1]}</h3><p>${d[2]}</p>
+          <div class="pfold">
+            <button class="copy" data-p="${encodeURIComponent(d[3])}">⧉ نسخ برومت الصورة</button>
+            <details class="pdet"><summary>عرض نص البرومت ⌄</summary><code>${d[3].replace(/</g,'&lt;')}</code></details>
+          </div>
+        </div></article>`;})()
+    : `<article class="card">
+        <div class="pal">${d[2].map(c=>`<span style="background:${c}"></span>`).join('')}</div>
+        <div class="card-body"><div class="card-top"><span class="num">${String(i+1).padStart(3,'0')}</span><span class="tag">${d[0]}</span></div>
+        <h3>${d[1]}</h3>
+        <div class="specs">${KEYS.map(([ic,lbl,idx])=>`<div class="spec"><span class="k">${ic} ${lbl}</span><span class="v">${d[idx]}</span></div>`).join('')}</div>
+      </div></article>`
+  ).join('');
+}
+grid.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;
+  navigator.clipboard.writeText(decodeURIComponent(b.dataset.p)).then(()=>{const o=b.textContent;b.textContent='✓ تم النسخ';b.classList.add('done');setTimeout(()=>{b.textContent=o;b.classList.remove('done')},1400);});});
+qEl.addEventListener('input',render);
+buildChips(); render();
+</script>
+</body>
+</html>
