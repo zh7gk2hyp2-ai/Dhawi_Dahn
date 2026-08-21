@@ -816,26 +816,31 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_65";
+const PENDING_RECIPES_VERSION="rec_66";
 const PENDING_RECIPES=[
   // ── وصفات جديدة من أعواد وادي (طلب #WADI1158) — محرّك الفوحان مدمج ──
-  {id:"r_naqsh_oud",name:"نقش العود",icon:"🥀",season:"مناسبات",gender:"للجنسين",stability:"30 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:190,
+  {id:"r_naqsh_oud",name:"نقش العود",icon:"🥀",season:"مناسبات",gender:"للجنسين",stability:"30 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:220,
+   story:"وردةٌ محفورةٌ في خشب العود، يلفّها جلدٌ ناعمٌ ونَفَسُ زعفران. عطرٌ أرستقراطيٌّ يوازن بين رقّة الطائف وهيبة الأجاروود — للحظاتٍ تُنقَش في الذاكرة. توقيعٌ للجنسين لا يُنسى.",
    desc:"مستوحى من Thameen Carved Oud | قمة: زعفران | قلب: ورد طائفي + عود Thameen | قاعدة: صندل+لبدانوم+جلد | 🚀 فوّاح مدمج — للجنسين فاخر",
    ing:[["thameen_carved",12],["wild_petal",4],["rose_taif",1.5],["safraleine",0.5],["sandal_indi",5],["labdanum",2],["benzoin_b",3],["ambermor",2],["cashmeran",1.5],["iso_e",3],["hedione",3],["galaxolide",2.5],["ambroxan",1.5],["jojoba",6]],
    steps:["في بيكر بارد: Jojoba 6مل + Thameen Carved Oud 12مل — الأساس العودي الوردي","أذِب Labdanum 2جم + Benzoin B 3مل + Ambermor 2جم على 50° ← برّد 40° ← أضِف","أضِف: Sandalwood 5مل + Wild Petal 4مل + ورد طائفي 1.5مل","سرنجة: Safraleine 0.5مل (💡 محلول 10% للدقة) + Cashmeran 1.5مل + ISO E 3مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3مل + Galaxolide 2.5مل + Ambroxan 1.5جم مذاب","عتّق 3 أسابيع بارد مظلم"]},
-  {id:"r_dukhan_naqa",name:"دخان النقاء",icon:"🌫️",season:"شتاء",gender:"للجنسين",stability:"24 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:180,
+  {id:"r_dukhan_naqa",name:"دخان النقاء",icon:"🌫️",season:"شتاء",gender:"للجنسين",stability:"24 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:210,
+   story:"دخانٌ رماديٌّ يتصاعد من جمر العود، يحمل بخوراً وعنبراً جافاً في هدوء الشتاء. عطرٌ عصريٌّ يجمع أصالة العود بنقاء الخط الحديث — دفءٌ يلتفّ حولك كعباءةٍ من ضباب. للجنسين في الليالي الباردة.",
    desc:"مستوحى من Ex Nihilo Sublime Oud | عود دخاني عصري + بخور + عنبر جاف | 🚀 فوّاح مدمج — شتوي للجنسين",
    ing:[["exn_sublime_oud",12],["oliffac",1.5],["labdanum",2],["benzoin_b",2.5],["ambermor",2],["sandal_indi",4],["cashmeran",1.5],["iso_e",3.5],["hedione",3],["galaxolide",2.5],["ambroxan",1.5],["jojoba",6]],
    steps:["في بيكر بارد: Jojoba 6مل + Ex Nihilo Sublime Oud 12مل","أذِب Labdanum 2جم + Benzoin B 2.5مل + Ambermor 2جم على 50° ← برّد ← أضِف","أضِف: Oliffac 1.5مل (عود دخاني — قليل!) + Sandalwood 4مل","سرنجة: Cashmeran 1.5مل + ISO E 3.5مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3مل + Galaxolide 2.5مل + Ambroxan 1.5جم مذاب","عتّق أسبوعين"]},
-  {id:"r_dahn_asayel",name:"دهن الأصايل",icon:"🕋",season:"مناسبات",gender:"رجالي",stability:"40 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:210,
+  {id:"r_dahn_asayel",name:"دهن الأصايل",icon:"🕋",season:"مناسبات",gender:"رجالي",stability:"40 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:240,
+   story:"من أعماق الغابات الهندية والكمبودية، دهنٌ تقليديٌّ عتيقٌ يحمل روح العود كما عرفه الأجداد. حيوانيٌّ عميقٌ يتفتّح على راتنجاتٍ دافئة وصندلٍ كريمي — للرجل الذي يعرف قيمة الأصالة. مناسباتيٌّ فاخر.",
    desc:"دهن تقليدي فاخر | كمبودي (Tarat) + هندي آسامي (Asami/Agar) + صندل+راتنجات | 🚀 فوّاح مدمج — رجالي مناسبات",
    ing:[["dahnal_tarat",8],["asami_agar",6],["dahnal_asami",3],["sandal_indi",5],["benzoin_b",3],["labdanum",2],["ambermor",2],["cashmeran",1.5],["iso_e",3],["hedione",3],["galaxolide",2.5],["ambroxan",1.5],["jojoba",5]],
    steps:["في بيكر بارد: Jojoba 5مل + Dahnal Oud Tarat 8مل + Asami Agar 6مل + Dahnal Asami 3مل — قلب العود التقليدي","أذِب Benzoin B 3مل + Labdanum 2جم + Ambermor 2جم على 50° ← برّد ← أضِف","أضِف: Sandalwood 5مل","سرنجة: Cashmeran 1.5مل + ISO E 3مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3مل + Galaxolide 2.5مل + Ambroxan 1.5جم مذاب","عتّق 4 أسابيع — دهن تقليدي يحتاج تعتيقاً أطول"]},
-  {id:"s_blue_talisman",name:"تعويذة زرقاء — بخاخ",icon:"💎",season:"صيف",gender:"رجالي",stability:"10-12 ساعة",perfumer:"ضاوي",inspired:true,price_sar:160,
+  {id:"s_blue_talisman",name:"تعويذة زرقاء — بخاخ",icon:"💎",season:"صيف",gender:"رجالي",stability:"10-12 ساعة",perfumer:"ضاوي",inspired:true,price_sar:150,
+   story:"نسمةٌ زرقاء من البحر، هيلٌ منعشٌ وعنبرٌ معدنيٌّ يلمع تحت شمس الصيف. رذاذٌ حديثٌ خفيفٌ يفوح دون أن يثقل — للرجل العصري في نهاره. انتعاشٌ يدوم.",
    desc:"مستوحى من Ex Nihilo Blue Talisman | بخاخ EDP ~20% | قمة: هيل + بحري | قلب: عطري أزرق منعش | قاعدة: عنبر معدني + مسك | 🚀 فوّاح — صيفي رجالي 100مل | ⚠️ كحول عطري (لا IPA)",
    ing:[["exn_blue_talisman",14],["lux_afternoon",2],["cardamom",0.4],["ambermor",1],["ambroxan",1.2],["cashmeran",0.8],["iso_e",1],["hedione",2.5],["galaxolide",1],["ethanol",76.1]],
    steps:["في وعاء كحول-آمن: Ethanol 76مل","أضِف: Ex Nihilo Blue Talisman 14مل + Lux Afternoon 2مل (بحري) + Cardamom 0.4مل","أذِب Ambermor 1جم بقليل كحول دافئ ← أضِف + Ambroxan (محلول) 1.2مل + Cashmeran 0.8مل","سرنجة الفوّاح: Hedione 2.5مل + Galaxolide 1مل + ISO E 1مل","رُجّ ← عتّق أسبوع بارد مظلم ← صفِّ لو لزم ← عبِّ بخاخ 100مل"]},
-  {id:"r_sultan_oud",name:"سلطان العود",icon:"👑",season:"مناسبات",gender:"رجالي",stability:"40 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:280,
+  {id:"r_sultan_oud",name:"سلطان العود",icon:"👑",season:"مناسبات",gender:"رجالي",stability:"40 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:300,
+   story:"ثلاثة أعوادٍ نخبةٍ تجتمع في تاجٍ واحد: وردٌ جلديٌّ، دخانٌ نبيل، وعمقٌ هنديٌّ أصيل. زعفرانٌ وراتنجاتٌ تُتوّج المزيج بفخامةٍ ملكية — قطعةُ التوقيع من دار ضاوي. للمناسبات التي تستحق سلطان العطور.",
    desc:"الرائد الفاخر — ثلاثة أعواد نخبة: Thameen ورد-جلدي + Sublime دخاني + آسامي هندي | زعفران + راتنجات | 🚀 فوّاح كامل — رجالي مناسبات",
    ing:[["thameen_carved",6],["exn_sublime_oud",5],["asami_agar",5],["lux_cambodi",3],["sandal_indi",5],["safraleine",0.5],["labdanum",2],["benzoin_b",3],["ambermor",2],["cashmeran",1.5],["iso_e",3],["hedione",3.5],["galaxolide",3],["ambroxan",2],["jojoba",5]],
    steps:["في بيكر بارد: Jojoba 5مل + Thameen 6 + Sublime Oud 5 + Asami Agar 5 + Lux Cambodi 3 — نخبة الأعواد","أذِب Labdanum 2جم + Benzoin B 3مل + Ambermor 2جم على 50° ← برّد 40° ← أضِف","أضِف: Sandalwood 5مل","سرنجة: Safraleine 0.5مل (محلول 10%) + Cashmeran 1.5مل + ISO E 3مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3.5 + Galaxolide 3 + Ambroxan 2جم مذاب","عتّق 5 أسابيع — رائد فاخر يستحق صبراً"]},
