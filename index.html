@@ -816,8 +816,34 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_67";
+const PENDING_RECIPES_VERSION="rec_68";
 const PENDING_RECIPES=[
+  // ── وصفات نسائية جديدة (سدّ فجوة السوق النسائي) — بمحرّك الفوحان ──
+  {id:"r_ward_istanbul",name:"وردة إسطنبول",icon:"🌹",season:"ربيع",gender:"نسائي",stability:"28 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:200,
+   story:"وردةٌ إسطنبوليةٌ تتفتّح عند الغروب على ضفاف البوسفور، يعانقها صندلٌ كريميٌّ وفانيلا خفيفة. أنوثةٌ شرقيةٌ راقيةٌ تجمع دفء الشرق برقّة الوردة — لمن تحبّ أن تُذكَر برائحتها.",
+   desc:"قمة: بتلات + ورد طائفي | قلب: ورد إسطنبولي فاخر | قاعدة: صندل + فانيلا + مسك رمان | 🚀 فوّاح — نسائي ربيعي",
+   ing:[["rose_istanbul",6],["rose_taif",2],["wild_petal",4],["pea",2],["sandal_indi",4],["benzoin_b",2.5],["vanilla",1.5],["musk_ruman",1.5],["cashmeran",1.2],["iso_e",2],["hedione",3],["galaxolide",2.5],["ambroxan",1],["jojoba",6]],
+   steps:["⚡ رابط الورد (20 دق): Wild Petal 4مل + Benzoin B 1مل في كوب مغلق","في بيكر بارد: Jojoba 6مل + Rose Istanbul 6مل + ورد طائفي 2مل","أذِب Benzoin B 1.5مل المتبقي على 50° ← برّد 40° ← أضِف + Sandalwood 4مل","أضِف خليط الورد ← ثم PEA 2مل فقط ⚠️ (لا تزد — تعطي معدنية)","سرنجة: Vanilla 1.5مل + مسك رمان 1.5مل + Cashmeran 1.2مل + ISO E 2مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3مل + Galaxolide 2.5مل + Ambroxan 1جم مذاب","عتّق أسبوعين — الورد يتفتّح من اليوم الخامس"]},
+  {id:"r_hulm_vanilla",name:"حلم الفانيلا",icon:"🍦",season:"شتاء",gender:"نسائي",stability:"30 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:190,
+   story:"فانيلا دانتيل كريميةٌ تذوب في راتنجاتٍ دافئةٍ وتبغٍ حلو، على سريرٍ من صندلٍ هندي. حلوى شرقيةٌ أنثويةٌ تُدفئ ليالي الشتاء — إدمانٌ ناعمٌ لا يُقاوم.",
+   desc:"قمة: بتلات ناعمة | قلب: فانيلا دانتيل + تونكيتون | قاعدة: صندل + بنزوين + عنبر + مسك | 🚀 فوّاح — نسائي شتوي",
+   ing:[["vanilla",4],["tonquitone",1.5],["benzoin_b",3],["sandal_indi",4],["wild_petal",3],["pea",1.5],["amber_700",2],["musk_climb",1.5],["cashmeran",1.5],["iso_e",2],["hedione",3],["galaxolide",3],["ambroxan",1],["jojoba",6]],
+   steps:["في بيكر بارد: Jojoba 6مل","أذِب Benzoin B 3مل + Amber 700 2جم على 50° ← برّد 40° ← أضِف","أضِف: Vanilla 4مل + Tonquitone 1.5مل (تبغ حلو — لا تزد) + Sandalwood 4مل","أضِف: Wild Petal 3مل + PEA 1.5مل","سرنجة: مسك متسلق 1.5مل + Cashmeran 1.5مل + ISO E 2مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3مل + Galaxolide 3مل + Ambroxan 1جم مذاب","عتّق 3 أسابيع — الفانيلا تحتاج وقتاً لتندمج"]},
+  {id:"r_maracuja_ward",name:"ماراكويا الورد",icon:"🥭",season:"صيف",gender:"نسائي",stability:"24 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:175,
+   story:"باشن فروت استوائيةٌ تلتقي وردةً طائفيةً تحت شمس الصيف. انتعاشٌ فاكهيٌّ أنثويٌّ مرحٌ يفتح النهار بابتسامة — خفيفٌ لكنه يبقى معك حتى المساء.",
+   desc:"قمة: ماراكويا استوائي | قلب: ورد + بتلات | قاعدة: صندل + مسك رمان | 🚀 فوّاح — نسائي صيفي منعش",
+   ing:[["maracuja",6],["wild_petal",4],["rose_taif",1.5],["pea",2],["sandal_indi",3],["benzoin_b",2],["musk_ruman",2],["cashmeran",1.2],["iso_e",2],["hedione",3],["galaxolide",2.5],["ambroxan",1],["jojoba",6]],
+   steps:["في بيكر بارد: Jojoba 6مل + Maracuja 6مل — الأساس الفاكهي","أذِب Benzoin B 2مل على 50° ← برّد ← أضِف + Sandalwood 3مل","أضِف: Wild Petal 4مل + ورد طائفي 1.5مل ← ثم PEA 2مل","سرنجة: مسك رمان 2مل + Cashmeran 1.2مل + ISO E 2مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3مل + Galaxolide 2.5مل + Ambroxan 1جم مذاب","عتّق 10 أيام — صيفي لا يحتاج تعتيقاً طويلاً"]},
+  {id:"r_naqsh_ward",name:"نقش الوردة",icon:"🥀",season:"مناسبات",gender:"نسائي",stability:"32 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:230,
+   story:"وردةٌ محفورةٌ في عودٍ نبيل، يلامسها جلدٌ ناعمٌ وفانيلا خافتة. النسخة الأنثوية من نقش العود — فخامةٌ هادئةٌ للمناسبات التي تستحق حضوراً لا يُنسى.",
+   desc:"قمة: بتلات | قلب: عود Thameen ورد-جلدي + ورد إسطنبولي | قاعدة: صندل + فانيلا + مسك | 🚀 فوّاح — نسائي مناسبات",
+   ing:[["thameen_carved",7],["rose_istanbul",3],["wild_petal",3],["pea",1.5],["sandal_indi",4],["vanilla",1],["benzoin_b",2],["musk_ruman",1.5],["cashmeran",1.2],["iso_e",2],["hedione",3],["galaxolide",2.5],["ambroxan",1],["jojoba",5]],
+   steps:["في بيكر بارد: Jojoba 5مل + Thameen Carved Oud 7مل — الأساس الورد-جلدي","أذِب Benzoin B 2مل على 50° ← برّد ← أضِف + Sandalwood 4مل","أضِف: Rose Istanbul 3مل + Wild Petal 3مل ← ثم PEA 1.5مل","سرنجة: Vanilla 1مل + مسك رمان 1.5مل + Cashmeran 1.2مل + ISO E 2مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3مل + Galaxolide 2.5مل + Ambroxan 1جم مذاب","عتّق 3 أسابيع"]},
+  {id:"r_musk_aroos",name:"مسك العروس",icon:"🤍",season:"مناسبات",gender:"نسائي",stability:"30 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:210,
+   story:"مسكٌ أبيضُ نقيٌّ كفستانِ عروس، تتخلّله بتلاتٌ ناعمةٌ وشمامةُ عنبرٍ دافئة. نعومةٌ نظيفةٌ محتشمةٌ تليق بالأعراس والمناسبات — أنوثةٌ هادئةٌ تترك أثراً.",
+   desc:"قمة: بتلات + ورد | قلب: مسك رمان + مسك متسلق | قاعدة: صندل + فانيلا + شمامة عنبر | 🚀 فوّاح — نسائي أعراس",
+   ing:[["musk_ruman",3],["musk_climb",2],["wild_petal",4],["pea",2],["rose_taif",1.5],["sandal_indi",4],["vanilla",2],["benzoin_b",2],["shamma",1.5],["cashmeran",1.5],["iso_e",2],["hedione",3.5],["galaxolide",3.5],["ambroxan",1],["jojoba",6]],
+   steps:["في بيكر بارد: Jojoba 6مل","أذِب Benzoin B 2مل + شمامة العنبر 1.5جم على 50° ← برّد 40° ← أضِف","أضِف: Sandalwood 4مل + Wild Petal 4مل + ورد طائفي 1.5مل ← ثم PEA 2مل","سرنجة المسك: مسك رمان 3مل + مسك متسلق 2مل + Vanilla 2مل + Cashmeran 1.5مل + ISO E 2مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3.5مل + Galaxolide 3.5مل + Ambroxan 1جم مذاب","عتّق أسبوعين — مسك نظيف يتفتّح بسرعة"]},
   // ── وصفات جديدة من أعواد وادي (طلب #WADI1158) — محرّك الفوحان مدمج ──
   {id:"r_naqsh_oud",name:"نقش العود",icon:"🥀",season:"مناسبات",gender:"للجنسين",stability:"30 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:220,
    story:"وردةٌ محفورةٌ في خشب العود، يلفّها جلدٌ ناعمٌ ونَفَسُ زعفران. عطرٌ أرستقراطيٌّ يوازن بين رقّة الطائف وهيبة الأجاروود — للحظاتٍ تُنقَش في الذاكرة. توقيعٌ للجنسين لا يُنسى.",
