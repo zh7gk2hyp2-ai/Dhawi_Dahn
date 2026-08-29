@@ -1529,8 +1529,8 @@ function applyRecipeDeduct(inv){
 }
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
 const INVENTORY_REMOVE_VERSION="ir_03";
-const INVENTORY_REMOVE=["lux_hindi_sweety","benzoin_a"];
-const INVENTORY_ADD_VERSION="ia_05";
+const INVENTORY_REMOVE=["benzoin_a"];
+const INVENTORY_ADD_VERSION="ia_06";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // كحول عطري (إيثانول) لبخاخات العطر النسائية — للبشرة (بديل IPA غير المناسب للجلد) | stock 0 = يُشترى قبل التصنيع
@@ -1549,6 +1549,7 @@ const INVENTORY_ADD_ITEMS=[
   {id:"hedione",name:"Hedione (هيديون — منشِر/إشعاع)",brand:"وادي المشرق",cat:"مثبت",price:255,qty:500,unit:"مل"},
   {id:"galaxolide",name:"Galaxolide (جالاكسوليد — مسك مشعّ)",brand:"وادي المشرق",cat:"مسك",price:204,qty:500,unit:"مل"},
   {id:"ambroxan",name:"Ambroxan (أمبروكسان — شرائح شمعية بيضاء)",brand:"محلي",cat:"عنبر",price:100,qty:50,unit:"جم"},
+  {id:"lux_hindi_sweety",name:"Oud Hindi Sweety (عود هندي حلو)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
   {id:"thameen_carved",name:"Thameen Carved Oud — Marvelous Oudh (مستوحى)",brand:"وادي المشرق",cat:"عود",price:153,qty:250,unit:"مل"},
   {id:"exn_sublime_oud",name:"Ex Nihilo Sublime Essence Oud (مستوحى)",brand:"وادي المشرق",cat:"عود",price:242,qty:250,unit:"مل"},
   {id:"dahnal_tarat",name:"Dahnal Oud Tarat (دهن العود تارات — مستوحى)",brand:"وادي المشرق",cat:"عود",price:242,qty:250,unit:"مل"},
@@ -1576,16 +1577,16 @@ function applyInventoryRemove(inv){
 }
 
 // ─── stock snapshot: set exact stock levels once, never overwritten by build bumps ───
-const STOCK_SNAPSHOT_VERSION="ss_01";
+const STOCK_SNAPSHOT_VERSION="ss_02";
 const STOCK_SNAPSHOT=[
   {id:"cambodi_fawah",stock:50},{id:"rose_taif",stock:60},{id:"rose_istanbul",stock:50},
   {id:"amber_2000",stock:50},{id:"amber_700",stock:40},{id:"musk_ruman",stock:43.58},
   {id:"oud_earthy",stock:70},{id:"musk_climb",stock:40},{id:"sandal_ham",stock:80},
-  {id:"vanilla",stock:80},{id:"shamma",stock:27.88},{id:"lux_cambodi",stock:77.8},
-  {id:"lux_black",stock:60},{id:"lux_fixative",stock:60},{id:"lux_greatness",stock:90},
+  {id:"vanilla",stock:80},{id:"shamma",stock:27.88},{id:"lux_cambodi",stock:100},
+  {id:"lux_black",stock:100},{id:"lux_fixative",stock:60},{id:"lux_greatness",stock:90},
   {id:"lux_exclusif",stock:90},{id:"lux_symphony",stock:80},{id:"lux_afternoon",stock:80},
-  {id:"lux_khalifa",stock:0},{id:"lux_bormi",stock:0},{id:"lux_suyufi",stock:0},
-  {id:"lux_muattaq",stock:0},{id:"lux_hindi",stock:0},{id:"lux_opus14",stock:0},
+  {id:"lux_khalifa",stock:0},{id:"lux_bormi",stock:100},{id:"lux_suyufi",stock:100},
+  {id:"lux_muattaq",stock:100},{id:"lux_hindi",stock:100},{id:"lux_opus14",stock:0},
   {id:"lux_existence",stock:0},{id:"lux_snake",stock:10},
   {id:"artessence",stock:150},{id:"iso_e",stock:900},{id:"sandal_indi",stock:450},
   {id:"oud_synth",stock:75},{id:"black_agar",stock:30},{id:"cmp91",stock:170},
@@ -1691,7 +1692,7 @@ function applyPendingRecipes(recipes){
 }
 // rc_01: strip deleted ingredient IDs from every stored recipe
 const RECIPE_CLEANUP_VERSION="rc_02";
-const RECIPE_IDS_REMOVE=["lux_hindi_sweety","benzoin_a"];
+const RECIPE_IDS_REMOVE=["benzoin_a"];
 function applyRecipeCleanup(recipes){
   if(lsGet("dw_rc_ver","")===RECIPE_CLEANUP_VERSION)return recipes;
   const cleaned=recipes.map(r=>({...r,ing:r.ing.filter(([id])=>!RECIPE_IDS_REMOVE.includes(id))}));
