@@ -2,7 +2,7 @@
   "name": "ضاوي الدهن — معمل العود الخاص",
   "short_name": "ضاوي الدهن",
   "description": "معمل إنتاج وإدارة عطور العود الفاخرة",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#1A1208",
@@ -17,17 +17,21 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["productivity", "business"],
+  "categories": [
+    "productivity",
+    "business"
+  ],
   "shortcuts": [
     {
       "name": "الوصفات",
-      "url": "/#recipes",
+      "url": "./#recipes",
       "description": "وصفات العود"
     },
     {
       "name": "المخزون",
-      "url": "/#inventory",
+      "url": "./#inventory",
       "description": "إدارة المخزون"
     }
-  ]
+  ],
+  "scope": "./"
 }
