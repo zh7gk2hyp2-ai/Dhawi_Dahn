@@ -1413,7 +1413,7 @@ function applyRecipeDeduct(inv){
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
 const INVENTORY_REMOVE_VERSION="ir_02";
 const INVENTORY_REMOVE=["lux_hindi_sweety","benzoin_a"];
-const INVENTORY_ADD_VERSION="ia_03";
+const INVENTORY_ADD_VERSION="ia_04";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // Luxodor Invoice #000472 — Jun 2026 (1 USD = 3.75 SAR)
@@ -1426,12 +1426,27 @@ const INVENTORY_ADD_ITEMS=[
   {id:"lux_existence",name:"Existence Amouage (إكزيستنس أموج)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
   // Luxodor — Jun 2026 individual purchase ($12 = 45 SAR)
   {id:"lux_snake",name:"The Voice of Snake (صوت الأفعى — Gucci)",brand:"Luxodor",cat:"مستوحى",price:45,qty:10,unit:"مل"},
+  // ─── طلب مورد الإمارات — DHL Express 2663485941 · تأكيد 18 أغسطس · تسليم 31 أغسطس ───
+  // 8 أصناف: 1,737.50 د.إ بضاعة + 260.00 د.إ شحن = 1,997.50 د.إ (بدون ضريبة)
+  // التحويل: 1 د.إ = 1.0211 ريال (الدرهم 3.6725/دولار، الريال 3.75/دولار)
+  //          → 1,774 ريال بضاعة + 265.5 ريال شحن = 2,039.5 ريال
+  // الشحن موزّع بالحجم على 2500 مل = 0.1062 ريال/مل → 26.55 ريال لكل 250مل · 53.10 لكل 500مل
+  {id:"uae_dahnal_tarat",name:"Dahnal Oud Tarat (دهن العود طرات — نسخة)",brand:"مورد الإمارات",cat:"عود",price:243,qty:250,unit:"مل",ship:26.55},
+  {id:"uae_dahnal_asami",name:"Dahnal Oud Asami (دهن العود أسامي — نسخة)",brand:"مورد الإمارات",cat:"عود",price:179,qty:250,unit:"مل",ship:26.55},
+  {id:"uae_asami_agar",name:"Asami Agar Oud (أسامي أجار عود — نسخة)",brand:"مورد الإمارات",cat:"عود",price:166,qty:250,unit:"مل",ship:26.55},
+  {id:"hedione",name:"Hedione (هيديون — ياسمين شفاف مُشِع)",brand:"مورد الإمارات",cat:"مضخم",price:255,qty:500,unit:"مل",ship:53.10},
+  {id:"galaxolide",name:"Galaxolide (جالاكسولايد — مسك أبيض ثابت)",brand:"مورد الإمارات",cat:"مسك",price:204,qty:500,unit:"مل",ship:53.10},
+  {id:"uae_blue_talisman",name:"Blue Talisman TOP (بلو تاليسمان — نسخة Ex Nihilo)",brand:"مورد الإمارات",cat:"مستوحى",price:332,qty:250,unit:"مل",ship:26.55},
+  {id:"uae_carved_oud",name:"Carved Oud Marvelous Oudh (كارفد عود — خلاصة Thameen)",brand:"مورد الإمارات",cat:"مستوحى",price:153,qty:250,unit:"مل",ship:26.55},
+  {id:"uae_sublime_oud",name:"Sublime Essence Oud (سبلايم إيسنس عود — نسخة Ex Nihilo)",brand:"مورد الإمارات",cat:"مستوحى",price:243,qty:250,unit:"مل",ship:26.55},
 ];
 function applyInventoryAdd(inv){
   if(lsGet("dw_ia_ver","")===INVENTORY_ADD_VERSION)return inv;
   const existingIds=new Set(inv.map(i=>i.id));
   const toAdd=INVENTORY_ADD_ITEMS.filter(item=>!existingIds.has(item.id)).map(item=>{
-    const ship=item.brand==="Bulkaroma"?(SHIPPING_BULK*item.qty/bulkTotalQty):0;
+    // per-item ship wins (supplier orders with their own shipping bill);
+    // otherwise fall back to the prorated Bulkaroma share
+    const ship=item.ship!==undefined?item.ship:(item.brand==="Bulkaroma"?(SHIPPING_BULK*item.qty/bulkTotalQty):0);
     const unitCost=item.qty>0?(item.price+ship)/item.qty:0;
     return {...item,stock:item.qty,ship,unitCost};
   });
@@ -1612,8 +1627,8 @@ function fmtDate(iso){
 }
 
 // ─── notes classification (Top / Middle / Base) ─────────────────
-const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake']);
+const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e','hedione','uae_blue_talisman']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake','uae_dahnal_tarat','uae_dahnal_asami','uae_asami_agar','uae_carved_oud','uae_sublime_oud']);
 const NOTES_CARRIER=new Set(['dpg','jojoba','benzyl']); // diluents — excluded from layer ratio
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 // scale a number and format it cleanly
