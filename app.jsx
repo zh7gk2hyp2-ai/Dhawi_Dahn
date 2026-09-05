@@ -594,7 +594,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-09-05-v1";
+const APP_BUILD="2026-09-05-v2";
 // ── صور الوصفات المنتجة (تظهر أعلى البطاقة إن وُجدت) ──
 const RECIPE_IMG={
   r_hindi_soul:"media/products/r_hindi_soul.jpg",
