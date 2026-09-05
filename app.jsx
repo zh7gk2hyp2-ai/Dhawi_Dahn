@@ -25,7 +25,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_71";
+const PENDING_RECIPES_VERSION="rec_72";
 const PENDING_RECIPES=[
   // ── rec_56: دساتير ربع التولة — مرجع التحسين السريع لأدهان لوكسودور الصافية ──
   {id:"r_qtola_ref",name:"دساتير ربع التولة — مرجع سريع",icon:"💧",season:"مناسبات",gender:"للجنسين",stability:"حسب الدهن",
@@ -430,6 +430,25 @@ const PENDING_RECIPES=[
      "💡 تثبيت العطر: رطّب البشرة بالجوجوبا أولاً ثم ضع الدهن فوقه مباشرة — يُضاعف مدة البقاء | نقاط التثبيت: الرسغ + العنق + خلف الأذن + الكوع الداخلي | لا تفرك بعد الوضع — اترك الدهن يترسّب على الجلد طبيعياً",
      "📊 معايرة بعد الأسبوعين: معدني حادّ بلا دفء → سافرالين +0.05مل فقط | مسطّح لا يُشمّ من بعيد → هيديون +0.2مل | مائي زيادة → دفعة جديدة بأفترنون 0.3مل | ⚠️ لا تُضف عوداً داكناً ولا ورداً — كلاهما يقتل النظافة وهي كل الفكرة",
    ]},
+  // ── rec_72: حلّ مشكلة الجاوي المطلق الصلب — 200 جم معطّلة منذ الشراء ──
+  {id:"sol_benzoin_a",name:"محلول الجاوي المطلق 50%",icon:"🧪",season:"مناسبات",gender:"للجنسين",stability:"—",perfumer:"ضاوي",
+   desc:"⚗️ بطاقة إجراء لا عطر — تحويل Benzoin Absolute Grade A الصلب إلى محلول 50% قابل للقطّارة | المذيب: بنزيل بنزوات + ديوبي | الناتج يُستعمل بضعف جرعة benzoin_b لأن ذاك 70% وهذا 50%",
+   story:"المورّد نفسه يبيع Grade B بصيغة «70 DEP» — أي أنه أذابه لك سلفاً، لأن راتنج الجاوي الخام لا يُستعمل صلباً. Grade A وصلك مطلقاً غير مُذاب، وهذه هي الخطوة التي تنقصه.",
+   ing:[["benzoin_a",50],["benzyl",30],["dpg",20]],
+   steps:[
+     "⚠️ ابدأ بدفعة اختبار صغيرة: 20 جم راتنج + 12 جم بنزيل + 8 جم ديوبي. لا تلتزم بالـ200 جم كلها قبل أن تنجح مرة.",
+     "❄️ التكسير: ضع الراتنج في الفريزر ساعة كاملة قبل أي شيء. البارد يصير قصفاً فينكسر نظيفاً بضربة خفيفة؛ والدافئ يصير دبقاً يلتصق بكل شيء ويستحيل تقطيعه. هذه الخطوة وحدها هي التي أعجزتك على الأرجح.",
+     "كسّره إلى قطع بحجم حبة الحمص أو أصغر — كلما صغرت القطعة أسرعت الإذابة. لا تطحنه ناعماً فيتكتّل.",
+     "🌡️ حمام ماء 65-70° — ولا تسخّنه على مصدر مباشر إطلاقاً. الحرارة المباشرة تُسوّد الراتنج وتُحرق الفانيليا والبنزالدهيد فيه، وتفقد ما دفعت ثمنه.",
+     "🧴 المذيب أولاً في البيكر: بنزيل بنزوات 30 جم + ديوبي 20 جم. البنزيل هو المذيب الحقيقي للراتنجات، والديوبي يُخفّف اللزوجة. صبّ المذيب قبل الراتنج لا بعده.",
+     "أضف الراتنج المكسّر على دفعات ثلاث، مع تحريك مغناطيسي مستمر. انتظر ذوبان كل دفعة قبل التالية.",
+     "⏳ حرّك 30-45 دقيقة. لا تستعجل ولا ترفع الحرارة — الجاوي بطيء الذوبان بطبعه. النتيجة سائل بنّي محمر صافٍ بلا حبيبات على جدار البيكر.",
+     "🔍 اختبار الصفاء: اغمس قضيباً زجاجياً وارفعه — إن نزل السائل خيطاً متصلاً بلا تحبّب فقد تمّ. إن بقيت حبيبات، أضف 5 جم بنزيل وواصل 10 دقائق.",
+     "🫙 صفّه ساخناً عبر شاش قطني إلى زجاجة داكنة (بعض الشوائب النباتية لا تذوب أبداً وهي طبيعية). اتركه يبرد مغلقاً.",
+     "⚖️ الجرعة بعد ذلك: هذا محلول 50% بينما benzoin_b الذي تستعمله 70%. أي أن 1 مل من هذا ≈ 0.71 مل من ذاك. اضرب جرعاتك المعتادة في 1.4 عند الاستبدال.",
+     "💡 لماذا يستحق العناء: Grade A مطلق أنقى وأعمق فانيليا وبلسمية من Grade B، وهو 200 جم معطّلة في مخزونك منذ الشراء. المحلول يفتحها لكل وصفة راتنجية عندك.",
+     "🧽 تنظيف الأدوات: الإيزوبروبيل 99.9% يذيب بقايا الجاوي من البيكر والقضيب فوراً — والماء لا يفعل شيئاً.",
+   ]},
   {id:"r_diyaa",name:"ضياء",icon:"✨",season:"صيف",gender:"للجنسين",stability:"طويل · 30-34 ساعة (تقدير)",perfumer:"ضاوي",price_sar:185,
    story:"عودٌ يُلبَس في وضح النهار. كل أدهاننا تُقال في المجالس ليلاً؛ هذا يُقال في المكتب وفي الطريق وتحت الشمس. قلبُه دهنٌ حقيقي — أسامي أجار وأسامي — لكن الهيديون يفتح حوله مساحةً من الهواء فلا يثقل، والجالاكسولايد يفرش تحته أرضيةَ مسكٍ نظيفة تُطيل الأثر بلا دخان. ليس عوداً مُخفَّفاً — عودٌ مُضاء.",
    desc:"قمة: هيديون مُشِع + افتتاحية بلو تاليسمان البحرية + هيل | قلب: أسامي أجار + دهن أسامي + كمبودي | قاعدة: جالاكسولايد + صندل هندي + عنبرمور | توازن 26/43/31 — أول وصفة بمسك أبيض حقيقي في القاعدة",
@@ -598,7 +617,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-09-05-v3";
+const APP_BUILD="2026-09-05-v4";
 // ── صور الوصفات المنتجة (تظهر أعلى البطاقة إن وُجدت) ──
 const RECIPE_IMG={
   r_hindi_soul:"media/products/r_hindi_soul.jpg",
@@ -769,7 +788,7 @@ function applyRecipeDeduct(inv){
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
 const INVENTORY_REMOVE_VERSION="ir_04";
 const INVENTORY_REMOVE=["lux_hindi_sweety","oud_mayor"]; // oud_mayor مكرّر لـmaracuja
-const INVENTORY_ADD_VERSION="ia_08";
+const INVENTORY_ADD_VERSION="ia_09";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // Luxodor Invoice #000472 — Jun 2026 (1 USD = 3.75 SAR)
@@ -778,12 +797,13 @@ const INVENTORY_ADD_ITEMS=[
   {id:"lux_suyufi",name:"Oud Suyufi (عود السيوفي)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
   {id:"lux_muattaq",name:"Oud Muattaq Qadeem (عود معتّق قديم)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
   {id:"lux_hindi",name:"Oud Hindi (عود هندي)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
-  {id:"lux_opus14",name:"Opus XIV Royal Tobacco (أوبوس رويال توباكو)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
-  {id:"lux_existence",name:"Existence Amouage (إكزيستنس أموج)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
+  {id:"lux_opus14",name:"Opus XIV Royal Tobacco (أوبوس رويال توباكو — هدية)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"}, // هدية بلا فاتورة: السعر صفر صحيح لا ناقص
+  {id:"lux_existence",name:"Existence Amouage (إكزيستنس أموج — هدية)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"}, // هدية بلا فاتورة
   // Luxodor — Jun 2026 individual purchase ($12 = 45 SAR)
   {id:"lux_snake",name:"The Voice of Snake (صوت الأفعى — Gucci)",brand:"Luxodor",cat:"مستوحى",price:45,qty:10,unit:"مل"},
   // Benzoin Absolute Grade A — بند الفاتورة 24 من طلب Bulkaroma #15403 (200 جم).
-  // المخزون 100 جم: أفاد المالك أن النصف استُهلك.
+  // المخزون 200 جم كاملة: أفاد المالك أنه لم يستعمل منه شيئاً لأنه راتنج صلب
+  // تعذّر عليه إذابته. الوصفة sol_benzoin_a تعالج ذلك.
   // ⚠️ السعر 81 ريال تقدير لا رقم فاتورة. اشتُقّ هكذا: صفحة المنتج على bulkaroma.com
   // تعطي 200 جم = ₹1108.86. سعر الصرف وحده (0.044) يعطي 49 ريالاً، وهو أقل من تكاليف
   // Bulkaroma المسجّلة عندنا دائماً — تلك تتراوح بين 1.66× و2.5× من سعر الموقع محوَّلاً،
@@ -791,7 +811,7 @@ const INVENTORY_ADD_ITEMS=[
   // لأنه أقرب مرجع: نفس كود المورّد PA-100IS ونفس CAS 9000-05-9 ونفس عائلة المنتج.
   // نسبته الفعلية 121/1651.77 = 0.07325 ريال/روبية → 1108.86 × 0.07325 = 81 ريال.
   // بدّله برقم فاتورتك متى توفّر.
-  {id:"benzoin_a",name:"Benzoin Absolute Grade A (جاوي مطلق — PA-100IS)",brand:"Bulkaroma",cat:"مثبت",price:81,qty:200,unit:"جم",stock:100},
+  {id:"benzoin_a",name:"Benzoin Absolute Grade A (جاوي مطلق — PA-100IS)",brand:"Bulkaroma",cat:"مثبت",price:81,qty:200,unit:"جم",stock:200},
   // ملاحظة: بند الفاتورة 18 "Royal Oud Accord = OUD MAYOR" هو نفسه OUD MARACUJA،
   // وهو مسجّل لديك أصلاً بمعرّف maracuja. لا تُضِف له مدخلاً ثانياً.
   // ─── طلب وادي — DHL Express 2663485941 · تأكيد 18 أغسطس · تسليم 31 أغسطس ───
@@ -863,7 +883,7 @@ function applyStockSnapshot(inv){
   lsSet("dw_ss_ver",STOCK_SNAPSHOT_VERSION);
   return [...map.values()];
 }
-const NAME_FIX_VERSION="nm_fix_12";
+const NAME_FIX_VERSION="nm_fix_13";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
   "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
@@ -905,6 +925,9 @@ const NAME_FIX={
   "oliffac":"Oud Oliffac (عود أوليفاك — IFF)",
   "labdanum":"Labdanum Resinoid RCO (لاذان — PL-100AP)",
   "benzoin_b":"Resinoid Benzoin Grade B ⚠️ 70% في DEP (جاوي — إندونيسيا)",
+  "lux_opus14":"Opus XIV Royal Tobacco (أوبوس رويال توباكو — هدية)",
+  "lux_existence":"Existence Amouage (إكزيستنس أموج — هدية)",
+  "benzoin_a":"Benzoin Absolute Grade A (جاوي مطلق صلب — يحتاج إذابة، انظر وصفة المحلول)",
   "benzyl":"Benzyl Benzoate (بنزيل بنزوات — LANXESS)",
   "safraleine":"Safraleine (سافرالين — GIVAUDAN)",
   "vetiver":"Vetiver EO طبيعي (فيتيفير — جنوب الهند)",
@@ -944,8 +967,11 @@ function applyPendingRecipes(recipes){
   return [...map.values()];
 }
 // rc_01: strip deleted ingredient IDs from every stored recipe
-const RECIPE_CLEANUP_VERSION="rc_02";
-const RECIPE_IDS_REMOVE=["lux_hindi_sweety","benzoin_a"];
+const RECIPE_CLEANUP_VERSION="rc_03";
+// benzoin_a أُزيل من هذه القائمة: كان محذوفاً من المخزون فكان تنظيفه من الوصفات
+// صحيحاً، وقد عاد (ia_09، 200 جم كاملة). إبقاؤه هنا كان يجرّد أي وصفة تستعمله من
+// مادته عند كل رفع للبناء — وهو ما جرّد بطاقة sol_benzoin_a فور إضافتها.
+const RECIPE_IDS_REMOVE=["lux_hindi_sweety"];
 function applyRecipeCleanup(recipes){
   if(lsGet("dw_rc_ver","")===RECIPE_CLEANUP_VERSION)return recipes;
   const cleaned=recipes.map(r=>({...r,ing:r.ing.filter(([id])=>!RECIPE_IDS_REMOVE.includes(id))}));
