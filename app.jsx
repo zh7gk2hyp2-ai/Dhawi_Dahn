@@ -765,7 +765,7 @@ function applyRecipeDeduct(inv){
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
 const INVENTORY_REMOVE_VERSION="ir_02";
 const INVENTORY_REMOVE=["lux_hindi_sweety","benzoin_a"];
-const INVENTORY_ADD_VERSION="ia_04";
+const INVENTORY_ADD_VERSION="ia_05";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // Luxodor Invoice #000472 — Jun 2026 (1 USD = 3.75 SAR)
@@ -773,11 +773,14 @@ const INVENTORY_ADD_ITEMS=[
   {id:"lux_bormi",name:"Oud Bormi (عود بورمي)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
   {id:"lux_suyufi",name:"Oud Suyufi (عود السيوفي)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
   {id:"lux_muattaq",name:"Oud Muattaq Qadeem (عود معتّق قديم)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
-  {id:"lux_hindi",name:"Oud Hindi (عود هندي)",brand:"Luxodor",cat:"عود",price:0,qty:100,unit:"مل"},
+  {id:"lux_hindi",name:"Oud Hindi (عود هندي)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
   {id:"lux_opus14",name:"Opus XIV Royal Tobacco (أوبوس رويال توباكو)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
   {id:"lux_existence",name:"Existence Amouage (إكزيستنس أموج)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
   // Luxodor — Jun 2026 individual purchase ($12 = 45 SAR)
   {id:"lux_snake",name:"The Voice of Snake (صوت الأفعى — Gucci)",brand:"Luxodor",cat:"مستوحى",price:45,qty:10,unit:"مل"},
+  // من فاتورة Bulkaroma #15403 — كانت في الشحنة ولم تُدخَل المخزون قط.
+  // ⚠️ السعر صفر: أدخل السعر الفعلي وإلا كانت تكلفة أي وصفة تستعملها أقل من الحقيقة.
+  {id:"oud_mayor",name:"Oud Mayor (عود مايور — PARFUMSPLUS)",brand:"Bulkaroma",cat:"عود",price:0,qty:100,unit:"جم"},
   // ─── طلب وادي — DHL Express 2663485941 · تأكيد 18 أغسطس · تسليم 31 أغسطس ───
   // 8 أصناف: 1,737.50 د.إ بضاعة + 260.00 د.إ شحن = 1,997.50 د.إ (بدون ضريبة)
   // التحويل: 1 د.إ = 1.0211 ريال (الدرهم 3.6725/دولار، الريال 3.75/دولار)
@@ -846,7 +849,7 @@ function applyStockSnapshot(inv){
   lsSet("dw_ss_ver",STOCK_SNAPSHOT_VERSION);
   return [...map.values()];
 }
-const NAME_FIX_VERSION="nm_fix_10";
+const NAME_FIX_VERSION="nm_fix_11";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
   "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
@@ -868,36 +871,36 @@ const NAME_FIX={
   "lux_exclusif":"Aoud Exclusif (عود إكسكلوسيف)",
   "lux_symphony":"LV Symphony (LV سيمفوني)",
   "lux_afternoon":"LV Afternoon Swim (LV أفترنون)",
-  "artessence":"Dark Wood Agarwood Artessence (عود آرتيسانس)",
-  "iso_e":"Velvet Cedar ISO E Super (آيسو إي سوبر)",
-  "sandal_indi":"Creamy Sandal Sandalwood INDI (صندل هندي)",
-  "oud_synth":"Rich Oud Oud Synth (عود صناعي)",
-  "black_agar":"Deep Black Black Agar Givco (عود أسود جيفكو)",
-  "cmp91":"Smoky Patchouli CMP 91 (عود+باتشولي)",
-  "cmp90":"Warm Spice CMP 90 (عود+توابل)",
-  "cmp173":"Modern Masculine CMP 173 (مستقل)",
-  "pretty_oud":"Royal Oud Pretty Oud (عود ناعم)",
-  "pea":"Floral Rose Phenyl Ethyl Alcohol (كحول فينيل إيثيل)",
-  "wild_petal":"Wild Flower Wild Petal 236A (بتلات برية)",
-  "amber_oud":"Amber Wood Amber Oud K1204 (عنبر عود)",
-  "white_oudh":"White Wood White Oudh C1237 (عود أبيض)",
-  "tonquitone":"Sweet Tobacco Tonquitone (تونكيتون)",
-  "cashmeran":"Soft Musky Cashmeran (كشميران)",
-  "patchouli":"Earthy Patchouli Patchouli Sumatra (باتشولي سومطرة)",
-  "ambermor":"Intense Amber Ambermor EX (أمبيرمور إكس)",
-  "oliffac":"Smoky Oud Oud Oliffac (عود أوليفاك)",
-  "labdanum":"Woody Resin Labdanum Absolute (لاذان مطلق)",
-  "benzoin_b":"Rich Resin Resinoid Benzoin B (راتنج الجاوي B)",
-  "benzyl":"Aroma Fixative Benzyl Benzoate (بنزيل بنزوات)",
-  "safraleine":"Warm Leather Safraleine (سافرالين — زعفران جيفودان)",
-  "vetiver":"Deep Earthy Vetiver EO (فيتيفير — نجيل هندي)",
+  "artessence":"Agarwood Artessence (عود آرتيسانس — BIOLANDES)",
+  "iso_e":"ISO E Super (آيسو إي سوبر — IFF)",
+  "sandal_indi":"Sandalwood INDI (صندل هندي كريمي — dsm-firmenich)",
+  "oud_synth":"Oud Synth (عود صناعي — dsm-firmenich)",
+  "black_agar":"Black Agar Givco (عود أسود — GIVAUDAN)",
+  "cmp91":"CMP 91 Oud Patchouli (عود+باتشولي — BULKAROMA)",
+  "cmp90":"CMP 90 Oud and Spice (عود+توابل — BULKAROMA)",
+  "cmp173":"CMP 173 Independent Man (رجالي معاصر — BA Select)",
+  "pretty_oud":"Pretty Oud (عود ناعم — dsm-firmenich)",
+  "pea":"Phenyl Ethyl Alcohol (كحول فينيل إيثيل)",
+  "wild_petal":"Wild Petal 236A (بتلات برية — SYNTHITE)",
+  "amber_oud":"Amber Oud K1204 (عنبر عود — SHK/KEVA)",
+  "white_oudh":"White Oudh C1237 (عود أبيض — SHK/KEVA)",
+  "tonquitone":"Tonquitone (تونكيتون — IFF)",
+  "cashmeran":"Cashmeran (كشميران — IFF)",
+  "patchouli":"Patchouli EO طبيعي (باتشولي — سومطرة)",
+  "ambermor":"Ambermor EX (أمبيرمور — IFF)",
+  "oliffac":"Oud Oliffac (عود أوليفاك — IFF)",
+  "labdanum":"Labdanum Resinoid RCO (لاذان — PL-100AP)",
+  "benzoin_b":"Resinoid Benzoin Grade B ⚠️ 70% في DEP (جاوي — إندونيسيا)",
+  "benzyl":"Benzyl Benzoate (بنزيل بنزوات — LANXESS)",
+  "safraleine":"Safraleine (سافرالين — GIVAUDAN)",
+  "vetiver":"Vetiver EO طبيعي (فيتيفير — جنوب الهند)",
   "crimson":"Crimson Fair (كريمسون فير — مقاربة Baccarat Rouge 540)",
-  "cardamom":"Exotic Spice Cardamom EO (هيل — زيت طبيعي)",
-  "cmp121":"Contemporary Elegance CMP 121 (معاصر)",
+  "cardamom":"Cardamom EO طبيعي (هيل — الهند)",
+  "cmp121":"CMP 121 Contemporary Elegance (معاصر — LUZI)",
   "metal_made":"Metal Made (ميتال ميد — مقاربة Ganymede / Marc-Antoine Barrois)",
-  "civettone":"Intense Musk Civettone ⚠️ (سيفيتون — جيفودان)",
+  "civettone":"Civettone ⚠️ (سيفيتون — dsm-firmenich)",
   "maracuja":"Oud Maracuja (عود ماراكويا — باشن فروت)",
-  "sleek_oud":"Smooth Oud Sleek Oud (سليك عود)",
+  "sleek_oud":"Sleek Oud (سليك عود — PARFUMSPLUS)",
   "jojoba":"Jojoba Oil (زيت جوجوبا)",
   "dpg":"DPG Dipropylene Glycol (ديوبي)",
   "blend1":"Blend No.1 (الخلطة الأولى)",
@@ -1226,6 +1229,10 @@ function App(){
 
   // ── low stock check ─────────────────────────────────────────
   const lowStockItems=inv.filter(i=>i.stock<i.qty*LOW_STOCK_THRESHOLD && i.qty>0);
+  // A material priced 0 silently understates the cost of every recipe using it,
+  // which then understates every margin and profit figure downstream.
+  const unpricedItems=inv.filter(i=>!(i.price>0) && i.stock>0);
+  const unpricedInRecipes=unpricedItems.filter(u=>recipes.some(r=>(r.ing||[]).some(([id])=>id===u.id)));
 
   const show=(m,e=false)=>{setToast(m);setToastErr(e);setTimeout(()=>setToast(""),2800);};
   const getIng=id=>inv.find(i=>i.id===id);
@@ -1798,6 +1805,17 @@ function App(){
     <div style={{paddingBottom:"90px"}}>
       <StorageAlarm/>
       {toast&&<div className="fade" style={{position:"fixed",bottom:"92px",left:"50%",transform:"translateX(-50%)",background:toastErr?"rgba(200,50,50,0.92)":"rgba(250,248,243,0.97)",border:`1px solid ${toastErr?"rgba(180,50,50,0.55)":"rgba(201,168,76,0.50)"}`,color:toastErr?"#C05050":"#8A6A1E",padding:"11px 22px",borderRadius:"30px",fontSize:"0.82rem",fontWeight:"700",zIndex:99999,whiteSpace:"nowrap",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",boxShadow:"0 6px 24px rgba(0,0,0,0.10)"}}>{toast}</div>}
+
+      {/* ── unpriced materials: they corrupt every cost and margin downstream ── */}
+      {unpricedItems.length>0&&tab==="inventory"&&<div style={{background:"rgba(120,70,10,0.30)",border:"1px solid rgba(201,168,76,0.45)",padding:"10px 16px",margin:"10px 14px 0",borderRadius:"12px",fontSize:"0.75rem",color:"#E8C870",display:"flex",alignItems:"flex-start",gap:"8px",backdropFilter:"blur(8px)"}}>
+        <span style={{fontSize:"1rem",lineHeight:1.3}}>💸</span>
+        <span>
+          <b>{unpricedItems.length} خامة بلا سعر:</b> {unpricedItems.slice(0,3).map(i=>i.name.split("(")[0].trim()).join(" · ")}{unpricedItems.length>3&&` و${unpricedItems.length-3} أخرى`}
+          {unpricedInRecipes.length>0&&<div style={{fontSize:"0.68rem",opacity:0.85,marginTop:"3px"}}>
+            منها {unpricedInRecipes.length} داخل وصفات — تكلفة تلك الوصفات وأرباحها أقل من الحقيقة الآن
+          </div>}
+        </span>
+      </div>}
 
       {/* ── low stock banner ── */}
       {lowStockItems.length>0&&tab==="inventory"&&<div className="alert-pulse" style={{background:"rgba(100,20,20,0.30)",border:"1px solid rgba(170,45,45,0.45)",padding:"10px 16px",margin:"10px 14px 0",borderRadius:"12px",fontSize:"0.75rem",color:"#C07070",display:"flex",alignItems:"center",gap:"8px",backdropFilter:"blur(8px)"}}>
