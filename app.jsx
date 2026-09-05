@@ -763,9 +763,9 @@ function applyRecipeDeduct(inv){
   return [...map.values()];
 }
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
-const INVENTORY_REMOVE_VERSION="ir_02";
-const INVENTORY_REMOVE=["lux_hindi_sweety","benzoin_a"];
-const INVENTORY_ADD_VERSION="ia_05";
+const INVENTORY_REMOVE_VERSION="ir_03";
+const INVENTORY_REMOVE=["lux_hindi_sweety","benzoin_a","oud_mayor"]; // oud_mayor مكرّر لـmaracuja
+const INVENTORY_ADD_VERSION="ia_06";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // Luxodor Invoice #000472 — Jun 2026 (1 USD = 3.75 SAR)
@@ -778,9 +778,8 @@ const INVENTORY_ADD_ITEMS=[
   {id:"lux_existence",name:"Existence Amouage (إكزيستنس أموج)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
   // Luxodor — Jun 2026 individual purchase ($12 = 45 SAR)
   {id:"lux_snake",name:"The Voice of Snake (صوت الأفعى — Gucci)",brand:"Luxodor",cat:"مستوحى",price:45,qty:10,unit:"مل"},
-  // من فاتورة Bulkaroma #15403 — كانت في الشحنة ولم تُدخَل المخزون قط.
-  // ⚠️ السعر صفر: أدخل السعر الفعلي وإلا كانت تكلفة أي وصفة تستعملها أقل من الحقيقة.
-  {id:"oud_mayor",name:"Oud Mayor (عود مايور — PARFUMSPLUS)",brand:"Bulkaroma",cat:"عود",price:0,qty:100,unit:"جم"},
+  // ملاحظة: بند الفاتورة 18 "Royal Oud Accord = OUD MAYOR" هو نفسه OUD MARACUJA،
+  // وهو مسجّل لديك أصلاً بمعرّف maracuja. لا تُضِف له مدخلاً ثانياً.
   // ─── طلب وادي — DHL Express 2663485941 · تأكيد 18 أغسطس · تسليم 31 أغسطس ───
   // 8 أصناف: 1,737.50 د.إ بضاعة + 260.00 د.إ شحن = 1,997.50 د.إ (بدون ضريبة)
   // التحويل: 1 د.إ = 1.0211 ريال (الدرهم 3.6725/دولار، الريال 3.75/دولار)
@@ -849,7 +848,7 @@ function applyStockSnapshot(inv){
   lsSet("dw_ss_ver",STOCK_SNAPSHOT_VERSION);
   return [...map.values()];
 }
-const NAME_FIX_VERSION="nm_fix_11";
+const NAME_FIX_VERSION="nm_fix_12";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
   "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
@@ -876,9 +875,9 @@ const NAME_FIX={
   "sandal_indi":"Sandalwood INDI (صندل هندي كريمي — dsm-firmenich)",
   "oud_synth":"Oud Synth (عود صناعي — dsm-firmenich)",
   "black_agar":"Black Agar Givco (عود أسود — GIVAUDAN)",
-  "cmp91":"CMP 91 Oud Patchouli (عود+باتشولي — BULKAROMA)",
-  "cmp90":"CMP 90 Oud and Spice (عود+توابل — BULKAROMA)",
-  "cmp173":"CMP 173 Independent Man (رجالي معاصر — BA Select)",
+  "cmp91":"CMP 91 — Oud Wood توم فورد (عود · صندل · هيل · فلفل · تونكا)",
+  "cmp90":"CMP 90 — Oud Malaki شوبارد (عود · جريب فروت · لافندر · جلد · تبغ)",
+  "cmp173":"CMP 173 — MYSLF إيف سان لوران (برغموت · نيرولي · زهر برتقال)",
   "pretty_oud":"Pretty Oud (عود ناعم — dsm-firmenich)",
   "pea":"Phenyl Ethyl Alcohol (كحول فينيل إيثيل)",
   "wild_petal":"Wild Petal 236A (بتلات برية — SYNTHITE)",
@@ -894,13 +893,13 @@ const NAME_FIX={
   "benzyl":"Benzyl Benzoate (بنزيل بنزوات — LANXESS)",
   "safraleine":"Safraleine (سافرالين — GIVAUDAN)",
   "vetiver":"Vetiver EO طبيعي (فيتيفير — جنوب الهند)",
-  "crimson":"Crimson Fair (كريمسون فير — مقاربة Baccarat Rouge 540)",
+  "crimson":"Crimson Fair — Baccarat Rouge 540 (عنبر · عنبر بحري · زعفران)",
   "cardamom":"Cardamom EO طبيعي (هيل — الهند)",
-  "cmp121":"CMP 121 Contemporary Elegance (معاصر — LUZI)",
-  "metal_made":"Metal Made (ميتال ميد — مقاربة Ganymede / Marc-Antoine Barrois)",
+  "cmp121":"CMP 121 — Imagination لويس فيتون (حمضيات · نيرولي · شاي · توابل)",
+  "metal_made":"Metal Made — Ganymede (جلد · معدني · مِعدني حجري)",
   "civettone":"Civettone ⚠️ (سيفيتون — dsm-firmenich)",
-  "maracuja":"Oud Maracuja (عود ماراكويا — باشن فروت)",
-  "sleek_oud":"Sleek Oud (سليك عود — PARFUMSPLUS)",
+  "maracuja":"Oud Maracuja / Oud Mayor — جلد · عود · زعفران (لا فاكهة فقط)",
+  "sleek_oud":"Sleek Oud — Velvet Oud (بخور · جلد · عود · عنبر · مسك)",
   "jojoba":"Jojoba Oil (زيت جوجوبا)",
   "dpg":"DPG Dipropylene Glycol (ديوبي)",
   "blend1":"Blend No.1 (الخلطة الأولى)",
@@ -1018,8 +1017,8 @@ function fmtDate(iso){
 }
 
 // ─── notes classification (Top / Middle / Base) ─────────────────
-const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','iso_e','hedione','uae_blue_talisman']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','cmp121','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake','uae_dahnal_tarat','uae_dahnal_asami','uae_asami_agar','uae_carved_oud','uae_sublime_oud','lux_bormi','lux_suyufi','lux_muattaq','lux_hindi','lux_khalifa']);
+const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','cmp121','iso_e','hedione','uae_blue_talisman']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake','uae_dahnal_tarat','uae_dahnal_asami','uae_asami_agar','uae_carved_oud','uae_sublime_oud','lux_bormi','lux_suyufi','lux_muattaq','lux_hindi','lux_khalifa']);
 const NOTES_CARRIER=new Set(['dpg','jojoba','benzyl']); // diluents — excluded from layer ratio
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 // scale a number and format it cleanly

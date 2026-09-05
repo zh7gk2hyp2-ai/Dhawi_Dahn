@@ -25,7 +25,7 @@
 | 15 | Modern Masculine Blend | CMP 173 — Independent Man | 100g | BA Select | `cmp173` |
 | 16 | Rich Oud Fusion | Oud Synth | 100g | dsm-firmenich | `oud_synth` |
 | 17 | Rich Resin Blend | Resinoid Benzoin **Grade B 70 DEP** — Styrax Benzoin، إندونيسيا | 1kg | PA-100IS | `benzoin_b` |
-| 18 | Royal Oud Accord | **OUD MAYOR** | 100g | PARFUMSPLUS DIRECT | `oud_mayor` |
+| 18 | Royal Oud Accord | **OUD MAYOR** = OUD MARACUJA | 100g | PARFUMSPLUS DIRECT | `maracuja` |
 | 19 | Royal Oud Base | Pretty Oud | 50g | dsm-firmenich | `pretty_oud` |
 | 20 | Smoky Oud Resin | Oud Oliffac | 5g | IFF | `oliffac` |
 | 21 | Smoky Patchouli Blend | CMP 91 — Oud Patchouli | 200g | BULKAROMA | `cmp91` |
@@ -55,5 +55,30 @@
 
 | المادة | الحالة |
 |---|---|
-| **OUD MAYOR** 100g | لم تكن في المخزون إطلاقاً — أُضيفت بمعرّف `oud_mayor` بسعر صفر، **أدخل سعرها** |
+| **OUD MAYOR** 100g | ليست مفقودة — هي **OUD MARACUJA** نفسها، ومسجّلة أصلاً بمعرّف `maracuja`. أُضيفت خطأً كمدخل ثانٍ ثم حُذفت (`ir_03`) |
 | **Benzoin Absolute Grade A** 200g | كانت في المخزون ثم حُذفت عبر `INVENTORY_REMOVE` (`benzoin_a`). إن كانت لا تزال لديك فعلياً فأعدها؛ وإن كانت نفدت فالحذف صحيح |
+
+## المراجع الحقيقية — من صفحات المنتجات على bulkaroma.com
+
+| المعرّف | المادة | العطر المرجعي | النوتات كما يذكرها المورّد |
+|---|---|---|---|
+| `crimson` | Crimson Fair | **Baccarat Rouge 540** | Amber Floral: عنبر · عنبر بحري · **زعفران** |
+| `metal_made` | Metal Made | **Ganymede** — Marc-Antoine Barrois | Woody: **جلد · معدني · حجري** + عود وتوابل دافئة |
+| `maracuja` | Oud Maracuja / Oud Mayor | — | Amber Woody: **جلد · عود · زعفران** + عنبر · جاوي · باشن فروت · باتشولي · ورد · فانيليا |
+| `cmp90` | CMP 90 — Oud and Spice | **Oud Malaki** — شوبارد | عود · عنبر بحري · **جريب فروت · لافندر** · جلد · تبغ · خشبي |
+| `cmp91` | CMP 91 — Oud Patchouli | **Oud Wood** — توم فورد | عود · عنبر · **صندل · هيل · فلفل · تونكا · فانيليا** · فيتيفير |
+| `cmp121` | CMP 121 — Contemporary Elegance | **Imagination** — لويس فيتون | Citrus Aromatic: **حمضيات · نيرولي · شاي** · توابل |
+| `cmp173` | CMP 173 — Independent Man | **MYSLF** — إيف سان لوران | Woody Aromatic: **برغموت · نيرولي · زهر برتقال** · باتشولي |
+| `sleek_oud` | Sleek Oud | **Velvet Oud** | Amber Woody: **بخور · جلد · عود** · عنبر · مسك |
+
+### ثلاثة تصحيحات نتجت عن هذه القراءة
+
+**`maracuja` ليست فاكهية.** كان التطبيق يسمّيها «عود ماراكويا — باشن فروت»، وهي فعلياً
+**جلد وعود وزعفران** والباشن فروت واحدة من ثمان نوتات. تُستعمل في «نسمة الصيف»
+بنسبة ١٥٪ على أنها لمسة صيفية فاكهية — راجع الوصفة على هذا الأساس.
+
+**`cmp91` هو Tom Ford Oud Wood** لا «عود + باتشولي». تركيبته صندل وهيل وفلفل
+وتونكا وفانيليا — دافئة توابلية لا دخانية. تُستعمل في «الروح الهندية» و«صيف الطائف».
+
+**`cmp121` نوتة قمة لا قلب.** حمضيات ونيرولي وشاي تتطاير أولاً. كان مصنّفاً
+`NOTES_MID` فيُظهر هرم النوتات مائلاً في كل وصفة تستعمله.
