@@ -3,18 +3,15 @@
 <head>
 <meta charset="UTF-8"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta name="app-version" content="2026-09-05-v1"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="app-version" content="2026-07-16-v3"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="Expires" content="0"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="ضاوي دهن العود"/>
 <meta name="theme-color" content="#F7F1E6"/>
 <link rel="manifest" href="./manifest.json"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%231A1208'/><text x='90' y='125' text-anchor='middle' font-size='100'>🪬</text></svg>"/>
 <title>ضاوي دهن العود — مختبر العطور التراثي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -758,7 +755,8 @@ async function verifyPin(input){
     return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')==='165fdf42142e58406ee330643497e9b9a739773f064d63ee053592ef778d704d';
   }catch{return input==='6775';}
 }
-function sanitize(str){return String(str||'').replace(/[<>'"&]/g,c=>({'<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;','&':'&amp;'}[c]));}
+function sanitize(str){return String(str==null?'':str).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+const esc=sanitize; // every value interpolated into a document.write template must go through this
 setTimeout(()=>{const s=document.getElementById("splash");if(s){s.style.opacity="0";setTimeout(()=>s.remove(),600);}},1700);
 
 const SHIPPING_BULK=2000;
@@ -1337,7 +1335,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-07-16-v3";
+const APP_BUILD="2026-09-05-v1";
 // ── صور الوصفات المنتجة (تظهر أعلى البطاقة إن وُجدت) ──
 const RECIPE_IMG={
   r_hindi_soul:"media/products/r_hindi_soul.jpg",
@@ -1909,9 +1907,25 @@ function App(){
   const resetLabTimer=()=>{clearInterval(labTimerRef.current);setLabTimerSec(0);setLabTimerRunning(false);};
 
   // ── persist on every change ──────────────────────────────────
-  useEffect(()=>lsSet("dw_inv",inv),[inv]);
-  useEffect(()=>lsSet("dw_recipes",recipes),[recipes]);
-  useEffect(()=>lsSet("dw_prodlog",prodLog),[prodLog]);
+  // The three big collections are debounced: each save JSON.stringify's the whole
+  // collection, and typing in a stock field fired one save per keystroke.
+  // A pagehide flush guarantees nothing is lost when the app is closed mid-debounce.
+  const saveTimers=useRef({});
+  const pending=useRef({});
+  const lsSetSoon=(key,val,ms=400)=>{
+    pending.current[key]=val;
+    clearTimeout(saveTimers.current[key]);
+    saveTimers.current[key]=setTimeout(()=>{lsSet(key,pending.current[key]);delete pending.current[key];},ms);
+  };
+  useEffect(()=>{
+    const flush=()=>{Object.keys(pending.current).forEach(k=>{clearTimeout(saveTimers.current[k]);lsSet(k,pending.current[k]);});pending.current={};};
+    window.addEventListener("pagehide",flush);
+    document.addEventListener("visibilitychange",()=>{if(document.hidden)flush();});
+    return()=>{flush();window.removeEventListener("pagehide",flush);};
+  },[]);
+  useEffect(()=>lsSetSoon("dw_inv",inv),[inv]);
+  useEffect(()=>lsSetSoon("dw_recipes",recipes),[recipes]);
+  useEffect(()=>lsSetSoon("dw_prodlog",prodLog),[prodLog]);
   useEffect(()=>lsSet("dw_purchases",purchases),[purchases]);
   useEffect(()=>lsSet("dw_customers",customers),[customers]);
   useEffect(()=>lsSet("dw_favorites",favoriteIds),[favoriteIds]);
@@ -1976,8 +1990,9 @@ function App(){
   const mkBarcode=seed=>{const r=n=>{let x=n;x=((x>>16)^x)*0x45d9f3b;x=((x>>16)^x)*0x45d9f3b;return((x>>16)^x)>>>0;};return Array.from({length:38},(_,i)=>{const v=r(seed*37+i);return{w:(v%3)+1,dark:!!(v&4)};});};
   const printInvoice=()=>{
     const now=new Date();const invNo="DW-"+String(Date.now()).slice(-6);
+    const vatAmt=Math.round(cartTotal*0.15); // one rounded VAT figure — subtotal+VAT must equal the total
     const dateStr=now.toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
-    const rows=cartItems.map(i=>`<tr><td>${i.icon} ${i.name}<br><span style="font-size:9px;color:#888">${i.batchName||""}</span></td><td style="text-align:center">${i.qty}</td><td style="text-align:left">${i.price}</td><td style="text-align:left;font-weight:700">${i.price*i.qty}</td></tr>`).join("");
+    const rows=cartItems.map(i=>`<tr><td>${esc(i.icon)} ${esc(i.name)}<br><span style="font-size:9px;color:#888">${esc(i.batchName||"")}</span></td><td style="text-align:center">${+i.qty||0}</td><td style="text-align:left">${+i.price||0}</td><td style="text-align:left;font-weight:700">${(+i.price||0)*(+i.qty||0)}</td></tr>`).join("");
     const w=window.open("","_blank","width=390,height=720");
     w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>فاتورة Atelier Dhawi</title>
     <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Courier New',monospace;background:#fff;color:#111;padding:28px 22px;max-width:340px;margin:0 auto;font-size:13px}
@@ -1997,8 +2012,8 @@ function App(){
     <table><thead><tr><th style="text-align:right">المنتج</th><th>ك</th><th style="text-align:left">السعر</th><th style="text-align:left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="tot">
       <div class="tot-row"><span>المجموع</span><span>${cartTotal} ر</span></div>
-      <div class="tot-row" style="color:#777;font-size:11px"><span>ضريبة القيمة المضافة 15%</span><span>${Math.round(cartTotal*0.15)} ر</span></div>
-      <div class="tot-row tot-final"><span>الإجمالي شامل الضريبة</span><span>${Math.round(cartTotal*1.15)} ر</span></div>
+      <div class="tot-row" style="color:#777;font-size:11px"><span>ضريبة القيمة المضافة 15%</span><span>${vatAmt} ر</span></div>
+      <div class="tot-row tot-final"><span>الإجمالي شامل الضريبة</span><span>${cartTotal+vatAmt} ر</span></div>
     </div>
     <div class="ftr"><div class="stars">★ ★ ★ ★ ★</div><div>شكراً لتعاملكم معنا</div><div>Atelier Dhawi · Private Oud Lab</div><div style="margin-top:8px;direction:ltr;font-size:8px;letter-spacing:0">${invNo} — ${cartItems.length} منتج</div></div>
     <script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
@@ -2111,7 +2126,7 @@ function App(){
       document.body.removeChild(tmp);
       const w=window.open("","_blank","width=420,height=560");
       if(!w){show("⚠️ اسمح بالنوافذ المنبثقة لطباعة الملصق");return;}
-      w.document.write(`<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>ملصق ${e.batchNo}</title><style>body{font-family:-apple-system,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#fff}.lbl{width:58mm;border:1.2px solid #8A6A1E;border-radius:10px;padding:12px 10px;text-align:center}.b{font-size:0.60rem;letter-spacing:0.30em;color:#8A6A1E;margin-bottom:6px}.n{font-size:1.02rem;font-weight:800;color:#1A1208;margin-bottom:2px}.m{font-size:0.66rem;color:#555;margin-bottom:8px}img{width:100px;height:100px}.f{font-size:0.60rem;color:#777;margin-top:6px;line-height:1.6}@media print{body{min-height:auto}}</style></head><body><div class="lbl"><div class="b">ATELIER DHAWI</div><div class="n">${e.recipeIcon||""} ${e.recipeName}</div><div class="m">دفعة #${e.batchNo} · ${e.batch||""} · ${e.vol||""}مل</div>${src?`<img src="${src}"/>`:""}<div class="f">إنتاج: ${(e.date||"").slice(0,10)}<br/>جاهز: ${(e.readyDate||"").slice(0,10)}</div></div></body></html>`);
+      w.document.write(`<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>ملصق ${esc(e.batchNo)}</title><style>body{font-family:-apple-system,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#fff}.lbl{width:58mm;border:1.2px solid #8A6A1E;border-radius:10px;padding:12px 10px;text-align:center}.b{font-size:0.60rem;letter-spacing:0.30em;color:#8A6A1E;margin-bottom:6px}.n{font-size:1.02rem;font-weight:800;color:#1A1208;margin-bottom:2px}.m{font-size:0.66rem;color:#555;margin-bottom:8px}img{width:100px;height:100px}.f{font-size:0.60rem;color:#777;margin-top:6px;line-height:1.6}@media print{body{min-height:auto}}</style></head><body><div class="lbl"><div class="b">ATELIER DHAWI</div><div class="n">${esc(e.recipeIcon||"")} ${esc(e.recipeName)}</div><div class="m">دفعة #${esc(e.batchNo)} · ${esc(e.batch||"")} · ${esc(e.vol||"")}مل</div>${src?`<img src="${src}"/>`:""}<div class="f">إنتاج: ${(e.date||"").slice(0,10)}<br/>جاهز: ${(e.readyDate||"").slice(0,10)}</div></div></body></html>`);
       w.document.close();
       setTimeout(()=>{try{w.focus();w.print();}catch(_){}} ,400);
     },90);
@@ -2399,7 +2414,7 @@ function App(){
   const totalProduced=prodLog.length;
   const totalSold=prodLog.filter(e=>e.sold).length;
   const totalRevenue=prodLog.filter(e=>e.sold&&e.sellPrice).reduce((s,e)=>s+e.sellPrice,0);
-  const totalCostOfSold=prodLog.filter(e=>e.sold).reduce((s,e)=>s+e.cost,0);
+  const totalCostOfSold=prodLog.filter(e=>e.sold).reduce((s,e)=>s+(e.cost||0),0); // ||0: a legacy entry without cost turned the KPI into NaN
   const netProfit=totalRevenue-totalCostOfSold;
   const recipeFreq=prodLog.reduce((acc,e)=>{acc[e.recipeName]=(acc[e.recipeName]||0)+1;return acc;},{});
   const topRecipe=Object.entries(recipeFreq).sort((a,b)=>b[1]-a[1])[0];
@@ -4148,7 +4163,7 @@ function App(){
               </div>
               {!e.sold&&<SellEntry id={e.id} onSell={markSold}/>}
               {e.sold&&<span className="tag tag-green">✅ مباع</span>}
-              <button onClick={()=>{const custName=e.customerId?customers.find(c=>c.id===e.customerId)?.name:"";const w=window.open('','_blank','width=400,height=320');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:340px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي دهن العود</div><div style="text-align:center;font-size:22px;margin:4px 0">${e.recipeIcon}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${e.recipeName}</div><hr style="border-color:#D4AF37;opacity:0.3"/>${custName?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">العميل</span><span style="color:#80c0ff;font-weight:700">${custName}</span></div>`:""}<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${e.batchNo}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${e.vol} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.sold&&e.sellPrice?`<div style="display:flex;justify-content:space-between;font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid rgba(214,175,55,0.3)"><span style="color:#c8a46a">سعر البيع</span><span style="color:#80c080;font-weight:700">${e.sellPrice} ريال</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${e.note}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
+              <button onClick={()=>{const custName=e.customerId?customers.find(c=>c.id===e.customerId)?.name:"";const w=window.open('','_blank','width=400,height=320');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:340px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي دهن العود</div><div style="text-align:center;font-size:22px;margin:4px 0">${esc(e.recipeIcon)}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${esc(e.recipeName)}</div><hr style="border-color:#D4AF37;opacity:0.3"/>${custName?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">العميل</span><span style="color:#80c0ff;font-weight:700">${esc(custName)}</span></div>`:""}<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${esc(e.batchNo)}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${+e.vol||0} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.sold&&e.sellPrice?`<div style="display:flex;justify-content:space-between;font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid rgba(214,175,55,0.3)"><span style="color:#c8a46a">سعر البيع</span><span style="color:#80c080;font-weight:700">${+e.sellPrice||0} ريال</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${esc(e.note)}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
               {!e.customerId&&customers.length>0&&<select value="" onChange={ev=>{if(ev.target.value)linkOrderToCustomer(e.id,ev.target.value);}} style={{marginTop:"6px",background:"rgba(26,18,8,0.85)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"8px",color:"#8A6A1E",fontSize:"0.72rem",padding:"4px 8px",fontFamily:"'Alexandria',sans-serif",width:"100%"}}><option value="">🔗 اربط بعميل...</option>{customers.map(c=><option key={c.id} value={c.id} style={{background:"#FAF8F3"}}>{c.name}</option>)}</select>}
               {!e.sold&&<button onClick={()=>deleteProdEntry(e.id)} style={{marginTop:"5px",background:"rgba(200,60,60,0.1)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🗑️ حذف الدفعة</button>}
             </div>
@@ -4692,7 +4707,7 @@ function App(){
                 </div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:"16px",background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.20)",borderRadius:"12px",padding:"10px 14px"}}>
                   <span style={{fontSize:"0.78rem",color:"rgba(201,168,76,0.70)"}}>الإجمالي شامل الضريبة</span>
-                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.25rem",fontWeight:"700",color:"#E8C870"}}>{Math.round(cartTotal*1.15)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></span>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.25rem",fontWeight:"700",color:"#E8C870"}}>{cartTotal+Math.round(cartTotal*0.15)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></span>
                 </div>
                 <button className="btn-gold" style={{width:"100%",padding:"14px",fontSize:"0.88rem"}} onClick={()=>{printInvoice();setShowCart(false);}}>
                   🧾 طباعة الفاتورة
@@ -4964,9 +4979,24 @@ ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(
   }
   // Initial scan after React mounts
   setTimeout(scan,600);
-  // Re-scan when DOM changes (tab switches, recipe loads)
+  // Re-scan when the DOM changes. This used to run querySelectorAll over the entire
+  // subtree 100ms after EVERY mutation — on a 3000-line component tree that is constant
+  // layout thrash. Now: coalesced into one rAF-batched scan, and only for childList
+  // changes on the top few levels, with a floor between scans.
   const root=document.getElementById('root');
-  if(root)new MutationObserver(()=>setTimeout(scan,100)).observe(root,{childList:true,subtree:true});
+  if(root){
+    let queued=false,last=0;
+    const kick=()=>{
+      if(queued)return;
+      const now=performance.now();
+      const wait=Math.max(0,250-(now-last));
+      queued=true;
+      setTimeout(()=>requestAnimationFrame(()=>{queued=false;last=performance.now();scan();}),wait);
+    };
+    new MutationObserver(muts=>{
+      for(const m of muts) if(m.addedNodes.length){kick();return;}
+    }).observe(root,{childList:true,subtree:true});
+  }
 })();
 </script>
 </body>
