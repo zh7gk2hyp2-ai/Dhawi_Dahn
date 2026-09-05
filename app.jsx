@@ -21,7 +21,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_70";
+const PENDING_RECIPES_VERSION="rec_71";
 const PENDING_RECIPES=[
   // ── rec_56: دساتير ربع التولة — مرجع التحسين السريع لأدهان لوكسودور الصافية ──
   {id:"r_qtola_ref",name:"دساتير ربع التولة — مرجع سريع",icon:"💧",season:"مناسبات",gender:"للجنسين",stability:"حسب الدهن",
@@ -225,7 +225,7 @@ const PENDING_RECIPES=[
   {id:"r_hindi_soul",name:"الروح الهندية",icon:"🔥",season:"شتاء",gender:"رجالي",stability:"40 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:220,
    story:"مستوحى من أعماق غابات الأسام الهندية، حيث يجمع الهواء بين أنفاس الخشب المعتّق وحرارة الأرض البكر. قلبه آرتيسانس حيواني أصيل يُعبّر عن فخر الرجل الخليجي وثقته بنفسه. مثبت العنبرمور يبقيه على الثياب أربعين ساعة — عطر لا تنساه البيئة المحيطة.",
    desc:"قمة: فيتيفير+عود أسود | قلب: آرتيسانس هندي حيواني+Oud Synth | قاعدة: لبدانوم+بنزوين+عنبرمور | طابع هندي أصيل للسوق الخليجي",
-   ing:[["artessence",8],["oud_synth",5],["lux_black",3],["vetiver",2],["cmp91",2],["labdanum",4],["benzoin_b",3],["sandal_indi",5],["ambermor",2.5],["cashmeran",1.5],["lux_fixative",3],["iso_e",0.8],["safraleine",0.5],["tonquitone",0.5],["jojoba",5.16],["hedione",6.71],["galaxolide",3.62],["uae_dahnal_asami",3.62]],
+   ing:[["artessence",8],["oud_synth",3.5],["lux_black",3],["vetiver",2],["cmp91",4.5],["labdanum",4],["benzoin_b",3],["sandal_indi",5],["ambermor",2.5],["cashmeran",1.5],["lux_fixative",3],["iso_e",0.8],["safraleine",0.5],["tonquitone",0.5],["jojoba",5.16],["hedione",6.71],["galaxolide",3.62],["uae_dahnal_asami",3.62]],
    steps:["⚡ بري-بلند الهندي (12 ساعة مسبقاً): في زجاجة 10مل: Artessence 8مل + Oud Synth 5مل — أغلق في بارد مظلم | دمج مسبق يُوحّد الطابع الحيواني الهندي الأصيل مع الهيكل العودي قبل التقائه بالراتنجات","SH-2 + بيكر 250مل: لبدانوم 4جم + بنزوين B 3مل — على 60° مع قضيب مغناطيسي 20 دقيقة ← اترك يبرد لـ 45°","على تحريك بارد: أضف Lux Black 3مل — العمود الأسود الخليجي، حرّك 3 دقائق","أضف خليط بري-بلند الهندي (Artessence + Oud Synth) دفعة واحدة — الشخصية الهندية المدمجة تدخل على القاعدة الجلدية الجاهزة","أضف Vetiver 2مل + CMP91 2مل — الفيتيفير يعمّق الطابع الترابي الأصيل | CMP91 يُضيف هوية خليجية","أضف Sandalwood INDI 5مل + Ambermor شمعي 2.5جم (⚠️ أذبه على 50° أولاً — 30 دق) + Lux Fixative 3مل","سرنجة: Cashmeran 1.5مل + ISO E Super 0.8مل + Safraleine 0.5مل + Tonquitone 0.5مل + Jojoba 9مل","سرنجة ثانوية (اختياري — درجة ثانية): مسك متسلق 0.5مل (الحميدي) + عود ترابي 1مل (شرفان)","⚠️ عتّق 4 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين يومياً × 3 أيام — الطابع الحيواني يتحوّل من حاد إلى جلد ناعم بالدفء الخفيف | حرّك برفق كل 2-3 أيام | بشرة رطبة بالجوجوبا للثبات الأقصى"]},
   {id:"r_cambodi_nights",name:"ليالي الكمبودي",icon:"🌙",season:"صيف",gender:"للجنسين",stability:"42+ ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:190,
    story:"إلهام من جوهر عود كمبودي فاخر تحت ليلٍ صيفي هادئ، تصاحبه بتلات الورد البرية والزعفران الخليجي. يفتح القلبَ بالخفّة قبل أن يستقر في الصندل الكريمي الدافئ. عطر النهار والأصدقاء — خفيف بما يكفي للسيارة، عميق بما يكفي للمجلس.",
@@ -243,9 +243,9 @@ const PENDING_RECIPES=[
    desc:"صيفي ☀️ — كمبودي+ورد+زعفران | مستوحى من روز-نسمات-نجد | خفيف أنيق للاستخدام اليومي",
    ing:[["lux_cambodi",10],["pretty_oud",3],["wild_petal",5],["pea",2],["safraleine",0.4],["ambermor",2],["sandal_indi",2],["sandal_ward",2],["benzoin_b",2],["cashmeran",1.5],["iso_e",0.3],["jojoba",4.2],["dpg",2.4],["hedione",4],["galaxolide",2.91]],
    steps:["⚡ رابط الورد (20 دق): Wild Petal 5مل + Benzoin B 2مل في كوب مغلق — 20 دقيقة | في كوب آخر: أذب Ambermor شمعي 2جم في 50° مع 1مل DPG ← اترك يبرد تماماً","في بيكر بارد: DPG 4مل + Jojoba 8مل (جوجوبا أكثر = ثبات القماش الصيفي)","أضف Lux Cambodi 7مل + Pretty Oud 3مل — الكمبودي الزهري الحلو الصيفي","أضف خليط الورد-البنزوين المُعدّ ← ثم PEA 2مل فقط ⚠️","أضف Safraleine 0.4مل (💡 4مل محلول 10%: 0.1مل+0.9مل DPG)","أضف Sandalwood INDI 2مل + Rose Sandal Ward 2مل (مخلط صندل ورد — يُعزّز الورد ويُعمّق الصندل ↑ نعومة وانطباع أول) + محلول Ambermor المُبرَّد","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 1مل (شرفان) + مسك رمان 0.5مل (شرفان)","⚠️ عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام | حرّك برفق كل 2-3 أيام | جوجوبا على البشرة أولاً"]},
-  {id:"r_nasmat_sayf",name:"نسمة الصيف",icon:"🌴",season:"صيف",gender:"للجنسين",stability:"28 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:165,
-   story:"روح استوائية خليجية — حيث الماراكويا الطازجة تلتقي بسليك عود ناعم في مزيج لم تشمّه الجزيرة من قبل. مناسب للأجواء الحارة والرحلات الصيفية، يبقى خفيفاً دون أن يفقد بصمته. جرأة معاصرة بأصول عريقة.",
-   desc:"قمة: هيديون + بتلات ورد | قلب: كمبودي + ماراكويا (جلد·عود·زعفران) + Sleek Oud (بخور·جلد·عود = Velvet Oud) | قاعدة: صندل + عنبرمور + جالاكسولايد | ⚠️ ليس صيفياً خفيفاً كما كان يُوصف: 22% من أكوردين جلديين-عوديين ثقيلين",
+  {id:"r_nasmat_sayf",name:"مخمل",icon:"🖤",season:"مناسبات",gender:"للجنسين",stability:"طويل · 34-38 ساعة (تقدير)",published:true,hero:true,perfumer:"ضاوي",price_sar:210,
+   story:"كان اسمه «نسمة الصيف» وكان الاسم يكذب عليه. مادتاه الكبيرتان — ماراكويا وVelvet Oud — جلدٌ وعودٌ وزعفرانٌ وبخور، لا نسمةَ فيهما ولا صيف. أعدناه إلى حقيقته: عودٌ مخمليٌّ جلدي، حلاوة الكمبودي تكسر حدّة الجلد، والباشن فروت لمعةٌ بعيدة تحت السطح لا فاكهةٌ في الواجهة.",
+   desc:"قمة: هيديون + بتلات ورد | قلب: ماراكويا (جلد·عود·زعفران) + Sleek Oud (= Velvet Oud: بخور·جلد·عود) + كمبودي | قاعدة: صندل + مخلط صندل ورد + عنبرمور + جالاكسولايد | ⚠️ التركيبة لم تتغيّر عن «نسمة الصيف» — الوصف وحده صار صادقاً",
    ing:[["lux_cambodi",6],["maracuja",6],["sleek_oud",3],["wild_petal",3],["pea",1],["ambermor",2],["sandal_indi",2],["sandal_ward",2],["benzoin_b",2],["cashmeran",1.5],["iso_e",0.3],["jojoba",2.23],["dpg",1.59],["hedione",4.51],["galaxolide",3.12]],
    steps:["في كوب صغير: أذب Ambermor شمعي 2جم في 50° مع 1مل DPG ← اترك يبرد تماماً","في بيكر بارد: DPG 4مل + Jojoba 7مل","أضف Lux Cambodi 6مل + Sleek Oud 3مل — الكمبودي الناعم الصيفي","أضف Maracuja 6مل ببطء وحرّك دائرياً — الاستوائي الفاخر","⚡ رابط الورد: Wild Petal 3مل + Benzoin B 2مل في كوب مغلق 15 دق ← أضفهما ← ثم PEA 1مل فقط ⚠️ (ماراكويا+معدنية = ثقيل)","أضف Sandalwood INDI 2مل + Rose Sandal Ward 2مل (مخلط صندل ورد — يُنعّم الخلطة الصيفية ويُضيف ورديّة خفيفة) + محلول Ambermor المُبرَّد","سرنجة: Cashmeran 1.5مل + ISO E 0.3مل","⚠️ عتّق 3 أسابيع | 💡 الأسبوع الأول: حمام ماء 38° × ساعتين × 3 أيام — الماراكويا يتفتّح بالدفء الخفيف | حرّك برفق كل 2-3 أيام | الأجمل من الأسبوع الثاني"]},
   {id:"r_nasmat_bakhoor",name:"نسمة البخور",icon:"🕌",season:"شتاء",gender:"رجالي",stability:"38 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:200,
@@ -763,9 +763,9 @@ function applyRecipeDeduct(inv){
   return [...map.values()];
 }
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
-const INVENTORY_REMOVE_VERSION="ir_03";
-const INVENTORY_REMOVE=["lux_hindi_sweety","benzoin_a","oud_mayor"]; // oud_mayor مكرّر لـmaracuja
-const INVENTORY_ADD_VERSION="ia_06";
+const INVENTORY_REMOVE_VERSION="ir_04";
+const INVENTORY_REMOVE=["lux_hindi_sweety","oud_mayor"]; // oud_mayor مكرّر لـmaracuja
+const INVENTORY_ADD_VERSION="ia_07";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // Luxodor Invoice #000472 — Jun 2026 (1 USD = 3.75 SAR)
@@ -778,6 +778,11 @@ const INVENTORY_ADD_ITEMS=[
   {id:"lux_existence",name:"Existence Amouage (إكزيستنس أموج)",brand:"Luxodor",cat:"مستوحى",price:0,qty:10,unit:"مل"},
   // Luxodor — Jun 2026 individual purchase ($12 = 45 SAR)
   {id:"lux_snake",name:"The Voice of Snake (صوت الأفعى — Gucci)",brand:"Luxodor",cat:"مستوحى",price:45,qty:10,unit:"مل"},
+  // Benzoin Absolute Grade A — بند الفاتورة 24 من طلب Bulkaroma #15403 (200 جم).
+  // كانت محذوفة من التطبيق. أُعيدت بمخزون صفر وسعر صفر عمداً: الفاتورة تُثبت الشراء
+  // ولا تُثبت ما تبقّى، ومخزونٌ مُدّعى يُفسد حساب "هل يمكن إنتاجها".
+  // ⚠️ اضبط المخزون والسعر الفعليين. أقوى بكثير من benzoin_b (وهو 70% في DEP).
+  {id:"benzoin_a",name:"Benzoin Absolute Grade A (جاوي مطلق — PA-100IS)",brand:"Bulkaroma",cat:"مثبت",price:0,qty:200,unit:"جم",stock:0},
   // ملاحظة: بند الفاتورة 18 "Royal Oud Accord = OUD MAYOR" هو نفسه OUD MARACUJA،
   // وهو مسجّل لديك أصلاً بمعرّف maracuja. لا تُضِف له مدخلاً ثانياً.
   // ─── طلب وادي — DHL Express 2663485941 · تأكيد 18 أغسطس · تسليم 31 أغسطس ───
@@ -802,7 +807,8 @@ function applyInventoryAdd(inv){
     // otherwise fall back to the prorated Bulkaroma share
     const ship=item.ship!==undefined?item.ship:(item.brand==="Bulkaroma"?(SHIPPING_BULK*item.qty/bulkTotalQty):0);
     const unitCost=item.qty>0?(item.price+ship)/item.qty:0;
-    return {...item,stock:item.qty,ship,unitCost};
+    // stock صريح يفوز: بعض البنود تُضاف موثّقةً من فاتورة دون تأكيد ما تبقّى فعلياً
+    return {...item,stock:item.stock!==undefined?item.stock:item.qty,ship,unitCost};
   });
   lsSet("dw_ia_ver",INVENTORY_ADD_VERSION);
   return [...inv,...toAdd];
