@@ -882,7 +882,12 @@ body.maintenance #maint-screen{
 <script>
   /* ═══ تبديل الصيانة: true = مغلق للصيانة · false = المتجر يعمل ═══ */
   var MAINTENANCE = true;
-  if (MAINTENANCE) document.body.classList.add('maintenance');
+  if (MAINTENANCE) {
+    // كان الإخفاء بـCSS وحده: المتجر يُحمَّل كاملاً ويبقى الوصول إليه من أدوات المطوّر،
+    // والسلة والدفع يعملان خلف الستار. الآن يتوقّف التنفيذ فعلياً.
+    document.body.classList.add('maintenance');
+    window.__MAINTENANCE__ = true;
+  }
 </script>
 <canvas id="lux-canvas" aria-hidden="true"></canvas>
 <div class="bg-orb orb1"></div>
@@ -1617,6 +1622,7 @@ function closeCheckout(){
 }
 
 function renderCheckout(){
+  if(window.__MAINTENANCE__)return;
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const deliveryCost=coDelivery==='express'?45:25;
   const codFee=coPayment==='cod'?15:0;
@@ -1746,6 +1752,7 @@ function renderCheckout(){
 }
 
 function submitOrder(){
+  if(window.__MAINTENANCE__)return;
   if(!coData.name.trim()){toast('⚠️ الرجاء إدخال الاسم الكامل');return;}
   if(!coData.phone.trim()||coData.phone.length<9){toast('⚠️ رقم الجوال غير صحيح');return;}
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);

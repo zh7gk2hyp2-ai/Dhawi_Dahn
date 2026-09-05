@@ -10,7 +10,11 @@ async function verifyPin(input){
   try{
     const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(input));
     return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')==='165fdf42142e58406ee330643497e9b9a739773f064d63ee053592ef778d704d';
-  }catch{return input==='6775';}
+  }catch{
+    // كان هنا: return input==='6775' — أي الرمز نصاً صريحاً في الكود.
+    // crypto.subtle متاح في كل متصفح يدعم هذا التطبيق، وفشله ليس سبباً لفتح الباب.
+    return false;
+  }
 }
 function sanitize(str){return String(str==null?'':str).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 const esc=sanitize; // every value interpolated into a document.write template must go through this
@@ -594,7 +598,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-09-05-v2";
+const APP_BUILD="2026-09-05-v3";
 // ── صور الوصفات المنتجة (تظهر أعلى البطاقة إن وُجدت) ──
 const RECIPE_IMG={
   r_hindi_soul:"media/products/r_hindi_soul.jpg",
@@ -1257,7 +1261,15 @@ function App(){
   const canMake=r=>{const sc=recipeScale(r);return (r.ing||[]).every(([id,a])=>{const ing=getIng(id);return ing&&ing.stock>=a*sc;});};
 
   // ── cart & store ─────────────────────────────────────────────
-  const storePrice=r=>Math.ceil(recipeCost(r)*profitMult/5)*5;
+  // كان: التكلفة × الهامش دائماً — فيختلف سعر السلة عن سعر المتجر للمنتج نفسه،
+  // لأن dw_store_prices مشتقّ من price_sar اليدوي. المصدر الآن واحد ومرتّب:
+  // السعر المخصّص ← السعر المعلن ← التكلفة × الهامش (للوصفات غير المُسعّرة فقط).
+  const storePrice=r=>{
+    const set=recipePrices[r.id];
+    if(set>0)return set;
+    if(r.price_sar>0)return r.price_sar;
+    return Math.ceil(recipeCost(r)*profitMult/5)*5;
+  };
   const addToCart=(r,e)=>{e&&e.stopPropagation();const price=storePrice(r);setCartItems(p=>{const ex=p.find(i=>i.id===r.id);return ex?p.map(i=>i.id===r.id?{...i,qty:(i.qty||0)+1}:i):[...p,{id:r.id,name:r.name,icon:r.icon,season:r.season,gender:r.gender,stability:r.stability,price,vol:BATCH[batchUnit],batchName:BATCH_NAME[batchUnit],qty:1}];});show(`🛒 ${r.name} أُضيف للسلة`);};
   const removeFromCart=id=>setCartItems(p=>p.filter(i=>i.id!==id));
   const updateQty=(id,d)=>setCartItems(p=>p.map(i=>i.id===id?{...i,qty:Math.max(1,i.qty+d)}:i));
@@ -1471,7 +1483,7 @@ function App(){
     <div class="meta">تاريخ التقرير: ${new Date().toLocaleDateString("ar-SA")} · ${prodLog.length} دفعة منتجة · ${inv.length} مادة في المخزون</div>
     <div class="kpi">
       <div class="kpi-box"><div class="kpi-val">${totalRev.toFixed(0)}</div><div class="kpi-lbl">إجمالي الإيرادات (ر)</div></div>
-      <div class="kpi-box"><div class="kpi-val">${totalProfit.toFixed(0)}</div><div class="kpi-lbl">صافي الربح (ر)</div></div>
+      <div class="kpi-box"><div class="kpi-val">${totalProfit.toFixed(0)}</div><div class="kpi-lbl">الهامش الإجمالي (ر)</div></div>
       <div class="kpi-box"><div class="kpi-val">${soldBatches.length}</div><div class="kpi-lbl">دفعات مباعة</div></div>
       <div class="kpi-box"><div class="kpi-val">${recipes.length}</div><div class="kpi-lbl">وصفات محفوظة</div></div>
     </div>
@@ -1691,7 +1703,10 @@ function App(){
   const totalSold=prodLog.filter(e=>e.sold).length;
   const totalRevenue=prodLog.filter(e=>e.sold&&e.sellPrice).reduce((s,e)=>s+e.sellPrice,0);
   const totalCostOfSold=prodLog.filter(e=>e.sold).reduce((s,e)=>s+(e.cost||0),0); // ||0: a legacy entry without cost turned the KPI into NaN
-  const netProfit=totalRevenue-totalCostOfSold;
+  // grossMargin = الإيراد ناقص خامات المُباع فقط. كان يُسمّى "صافي الربح" وهو ليس كذلك:
+  // لا يطرح المشتريات ولا تكلفة الدفعات المُنتَجة غير المباعة.
+  const grossMargin=totalRevenue-totalCostOfSold;
+  const netProfit=grossMargin; // مُبقىً للتوافق مع الاستدعاءات القائمة
   const recipeFreq=prodLog.reduce((acc,e)=>{acc[e.recipeName]=(acc[e.recipeName]||0)+1;return acc;},{});
   const topRecipe=Object.entries(recipeFreq).sort((a,b)=>b[1]-a[1])[0];
   const totalPurchaseSpend=purchases.reduce((s,p)=>s+(p.price||0),0);
@@ -1881,7 +1896,7 @@ function App(){
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"2.3rem",fontWeight:600,color:"#E8C870",letterSpacing:"-0.03em",lineHeight:1}}>{totalRevenue.toFixed(0)}<span style={{fontSize:"0.9rem",opacity:0.45,marginRight:"3px"}}>ر</span></div>
                 </div>
                 <div style={{textAlign:"left"}}>
-                  <div style={{fontSize:"0.60rem",color:"rgba(104,180,104,0.65)",marginBottom:"2px"}}>صافي الربح</div>
+                  <div style={{fontSize:"0.60rem",color:"rgba(104,180,104,0.65)",marginBottom:"2px"}}>الهامش الإجمالي</div>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.25rem",fontWeight:600,color:totalProfit>=0?"#80C880":"#E08080",letterSpacing:"-0.02em"}}>{totalProfit>=0?"+":""}{totalProfit.toFixed(0)} ر</div>
                 </div>
               </div>
@@ -3256,7 +3271,7 @@ function App(){
               {icon:"🧪",label:"دفعات مُنتجة",val:totalProduced,unit:"",cls:"p-num-blue"},
               {icon:"✅",label:"دفعات مباعة",val:totalSold,unit:"",cls:"p-num-green"},
               {icon:"💰",label:"إجمالي الإيرادات",val:totalRevenue.toFixed(0),unit:"ر",cls:"p-num-green"},
-              {icon:"📈",label:"الربح الصافي",val:netProfit.toFixed(0),unit:"ر",cls:netProfit>=0?"p-num-green":"p-num-amber"},
+              {icon:"📈",label:"الهامش الإجمالي",val:grossMargin.toFixed(0),unit:"ر",cls:netProfit>=0?"p-num-green":"p-num-amber"},
             ].map((k,i)=>(
               <div key={i} className="kpi-card">
                 <div style={{fontSize:"1.25rem",marginBottom:"8px",filter:"drop-shadow(0 1px 4px rgba(0,0,0,0.10))"}}>{k.icon}</div>
@@ -4093,8 +4108,25 @@ function App(){
 function encodePerfume(obj){try{return encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(obj)))));}catch(e){return "";}}
 function decodePerfume(s){try{return JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(s)))));}catch(e){return null;}}
 function buildPerfumePayload(recipe,getIng){
+  // كان يرسل كل خامة في الوصفة — أي الصيغة الكاملة لمن يفتح الرابط.
+  // الآن هرم نوتات مُنسَّق: أكبر ثلاث مواد في كل طبقة، بأسمائها العطرية لا التجارية.
   const top=[],mid=[],base=[];
-  (recipe.ing||[]).forEach(([id])=>{const ing=getIng?getIng(id):null;const nm=ing?.name||id;const t=noteTier(id);(t==="top"?top:t==="mid"?mid:base).push(nm);});
+  const byTier={top:[],mid:[],base:[]};
+  (recipe.ing||[]).forEach(([id,amt])=>{
+    if(NOTES_CARRIER.has(id))return;
+    const ing=getIng?getIng(id):null;
+    // أسماء المخزون بصيغة "English (عربي — مورّد/تفصيل)". المطلوب الجزء العربي وحده:
+    // لا اسم مورّد ولا رمز مادة ولا كلمة "نسخة" تصل الزبون.
+    const raw=ing?.name||id;
+    const par=raw.match(/\(([^)]*)\)\s*$/);
+    const nm=(par?par[1]:raw).split(/\s[—–-]\s/)[0].trim();
+    byTier[noteTier(id)].push([nm||id,amt]);
+  });
+  ["top","mid","base"].forEach(t=>{
+    byTier[t].sort((a,b)=>b[1]-a[1]);
+    const arr=t==="top"?top:t==="mid"?mid:base;
+    byTier[t].slice(0,3).forEach(([nm])=>arr.push(nm));
+  });
   return {n:recipe.name,i:recipe.icon,d:recipe.desc,s:recipe.season,g:recipe.gender,st:recipe.stability,top,mid,base};
 }
 function buildShareLink(recipe,getIng){
