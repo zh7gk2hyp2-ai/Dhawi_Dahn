@@ -765,7 +765,7 @@ function applyRecipeDeduct(inv){
 // ir_01: force-remove items deleted from RAW that may still live in localStorage
 const INVENTORY_REMOVE_VERSION="ir_04";
 const INVENTORY_REMOVE=["lux_hindi_sweety","oud_mayor"]; // oud_mayor مكرّر لـmaracuja
-const INVENTORY_ADD_VERSION="ia_07";
+const INVENTORY_ADD_VERSION="ia_08";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل 99.9%)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // Luxodor Invoice #000472 — Jun 2026 (1 USD = 3.75 SAR)
@@ -779,10 +779,15 @@ const INVENTORY_ADD_ITEMS=[
   // Luxodor — Jun 2026 individual purchase ($12 = 45 SAR)
   {id:"lux_snake",name:"The Voice of Snake (صوت الأفعى — Gucci)",brand:"Luxodor",cat:"مستوحى",price:45,qty:10,unit:"مل"},
   // Benzoin Absolute Grade A — بند الفاتورة 24 من طلب Bulkaroma #15403 (200 جم).
-  // كانت محذوفة من التطبيق. أُعيدت بمخزون صفر وسعر صفر عمداً: الفاتورة تُثبت الشراء
-  // ولا تُثبت ما تبقّى، ومخزونٌ مُدّعى يُفسد حساب "هل يمكن إنتاجها".
-  // ⚠️ اضبط المخزون والسعر الفعليين. أقوى بكثير من benzoin_b (وهو 70% في DEP).
-  {id:"benzoin_a",name:"Benzoin Absolute Grade A (جاوي مطلق — PA-100IS)",brand:"Bulkaroma",cat:"مثبت",price:0,qty:200,unit:"جم",stock:0},
+  // المخزون 100 جم: أفاد المالك أن النصف استُهلك.
+  // ⚠️ السعر 81 ريال تقدير لا رقم فاتورة. اشتُقّ هكذا: صفحة المنتج على bulkaroma.com
+  // تعطي 200 جم = ₹1108.86. سعر الصرف وحده (0.044) يعطي 49 ريالاً، وهو أقل من تكاليف
+  // Bulkaroma المسجّلة عندنا دائماً — تلك تتراوح بين 1.66× و2.5× من سعر الموقع محوَّلاً،
+  // والنسبة غير ثابتة (رسوم وضرائب وشحن وتغيّر أسعار). فثُبِّت التقدير على benzoin_b
+  // لأنه أقرب مرجع: نفس كود المورّد PA-100IS ونفس CAS 9000-05-9 ونفس عائلة المنتج.
+  // نسبته الفعلية 121/1651.77 = 0.07325 ريال/روبية → 1108.86 × 0.07325 = 81 ريال.
+  // بدّله برقم فاتورتك متى توفّر.
+  {id:"benzoin_a",name:"Benzoin Absolute Grade A (جاوي مطلق — PA-100IS)",brand:"Bulkaroma",cat:"مثبت",price:81,qty:200,unit:"جم",stock:100},
   // ملاحظة: بند الفاتورة 18 "Royal Oud Accord = OUD MAYOR" هو نفسه OUD MARACUJA،
   // وهو مسجّل لديك أصلاً بمعرّف maracuja. لا تُضِف له مدخلاً ثانياً.
   // ─── طلب وادي — DHL Express 2663485941 · تأكيد 18 أغسطس · تسليم 31 أغسطس ───
