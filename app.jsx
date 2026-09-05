@@ -25,7 +25,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_75";
+const PENDING_RECIPES_VERSION="rec_76";
 const PENDING_RECIPES=[
   // ── rec_56: دساتير ربع التولة — مرجع التحسين السريع لأدهان لوكسودور الصافية ──
   {id:"r_qtola_ref",name:"دساتير ربع التولة — مرجع سريع",icon:"💧",season:"مناسبات",gender:"للجنسين",stability:"حسب الدهن",
@@ -501,7 +501,7 @@ const PENDING_RECIPES=[
   // ── rec_75: ثلاث وصفات تسدّ أكبر فجوات المجموعة (صيف نسائي · شتاء نسائي · مدخل السعر) ──
   {id:"r_luluah",name:"لؤلؤة",icon:"🐚",season:"صيف",gender:"نسائي",stability:"متوسط · 24-28 ساعة (تقدير)",perfumer:"ضاوي",price_sar:215,
    story:"أول عطر صيفي نسائي في الدار. التميمة الزرقاء تفتحه بنفَسٍ بحري مالح، ثم يستقرّ على كمبودي حريري وورد طائفي، وتحته مسك الرُّمّان لا العنبر. عودٌ لا يُثقل في الحرّ ولا يختفي — لمن أرادت العود صيفاً بلا أن تحمله.",
-   desc:"قمة: التميمة الزرقاء (بحري) + هيديون + بتلات ورد + ورد طائفي | قلب: كمبودي + أسامي أجار + LV أفترنون | قاعدة: جالاكسولايد + مسك الرُّمّان + صندل + فانيليا | ⚠️ التميمة الزرقاء هنا في دور القيادة لأول مرة",
+   desc:"قمة: التميمة الزرقاء (بحري) + هيديون + بتلات ورد + ورد طائفي | قلب: كمبودي + أسامي أجار + LV أفترنون | قاعدة: جالاكسولايد + مسك الرُّمّان + صندل + فانيليا | التميمة الزرقاء في دور القيادة — وهي تركيبة كاملة لا أكورد قمّة",
    ing:[["uae_blue_talisman",1.3],["hedione",1.3],["wild_petal",0.9],["rose_taif",0.25],["pea",0.3],["lux_cambodi",1.6],["uae_asami_agar",1.4],["lux_afternoon",0.5],["cashmeran",0.3],["galaxolide",1.4],["musk_ruman",0.5],["sandal_indi",0.8],["benzoin_b",0.3],["vanilla",0.2],["iso_e",0.25],["jojoba",0.3]],
    steps:[
      "⚠️ لا حرارة إطلاقاً في هذه الوصفة — لا عنبرمور ولا لبدانوم ولا شمّامة. الخفّة الصيفية تُبنى بالبرودة، وأي تسخين يُثقلها.",
@@ -510,7 +510,7 @@ const PENDING_RECIPES=[
      "🪵 القلب: كمبودي 1.6مل ← أسامي أجار 1.4مل. الكمبودي حريري حلو وهو الوجه العودي الوحيد الذي يُحتمل في الحرّ",
      "🌊 LV أفترنون سويم 0.5مل — الحمضيات المالحة التي تربط البحر بالعود",
      "🌹 الورد على مرحلتين: بتلات ورد 0.9مل + PEA 0.3مل ⚠️ (لا تزد الـPEA — تعطي معدنية حادة) ← ثم ورد طائفي 0.25مل بالقطّارة آخر الورد",
-     "🐚 الافتتاحية (بارد، آخر شيء): التميمة الزرقاء TOP 1.3مل + هيديون 1.3مل + ISO E 0.25مل. ⚠️ التميمة أكورد قمة لا عطر كامل — سريعة التطاير، ولو دخلت مبكراً ضاعت",
+     "🐚 الافتتاحية (بارد، آخر شيء): التميمة الزرقاء 1.3مل + هيديون 1.3مل + ISO E 0.25مل. ملاحظة: «Top» في اسمها درجةُ جودة عند وادي لا نوتةَ قمّة — وهي تركيبة Ex Nihilo كاملة بقمّة (كمثرى·برغموت·زنجبيل) وقلب (زهر برتقال) وقاعدة ثابتة (مسك·أمبروكسان·أرز)، أي أنها لا تتطاير سريعاً ويمكن رفع جرعتها",
      "🫙 زجاجة داكنة ← بارد مظلم أسبوعان فقط. لا راتنجات تحتاج استدارة",
      "⚡ تعتيق سريع: حمام ماء 38° لمدة ساعتين يومياً × 3 أيام متتالية — يُسرّع الربط الجزيئي ويُقلّص وقت النضج للنصف | أو: دورة حرارة (40° ساعة ← ثلاجة 4 ساعات، كرر 3 مرات) | بعدها بارد مظلم حتى اكتمال النضج","💡 تثبيت العطر: رطّب البشرة بالجوجوبا أولاً ثم ضع الدهن فوقه مباشرة — يُضاعف مدة البقاء | نقاط التثبيت: الرسغ + العنق + خلف الأذن + الكوع الداخلي | لا تفرك بعد الوضع — اترك الدهن يترسّب على الجلد طبيعياً",
      "📊 معايرة: باهتة على الجلد → جالاكسولايد +0.2مل | البحر يختفي بسرعة → التميمة +0.2مل ولا تزد | ثقيلة → كمبودي -0.2مل لا زيادة الجوجوبا",
@@ -715,7 +715,7 @@ const INITIAL_RECIPES=[
 ];
 
 // ─── app version guard — forces reload when new code deployed ───
-const APP_BUILD="2026-09-05-v7";
+const APP_BUILD="2026-09-05-v8";
 // ── صور الوصفات المنتجة (تظهر أعلى البطاقة إن وُجدت) ──
 const RECIPE_IMG={
   r_hindi_soul:"media/products/r_hindi_soul.jpg",
@@ -922,7 +922,7 @@ const INVENTORY_ADD_ITEMS=[
   {id:"uae_asami_agar",name:"Asami Agar Oud (أسامي أجار عود — نسخة)",brand:"وادي",cat:"عود",price:166,qty:250,unit:"مل",ship:26.55},
   {id:"hedione",name:"Hedione (هيديون — ياسمين شفاف مُشِع)",brand:"وادي",cat:"مضخم",price:255,qty:500,unit:"مل",ship:53.10},
   {id:"galaxolide",name:"Galaxolide (جالاكسولايد — مسك أبيض ثابت)",brand:"وادي",cat:"مسك",price:204,qty:500,unit:"مل",ship:53.10},
-  {id:"uae_blue_talisman",name:"Blue Talisman TOP (بلو تاليسمان — نسخة Ex Nihilo)",brand:"وادي",cat:"مستوحى",price:332,qty:250,unit:"مل",ship:26.55},
+  {id:"uae_blue_talisman",name:"Blue Talisman — Ex Nihilo (تركيبة كاملة · درجة Top)",brand:"وادي",cat:"مستوحى",price:332,qty:250,unit:"مل",ship:26.55},
   {id:"uae_carved_oud",name:"Carved Oud Marvelous Oudh (كارفد عود — خلاصة Thameen)",brand:"وادي",cat:"مستوحى",price:153,qty:250,unit:"مل",ship:26.55},
   {id:"uae_sublime_oud",name:"Sublime Essence Oud (سبلايم إيسنس عود — نسخة Ex Nihilo)",brand:"وادي",cat:"مستوحى",price:243,qty:250,unit:"مل",ship:26.55},
 ];
@@ -981,7 +981,7 @@ function applyStockSnapshot(inv){
   lsSet("dw_ss_ver",STOCK_SNAPSHOT_VERSION);
   return [...map.values()];
 }
-const NAME_FIX_VERSION="nm_fix_14";
+const NAME_FIX_VERSION="nm_fix_15";
 const NAME_FIX={
   "oud_xx":"Oud XX Carrier (دهن العود XX - حامل)",
   "cambodi_fawah":"Oud Cambodi Fawah (عود كمبودي فواح)",
@@ -995,6 +995,7 @@ const NAME_FIX={
   "sandal_ham":"Sandalwood Local (خشب الصندل)",
   "vanilla":"Vanilla Dentelle (فانيلا دانتيل)",
   "shamma":"Shamma Amber Paste (شمامة العنبر)",
+  "uae_blue_talisman":"Blue Talisman — Ex Nihilo (تركيبة كاملة · درجة Top)",
   "oud_royal":"Royal Oud (عود ملكي — مركّب صناعي من الحميدي، ليس دهناً)",
   "lux_cambodi":"Oud Cambodi (عود كمبودي)",
   "lux_black":"Black Oud (عود أسود)",
