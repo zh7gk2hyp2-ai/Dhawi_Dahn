@@ -994,6 +994,39 @@ const BACKUP_KEYS=[
   ["customers","dw_customers"],["favoriteIds","dw_favorites"],["ratings","dw_ratings"],
   ["recipePrices","dw_rprices"],["batchCounter","dw_batchnum"],["agencyOrders","dw_agency_orders"],
 ];
+// ─── ZATCA: فاتورة ضريبية مبسّطة ──────────────────────────────────────────────
+// كانت الفاتورة تُظهر ضريبة 15% بلا رقم تسجيل ولا اسم بائع ولا رمز QR — وهذه
+// ليست فاتورة ضريبية نظامية في السعودية. الآن: إن لم يُدخَل رقم تسجيل ضريبي
+// فلا تُحتسب ضريبة إطلاقاً (غير المسجَّل لا يجوز له تحصيلها)، وإن أُدخل فتُبنى
+// الفاتورة كاملةً برمز QR بترميز TLV الذي تشترطه هيئة الزكاة والضريبة.
+const SELLER_KEY="dw_seller";
+function getSeller(){return lsGet(SELLER_KEY,{name:"",vat:"",cr:"",address:""});}
+function tlv(tag,value){
+  const v=new TextEncoder().encode(String(value||""));
+  const out=new Uint8Array(2+v.length);
+  out[0]=tag; out[1]=v.length; out.set(v,2);
+  return out;
+}
+function zatcaQrPayload(seller,isoTs,totalWithVat,vatAmount){
+  const parts=[tlv(1,seller.name),tlv(2,seller.vat),tlv(3,isoTs),
+               tlv(4,Number(totalWithVat).toFixed(2)),tlv(5,Number(vatAmount).toFixed(2))];
+  const len=parts.reduce((n,p)=>n+p.length,0);
+  const buf=new Uint8Array(len); let o=0;
+  parts.forEach(p=>{buf.set(p,o);o+=p.length;});
+  let bin=""; buf.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin);
+}
+function qrDataUrl(text,size){
+  try{
+    const tmp=document.createElement("div");tmp.style.display="none";document.body.appendChild(tmp);
+    new window.QRCode(tmp,{text,width:size,height:size});
+    const img=tmp.querySelector("img"),cv=tmp.querySelector("canvas");
+    const src=(img&&img.src)||(cv&&cv.toDataURL())||"";
+    document.body.removeChild(tmp);
+    return src;
+  }catch(_){return "";}
+}
+
 function buildBackup(){
   const d={schema:2,exportDate:new Date().toISOString(),app:APP_BUILD};
   BACKUP_KEYS.forEach(([f,k])=>{const v=lsGet(k,null);if(v!==null)d[f]=v;});
@@ -1127,7 +1160,22 @@ function App(){
   const [ratingStars,setRatingStars]=useState(5);
   const [ratingNote,setRatingNote]=useState("");
   const [showExpiryCalendar,setShowExpiryCalendar]=useState(false);
-  const [aiKey,setAiKey]=useState(()=>lsGet("dw_aikey",""));
+  const [seller,setSellerState]=useState(()=>getSeller());
+  const setSeller=(patch)=>setSellerState(p=>{const n={...p,...patch};lsSet(SELLER_KEY,n);return n;});
+  // مفتاح Claude: كان في localStorage على نفس النطاق الذي يستضيف المتجر العام،
+  // فيبقى على القرص إلى الأبد ويقرأه أي سكربت على أي صفحة من النطاق.
+  // الافتراضي الآن sessionStorage — يزول بإغلاق المتصفح — مع خيار صريح للتذكّر.
+  const [aiKeyPersist,setAiKeyPersist]=useState(()=>lsGet("dw_aikey_persist",false));
+  const [aiKey,setAiKeyState]=useState(()=>{
+    try{const sv=sessionStorage.getItem("dw_aikey");if(sv)return sv;}catch(_){}
+    return lsGet("dw_aikey","");
+  });
+  const setAiKey=(v)=>{
+    setAiKeyState(v);
+    try{v?sessionStorage.setItem("dw_aikey",v):sessionStorage.removeItem("dw_aikey");}catch(_){}
+    if(aiKeyPersist)lsSet("dw_aikey",v); else {try{localStorage.removeItem("dw_aikey");}catch(_){}}
+  };
+  const clearAiKey=()=>{setAiKeyState("");try{sessionStorage.removeItem("dw_aikey");localStorage.removeItem("dw_aikey");}catch(_){}};
   const [aiLoading,setAiLoading]=useState(false);
   const [showAIGen,setShowAIGen]=useState(false);
   const [showAISettings,setShowAISettings]=useState(false);
@@ -1208,7 +1256,11 @@ function App(){
   useEffect(()=>lsSet("dw_rprices",recipePrices),[recipePrices]);
   useEffect(()=>lsSet("dw_batchnum",batchCounter),[batchCounter]);
   useEffect(()=>lsSet("dw_ratings",ratings),[ratings]);
-  useEffect(()=>lsSet("dw_aikey",aiKey),[aiKey]);
+  useEffect(()=>{
+    lsSet("dw_aikey_persist",aiKeyPersist);
+    if(aiKeyPersist)lsSet("dw_aikey",aiKey);
+    else{try{localStorage.removeItem("dw_aikey");}catch(_){}}
+  },[aiKeyPersist,aiKey]);
   useEffect(()=>lsSet("dw_margin",profitMult),[profitMult]);
   useEffect(()=>lsSet("dw_batchunit",batchUnit),[batchUnit]);
   useEffect(()=>lsSet("dw_batchinsp",batchInspUnit),[batchInspUnit]);
@@ -1278,7 +1330,11 @@ function App(){
   const mkBarcode=seed=>{const r=n=>{let x=n;x=((x>>16)^x)*0x45d9f3b;x=((x>>16)^x)*0x45d9f3b;return((x>>16)^x)>>>0;};return Array.from({length:38},(_,i)=>{const v=r(seed*37+i);return{w:(v%3)+1,dark:!!(v&4)};});};
   const printInvoice=()=>{
     const now=new Date();const invNo="DW-"+String(Date.now()).slice(-6);
-    const vatAmt=Math.round(cartTotal*0.15); // one rounded VAT figure — subtotal+VAT must equal the total
+    const seller=getSeller();
+    const vatRegistered=!!(seller.vat&&String(seller.vat).replace(/\D/g,"").length>=15);
+    const vatAmt=vatRegistered?Math.round(cartTotal*0.15):0;
+    const grandTotal=cartTotal+vatAmt;
+    const qrSrc=vatRegistered?qrDataUrl(zatcaQrPayload(seller,now.toISOString(),grandTotal,vatAmt),110):"";
     const dateStr=now.toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
     const rows=cartItems.map(i=>`<tr><td>${esc(i.icon)} ${esc(i.name)}<br><span style="font-size:9px;color:#888">${esc(i.batchName||"")}</span></td><td style="text-align:center">${+i.qty||0}</td><td style="text-align:left">${+i.price||0}</td><td style="text-align:left;font-weight:700">${(+i.price||0)*(+i.qty||0)}</td></tr>`).join("");
     const w=window.open("","_blank","width=390,height=720");
@@ -1296,14 +1352,20 @@ function App(){
     .ftr{text-align:center;margin-top:20px;padding-top:14px;border-top:1px dashed #aaa;font-size:9px;color:#777;letter-spacing:2px;line-height:1.9}
     .stars{color:#C9A84C;font-size:15px;letter-spacing:4px}</style></head><body>
     <div class="hdr"><div class="brand">ATELIER DHAWI</div><div class="sub">دهن العود الفاخر</div><div style="font-size:10px;margin-top:6px;color:#444">${dateStr}</div></div>
-    <div class="meta"><span>فاتورة: ${invNo}</span></div>
+    <div class="meta"><span>${vatRegistered?"فاتورة ضريبية مبسّطة":"وصل استلام"}: ${invNo}</span></div>
+    ${seller.name||seller.vat||seller.cr||seller.address?`<div style="font-size:10px;color:#444;line-height:1.9;border:1px dashed #bbb;border-radius:6px;padding:8px;margin-bottom:12px">
+      ${seller.name?`<div><b>${esc(seller.name)}</b></div>`:""}
+      ${seller.vat?`<div>الرقم الضريبي: ${esc(seller.vat)}</div>`:""}
+      ${seller.cr?`<div>السجل التجاري: ${esc(seller.cr)}</div>`:""}
+      ${seller.address?`<div>${esc(seller.address)}</div>`:""}
+    </div>`:""}
     <table><thead><tr><th style="text-align:right">المنتج</th><th>ك</th><th style="text-align:left">السعر</th><th style="text-align:left">الإجمالي</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="tot">
       <div class="tot-row"><span>المجموع</span><span>${cartTotal} ر</span></div>
-      <div class="tot-row" style="color:#777;font-size:11px"><span>ضريبة القيمة المضافة 15%</span><span>${vatAmt} ر</span></div>
-      <div class="tot-row tot-final"><span>الإجمالي شامل الضريبة</span><span>${cartTotal+vatAmt} ر</span></div>
+      ${vatRegistered?`<div class="tot-row" style="color:#777;font-size:11px"><span>ضريبة القيمة المضافة 15%</span><span>${vatAmt} ر</span></div>`:""}
+      <div class="tot-row tot-final"><span>${vatRegistered?"الإجمالي شامل الضريبة":"الإجمالي"}</span><span>${grandTotal} ر</span></div>
     </div>
-    <div class="ftr"><div class="stars">★ ★ ★ ★ ★</div><div>شكراً لتعاملكم معنا</div><div>Atelier Dhawi · Private Oud Lab</div><div style="margin-top:8px;direction:ltr;font-size:8px;letter-spacing:0">${invNo} — ${cartItems.length} منتج</div></div>
+    <div class="ftr">${qrSrc?`<img src="${qrSrc}" style="width:110px;height:110px;margin-bottom:8px"/><div style="font-size:8px;color:#999;margin-bottom:6px">رمز الفاتورة الضريبية — هيئة الزكاة والضريبة والجمارك</div>`:`<div style="font-size:8px;color:#a00;margin-bottom:6px">* وصل استلام — لا يُعدّ فاتورة ضريبية. أدخل رقم التسجيل الضريبي في الإعدادات لإصدار فاتورة نظامية.</div>`}<div class="stars">★ ★ ★ ★ ★</div><div>شكراً لتعاملكم معنا</div><div>Atelier Dhawi · Private Oud Lab</div><div style="margin-top:8px;direction:ltr;font-size:8px;letter-spacing:0">${invNo} — ${cartItems.length} منتج</div></div>
     <script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
   };
 
@@ -2104,7 +2166,39 @@ function App(){
             </div>}
             {/* ── Data Backup ── */}
             <div className="glass" style={{marginBottom:"12px"}}>
-              <div className="section-hdr"><div className="section-hdr-bar"/><span style={{fontWeight:700,fontSize:"0.82rem",color:"#1A1208"}}>نسخ احتياطية</span></div>
+              <div className="section-hdr">            {/* ── بيانات البائع: بدونها لا تُصدر فاتورة ضريبية نظامية ── */}
+            <div className="glass" style={{padding:"14px 16px",marginBottom:"10px"}}>
+              <div style={{fontSize:"0.82rem",fontWeight:700,color:"#C9A84C",marginBottom:"4px"}}>🧾 بيانات المنشأة</div>
+              <div style={{fontSize:"0.66rem",color:"rgba(26,18,8,0.45)",marginBottom:"10px",lineHeight:1.8}}>
+                {seller.vat&&String(seller.vat).replace(/\D/g,"").length>=15
+                  ? "الفواتير تُصدر كفاتورة ضريبية مبسّطة مع رمز QR بترميز هيئة الزكاة والضريبة."
+                  : "بلا رقم تسجيل ضريبي (15 رقماً) لا تُحتسب ضريبة ولا يُطبع رمز QR — والمطبوع يُوسم «وصل استلام»."}
+              </div>
+              {[["name","اسم المنشأة","أتيلييه ضاوي"],["vat","الرقم الضريبي (15 رقماً)","3XXXXXXXXXXXXX3"],
+                ["cr","السجل التجاري","1010XXXXXX"],["address","العنوان","الرياض، المملكة العربية السعودية"]].map(([k,label,ph])=>(
+                <div key={k} style={{marginBottom:"7px"}}>
+                  <div style={{fontSize:"0.62rem",color:"rgba(26,18,8,0.45)",marginBottom:"3px"}}>{label}</div>
+                  <input className="inp" style={{width:"100%",fontSize:"0.76rem"}} placeholder={ph}
+                    value={seller[k]||""} onChange={e=>setSeller({[k]:e.target.value})}/>
+                </div>
+              ))}
+            </div>
+
+            {/* ── مفتاح Claude: تخزينه ── */}
+            <div className="glass" style={{padding:"14px 16px",marginBottom:"10px"}}>
+              <div style={{fontSize:"0.82rem",fontWeight:700,color:"#C9A84C",marginBottom:"8px"}}>🔑 مفتاح Claude</div>
+              <div style={{fontSize:"0.66rem",color:"rgba(26,18,8,0.50)",lineHeight:1.9,marginBottom:"9px"}}>
+                المفتاح يُحفظ افتراضياً لهذه الجلسة فقط ويزول بإغلاق المتصفح.
+                تذكّره على الجهاز يُبقيه على القرص، وهو نفس النطاق الذي يستضيف صفحة المتجر العامة.
+              </div>
+              <label style={{display:"flex",alignItems:"center",gap:"8px",fontSize:"0.74rem",cursor:"pointer",marginBottom:"9px"}}>
+                <input type="checkbox" checked={aiKeyPersist} onChange={e=>setAiKeyPersist(e.target.checked)}/>
+                <span>تذكّر المفتاح على هذا الجهاز</span>
+              </label>
+              <button className="btn-ghost" style={{fontSize:"0.74rem"}} onClick={()=>{clearAiKey();show("🔑 حُذف المفتاح");}}>🗑️ احذف المفتاح الآن</button>
+            </div>
+
+<div className="section-hdr-bar"/><span style={{fontWeight:700,fontSize:"0.82rem",color:"#1A1208"}}>نسخ احتياطية</span></div>
               <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
                 <button className="btn-ghost" style={{fontSize:"0.75rem"}} onClick={()=>{
                   const data=buildBackup();
@@ -4005,11 +4099,11 @@ function App(){
                   <span>المجموع</span><span style={{fontFamily:"'IBM Plex Mono',monospace"}}>{cartTotal} ر</span>
                 </div>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:"14px",fontSize:"0.68rem",color:"rgba(26,18,8,0.25)"}}>
-                  <span>ضريبة القيمة المضافة 15%</span><span style={{fontFamily:"'IBM Plex Mono',monospace"}}>{Math.round(cartTotal*0.15)} ر</span>
+                  <span>{getSeller().vat?"ضريبة القيمة المضافة 15%":"غير خاضع للضريبة (لا تسجيل)"}</span><span style={{fontFamily:"'IBM Plex Mono',monospace"}}>{getSeller().vat?Math.round(cartTotal*0.15):0} ر</span>
                 </div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:"16px",background:"rgba(201,168,76,0.06)",border:"1px solid rgba(201,168,76,0.20)",borderRadius:"12px",padding:"10px 14px"}}>
                   <span style={{fontSize:"0.78rem",color:"rgba(201,168,76,0.70)"}}>الإجمالي شامل الضريبة</span>
-                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.25rem",fontWeight:"700",color:"#E8C870"}}>{cartTotal+Math.round(cartTotal*0.15)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></span>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.25rem",fontWeight:"700",color:"#E8C870"}}>{cartTotal+(getSeller().vat?Math.round(cartTotal*0.15):0)}<span style={{fontSize:"0.62rem",opacity:0.7}}> ر</span></span>
                 </div>
                 <button className="btn-gold" style={{width:"100%",padding:"14px",fontSize:"0.88rem"}} onClick={()=>{printInvoice();setShowCart(false);}}>
                   🧾 طباعة الفاتورة
