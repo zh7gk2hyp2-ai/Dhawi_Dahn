@@ -1,0 +1,37 @@
+name: build
+
+# app.js is a compiled artifact committed to the repo (GitHub Pages serves the repo
+# directly). This workflow rebuilds it on every push that touches the source, so the
+# owner can edit app.jsx from the GitHub web UI and the site stays correct without
+# running anything locally.
+on:
+  push:
+    paths: ['app.jsx', 'package.json', 'package-lock.json', '.github/workflows/build.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/check-build.mjs
+      - name: Commit app.js if it changed
+        run: |
+          if [ -n "$(git status --porcelain app.js)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add app.js
+            git commit -m "build: recompile app.js from app.jsx [skip ci]"
+            git push
+          else
+            echo "app.js already up to date"
+          fi
