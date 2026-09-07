@@ -4461,18 +4461,86 @@ function SellEntry({id,onSell}){
 }
 
 class ErrorBoundary extends React.Component{
-  constructor(p){super(p);this.state={err:null};}
+  constructor(p){super(p);this.state={err:null,info:null,copied:false,show:false};}
   static getDerivedStateFromError(err){return {err};}
+  componentDidCatch(err,info){
+    this.setState({info});
+    // اطبعه في الكونسول أيضاً — يظهر عند وصل الجوال بالحاسب
+    try{console.error("DW_CRASH",err&&err.message,err&&err.stack,info&&info.componentStack);}catch{}
+    // احفظ آخر انهيار حتى لو أعاد المستخدم التحميل قبل النسخ
+    try{localStorage.setItem("dw_last_crash",JSON.stringify(this.details(err,info)));}catch{}
+  }
+  details(err,info){
+    err=err||this.state.err; info=info||this.state.info;
+    let bytes=0,keys={};
+    try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);const v=localStorage.getItem(k)||"";bytes+=k.length+v.length;keys[k]=v.length;}}catch{}
+    return {
+      msg:(err&&(err.message||String(err)))||"غير معروف",
+      stack:String((err&&err.stack)||"").split("\n").slice(0,8).join("\n"),
+      comp:String((info&&info.componentStack)||"").split("\n").slice(0,8).join("\n"),
+      build:(()=>{try{return localStorage.getItem("dw_build")||"?";}catch{return "?";}})(),
+      recVer:(()=>{try{return localStorage.getItem("dw_pr_ver")||"?";}catch{return "?";}})(),
+      storageKB:Math.round(bytes/1024),
+      biggest:Object.entries(keys).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,n])=>k+":"+Math.round(n/1024)+"KB").join(" · "),
+      ua:(navigator.userAgent||"").slice(0,120),
+      when:new Date().toISOString(),
+    };
+  }
+  text(){const d=this.details();return ["الخطأ: "+d.msg,"البناء: "+d.build+" · الوصفات: "+d.recVer,
+    "التخزين: "+d.storageKB+"KB ("+d.biggest+")","الجهاز: "+d.ua,"الوقت: "+d.when,"","المكدّس:",d.stack,"","الشجرة:",d.comp].join("\n");}
+  copy(){const t=this.text();
+    const done=()=>{this.setState({copied:true});setTimeout(()=>this.setState({copied:false}),2500);};
+    try{navigator.clipboard.writeText(t).then(done,()=>{this.fallbackCopy(t,done);});}
+    catch{this.fallbackCopy(t,done);}}
+  fallbackCopy(t,done){try{const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";
+    document.body.appendChild(a);a.select();document.execCommand("copy");document.body.removeChild(a);done();}catch{}}
+  backup(){ // يعمل حتى والتطبيق منهار — يقرأ التخزين مباشرة
+    try{
+      const o={exportDate:new Date().toISOString(),crash:this.details()};
+      for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);
+        if(!k.startsWith("dw_"))continue;
+        try{o[k]=JSON.parse(localStorage.getItem(k));}catch{o[k]=localStorage.getItem(k);}}
+      const b=new Blob([JSON.stringify(o,null,1)],{type:"application/json"});
+      const u=URL.createObjectURL(b),a=document.createElement("a");
+      a.href=u;a.download="dhawi-rescue-"+new Date().toISOString().slice(0,10)+".json";
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(u),4000);
+    }catch(e){alert("تعذّر التصدير: "+(e&&e.message));}
+  }
+  async hardReload(){ // أشهر سبب على الآيفون: ملف مخزَّن قديم أو ناقص في ذاكرة الخدمة
+    try{if("caches" in window){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)));}}catch{}
+    try{if(navigator.serviceWorker){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()));}}catch{}
+    location.reload(true);
+  }
   render(){
-    if(this.state.err){
-      return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"30px",textAlign:"center",fontFamily:"'Alexandria',sans-serif",color:"#1A1208"}},
-        React.createElement("div",{style:{fontSize:"2.5rem",marginBottom:"12px"}},"⚠️"),
-        React.createElement("h2",{style:{color:"#D4AF37",fontSize:"1.1rem",marginBottom:"8px"}},"حدث خطأ مؤقت"),
-        React.createElement("p",{style:{fontSize:"0.82rem",color:"#8A6A1E",marginBottom:"18px",maxWidth:"320px",lineHeight:"1.8"}},"التطبيق واجه مشكلة لكن بياناتك محفوظة. اضغط لإعادة التحميل."),
-        React.createElement("button",{onClick:()=>location.reload(),style:{background:"#D4AF37",border:"none",color:"#1a0800",padding:"10px 24px",borderRadius:"12px",cursor:"pointer",fontSize:"0.9rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif"}},"🔄 إعادة التحميل")
-      );
-    }
-    return this.props.children;
+    if(!this.state.err)return this.props.children;
+    const d=this.details();
+    const btn=(bg,fg,br)=>({background:bg,color:fg,border:br||"none",padding:"11px 18px",borderRadius:"12px",cursor:"pointer",
+      fontSize:"0.86rem",fontWeight:"700",fontFamily:"'Alexandria',sans-serif",width:"100%",maxWidth:"330px",marginBottom:"9px"});
+    const R=React.createElement;
+    return R("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
+      padding:"26px 20px",textAlign:"center",fontFamily:"'Alexandria',sans-serif",color:"#1A1208",direction:"rtl"}},
+      R("div",{style:{fontSize:"2.3rem",marginBottom:"10px"}},"⚠️"),
+      R("h2",{style:{color:"#D4AF37",fontSize:"1.05rem",marginBottom:"6px"}},"حدث خطأ مؤقت"),
+      R("p",{style:{fontSize:"0.8rem",color:"#8A6A1E",marginBottom:"14px",maxWidth:"330px",lineHeight:"1.8"}},
+        "بياناتك محفوظة ولم يُمسّ منها شيء. جرّب الأزرار بالترتيب من أعلى لأسفل."),
+      R("div",{style:{background:"rgba(26,18,8,0.06)",border:"1px solid rgba(26,18,8,0.12)",borderRadius:"12px",
+        padding:"10px 12px",marginBottom:"14px",maxWidth:"330px",width:"100%",fontSize:"0.72rem",lineHeight:"1.9",
+        color:"#5A4418",textAlign:"right",wordBreak:"break-word"}},
+        R("div",{style:{fontWeight:"700",color:"#8A6A1E",marginBottom:"3px"}},"سبب العطل:"),
+        R("div",{style:{fontFamily:"monospace",direction:"ltr",textAlign:"left"}},d.msg),
+        R("div",{style:{marginTop:"6px",opacity:0.8}},"البناء "+d.build+" · الوصفات "+d.recVer+" · التخزين "+d.storageKB+"KB")),
+      R("button",{onClick:()=>this.hardReload(),style:btn("#D4AF37","#1a0800")},"🔄 إعادة تحميل نظيفة (امسح المخزَّن)"),
+      R("button",{onClick:()=>this.backup(),style:btn("rgba(37,211,102,0.14)","#1d7a44","1.5px solid rgba(37,211,102,0.45)")},"💾 نزِّل نسخة احتياطية الآن"),
+      R("button",{onClick:()=>this.copy(),style:btn("rgba(26,18,8,0.07)","#5A4418","1.5px solid rgba(26,18,8,0.18)")},
+        this.state.copied?"✅ نُسخت — أرسلها لي":"📋 انسخ تفاصيل العطل"),
+      R("button",{onClick:()=>this.setState({show:!this.state.show}),style:btn("transparent","rgba(26,18,8,0.45)","1px solid rgba(26,18,8,0.12)")},
+        this.state.show?"إخفاء التفاصيل":"عرض التفاصيل الكاملة"),
+      this.state.show?R("pre",{style:{maxWidth:"330px",width:"100%",overflow:"auto",textAlign:"left",direction:"ltr",
+        fontSize:"0.62rem",lineHeight:"1.6",background:"rgba(26,18,8,0.06)",padding:"10px",borderRadius:"10px",
+        maxHeight:"240px",whiteSpace:"pre-wrap"}},this.text()):null,
+      R("button",{onClick:()=>location.reload(),style:{...btn("transparent","rgba(26,18,8,0.35)"),fontSize:"0.76rem",marginTop:"4px"}},"إعادة تحميل عادية")
+    );
   }
 }
 // If opened via a shared customer link (#p=...), show the public perfume page.
