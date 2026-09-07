@@ -33,4 +33,19 @@ for (const marker of ['dw_recipes', 'dw_inv', 'ATELIER DHAWI']) {
 }
 ok('bundle contains the app');
 
+// Array elisions: `["a", , "b"]` — a hole that JSON.stringify writes as null.
+// Eight of these crept in when notes were appended before a `]` that already had
+// a trailing comma; they crashed the app on opening a recipe (txt.replace on null).
+const src = readFileSync('app.jsx', 'utf8');
+const holes = [...src.matchAll(/,[\s\n]*,/g)];   // `a,,b` only —
+// `[,a` is NOT checked: it is valid destructuring here (`.reduce((s,[,a])=>…)`).
+// The browser audit catches a leading hole instead, by opening every recipe.
+if (holes.length) {
+  fail(`app.jsx has ${holes.length} array elision(s) — a hole becomes null at runtime`);
+  for (const h of holes.slice(0, 5)) {
+    const line = src.slice(0, h.index).split('\n').length;
+    console.log(`    app.jsx:${line}`);
+  }
+} else ok('no array elisions');
+
 console.log(process.exitCode ? '\nBUILD CHECK FAILED' : '\nBUILD CHECK PASSED');
