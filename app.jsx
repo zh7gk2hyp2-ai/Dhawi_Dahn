@@ -1095,6 +1095,25 @@ const RECIPE_CLEANUP_VERSION="rc_03";
 // صحيحاً، وقد عاد (ia_09، 200 جم كاملة). إبقاؤه هنا كان يجرّد أي وصفة تستعمله من
 // مادته عند كل رفع للبناء — وهو ما جرّد بطاقة sol_benzoin_a فور إضافتها.
 const RECIPE_IDS_REMOVE=["lux_hindi_sweety"];
+// ─── إصلاح بيانات محفوظة: خطوات غير نصية ──────────────────────────────────────
+// ثماني وصفات وصلت إلى أجهزة المستخدمين وفيها خطوة null (ثقب مصفوفة في المصدر
+// كتبه JSON.stringify كـ null). تصحيح المصدر وحده لا يُصلحها: applyPendingRecipes
+// محميّ بـ dw_pr_ver فلا يُعاد تشغيله بعد أن سُجّلت النسخة. فيُنظَّف المخزون نفسه
+// عند كل إقلاع — رخيصٌ (لا يكتب شيئاً إن كان كل شيء سليماً) ويحمي من أي تكرار.
+function repairRecipes(recipes){
+  if(!Array.isArray(recipes))return [];
+  let fixed=0;
+  const out=recipes.map(r=>{
+    const src=Array.isArray(r.steps)?r.steps:[];
+    const clean=src.filter(x=>typeof x==="string");   // filter يُسقط الثقوب وnull معاً
+    if(Array.isArray(r.steps)&&clean.length===src.length)return r;
+    fixed++;
+    return {...r,steps:clean};
+  });
+  if(fixed){try{lsSet("dw_recipes",out);}catch{}}
+  return out;
+}
+
 function applyRecipeCleanup(recipes){
   if(lsGet("dw_rc_ver","")===RECIPE_CLEANUP_VERSION)return recipes;
   const cleaned=recipes.map(r=>({...r,ing:r.ing.filter(([id])=>!RECIPE_IDS_REMOVE.includes(id))}));
@@ -1259,7 +1278,7 @@ function App(){
   const [pin,setPin]=useState("");
   const [tab,setTab]=useState("home");
   const [inv,setInv]=useState(()=>[applyPendingPurchases,applyStockFix,applyExtraStock,applyRecipeDeduct,applyInventoryAdd,applyInventoryRemove,applyNameFix,applyOudXxFix,applyStockSnapshot,applyRestock,applyOudQtyFix,applyBrandFix].reduce((acc,fn)=>fn(acc),lsGet("dw_inv",buildInv())));
-  const [recipes,setRecipes]=useState(()=>applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES))));
+  const [recipes,setRecipes]=useState(()=>repairRecipes(applyRecipeCleanup(applyPendingRecipes(lsGet("dw_recipes",INITIAL_RECIPES)))));
   const [prodLog,setProdLog]=useState(()=>lsGet("dw_prodlog",[]));
   const [purchases,setPurchases]=useState(()=>lsGet("dw_purchases",[]));
   const [search,setSearch]=useState("");
