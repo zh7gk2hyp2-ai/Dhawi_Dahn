@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="theme-color" content="#0a0a0c"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,600;1,500;1,600&display=swap" rel="stylesheet">
+<title>AB Events — دليل العلامة والنمو (Brand & Growth Playbook)</title>
+<style>
+:root{
+  --bg:#0a0a0c;--bg2:#111015;--card:#16141b;--card2:#1c1922;--ink:#ece7de;--soft:#a49d92;--faint:#726c64;
+  --gold:#c9a24b;--champ:#e4cd8f;--gold-d:#9a7826;--coral:#c4623d;--sage:#8a936f;
+  --line:rgba(233,222,201,.10);--line2:rgba(233,222,201,.055);--shadow:0 24px 60px rgba(0,0,0,.5);
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--body:'Alexandria','Segoe UI',Tahoma,system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:radial-gradient(60% 45% at 82% -5%,rgba(201,162,75,.10),transparent 60%),radial-gradient(55% 40% at 0% 100%,rgba(196,98,61,.08),transparent 60%)}
+::selection{background:var(--gold);color:#0a0a0c}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+header{padding:60px 0 20px;text-align:center}
+.mono-mark{width:64px;height:64px;margin:0 auto 18px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#1b1922,#0a0a0c);box-shadow:inset 0 0 0 1px rgba(201,162,75,.45);font-family:var(--serif);font-weight:600;font-size:1.85rem;color:var(--champ);letter-spacing:2px}
+.eyebrow{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:12px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(2.2rem,5.5vw,3.6rem);line-height:1.06;text-wrap:balance}
+h1 .it{font-style:italic;color:var(--champ)}
+.sub{max-width:640px;margin:14px auto 0;color:var(--soft)}
+.tabs{position:sticky;top:0;z-index:20;background:rgba(10,10,12,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);margin-top:24px}
+.tabs-in{display:flex;gap:6px;overflow-x:auto;padding:12px 22px;max-width:1180px;margin:0 auto;scrollbar-width:none}
+.tabs-in::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;padding:9px 17px;border-radius:100px;border:1px solid var(--line);background:transparent;color:var(--soft);font-family:var(--body);font-size:.85rem;cursor:pointer;transition:.2s;flex:0 0 auto}
+.tab:hover{color:var(--ink);border-color:var(--gold-d)}
+.tab.on{background:linear-gradient(120deg,var(--champ),var(--gold));color:#0a0a0c;border-color:transparent;font-weight:700}
+.panel{display:none;padding:40px 0 70px;animation:fade .35s ease}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.sec-eyebrow{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold-d)}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.12;margin:8px 0 6px}
+.lead{color:var(--soft);max-width:680px;margin-bottom:28px}
+h3{font-family:var(--serif);font-weight:600;font-size:1.35rem;margin:26px 0 10px;color:var(--ink)}
+/* packages */
+.pkgs{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.pkg{background:linear-gradient(170deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:18px;padding:22px 18px;display:flex;flex-direction:column;gap:10px;position:relative}
+.pkg.feat{border-color:rgba(201,162,75,.5);box-shadow:0 0 0 1px rgba(201,162,75,.25),var(--shadow)}
+.pkg .flag{position:absolute;top:-11px;right:16px;background:linear-gradient(120deg,var(--champ),var(--gold));color:#0a0a0c;font-size:.6rem;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:.5px}
+.pkg .pname{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--champ)}
+.pkg .ptier{font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
+.pkg .price{font-family:var(--mono);font-size:1.05rem;color:var(--ink);font-variant-numeric:tabular-nums;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:9px 0;margin:4px 0}
+.pkg .price b{font-size:1.35rem;color:var(--gold)}
+.pkg ul{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--soft)}
+.pkg li{padding-inline-start:16px;position:relative;line-height:1.5}
+.pkg li::before{content:'✦';position:absolute;inset-inline-start:0;color:var(--gold-d);font-size:.7rem}
+/* journey */
+.step{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line2)}
+.step-n{font-family:var(--serif);font-size:2rem;font-weight:600;color:var(--gold-d);min-width:52px;line-height:1;font-variant-numeric:tabular-nums}
+.step h4{font-size:1.15rem;margin-bottom:6px}
+.step .goal{color:var(--soft);font-size:.9rem;margin-bottom:12px}
+.msg{background:#0c0b10;border:1px solid var(--line2);border-radius:12px;padding:12px 14px;margin-top:8px}
+.msg .tg{font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--gold-d);display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.msg p{font-size:.86rem;color:#d7d0c4;white-space:pre-wrap;line-height:1.7}
+.mini{padding:5px 11px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--champ);font-family:var(--body);font-size:.66rem;cursor:pointer;transition:.2s}
+.mini:hover{background:rgba(201,162,75,.1)}
+.mini.done{background:var(--sage);color:#0a0a0c;border-color:transparent}
+/* table */
+.tbl{width:100%;border-collapse:collapse;font-size:.85rem;overflow:hidden;border-radius:14px;border:1px solid var(--line)}
+.tbl th{background:var(--card2);color:var(--champ);font-weight:600;text-align:right;padding:12px 14px;font-size:.78rem;letter-spacing:.5px;position:sticky}
+.tbl td{padding:12px 14px;border-top:1px solid var(--line2);color:var(--soft);vertical-align:top}
+.tbl tr:nth-child(even) td{background:rgba(255,255,255,.014)}
+.tbl b{color:var(--ink)}
+.scroll{overflow-x:auto}
+/* cards grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.box{background:linear-gradient(170deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:16px;padding:20px}
+.box h4{font-size:1.08rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.box p,.box li{color:var(--soft);font-size:.86rem}
+.box ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.box li{padding-inline-start:15px;position:relative}
+.box li::before{content:'—';position:absolute;inset-inline-start:0;color:var(--gold-d)}
+/* phases */
+.phase{border-inline-start:2px solid var(--line);padding:0 0 26px 0;padding-inline-start:22px;position:relative;margin-inline-start:8px}
+.phase::before{content:'';position:absolute;inset-inline-start:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(201,162,75,.18)}
+.phase .ph-t{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.phase .ph-t b{font-family:var(--serif);font-size:1.3rem;color:var(--champ)}
+.phase .ph-t span{font-size:.72rem;color:var(--faint);letter-spacing:1px}
+.chip{display:inline-block;font-size:.72rem;color:var(--champ);background:rgba(201,162,75,.1);border:1px solid rgba(201,162,75,.24);padding:3px 10px;border-radius:100px;margin:4px 4px 0 0}
+.note{background:rgba(201,162,75,.07);border:1px solid rgba(201,162,75,.2);border-radius:12px;padding:12px 15px;color:var(--champ);font-size:.82rem;margin-top:16px}
+footer{border-top:1px solid var(--line);padding:28px 0 60px;text-align:center;color:var(--faint);font-size:.8rem}
+@media(max-width:900px){.pkgs{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+@media(max-width:560px){.pkgs{grid-template-columns:1fr}.step{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+</style>
+</head>
+<body>
+
+
+<header><div class="wrap">
+  <div class="mono-mark">AB</div>
+  <div class="eyebrow">AB EVENTS · BRAND & GROWTH PLAYBOOK</div>
+  <h1>دليل العلامة <span class="it">والنمو</span></h1>
+  <p class="sub">المراحل التنفيذية للمشروع الإبداعي — باقات، رحلة عميل برسائل جاهزة، خطة تسويق سنة، ذكاء اصطناعي، هوية، وخطة تنفيذ. مصمّم للسوق السعودي.</p>
+</div></header>
+
+<div class="tabs"><div class="tabs-in" id="tabs"></div></div>
+
+<div class="wrap">
+
+<!-- ===== 11 الباقات ===== -->
+<section class="panel on" data-p="pkg">
+  <div class="sec-eyebrow">المرحلة ١١</div><h2>باقات الخدمات</h2>
+  <p class="lead">خمس مستويات واضحة تخدم كل الميزانيات دون كسر الفخامة. الأسعار مقترحة للسوق السعودي (٢٠٢٦) وقابلة للتعديل حسب المكان وعدد الضيوف والموسم.</p>
+  <div class="pkgs">
+    <div class="pkg"><div class="ptier">Essential</div><div class="pname">اقتصادية</div><div class="price">من <b>١٬٥٠٠</b> ﷼</div>
+      <ul><li>ركن ضيافة/تصوير واحد</li><li>تنسيق ورد بسيط</li><li>خلفية اسم أساسية</li><li>إضاءة دافئة</li><li>تصوير سناب/ستوري</li><li>مناسب: تجمّع صغير ≤٢٠ ضيف</li></ul></div>
+    <div class="pkg"><div class="ptier">Signature</div><div class="pname">متوسطة</div><div class="price">من <b>٤٬٠٠٠</b> ﷼</div>
+      <ul><li>كل الاقتصادية +</li><li>كوشة/خلفية مصمّمة</li><li>ركنين ضيافة</li><li>تنسيق طاولة ضيوف</li><li>تصوير فوتو + ريلز قصير</li><li>مناسب: تخرّج/ميلاد ≤٥٠</li></ul></div>
+    <div class="pkg feat"><div class="flag">الأكثر طلباً</div><div class="ptier">VIP</div><div class="pname">في آي بي</div><div class="price">من <b>١٠٬٠٠٠</b> ﷼</div>
+      <ul><li>كل المتوسطة +</li><li>تصميم ثيم كامل ٣D</li><li>جدار/سقف ورد</li><li>٣ أركان ضيافة راقية</li><li>إضاءة احترافية + منسّق يوم الحدث</li><li>باقة تصوير + مونتاج</li></ul></div>
+    <div class="pkg"><div class="ptier">Luxury</div><div class="pname">فاخرة</div><div class="price">من <b>٢٥٬٠٠٠</b> ﷼</div>
+      <ul><li>كل الـVIP +</li><li>بيئة غامرة كاملة</li><li>ورد نحتي + قماش منسدل</li><li>ضيافة فندقية</li><li>فريق تنفيذ متكامل</li><li>تصوير سينمائي + فيلم</li></ul></div>
+    <div class="pkg"><div class="ptier">Royal</div><div class="pname">ملكية</div><div class="price">حسب الطلب</div>
+      <ul><li>تصميم حصري بالكامل</li><li>زفاف/فعالية كبرى</li><li>مدير مشروع مخصّص</li><li>موردون نخبة</li><li>إنتاج فني كامل (LED/مؤثرات)</li><li>خصوصية وحصرية تامة</li></ul></div>
+  </div>
+  <div class="note">💡 نصيحة تموضع: لا تنشر الأسعار على الموقع — اكتب «تبدأ من» أو «السعر عند الطلب» للباقات العليا. يحفظ الفخامة ويفتح باب التفاوض.</div>
+</section>
+
+<!-- ===== 8 رحلة العميل ===== -->
+<section class="panel" data-p="journey">
+  <div class="sec-eyebrow">المرحلة ٨</div><h2>رحلة العميل + الرسائل الجاهزة</h2>
+  <p class="lead">١١ مرحلة من أول زيارة حتى التقييم — كل مرحلة معها رسالة واتساب/بريد جاهزة (اضغط «نسخ»). صُمّمت لتكون دافئة، واثقة، وسريعة الرد.</p>
+  <div id="journey"></div>
+</section>
+
+<!-- ===== 9 التسويق ===== -->
+<section class="panel" data-p="mkt">
+  <div class="sec-eyebrow">المرحلة ٩</div><h2>خطة محتوى ١٢ شهر</h2>
+  <p class="lead">تقويم سنوي مربوط بمواسم السعودية — لكل شهر ثيم ومحتوى مقترح (ريلز/تيك توك/سناب/إنستغرام).</p>
+  <div class="scroll"><table class="tbl"><thead><tr><th>الشهر</th><th>الثيم/الموسم</th><th>أفكار محتوى</th></tr></thead><tbody id="months"></tbody></table></div>
+  <h3>أنواع المحتوى الثابتة (كل أسبوع)</h3>
+  <div class="g3">
+    <div class="box"><h4>🎬 قبل / بعد</h4><p>تحويل مكان عادي → تحفة. أقوى محتوى بيعي — انشره كل أسبوع.</p></div>
+    <div class="box"><h4>🎥 كواليس (BTS)</h4><p>الفريق أثناء التجهيز — يبني الثقة ويُظهر الاحترافية.</p></div>
+    <div class="box"><h4>💡 نصيحة العميل</h4><p>«كيف تختار ثيم مناسبتك» — يثبّتك كخبير، لا مجرد منفّذ.</p></div>
+    <div class="box"><h4>⭐ رأي عميل</h4><p>مقطع قصير + الشغل — إثبات اجتماعي حقيقي.</p></div>
+    <div class="box"><h4>🌹 لقطة تفصيل</h4><p>ماكرو للورد/الشموع/الطاولة — يعرض الجودة والذوق.</p></div>
+    <div class="box"><h4>🗓️ عرض موسمي</h4><p>باقة محدودة للموسم القادم — يخلق إلحاحاً (Urgency).</p></div>
+  </div>
+</section>
+
+<!-- ===== 10 الذكاء الاصطناعي ===== -->
+<section class="panel" data-p="ai">
+  <div class="sec-eyebrow">المرحلة ١٠</div><h2>الذكاء الاصطناعي داخل AB</h2>
+  <p class="lead">أدوات ذكاء اصطناعي تختصر وقتك وترفع جودتك — عملية وجاهزة الاستخدام اليوم.</p>
+  <div class="g2">
+    <div class="box"><h4>🎨 تصميم واقتراح ألوان</h4><ul><li>Midjourney/Firefly لتصوّر الثيم قبل التنفيذ (استخدم برومتات المكتبة)</li><li>عرض «تصوّر» للعميل يرفع نسبة الإغلاق</li><li>اقتراح باليت متناسق من صورة إلهام</li></ul></div>
+    <div class="box"><h4>💬 الرد على العملاء</h4><ul><li>ردود واتساب جاهزة (قوالب هذا الدليل)</li><li>مساعد يجاوب الأسئلة الشائعة ٢٤/٧</li><li>يترجم ويصيغ العروض بسرعة</li></ul></div>
+    <div class="box"><h4>📄 كتابة العروض والباقات</h4><ul><li>توليد عرض سعر منسّق خلال دقائق</li><li>صياغة وصف الباقات باحترافية</li><li>عقود ونماذج جاهزة</li></ul></div>
+    <div class="box"><h4>📸 صور وفيديو تسويقي</h4><ul><li>صور مفاهيم واقعية للحملات</li><li>مونتاج ريلز وكتابة سكربتات</li><li>Upscale لصور قديمة</li></ul></div>
+    <div class="box"><h4>✍️ كتابة المنشورات</h4><ul><li>كابشن + هاشتاقات لكل منشور</li><li>أفكار محتوى شهرية</li><li>نبرة موحّدة للعلامة</li></ul></div>
+    <div class="box"><h4>🧠 تحليل وتخطيط</h4><ul><li>تحليل أداء المحتوى</li><li>اقتراح أسعار حسب السوق</li><li>خطط تشغيل الفعاليات</li></ul></div>
+  </div>
+</section>
+
+<!-- ===== 13 الهوية ===== -->
+<section class="panel" data-p="brand">
+  <div class="sec-eyebrow">المرحلة ١٣</div><h2>الهوية البصرية</h2>
+  <p class="lead">تطوير هوية AB لمستوى عالمي — مع الحفاظ على شعارك الحالي A|B.</p>
+  <div class="g2">
+    <div class="box"><h4>🔠 الشعار</h4><ul><li>احتفظ بالمونوغرام A|B (أنيق)</li><li>اصنع نسخاً: أفقي، رأسي، أيقونة، مائي شفاف</li><li>watermark صغير بزاوية بدل الوسط</li></ul></div>
+    <div class="box"><h4>🎨 الألوان</h4><ul><li>أساسي: أوبسيديان + ذهبي شامبين</li><li>توقيع: تراكوتا (ورد الطائف) + سيج (أوكالبتوس)</li><li>محايد: آيفوري + بيج دافئ</li></ul></div>
+    <div class="box"><h4>✍️ الخطوط</h4><ul><li>عرض: Cormorant (فخامة كلاسيكية)</li><li>عربي: Alexandria / نص واضح حديث</li><li>لاتيني: Manrope للأرقام والتفاصيل</li></ul></div>
+    <div class="box"><h4>📷 أسلوب التصوير</h4><ul><li>تدرّج لوني دافئ موحّد لكل الصور</li><li>لقطة «بطل» + ماكرو تفاصيل لكل مناسبة</li><li>مساحات فاضية = فخامة هادئة</li></ul></div>
+    <div class="box"><h4>🖼️ عرض الأعمال</h4><ul><li>قبل/بعد + فيديو قصير</li><li>تقسيم حسب المناسبة + فلترة</li><li>صور بملء الشاشة</li></ul></div>
+    <div class="box"><h4>📎 المطبوعات</h4><ul><li>بروفايل PDF فاخر + عرض سعر منسّق</li><li>بطاقة عمل + بطاقة شكر بعد المناسبة</li><li>قوالب سوشيال موحّدة</li></ul></div>
+  </div>
+</section>
+
+<!-- ===== 5-6-7 تحسينات ===== -->
+<section class="panel" data-p="site">
+  <div class="sec-eyebrow">المراحل ٥ · ٦ · ٧</div><h2>الموقع · المعرض · الصور المرجعية</h2>
+  <p class="lead">تحسينات عملية على الموقع والمعرض، وتوجيه الصور المرجعية.</p>
+  <h3>🖥️ تطوير الموقع (م٦)</h3>
+  <div class="g3">
+    <div class="box"><h4>الرئيسية</h4><ul><li>فيديو Hero سينمائي (بدل الخلفية المتحركة)</li><li>قبل/بعد بارز فوق</li><li>شعارات ثقة/تقييمات Google</li></ul></div>
+    <div class="box"><h4>الخدمات + الأسعار</h4><ul><li>صفحة باقات (٥ مستويات)</li><li>«يبدأ من» بدل السعر الكامل</li><li>زر حجز لكل باقة</li></ul></div>
+    <div class="box"><h4>الحجز والتواصل</h4><ul><li>نموذج ذكي (نوع/تاريخ/ميزانية)</li><li>خريطة + واتساب + اتصال</li><li>رد تلقائي فوري</li></ul></div>
+    <div class="box"><h4>الأداء والسيو</h4><ul><li>ضغط الصور (WebP) — أسرع تحميل</li><li>عناوين ووصف SEO لكل صفحة</li><li>Schema للأعمال المحلية (الطائف)</li></ul></div>
+    <div class="box"><h4>الجوال</h4><ul><li>أزرار كبيرة + واتساب عائم</li><li>معرض يسحب بالإصبع</li><li>سرعة أولاً</li></ul></div>
+    <div class="box"><h4>الثقة</h4><ul><li>«من نحن» بقصة حقيقية</li><li>تقييمات موثّقة</li><li>أرقام حقيقية (+مناسبة)</li></ul></div>
+  </div>
+  <h3>🖼️ معرض الأعمال (م٧)</h3>
+  <div><span class="chip">قبل / بعد</span><span class="chip">فيديوهات قصيرة</span><span class="chip">صور ملء الشاشة</span><span class="chip">تقسيم حسب المناسبة</span><span class="chip">فلترة</span><span class="chip">Lightbox</span><span class="chip">جولة ٣٦٠° (اختياري)</span></div>
+  <h3>📷 الصور المرجعية (م٥)</h3>
+  <p class="lead" style="margin-top:8px">لكل فكرة في <b>المكتبة الإبداعية</b> يوجد Prompt جاهز يولّد «نسختنا» مباشرة — أرقى من أي مرجع لأنها مضبوطة على هويتك (ورد الطائف، النجدي، الإضاءة الدافئة). القاعدة: <b>نستلهم الأسلوب، ولا ننسخ أي تصميم محمي.</b></p>
+  <div class="note">✨ عند رجوع رصيد توليد الصور، نحوّل برومتات المكتبة إلى صور واقعية فعلية لكل فكرة — وتصير مرجعك البصري الكامل.</div>
+</section>
+
+<!-- ===== 14 التنفيذ ===== -->
+<section class="panel" data-p="exec">
+  <div class="sec-eyebrow">المرحلة ١٤</div><h2>خطة التنفيذ</h2>
+  <p class="lead">أربع مراحل مرتّبة بالأولوية والوقت — من الأساس المتين إلى النمو.</p>
+  <div class="phase"><div class="ph-t"><b>المرحلة ١ — الأساس</b><span>الأسبوع ١–٢</span></div>
+    <p style="color:var(--soft);font-size:.9rem;margin:6px 0">إطلاق نظيف وآمن ومهني.</p>
+    <span class="chip">دومين خاص + Cloudflare Access</span><span class="chip">رقم/بريد رسمي</span><span class="chip">استبدال المحتوى التوضيحي بالحقيقي</span><span class="chip">تفعيل Google Business (الطائف)</span></div>
+  <div class="phase"><div class="ph-t"><b>المرحلة ٢ — الهوية والتصوير</b><span>الأسبوع ٣–٦</span></div>
+    <p style="color:var(--soft);font-size:.9rem;margin:6px 0">توقيع بصري يميّزك.</p>
+    <span class="chip">Brand Book</span><span class="chip">تدرّج لوني موحّد للصور</span><span class="chip">جلسة تصوير احترافية لأعمالك</span><span class="chip">watermark أنيق</span><span class="chip">صفحة الباقات</span></div>
+  <div class="phase"><div class="ph-t"><b>المرحلة ٣ — التشغيل والتجربة</b><span>الشهر ٢–٣</span></div>
+    <p style="color:var(--soft);font-size:.9rem;margin:6px 0">تجربة عميل سلسة تُغلق الصفقات.</p>
+    <span class="chip">رحلة العميل + الرسائل التلقائية</span><span class="chip">عرض سعر PDF فاخر</span><span class="chip">نظام حجز</span><span class="chip">جمع تقييمات</span></div>
+  <div class="phase" style="border-inline-start-color:transparent"><div class="ph-t"><b>المرحلة ٤ — النمو</b><span>مستمر</span></div>
+    <p style="color:var(--soft);font-size:.9rem;margin:6px 0">محرك محتوى وتوسّع.</p>
+    <span class="chip">خطة محتوى ١٢ شهر</span><span class="chip">قبل/بعد أسبوعي</span><span class="chip">عروض موسمية</span><span class="chip">قطاع الشركات/الحكومي بالطائف</span><span class="chip">شبكة موردين</span></div>
+</section>
+
+</div>
+
+<footer><div class="wrap">© 2026 AB Events — The Art of Luxury Events · دليل العلامة والنمو (مراحل ٥–١٤)</div></footer>
+
+<script>
+const TABS=[["pkg","الباقات"],["journey","رحلة العميل"],["mkt","التسويق"],["ai","الذكاء الاصطناعي"],["brand","الهوية"],["site","الموقع والمعرض"],["exec","التنفيذ"]];
+const tabsEl=document.getElementById('tabs');
+TABS.forEach(([k,l],i)=>{const b=document.createElement('button');b.className='tab'+(i===0?' on':'');b.textContent=l;b.dataset.k=k;
+  b.onclick=()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));b.classList.add('on');
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.dataset.p===k));window.scrollTo({top:0,behavior:'smooth'});};
+  tabsEl.appendChild(b);});
+
+/* Journey data */
+const J=[
+["الاكتشاف","العميل يشوف أعمالك (تيك توك/الموقع)","—",""],
+["الاستفسار","أول رسالة على واتساب","رد ترحيبي","أهلاً وسهلاً بك في AB Events 🌿\nيسعدنا نصمّم لك مناسبة استثنائية. ممكن تخبرنا:\n• نوع المناسبة؟\n• التاريخ التقريبي؟\n• عدد الضيوف؟\nوبنجهّز لك تصوّراً يناسبك ✨"],
+["اختيار الخدمة","توجيه العميل للباقة المناسبة","اقتراح باقة","بناءً على تفاصيلك، أنسب باقة لك هي «VIP» 👑\nتشمل: تصميم ثيم كامل، جدار ورد، ٣ أركان ضيافة، وإضاءة احترافية.\nتحب أرسل لك العرض التفصيلي؟"],
+["إرسال الطلب","العميل يعبّئ النموذج/يرسل التفاصيل","تأكيد استلام","استلمنا طلبك 🌟 شكراً لثقتك.\nفريقنا يراجع التفاصيل ويرجع لك خلال ساعتين بعرض مبدئي. ودّك بأي إضافة قبلها؟"],
+["التواصل والاستشارة","مكالمة/محادثة لفهم الرؤية","حجز استشارة","نحب نسمع تفاصيل رؤيتك أكثر 💬\nيناسبك اتصال قصير اليوم الساعة ٥؟ أو نكمّل هنا على واتساب — زي ما يريحك."],
+["عرض السعر","إرسال عرض منسّق (PDF)","إرسال العرض","تفضّل عرض AB Events الخاص بمناسبتك 📄✨ (مرفق)\nالعرض شامل التصميم والتنفيذ والتصوير.\nصالح ٧ أيام. جاهزين نجاوب أي استفسار 🌿"],
+["توقيع العقد","تأكيد الاتفاق والتفاصيل","تأكيد الحجز","يسعدنا انضمامك لعائلة AB 🤍\nلتثبيت الحجز نحتاج توقيع العقد + عربون ٥٠٪.\nمرفق العقد — وبنبدأ التجهيز فوراً بعد التأكيد."],
+["الدفع","العربون ثم الدفعة النهائية","تذكير دفعة","تذكير ودّي 🌿: الدفعة النهائية تستحق قبل ٣ أيام من المناسبة.\nطرق الدفع: تحويل / رابط دفع.\nشكراً لتعاونك 🤍"],
+["التنفيذ","التجهيز يوم المناسبة","اليوم الموعود","اليوم يومكم 🌟\nفريق AB في الموقع ويجهّز كل تفصيلة. استمتعوا — والباقي علينا 💫"],
+["التسليم","تسليم المكان + التصوير","بعد المناسبة","كانت مناسبة استثنائية 🤍 شكراً لثقتكم بـ AB.\nصور وفيديو المناسبة توصلكم خلال ٣ أيام 📸✨"],
+["التقييم","طلب تقييم ومراجعة","طلب تقييم","سعدنا بخدمتكم كثيراً 🌿\nرأيكم يهمّنا ويساعد غيركم — تقيّمونا بتقييم/مقطع قصير؟\nونتشرّف بخدمتكم في كل مناسبة قادمة 🤍"],
+];
+document.getElementById('journey').innerHTML=J.map((s,i)=>`
+  <div class="step"><div class="step-n">${String(i+1).padStart(2,'0')}</div>
+    <div><h4>${s[0]}</h4><div class="goal">${s[1]}</div>
+      ${s[3]?`<div class="msg"><div class="tg"><span>💬 ${s[2]}</span><button class="mini" data-c="${encodeURIComponent(s[3])}">نسخ</button></div><p>${s[3]}</p></div>`:'<div class="goal" style="color:var(--faint)">مرحلة تسويقية — لا رسالة مباشرة.</div>'}
+    </div></div>`).join('');
+document.getElementById('journey').addEventListener('click',e=>{const b=e.target.closest('.mini');if(!b)return;
+  navigator.clipboard.writeText(decodeURIComponent(b.dataset.c)).then(()=>{const o=b.textContent;b.textContent='✓';b.classList.add('done');setTimeout(()=>{b.textContent=o;b.classList.remove('done')},1200);});});
+
+/* Months */
+const M=[
+["يناير","بدايات + شتاء دافئ","جلسات شتوية Cozy · قبل/بعد لمناسبات ديسمبر · تخطيط ٢٠٢٦"],
+["فبراير","مواسم الأعراس","ثيمات زفاف · جدار ورد · كواليس تجهيز كوشة"],
+["مارس","رمضان يقترب","سفرة رمضان فاخرة · ركن قيمة/عيدية · فوانيس وهلال"],
+["أبريل","العيد + الربيع","تنسيقات العيد الذهبية · جلسات ربيعية · عروض العيد"],
+["مايو","موسم ورد الطائف 🌹","محتوى ورد الطائف · جلسات مزرعة · باقة موسمية حصرية"],
+["يونيو","تخرّج","حفلات تخرّج · جداريات إنجاز · أركان تصوير القبعة"],
+["يوليو","صيف + مناسبات خاصة","جلسات صيفية منعشة · استقبال مواليد · أعياد ميلاد"],
+["أغسطس","سفر وتجهيز الخريف","أفضل ١٠ أعمال · شهادات عملاء · تخطيط الموسم"],
+["سبتمبر","اليوم الوطني 🇸🇦","تنسيق وطني فاخر (أخضر-أبيض) · فعاليات شركات"],
+["أكتوبر","الشركات والمؤتمرات","إطلاق منتجات · مؤتمرات · تفعيل علامات · Booths"],
+["نوفمبر","خطوبات وملكات","ليالي حناء نجدية · ملكات مرجانية · أركان ورد"],
+["ديسمبر","ختام السنة + أعراس","حفلات نهاية العام · قبل/بعد أفضل مناسبات السنة · عروض حجز مبكر"],
+];
+document.getElementById('months').innerHTML=M.map(m=>`<tr><td><b>${m[0]}</b></td><td>${m[1]}</td><td>${m[2]}</td></tr>`).join('');
+</script>
+
+</body>
+</html>
