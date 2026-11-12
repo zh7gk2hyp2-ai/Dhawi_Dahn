@@ -816,7 +816,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_69";
+const PENDING_RECIPES_VERSION="rec_70";
 const PENDING_RECIPES=[
   // ── وصفات نسائية جديدة (سدّ فجوة السوق النسائي) — بمحرّك الفوحان ──
   {id:"r_ward_istanbul",name:"وردة إسطنبول",icon:"🌹",season:"ربيع",gender:"نسائي",stability:"28 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:200,
@@ -1228,6 +1228,44 @@ const PENDING_RECIPES=[
    ing:[["cardamom",1],["lux_cambodi",2.5],["sandal_indi",5.5],["benzoin_b",1.5],["cashmeran",1.3],["tonquitone",0.4],["safraleine",0.15],["ambermor",0.85],["iso_e",0.8],["ethanol",86]],
    steps:["⚡ رابط الراتنج في الكحول (مسبقاً): أذب Ambermor شمعي 0.85جم + Benzoin B 1.5مل في ~8مل كحول عطري على حمام ماء دافئ 40° حتى يصفو ← برّد (⚠️ بعيداً عن اللهب المباشر — الكحول قابل للاشتعال)","في بيكر نظيف: بقية الكحول العطري (~76مل) في حرارة الغرفة","أضف Sandalwood INDI 5.5مل — الجسم الكريمي الذي يحمل الهيل ويمنحه دفئاً ناعماً","أضف Lux Cambodi 2.5مل — عود كمبودي ناعم تحت الصندل (بلا حِدّة)","أضف Cardamom 1مل ⚠️ بارداً (النجم الصباحي — لا تزد أبداً، الهيل يطغى بسرعة)","أضف محلول الراتنج المُبرَّد ← سرنجة: Safraleine 0.15مل (💡 محلول 10%: 0.05مل مركّز مذاب في 0.45مل DPG للدقة) + Cashmeran 1.3مل + Tonquitone 0.4مل (تبغ حلو خفيف) + ISO E Super 0.8مل","أكمل بالكحول العطري حتى 100مل بالضبط ← أغلق وهزّ برفق","⚠️ عتّق أسبوعين-3 في بارد مظلم ← صفِّ بفلتر ورق (الراتنج قد يُعكّر السائل) ← أتومايزر | 💡 خفيف نهاري للعمل — رشّة على الرسغ والعنق، حاضرٌ قربها دون أن يصرخ"],
    stepsAlt:{ml8:["في زجاجة 10مل: أضف المواد العطرية بالقطارة (الكميات × 0.08 من المقادير أعلاه)","أذب الراتنجات (Ambermor+Benzoin) في جزء من الكحول على حمام ماء 40° أولاً (بعيداً عن اللهب) ← أضف بقية الكحول العطري تدريجياً مع رج خفيف","أغلق محكماً — عتّق أسبوعاً في بارد مظلم","صفِّ بفلتر ورق ← اختبر على الرسغ: توب 15 دق ← قلب ساعة ← قاعدة"],ml12:["في بيكر 25مل: المواد العطرية بالقطارة (الكميات × 0.12)","أذب الراتنجات في جزء كحول على 40° ← أضف بقية الكحول العطري مع التحريك","عتّق 10-14 يوم في بارد مظلم ← صفِّ بفلتر ورق ← أتومايزر 12مل"],ml30:["في بيكر 50مل: قس المواد العطرية بدقة (الكميات × 0.30)","أذب الراتنجات في ~2مل كحول على 40° ← برّد ← أضف بقية الكحول العطري ببطء مع التحريك","عتّق أسبوعين-3 في بارد مظلم","صفِّ بفلتر قهوة ← أتومايزر داكن 30مل — قيّم: توب 20 دق ← قلب 2 ساعة ← قاعدة"],ml50:["في بيكر 100مل: قس المواد العطرية بدقة (الكميات × 0.50)","أذب الراتنجات في ~4مل كحول على 40° ← برّد تماماً","أضف نصف الكحول العطري ← حرّك ← الباقي ← حرّك","عتّق 3 أسابيع في بارد مظلم","صفِّ بفلتر قطن/ورق ← أتومايزر 50مل"],ml100:["في بيكر 250مل: صب المواد العطرية بالترتيب (الأثقل أولاً — الكحول أخيراً)","أذب الراتنجات في ~8مل كحول على حمام ماء 40° (بعيداً عن اللهب) ← برّد تماماً","أضف الكحول العطري تدريجياً (25مل ← حرك ← 25مل ← حرك ← الباقي)","عتّق أسبوعين-3 في بارد مظلم","صفِّ بفلتر قهوة/ورق (يشيل عكارة الراتنج) ← زجاجة داكنة للتخزين","عبّي في أتومايزر 100مل بعد اكتمال التعتيق"]}},
+  // ── rec_70: ترقية الأدهان الأربعة بمواد وادي (سقف العود 50% + وسادة صندل 10%+) ──
+  {id:"r_suyufi",name:"دهن السيوفي الرائق",icon:"🌿",season:"ربيع",gender:"للجنسين",stability:"40 ساعة",
+   desc:"سيوفي (Luxodor) مصقول بـ Thameen Carved Oud من وادي — ورد-جلد راقٍ فوق العود النظيف | عود 50% · صندل 12% وسادة | 🚀 فوّاح مدمج",
+   ing:[["lux_suyufi",40],["thameen_carved",10],["artessence",8],["sandal_indi",14],["iso_e",8],["benzoin_b",5],["wild_petal",3],["labdanum",2],["ambermor",2],["hedione",7],["galaxolide",6],["ambroxan",2.5],["jojoba",8]],
+   steps:["⚡ بري-بلند (12 ساعة): Oud Suyufi 7مل + Thameen 3مل في زجاجة محكمة","أذِب لبدانوم 2جم + بنزوين B 5مل + Ambermor 2جم على 55° ← برّد 40°","بيكر بارد: Jojoba 8مل + باقي السيوفي 33مل + Thameen 7مل + Artessence 8مل ← حرّك","أضِف الصندل 14مل (الوسادة) ← Wild Petal 3مل ← ISO E 8مل ← الراتنجات المبرّدة","🚀 بارد أخيراً: Hedione 7 + Galaxolide 6 + Ambroxan 2.5جم مذاب","عتّق 10 أيام بارد مظلم"]},
+  {id:"r_bormi",name:"دهن البورمي الأصيل",icon:"🌑",season:"شتاء",gender:"رجالي",stability:"48+ ساعة",
+   desc:"بورمي حطبي داكن مُدوَّر بـ Dahnal Oud Tarat (كمبودي وادي) — حلاوة تكسر الجفاف | عود 50% · صندل 10% · لمسة فانيلا | للعارفين",
+   ing:[["lux_bormi",40],["dahnal_tarat",10],["artessence",8],["iso_e",12],["sandal_indi",12],["labdanum",5],["benzoin_b",4],["cashmeran",2],["vanilla",1],["hedione",7],["galaxolide",6],["ambroxan",2.5],["jojoba",6]],
+   steps:["⚡ بري-بلند (12 ساعة): Oud Bormi 7مل + Dahnal Tarat 3مل","أذِب لبدانوم 5جم + بنزوين B 4مل على 55° ← برّد 40°","بيكر بارد: Jojoba 6 + باقي البورمي 33 + Tarat 7 + Artessence 8 ← حرّك","الصندل 12مل ← ISO E 12مل ← Cashmeran 2 + فانيلا 1 ← الراتنجات المبرّدة","🚀 بارد أخيراً: Hedione 7 + Galaxolide 6 + Ambroxan 2.5","عتّق 14 يوم"]},
+  {id:"r_muattaq",name:"عود المعتّق الملكي",icon:"👑",season:"مناسبات",gender:"رجالي",stability:"60+ ساعة",
+   desc:"معتّق قديم بعمق Asami Agar (وادي) — أجار هندي ناعم يسند المعتّق بدل Artessence | عود 50% · صندل 11% | ⚠️ لا تحكم قبل 3 أسابيع",
+   ing:[["lux_muattaq",42],["asami_agar",8],["lux_bormi",6],["iso_e",8],["sandal_indi",12],["labdanum",5],["benzoin_b",5],["ambermor",2],["cashmeran",1.5],["hedione",7],["galaxolide",6],["ambroxan",2.5],["jojoba",6]],
+   steps:["⚡ بري-بلند (24 ساعة): Oud Muattaq 7مل + Asami Agar 3مل","أذِب لبدانوم 5جم + بنزوين B 5مل + Ambermor 2جم على 55° ← برّد 40°","بيكر بارد: Jojoba 6 + باقي المعتّق 35 + Agar 5 + Bormi 6 ← حرّك","الصندل 12مل ← ISO E 8 ← Cashmeran 1.5 ← الراتنجات المبرّدة","🚀 بارد أخيراً: Hedione 7 + Galaxolide 6 + Ambroxan 2.5","عتّق 21 يوم لا أقل"]},
+  {id:"r_khalifa",name:"مخلط الخليفة المُكثَّف",icon:"✨",season:"مناسبات",gender:"رجالي",stability:"48 ساعة",
+   desc:"⚠️ Mukhallat Khalifa نافد — أُعيد بناؤه على Thameen Carved Oud (وادي) + ورد طائفي + زعفران = نفس روح الخليفة (عود-ورد-زعفران) بمواد متوفّرة | عود 44% · صندل 11%",
+   ing:[["thameen_carved",40],["rose_taif",2],["safraleine",0.4],["artessence",8],["iso_e",8],["benzoin_b",7],["labdanum",6],["sandal_indi",12],["patchouli",2],["vetiver",1],["cmp91",2],["ambermor",2],["dpg",4],["hedione",7],["galaxolide",6],["ambroxan",2.5]],
+   steps:["⚡ بري-بلند (12 ساعة): Thameen 8مل + Artessence 2مل","أذِب لبدانوم 6جم + بنزوين B 7مل + Ambermor 2جم في DPG 4مل على 55° ← برّد 40°","بيكر بارد: باقي Thameen 32 + Artessence 6 ← ورد طائفي 2 ← حرّك","الصندل 12 ← ISO E 8 ← Patchouli 2 + Vetiver 1 + CMP91 2 ← الراتنجات المبرّدة","سرنجة: Safraleine 0.4مل (💡 محلول 10%)","🚀 بارد أخيراً: Hedione 7 + Galaxolide 6 + Ambroxan 2.5","عتّق 10 أيام"]},
+  // ── rec_70: خلطات الأدهان مع Aoud Exclusif (الوصفة الأم × 4) ──
+  {id:"r_exclusif_cambodi",name:"إكسكلوسيف الكمبودي",icon:"🌅",season:"كل المواسم",gender:"للجنسين",stability:"30 ساعة",published:true,hero:false,perfumer:"ضاوي",price_sar:240,
+   story:"حلاوةُ الكمبودي حين تلتقي بترفِ الإكسكلوسيف: فاكهةٌ خشبيةٌ ناعمةٌ تنساب فوق عنبرٍ وزعفران. الأكثرُ قبولاً في الدار — يحبّه من يخاف ثقل العود.",
+   desc:"Aoud Exclusif 28% + كمبودي Luxodor 14% | صندل 10% وسادة | راتنجات دافئة | 🚀 فوّاح مدمج — الأسهل والأوسع بيعاً",
+   ing:[["lux_exclusif",14],["lux_cambodi",7],["sandal_indi",5],["benzoin_b",2.5],["labdanum",1.5],["ambermor",1.2],["cashmeran",1.2],["iso_e",3.5],["hedione",3.5],["galaxolide",2.5],["ambroxan",1.2],["jojoba",6]],
+   steps:["بيكر بارد: Jojoba 6مل + Aoud Exclusif 14مل ← حرّك","أضِف Oud Cambodi 7مل ← حرّك دقيقة","أذِب بنزوين 2.5 + لبدانوم 1.5 + Ambermor 1.2 على 50° ← برّد 35° ← أضِف","الصندل 5مل (الوسادة) ← Cashmeran 1.2 ← ISO E 3.5","🚀 بارد أخيراً: Hedione 3.5 + Galaxolide 2.5 + Ambroxan 1.2 مذاب","زجاجة داكنة · عتّق 14 يوم"]},
+  {id:"r_exclusif_suyufi",name:"إكسكلوسيف السيوفي",icon:"🌿",season:"كل المواسم",gender:"للجنسين",stability:"32 ساعة",published:true,hero:false,perfumer:"ضاوي",price_sar:240,
+   story:"المعيارُ السعوديُّ للعود، مُلبَّسٌ بالإكسكلوسيف ولمسةِ Thameen: نظيفٌ خشبيٌّ متوازنٌ، لا يصرخ ولا يختفي. دهنُ كلِّ يوم بروح المناسبات.",
+   desc:"Aoud Exclusif 28% + سيوفي 12% + Thameen 4% (وادي) | صندل 10% | 🚀 فوّاح مدمج — توقيع خليجي نظيف",
+   ing:[["lux_exclusif",14],["lux_suyufi",6],["thameen_carved",2],["sandal_indi",5],["benzoin_b",2.5],["labdanum",1.5],["ambermor",1.2],["cashmeran",1.2],["iso_e",3.5],["hedione",3.5],["galaxolide",2.5],["ambroxan",1.2],["jojoba",6]],
+   steps:["بيكر بارد: Jojoba 6 + Aoud Exclusif 14 ← حرّك","أضِف Suyufi 6 + Thameen 2 ← حرّك دقيقة","أذِب بنزوين 2.5 + لبدانوم 1.5 + Ambermor 1.2 على 50° ← برّد 35° ← أضِف","الصندل 5 ← Cashmeran 1.2 ← ISO E 3.5","🚀 بارد أخيراً: Hedione 3.5 + Galaxolide 2.5 + Ambroxan 1.2","عتّق 14 يوم"]},
+  {id:"r_exclusif_sultan",name:"سلطان الإكسكلوسيف",icon:"👑",season:"مناسبات",gender:"رجالي",stability:"40 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:290,
+   story:"عودٌ معتّقٌ قديمٌ يتكشّف ببطءٍ تحت حلاوةِ الكمبودي، وفوقهما هالةُ الإكسكلوسيف. عمقٌ ملكيٌّ لا يُستعجَل — للديوانيات والليالي الكبار.",
+   desc:"Aoud Exclusif 27% + معتّق قديم 9% + كمبودي 7% | صندل 10% | راتنجات عنبرية | 🚀 فوّاح مدمج — الأفخم في السلسلة",
+   ing:[["lux_exclusif",13],["lux_muattaq",4.5],["lux_cambodi",3.5],["sandal_indi",5],["benzoin_b",2.5],["labdanum",1.5],["ambermor",1.5],["cashmeran",1.2],["iso_e",3],["hedione",3.5],["galaxolide",2.5],["ambroxan",1.2],["jojoba",6]],
+   steps:["⚡ بري-بلند (12 ساعة): Muattaq 4.5 + Cambodi 3.5","بيكر بارد: Jojoba 6 + Aoud Exclusif 13 ← البري-بلند ← حرّك","أذِب بنزوين 2.5 + لبدانوم 1.5 + Ambermor 1.5 على 50° ← برّد 35° ← أضِف","الصندل 5 ← Cashmeran 1.2 ← ISO E 3","🚀 بارد أخيراً: Hedione 3.5 + Galaxolide 2.5 + Ambroxan 1.2","عتّق 4 أسابيع — لا تحكم مبكراً"]},
+  {id:"r_exclusif_jamr",name:"جمر الإكسكلوسيف",icon:"🔥",season:"شتاء",gender:"رجالي",stability:"40 ساعة",published:true,hero:false,perfumer:"ضاوي",price_sar:270,
+   story:"دخانُ عودٍ أسودَ وبورميٍّ جافٍّ يطوّقُ قلبَ الإكسكلوسيف، وSublime Oud يُشعل الجمرَ من تحت. شتويٌّ معتمٌ، لمن يحبّ العودَ حين يحترق.",
+   desc:"Aoud Exclusif 27% + أسود 7% + بورمي 5% + Ex Nihilo Sublime Oud 6% (وادي) | صندل 10% | 🚀 فوّاح مدمج — الدخاني",
+   ing:[["lux_exclusif",13],["lux_black",3.5],["lux_bormi",2.5],["exn_sublime_oud",3],["sandal_indi",5],["labdanum",2],["benzoin_b",2],["cashmeran",1.2],["iso_e",3.5],["hedione",3],["galaxolide",2.5],["ambroxan",1.2],["jojoba",5.5]],
+   steps:["⚡ بري-بلند (12 ساعة): Black Oud 3.5 + Bormi 2.5 + Sublime Oud 3","بيكر بارد: Jojoba 5.5 + Aoud Exclusif 13 ← البري-بلند ← حرّك","أذِب لبدانوم 2 + بنزوين 2 على 50° ← برّد 35° ← أضِف","الصندل 5 (إلزامي — يكسر حدة الدخان) ← Cashmeran 1.2 ← ISO E 3.5","🚀 بارد أخيراً: Hedione 3 + Galaxolide 2.5 + Ambroxan 1.2","عتّق 3 أسابيع"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
