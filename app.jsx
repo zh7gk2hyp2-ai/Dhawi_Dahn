@@ -2379,7 +2379,7 @@ function App(){
           <button className="btn-gold" style={{width:"100%",fontSize:"0.95rem",padding:"15px"}} onClick={()=>{verifyPin(pin).then(ok=>{if(ok)setLogged(true);else show("❌ رمز خاطئ ارفع علومك",true);});}}>دخول المعمل ←</button>
         </div>
         {/* footer */}
-        <div style={{marginTop:"24px",fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.40rem",color:"rgba(138,106,30,0.35)",letterSpacing:"0.3em",textTransform:"uppercase"}}>Dhawi Oud · Atelier · Est. 2025</div>
+        <div style={{marginTop:"24px",fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.40rem",color:"rgba(138,106,30,0.35)",letterSpacing:"0.3em",textTransform:"uppercase"}}>Dhawi Oud · Atelier · Est. 2027</div>
       </div>
       {toast&&<div className="fade" style={{position:"fixed",bottom:"48px",left:"50%",transform:"translateX(-50%)",background:toastErr?"rgba(255,245,245,0.98)":"rgba(255,252,245,0.98)",border:`1.5px solid ${toastErr?"rgba(200,60,60,0.50)":"rgba(201,168,76,0.50)"}`,color:toastErr?"#B03030":"#7A5C10",padding:"12px 28px",borderRadius:"30px",fontWeight:"700",fontSize:"0.85rem",whiteSpace:"nowrap",boxShadow:"0 4px 20px rgba(0,0,0,0.08)"}}>{toast}</div>}
     </div>
