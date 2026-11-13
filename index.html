@@ -816,7 +816,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_72";
+const PENDING_RECIPES_VERSION="rec_73";
 const PENDING_RECIPES=[
   // ── وصفات نسائية جديدة (سدّ فجوة السوق النسائي) — بمحرّك الفوحان ──
   {id:"r_ward_istanbul",name:"وردة إسطنبول",icon:"🌹",season:"ربيع",gender:"نسائي",stability:"28 ساعة",published:true,hero:true,perfumer:"ضاوي",price_sar:200,
@@ -1305,6 +1305,13 @@ const PENDING_RECIPES=[
    desc:"🧱 محلول عمل — لبدانوم مطلق 50/50 في بنزيل بنزوات: قابل للسكب، لا يرسّب في الزيت، يُقاس بالسرنجة | استخدمه بدل اللبدانوم الصافي (ضاعف الكمية)",
    ing:[["labdanum",15],["benzyl",15]],
    steps:["حمام مائي 45°: بنزيل بنزوات 15مل ← أضِف لبدانوم 15جم تدريجياً مع تحريك حتى الصفاء التام","برّد · زجاجة داكنة محكمة · حرّك دائرياً قبل كل استخدام","⚠️ في الوصفات: كل 1جم لبدانوم = 2مل من هذا المحلول"]},
+
+  // ── rec_73: إعادة بناء بيور جولد على هرم أعواد الأكابر الحقيقي (تايلندي + سيوفي) بمواد وادي ──
+  {id:"pure_gold",name:"دهن عود بيور جولد",icon:"✨",season:"شتاء",gender:"للجنسين",stability:"30 ساعة",perfumer:"ضاوي",price_sar:250,
+   story:"ذهبٌ خالص: زعفرانٌ وزهرُ أوسمانثوس يفتحان على عودٍ تايلنديٍّ حلوٍ وسيوفيٍّ نظيف، يلفّهما راتنجُ المرّ وياسمين، وتحتهما خشبٌ عنبريٌّ ومسك. زهري–خشبي–مسكي للجنسين.",
+   desc:"هرم أعواد الأكابر: قمة زعفران+زيتون+أوسمانثوس+فريزيا | قلب عود تايلندي (Dahnal Tarat) + سيوفي + مرّ + ياسمين | قاعدة أكيغالاوود + مسك + صندل + باتشولي — بدائلنا: Safraleine · Hedione (ياسمين/فريزيا) · Wild Petal+ورد+تونكيتون (أوسمانثوس) · لبدانوم+بنزوين (مرّ) · باتشولي+CMP91+ISO E+Ambroxan (أكيغالاوود) | 🚀 فوّاح · بلا PEA",
+   ing:[["dahnal_tarat",9],["lux_suyufi",6],["safraleine",0.5],["cardamom",0.2],["wild_petal",4],["hedione",4],["rose_istanbul",0.8],["tonquitone",0.3],["labdanum",1.5],["benzoin_b",2.5],["patchouli",2],["cmp91",1],["iso_e",3],["ambroxan",0.6],["sandal_indi",6],["galaxolide",3],["musk_ruman",1.5],["cashmeran",1.2],["jojoba",3]],
+   steps:["⚡ تزويج المسك أولاً (24 ساعة): Dahnal Tarat 9 + Suyufi 6 + مسك رمان 1.5 + كشميري 1.2 في زجاجة محكمة","أذِب لبدانوم 1.5 + بنزوين B 2.5 على 50° ← برّد 40° (بديل المرّ)","بيكر بارد: جوجوبا 3 + خليط العود والمسك ← الراتنجات المبرّدة ← حرّك","أكورد الأكيغالاوود: باتشولي 2 + CMP91 1 + ISO E 3 ← حرّك دقيقة","الصندل 6 ← أكورد الأوسمانثوس: Wild Petal 4 + ورد إسطنبولي 0.8 + تونكيتون 0.3","سرنجة: Safraleine 0.5 (محلول 10%) + هيل 0.2 (لمسة الزيتون الخضراء)","🚀 بارد أخيراً: Hedione 4 (ياسمين/فريزيا) + Galaxolide 3 + Ambroxan 0.6","عتّق 3 أسابيع بارد مظلم"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
