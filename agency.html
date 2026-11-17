@@ -861,7 +861,10 @@ body.maintenance #maint-screen{
 .cinema-strip-sub{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.42em;color:rgba(214,188,126,0.82);margin-top:10px;text-transform:uppercase;}
 @media (prefers-reduced-motion:reduce){.hero-video,.cinema-strip video{display:none;}}
 /* ── real product photos on cards & modal ── */
-.pcard-photo{width:100%;aspect-ratio:4/5;overflow:hidden;background:#1A0E08;}
+.pcard-photo{width:100%;aspect-ratio:4/5;overflow:hidden;background:#1A0E08;position:relative;}
+.pcard-badges{position:absolute;bottom:10px;right:11px;left:11px;display:flex;justify-content:space-between;align-items:center;gap:6px;pointer-events:none;}
+.pcard-badges--top{position:absolute;top:12px;right:11px;left:11px;}
+.pcard-badges .pcard-badge,.pcard-badges .pcard-mto-badge{position:static;}
 .pcard-photo img{width:100%;height:100%;object-fit:cover;object-position:center 14%;display:block;transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);}
 .pcard:hover .pcard-photo img{transform:scale(1.04);}
 .prod-modal-photo{width:100%;aspect-ratio:1/1;overflow:hidden;background:#1A0E08;}
@@ -1407,6 +1410,8 @@ const P_ALL=(()=>{
 })();
 
 // ── صور المنتجات الحقيقية (بوسترات الحملة) ──────────────────────────
+// posters from the older template carry their title at the bottom — anchor the card crop there
+const PRODUCT_IMG_POS={d_cambodi:'center 92%',d_black:'center 92%',d_suyufi:'center 92%',d_muattaq:'center 92%',r_bormi:'center 92%',r_muattaq:'center 92%',r_suyufi:'center 92%',r_khalifa:'center 92%'};
 const PRODUCT_IMG={
   r_malaki:'media/products/r_malaki.jpg',
   r_hindi_soul:'media/products/r_hindi_soul.jpg',
@@ -1561,10 +1566,9 @@ function render(){
     const bars=bc(s).map(b=>`<div style="width:${b.w}px;height:${b.d?'100%':'55%'};background:${b.d?'rgba(167,167,167,0.80)':'transparent'};align-self:flex-end"></div>`).join('');
     return`<div class="pcard${oos?' pcard-oos':''}" onclick="openProductModal('${p.id}')">
 <div class="pcard-bar"></div>
-${oos?'<div class="pcard-oos-badge">نفذ المخزون</div>':(p.mto&&!p.hasStock?'<div class="pcard-mto-badge">⏳ يُصنع عند الطلب</div>':'')}
-${PRODUCT_IMG[p.id]?`<div class="pcard-photo"><img src="${PRODUCT_IMG[p.id]}" alt="${p.name}" loading="lazy" onerror="this.parentNode.style.display='none'"/></div>`:''}
+${oos?'<div class="pcard-oos-badge">نفذ المخزون</div>':('')}
+${PRODUCT_IMG[p.id]?`<div class="pcard-photo"><img src="${PRODUCT_IMG[p.id]}" alt="${p.name}" loading="lazy"${PRODUCT_IMG_POS[p.id]?` style="object-position:${PRODUCT_IMG_POS[p.id]}"`:''} onerror="this.parentNode.style.display='none'"/><div class="pcard-badges"><div class="pcard-badge">${p.season}</div>${p.mto&&!p.hasStock&&!oos?'<div class="pcard-mto-badge">يُصنع عند الطلب</div>':''}</div></div>`:`<div class="pcard-badges pcard-badges--top"><div class="pcard-badge">${p.season}</div>${p.mto&&!p.hasStock&&!oos?'<div class="pcard-mto-badge">يُصنع عند الطلب</div>':''}</div>`}
 <div class="pcard-body">
-<div class="pcard-badge">${p.season}</div>
 ${PRODUCT_IMG[p.id]?'':`<div class="pcard-icon">${p.icon}</div>`}
 <div class="pcard-brand">DHAWI OUD</div>
 <div class="pcard-name">${p.name}</div>
