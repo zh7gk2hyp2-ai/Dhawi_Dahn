@@ -1545,6 +1545,14 @@ const ICONS={
   plus:"M12 5v14M5 12h14",
   shield:"M12 3l8 3v6c0 4.5-3.2 8.3-8 9.5C7.2 20.3 4 16.5 4 12V6l8-3zM9 12l2 2 4-4",
   save:"M5 4h11l3 3v13H5V4zM8 4v5h7V4M8 20v-6h8v6",
+  search:"M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4",
+  drop:"M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z",
+  spray:"M8 9h8v12H8zM10 9V6h4v3M12 2.5v1.5M6 5l1 1M18 5l-1 1M3.5 9H5M19 9h1.5",
+  snow:"M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4",
+  flower:"M12 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM12 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM5.5 14.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18.5 14.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM12 14.3a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6z",
+  leaf:"M4 20c0-9 6-15 16-15 0 10-6 15-14 15M4 20c3-4 7-7 12-9",
+  coin:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v10M9.5 9.5h3.5a1.75 1.75 0 0 1 0 3.5h-2a1.75 1.75 0 0 0 0 3.5h3.5",
+  tag:"M3 12V4h8l10 10-8 8L3 12zM7.5 8h.01",
 };
 const Icon=({name,size=20,stroke=1.8,style,className=""})=>{const d=ICONS[name];if(!d)return null;
   return <svg className={"ico "+className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" style={style} aria-hidden="true"><path d={d}/></svg>;};
@@ -3074,7 +3082,7 @@ function App(){
                   {icon:"star", val:heroRecs.length,lbl:"هيرو",color:"#C9A84C"},
                   {icon:"alert",val:lowStockCount,lbl:"مخزون منخفض",color:lowStockCount>0?"#D08080":"#6AAA48"},
                 ].map(s=>(
-                  <div key={s.lbl} style={DCARD}>
+                  <div key={s.lbl} className="dcard" style={DCARD}>
                     <div style={{marginBottom:"6px",color:s.color,display:"flex",justifyContent:"center"}}><Icon name={s.icon} size={18}/></div>
                     <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.4rem",fontWeight:"700",color:s.color,lineHeight:1}}>{s.val}</div>
                     <div style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.45)",marginTop:"3px",fontFamily:"'Alexandria',sans-serif"}}>{s.lbl}</div>
@@ -3083,12 +3091,12 @@ function App(){
               </div>
               {/* ── قيمة المخزون + أعلى المنتجات ── */}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"10px"}}>
-                <div style={DCARD}>
+                <div className="dcard" style={DCARD}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.60rem",letterSpacing:"0.18em",color:"rgba(201,168,76,0.45)",marginBottom:"8px",textAlign:"right"}}>قيمة المخزون</div>
                   <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.7rem",color:"#E8C870",lineHeight:1}}>{totalInvValue.toFixed(0)}</div>
                   <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.35)",marginTop:"3px"}}>ريال سعودي</div>
                 </div>
-                <div style={DCARD}>
+                <div className="dcard" style={DCARD}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.60rem",letterSpacing:"0.18em",color:"rgba(201,168,76,0.45)",marginBottom:"8px",textAlign:"right"}}>أعلى الأسعار</div>
                   {heroRecs.sort((a,b)=>(b.price_sar||0)-(a.price_sar||0)).slice(0,3).map(r=>(
                     <div key={r.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"4px"}}>
@@ -3104,7 +3112,7 @@ function App(){
                 const cost=recipeCost(r);
                 const _vol=(r.ing||[]).reduce((s,[,a])=>s+a,0);const mlCost=_vol>0?cost/_vol:0;
                 return(
-                <div style={{...DCARD,textAlign:"right"}}>
+                <div className="dcard" style={{...DCARD,textAlign:"right"}}>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.60rem",letterSpacing:"0.15em",color:"rgba(201,168,76,0.45)",marginBottom:"10px"}}>حاسبة التكلفة — {r.name}</div>
                   <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"5px"}}>
                     {[{l:"12مل",ml:12},{l:"30مل",ml:30},{l:"50مل",ml:50},{l:"100مل",ml:100}].map(({l,ml})=>{
@@ -3158,29 +3166,29 @@ function App(){
             </div>
             {/* ── Type tabs: دهن / عطر ── */}
             <div style={{display:"flex",gap:"0",marginBottom:"10px",borderRadius:"12px",overflow:"hidden",border:"1px solid rgba(201,168,76,0.25)",background:"rgba(201,168,76,0.05)"}}>
-              {[["الكل","🔎 الكل"],["دهن","🫙 دهون"],["عطر","🌸 عطور بخاخ"]].map(([v,l])=>(
-                <button key={v} onClick={()=>setRecipeTypeF(v)} style={{flex:1,padding:"9px 4px",border:"none",cursor:"pointer",fontSize:"0.75rem",fontFamily:"'Alexandria',sans-serif",fontWeight:recipeTypeF===v?"700":"400",background:recipeTypeF===v?"#C9A84C":"transparent",color:recipeTypeF===v?"#1A1208":"rgba(138,106,30,0.70)",transition:"all 0.18s"}}>{l}</button>
+              {[["الكل","search","الكل"],["دهن","drop","دهون"],["عطر","spray","عطور بخاخ"]].map(([v,ic,l])=>(
+                <button key={v} onClick={()=>setRecipeTypeF(v)} style={{flex:1,padding:"9px 4px",border:"none",cursor:"pointer",fontSize:"0.75rem",fontFamily:"'Alexandria',sans-serif",fontWeight:recipeTypeF===v?"700":"400",background:recipeTypeF===v?"#C9A84C":"transparent",color:recipeTypeF===v?"#1A1208":"rgba(138,106,30,0.70)",transition:"all 0.18s"}}><Icon name={ic} size={13} style={{verticalAlign:-2,marginInlineEnd:4}}/>{l}</button>
               ))}
             </div>
             {/* ── Season chips ── */}
             <div className="filter-row" style={{marginBottom:"7px"}}>
-              {[["الكل","🔎"],["صيف","🌞"],["شتاء","❄️"],["ربيع","🌸"],["خريف","🍂"],["مناسبات","✨"],["للجنسين","🌿"]].map(([s,em])=>(
-                <button key={s} className={`fchip${recipeSeasonF===s?" on":""}`} onClick={()=>setRecipeSeasonF(s)}>{em} {s}</button>
+              {[["الكل","search"],["صيف","sun"],["شتاء","snow"],["ربيع","flower"],["خريف","leaf"],["مناسبات","sparkle"],["للجنسين","users"]].map(([s,em])=>(
+                <button key={s} className={`fchip${recipeSeasonF===s?" on":""}`} onClick={()=>setRecipeSeasonF(s)}><Icon name={em} size={12}/>{s}</button>
               ))}
             </div>
             {/* ── Gender + Status chips ── */}
             <div className="filter-row" style={{marginBottom:"7px"}}>
-              {[["الكل","👥"],["رجالي","👔"],["نسائي","💐"],["للجنسين","🤝"]].map(([g,em])=>(
-                <button key={g} className={`fchip gender${recipeGenderF===g?" on":""}`} onClick={()=>setRecipeGenderF(g)}>{em} {g}</button>
+              {[["الكل","search"],["رجالي","user"],["نسائي","flower"],["للجنسين","users"]].map(([g,em])=>(
+                <button key={g} className={`fchip gender${recipeGenderF===g?" on":""}`} onClick={()=>setRecipeGenderF(g)}><Icon name={em} size={12}/>{g}</button>
               ))}
-              <button className={`fchip${readyFilter?" on":""}`} onClick={()=>setReadyFilter(f=>!f)}>✅ جاهز</button>
-              <button className={`fchip${heroFilter?" on":""}`} onClick={()=>setHeroFilter(f=>!f)}>⭐ هيرو</button>
+              <button className={`fchip${readyFilter?" on":""}`} onClick={()=>setReadyFilter(f=>!f)}><Icon name="check" size={12}/>جاهز</button>
+              <button className={`fchip${heroFilter?" on":""}`} onClick={()=>setHeroFilter(f=>!f)}><Icon name="star" size={12}/>هيرو</button>
             </div>
             {/* ── Sort row ── */}
             <div className="filter-row">
               <span style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.30)",alignSelf:"center",marginLeft:"2px",whiteSpace:"nowrap",flexShrink:0}}>ترتيب:</span>
-              {[["fav","⭐ المفضل"],["price_desc","💰 أغلى"],["rating","🌟 التقييم"],["cost","💲 التكلفة"],["alpha","أ-ي"]].map(([v,l])=>(
-                <button key={v} className={`sort-chip${recipeSort===v?" active":""}`} onClick={()=>setRecipeSort(v)}>{l}</button>
+              {[["fav","star","المفضل"],["price_desc","coin","أغلى"],["rating","sparkle","التقييم"],["cost","tag","التكلفة"],["alpha",null,"أ-ي"]].map(([v,ic,l])=>(
+                <button key={v} className={`sort-chip${recipeSort===v?" active":""}`} onClick={()=>setRecipeSort(v)}>{ic&&<Icon name={ic} size={12}/>}{l}</button>
               ))}
             </div>
             {/* ── Active filters summary ── */}
@@ -3711,7 +3719,7 @@ function App(){
   };
   const DCARD={background:"#FFFFFF",border:"1px solid rgba(201,168,76,0.20)",borderRadius:"14px",padding:"14px 12px",textAlign:"center",boxShadow:"0 2px 12px rgba(180,140,40,0.10)"};
   return(
-  <div style={{...DCARD,marginTop:"8px"}}>
+  <div className="dcard" style={{...DCARD,marginTop:"8px"}}>
     <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.56rem",letterSpacing:"0.18em",color:"rgba(138,106,30,0.68)",marginBottom:"8px"}}>INGREDIENT WHEEL</div>
     <div style={{display:"flex",alignItems:"center",gap:"12px"}}>
       <svg width="120" height="120" viewBox="0 0 120 120">
@@ -3754,7 +3762,7 @@ function App(){
   ].slice(0,weeks);
   const DCARD={background:"#FFFFFF",border:"1px solid rgba(201,168,76,0.20)",borderRadius:"14px",padding:"14px 12px",textAlign:"center",boxShadow:"0 2px 12px rgba(180,140,40,0.10)"};
   return(
-  <div style={{...DCARD,marginTop:"8px"}}>
+  <div className="dcard" style={{...DCARD,marginTop:"8px"}}>
     <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.56rem",letterSpacing:"0.18em",color:"rgba(138,106,30,0.68)",marginBottom:"10px"}}>AGING TIMELINE · {weeks} أسابيع</div>
     <div style={{position:"relative",paddingRight:"8px"}}>
       <div style={{position:"absolute",right:"16px",top:"12px",bottom:"12px",width:"2px",background:"rgba(201,168,76,0.15)",borderRadius:"2px"}}/>
