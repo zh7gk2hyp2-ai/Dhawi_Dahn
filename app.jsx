@@ -1518,6 +1518,31 @@ const LogoSeal=({size=132})=>(
   </div>
 );
 
+// ─── Icon set: single-weight line icons (24 grid, currentColor) replacing system emoji in the app chrome ───
+const ICONS={
+  home:"M3 11.5 12 4l9 7.5M5.5 10v10h13V10",
+  jar:"M9 3h6M10 3v3M14 3v3M7 8h10l-1 12H8L7 8zM7 9c-1.8.8-3 2.4-3 4.2M17 9c1.8.8 3 2.4 3 4.2",
+  clipboard:"M9 4h6v3H9zM9 5H6v16h12V5h-3M9 12h6M9 16h4",
+  users:"M8.5 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c0-3.2 2.7-5.5 6-5.5s6 2.3 6 5.5M16 5.2a3 3 0 0 1 0 5.6M17.5 14.8c2.4.6 4 2.6 4 5.2",
+  box:"M3 8l9-4 9 4-9 4-9-4zM3 8v9l9 4 9-4V8M12 12v9",
+  chart:"M4 20v-9M10 20V5M16 20v-6M2 20h20",
+  cart:"M3 4h2l2.4 11h11.2L21 7.5H6.3M9.5 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17.5 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
+  vial:"M9 3h6M10 3v7l-5 8.6A2 2 0 0 0 6.7 21.5h10.6a2 2 0 0 0 1.7-2.9L14 10V3M7.5 15h9",
+  qr:"M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h3v3h-3zM20 14v6h-6M20 20h.01",
+  chat:"M4 5h16v11H9l-5 4V5zM8 9h8M8 12h5",
+  bell:"M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15L6 16zM10 21h4",
+  moon:"M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z",
+  sun:"M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4",
+  gear:"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z",
+  globe:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3C9.5 5.6 8.2 8.6 8.2 12s1.3 6.4 3.8 9",
+  star:"M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z",
+  alert:"M12 3 2 20h20L12 3zM12 10v5M12 17.5v.5",
+  user:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 21c0-4 3.3-6.5 7.5-6.5s7.5 2.5 7.5 6.5",
+  check:"M4 12.5l5 5L20 6.5",
+};
+const Icon=({name,size=20,stroke=1.8,style,className=""})=>{const d=ICONS[name];if(!d)return null;
+  return <svg className={"ico "+className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" style={style} aria-hidden="true"><path d={d}/></svg>;};
+
 // ─── date helper ────────────────────────────────────────────────
 function fmtDate(iso){
   const d=new Date(iso);
@@ -2409,12 +2434,12 @@ function App(){
 
       {(()=>{
         const TAB_META={
-          home:{label:"الرئيسية",color:"rgba(201,168,76,0.70)",icon:"🏠"},
-          inventory:{label:"المخزون",color:"rgba(90,148,240,0.65)",icon:"🏺"},
-          recipes:{label:"الوصفات",color:"rgba(200,120,190,0.65)",icon:"📋"},
-          customers:{label:"العملاء",color:"rgba(104,176,104,0.65)",icon:"👥"},
-          orders:{label:"الطلبات",color:"rgba(240,160,80,0.65)",icon:"📦"},
-          stats:{label:"الإحصائيات",color:"rgba(104,176,104,0.65)",icon:"📊"},
+          home:{label:"الرئيسية",color:"rgba(201,168,76,0.70)",icon:"home"},
+          inventory:{label:"المخزون",color:"rgba(90,148,240,0.65)",icon:"jar"},
+          recipes:{label:"الوصفات",color:"rgba(200,120,190,0.65)",icon:"clipboard"},
+          customers:{label:"العملاء",color:"rgba(104,176,104,0.65)",icon:"users"},
+          orders:{label:"الطلبات",color:"rgba(240,160,80,0.65)",icon:"box"},
+          stats:{label:"الإحصائيات",color:"rgba(104,176,104,0.65)",icon:"chart"},
         };
         const meta=TAB_META[tab]||TAB_META.home;
         return <>
@@ -2423,11 +2448,11 @@ function App(){
             <div style={{flex:1,textAlign:"center"}}>
               <div style={{fontFamily:"'Cormorant Garamond','Georgia',serif",fontStyle:"italic",fontWeight:300,fontSize:"1.50rem",letterSpacing:"0.04em",color:"#8A6A1E",lineHeight:1.1}}>Dhawi Oud</div>
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"5px",marginTop:"3px"}}>
-                <span style={{fontSize:"0.62rem"}}>{meta.icon}</span>
+                <Icon name={meta.icon} size={12} style={{color:meta.color}}/>
                 <span style={{fontSize:"0.56rem",color:meta.color,letterSpacing:"0.40em",textTransform:"uppercase",fontFamily:"'IBM Plex Mono',monospace",fontWeight:600,transition:"color 0.3s"}}>{meta.label}</span>
               </div>
             </div>
-            <button onClick={()=>{setTab("heritage");setSelectedRecipe(null);setSelectedCustomer(null);setShowCustomerStore(false);setCatalogView(null);}} aria-label="الإعدادات · الذكاء الاصطناعي · النسخ الاحتياطي" title="الإعدادات والذكاء الاصطناعي" style={{width:44,height:44,borderRadius:"50%",border:`1px solid ${tab==="heritage"?"#8A6A1E":"rgba(138,106,30,0.3)"}`,background:tab==="heritage"?"rgba(138,106,30,0.10)":"transparent",color:"#8A6A1E",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,padding:0}}>⚙️</button>
+            <button onClick={()=>{setTab("heritage");setSelectedRecipe(null);setSelectedCustomer(null);setShowCustomerStore(false);setCatalogView(null);}} aria-label="الإعدادات · الذكاء الاصطناعي · النسخ الاحتياطي" title="الإعدادات والذكاء الاصطناعي" style={{width:44,height:44,borderRadius:"50%",border:`1px solid ${tab==="heritage"?"#8A6A1E":"rgba(138,106,30,0.3)"}`,background:tab==="heritage"?"rgba(138,106,30,0.10)":"transparent",color:"#8A6A1E",fontSize:"1rem",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,padding:0}}><Icon name="gear" size={19}/></button>
           </div>
           <div style={{margin:"0 18px 4px",height:"1px",background:`linear-gradient(90deg,transparent,${meta.color},transparent)`,transition:"background 0.35s ease"}}/>
         </>;
@@ -2461,13 +2486,13 @@ function App(){
               </div>
               <div style={{display:"flex",gap:"7px",flexWrap:"wrap"}}>
                 {[
-                  {label:"وصفة",val:recipes.length,icon:"📋",tab:"recipes"},
-                  {label:"دفعة",val:prodLog.length,icon:"🏺",tab:"stats"},
-                  {label:"مُباعة",val:totalSold,icon:"✅",tab:"stats"},
-                  {label:"عميل",val:customers.length,icon:"👤",tab:"customers"},
+                  {label:"وصفة",val:recipes.length,icon:"clipboard",tab:"recipes"},
+                  {label:"دفعة",val:prodLog.length,icon:"jar",tab:"stats"},
+                  {label:"مُباعة",val:totalSold,icon:"check",tab:"stats"},
+                  {label:"عميل",val:customers.length,icon:"user",tab:"customers"},
                 ].map(({label,val,icon,tab:t})=>(
                   <div key={label} onClick={()=>goTab(t)} style={{background:"rgba(255,255,255,0.07)",border:"1px solid rgba(201,168,76,0.14)",borderRadius:"12px",padding:"7px 11px",display:"flex",alignItems:"center",gap:"6px",cursor:"pointer",transition:"background 0.2s"}}>
-                    <span style={{fontSize:"0.85rem"}}>{icon}</span>
+                    <Icon name={icon} size={16} style={{color:"#C9A84C"}}/>
                     <div>
                       <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1rem",color:"#E8C870",fontWeight:600,lineHeight:1}}>{val}</div>
                       <div style={{fontSize:"0.60rem",color:"rgba(201,168,76,0.40)",marginTop:"1px"}}>{label}</div>
@@ -2480,13 +2505,13 @@ function App(){
             {/* ── Quick Actions ── */}
             <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"7px",marginBottom:"12px"}}>
               {[
-                {icon:"📋",label:"الوصفات",tab:"recipes"},
-                {icon:"🧪",label:"المخزون",tab:"inventory"},
-                {icon:"📊",label:"الإحصاء",tab:"stats"},
-                {icon:"🛒",label:"المتجر",tab:"orders"},
+                {icon:"clipboard",label:"الوصفات",tab:"recipes"},
+                {icon:"vial",label:"المخزون",tab:"inventory"},
+                {icon:"chart",label:"الإحصاء",tab:"stats"},
+                {icon:"cart",label:"المتجر",tab:"orders"},
               ].map(({icon,label,tab:t})=>(
                 <button key={t} className="quick-action" onClick={()=>goTab(t)}>
-                  <div className="quick-action-icon">{icon}</div>
+                  <div className="quick-action-icon"><Icon name={icon} size={26} stroke={1.6}/></div>
                   <div className="quick-action-label">{label}</div>
                 </button>
               ))}
@@ -2494,9 +2519,9 @@ function App(){
 
             {/* ── Utility Buttons ── */}
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"6px",marginBottom:"12px"}}>
-              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700"}} onClick={startQRScan}>📷 مسح QR</button>
-              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700"}} onClick={whatsappBulkOrders}>💚 واتساب</button>
-              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700",color:notifPerm==="granted"?"#80c080":undefined}} onClick={requestNotifPerm}>{notifPerm==="granted"?"🔔 ✓":"🔔 إشعارات"}</button>
+              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px"}} onClick={startQRScan}><Icon name="qr" size={15}/>مسح QR</button>
+              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700",display:"flex",alignItems:"center",justifyContent:"center",gap:"6px"}} onClick={whatsappBulkOrders}><Icon name="chat" size={15}/>واتساب</button>
+              <button className="btn-ghost" style={{padding:"10px 6px",fontSize:"0.72rem",fontWeight:"700",color:notifPerm==="granted"?"#80c080":undefined,display:"flex",alignItems:"center",justifyContent:"center",gap:"6px"}} onClick={requestNotifPerm}><Icon name="bell" size={15}/>{notifPerm==="granted"?"مفعّلة":"إشعارات"}</button>
             </div>
 
             {/* ── Ready to Sell ── */}
@@ -3038,13 +3063,13 @@ function App(){
               {/* ── الأرقام الرئيسية ── */}
               <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"8px",marginBottom:"10px"}}>
                 {[
-                  {icon:"📋",val:recipes.length,lbl:"الوصفات",color:"#E8C870"},
-                  {icon:"🌐",val:publishedRecs.length,lbl:"منشور",color:"#6AAA48"},
-                  {icon:"★", val:heroRecs.length,lbl:"هيرو",color:"#C9A84C"},
-                  {icon:"⚠️",val:lowStockCount,lbl:"مخزون منخفض",color:lowStockCount>0?"#D08080":"#6AAA48"},
+                  {icon:"clipboard",val:recipes.length,lbl:"الوصفات",color:"#E8C870"},
+                  {icon:"globe",val:publishedRecs.length,lbl:"منشور",color:"#6AAA48"},
+                  {icon:"star", val:heroRecs.length,lbl:"هيرو",color:"#C9A84C"},
+                  {icon:"alert",val:lowStockCount,lbl:"مخزون منخفض",color:lowStockCount>0?"#D08080":"#6AAA48"},
                 ].map(s=>(
                   <div key={s.lbl} style={DCARD}>
-                    <div style={{fontSize:"1rem",marginBottom:"3px"}}>{s.icon}</div>
+                    <div style={{marginBottom:"6px",color:s.color,display:"flex",justifyContent:"center"}}><Icon name={s.icon} size={18}/></div>
                     <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"1.4rem",fontWeight:"700",color:s.color,lineHeight:1}}>{s.val}</div>
                     <div style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.45)",marginTop:"3px",fontFamily:"'Alexandria',sans-serif"}}>{s.lbl}</div>
                   </div>
@@ -4753,16 +4778,16 @@ function App(){
         {(()=>{
           const newOrdersCount=storeOrders.filter(o=>o.status==='new').length;
           return[
-          {id:"home",icon:"🏠",label:"الرئيسية"},
-          {id:"inventory",icon:"🏺",label:"المخزون"},
-          {id:"recipes",icon:"📋",label:"الوصفات"},
-          {id:"customers",icon:"👥",label:"العملاء"},
-          {id:"orders",icon:"📦",label:"الطلبات",badge:newOrdersCount},
-          {id:"stats",icon:"📊",label:"إحصائيات"},
+          {id:"home",icon:"home",label:"الرئيسية"},
+          {id:"inventory",icon:"jar",label:"المخزون"},
+          {id:"recipes",icon:"clipboard",label:"الوصفات"},
+          {id:"customers",icon:"users",label:"العملاء"},
+          {id:"orders",icon:"box",label:"الطلبات",badge:newOrdersCount},
+          {id:"stats",icon:"chart",label:"إحصائيات"},
         ].map(t=>(
           <button key={t.id} onClick={()=>{setTab(t.id);setSelectedRecipe(null);setCatalogView(null);setQrRecipe(null);setShowAddIng(false);setShowAddRec(false);setShowCompare(false);setShowMixer(false);setSelectedCustomer(null);setShowAddCust(false);setShowShopList(false);setShowSupplierCmp(false);setShowExpiryCalendar(false);setShowRating(false);setShowAIGen(false);setShowAIAnalysis(false);setShowDilution(false);setEditRecipe(null);setShowCustomerStore(false);setShowCart(false);setShowRoadmap(false);}} className={`nav-btn ${tab===t.id?"active":""}`}>
             <span className="nav-icon" style={{position:"relative"}}>
-              {t.icon}
+              <Icon name={t.icon} size={22}/>
               {t.badge>0&&<span style={{position:"absolute",top:-5,right:-5,background:"#C03030",color:"#1A1208",borderRadius:"50%",width:15,height:15,fontSize:"0.56rem",fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>{t.badge}</span>}
             </span>
             {t.label}
@@ -4770,7 +4795,7 @@ function App(){
           </button>
         ))
         })()}
-        <button onClick={()=>setDarkMode(d=>!d)} style={{background:darkMode?"rgba(201,168,76,0.14)":"rgba(26,18,8,0.05)",border:"1px solid rgba(201,168,76,0.18)",borderRadius:"50%",width:"34px",height:"34px",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:"0.9rem",flexShrink:0,transition:"all 0.25s"}}>{darkMode?"☀️":"🌙"}</button>
+        <button onClick={()=>setDarkMode(d=>!d)} style={{background:darkMode?"rgba(201,168,76,0.14)":"rgba(26,18,8,0.05)",border:"1px solid rgba(201,168,76,0.18)",borderRadius:"50%",width:"34px",height:"34px",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:"0.9rem",flexShrink:0,transition:"all 0.25s"}}><Icon name={darkMode?"sun":"moon"} size={17} style={{color:darkMode?"#E8C870":"#8A6A1E"}}/></button>
       </div>
     </div>
   );
