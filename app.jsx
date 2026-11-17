@@ -1539,6 +1539,12 @@ const ICONS={
   alert:"M12 3 2 20h20L12 3zM12 10v5M12 17.5v.5",
   user:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 21c0-4 3.3-6.5 7.5-6.5s7.5 2.5 7.5 6.5",
   check:"M4 12.5l5 5L20 6.5",
+  bag:"M6 8h12l1 13H5L6 8zM9 8V6a3 3 0 0 1 6 0v2",
+  book:"M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5zM4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5",
+  sparkle:"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z",
+  plus:"M12 5v14M5 12h14",
+  shield:"M12 3l8 3v6c0 4.5-3.2 8.3-8 9.5C7.2 20.3 4 16.5 4 12V6l8-3zM9 12l2 2 4-4",
+  save:"M5 4h11l3 3v13H5V4zM8 4v5h7V4M8 20v-6h8v6",
 };
 const Icon=({name,size=20,stroke=1.8,style,className=""})=>{const d=ICONS[name];if(!d)return null;
   return <svg className={"ico "+className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" style={style} aria-hidden="true"><path d={d}/></svg>;};
@@ -2584,12 +2590,12 @@ function App(){
               if((prodLog.length+recipes.length)===0||(lb&&days<7))return null;
               return(
                 <div className="glass" style={{border:"1px solid rgba(190,125,25,0.40)",background:"rgba(190,125,25,0.06)",display:"flex",alignItems:"center",gap:"11px",padding:"13px 14px",marginBottom:"12px"}}>
-                  <span style={{fontSize:"1.35rem",flexShrink:0}}>🛡️</span>
+                  <Icon name="shield" size={26} stroke={1.5} style={{flexShrink:0,color:"#8A6A1E"}}/>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:"0.79rem",fontWeight:800,color:"#8A5A10"}}>{lb?`آخر نسخة احتياطية قبل ${Math.floor(days)} يوم`:"لا توجد نسخة احتياطية بعد"}</div>
                     <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.45)",marginTop:"2px"}}>بياناتك محفوظة في المتصفح فقط — صدّرها لحمايتها من الضياع</div>
                   </div>
-                  <button className="btn-gold" style={{padding:"9px 14px",fontSize:"0.72rem",flexShrink:0}} onClick={exportData}>💾 نسخ الآن</button>
+                  <button className="btn-gold" style={{padding:"9px 14px",fontSize:"0.72rem",flexShrink:0}} onClick={exportData} ><Icon name="save" size={14} style={{marginInlineEnd:6,verticalAlign:-2}}/>نسخ الآن</button>
                 </div>
               );
             })()}
@@ -3125,18 +3131,18 @@ function App(){
           })()}
 
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"}}>
-            <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700"}}>{showCustomerStore?"🛍 متجر الزبائن":catalogMode?"كتالوج العطور":`الوصفات (${recipes.length})`}</h2>
+            <h2 style={{color:"#D4AF37",fontSize:"1.05rem",fontWeight:"700"}}>{showCustomerStore?"متجر الزبائن":catalogMode?"كتالوج العطور":`الوصفات (${recipes.length})`}</h2>
             <div style={{display:"flex",gap:"5px",flexWrap:"wrap",justifyContent:"flex-end"}}>
               {cartCount>0&&<button className="btn-ghost" style={{borderColor:"rgba(201,168,76,0.5)",color:"#E8C870",position:"relative",paddingInlineEnd:"18px"}} onClick={()=>setShowCart(true)}>
                 🛒
                 <span style={{position:"absolute",top:"-5px",right:"-5px",background:"#C9A84C",color:"#1A1208",borderRadius:"50%",width:"17px",height:"17px",fontSize:"0.60rem",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"900",lineHeight:1}}>{cartCount}</span>
               </button>}
-              <button className="btn-ghost" style={showCustomerStore?{background:"rgba(201,168,76,0.18)",color:"#E8C870",borderColor:"rgba(201,168,76,0.5)"}:{}} onClick={()=>{setShowCustomerStore(s=>!s);setCatalogMode(false);}}>🛍 متجر</button>
-              {!showCustomerStore&&<button className="btn-ghost" style={catalogMode?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>setCatalogMode(c=>!c)}>📖 كتالوج</button>}
-              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" onClick={()=>setShowMixer(true)}>🧪 خلط</button>}
-              {!catalogMode&&!showCustomerStore&&compareIds.length===2&&<button className="btn-ghost" onClick={()=>setShowCompare(true)}>⚖️ قارن</button>}
-              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" onClick={()=>setShowAddRec(true)}>+ وصفة</button>}
-              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:aiKey?"#80a0e0":"#5a5a7a"}} onClick={generateAIRecipe}>🤖 AI</button>}
+              <button className="btn-ghost" style={showCustomerStore?{background:"rgba(201,168,76,0.18)",color:"#E8C870",borderColor:"rgba(201,168,76,0.5)"}:{}} onClick={()=>{setShowCustomerStore(s=>!s);setCatalogMode(false);}}><Icon name="bag" size={14} style={{marginInlineEnd:5,verticalAlign:-2}}/>متجر</button>
+              {!showCustomerStore&&<button className="btn-ghost" style={catalogMode?{background:"#D4AF37",color:"#1a0800"}:{}} onClick={()=>setCatalogMode(c=>!c)}><Icon name="book" size={14} style={{marginInlineEnd:5,verticalAlign:-2}}/>كتالوج</button>}
+              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" onClick={()=>setShowMixer(true)}><Icon name="vial" size={14} style={{marginInlineEnd:5,verticalAlign:-2}}/>خلط</button>}
+              {!catalogMode&&!showCustomerStore&&compareIds.length===2&&<button className="btn-ghost" onClick={()=>setShowCompare(true)}>قارن ⇄</button>}
+              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" onClick={()=>setShowAddRec(true)}><Icon name="plus" size={14} style={{marginInlineEnd:4,verticalAlign:-2}}/>وصفة</button>}
+              {!catalogMode&&!showCustomerStore&&<button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:aiKey?"#80a0e0":"#5a5a7a"}} onClick={generateAIRecipe}><Icon name="sparkle" size={14} style={{marginInlineEnd:5,verticalAlign:-2}}/>AI</button>}
             </div>
           </div>
           {compareIds.length>0&&<div style={{background:"rgba(80,120,200,0.12)",border:"1px solid rgba(80,120,200,0.3)",borderRadius:"10px",padding:"8px 12px",marginBottom:"10px",fontSize:"0.75rem",color:"#80a0e0"}}>
@@ -3517,7 +3523,7 @@ function App(){
               <button className="btn-ghost" onClick={()=>cloneRecipe(r)} style={{padding:"7px 10px"}} title="نسخ الوصفة">📋 نسخ</button>
               <button className="btn-ghost" onClick={()=>printRecipe(r)} style={{padding:"7px 10px"}}>🖨️</button>
               <button className="btn-ghost" onClick={()=>setQrRecipe(r)} style={{padding:"7px 10px"}}>📲</button>
-              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0",padding:"7px 10px"}} onClick={()=>analyzeRecipeAI(r)}>🤖</button>
+              <button className="btn-ghost" style={{borderColor:"rgba(80,120,200,0.5)",color:"#80a0e0",padding:"7px 10px"}} onClick={()=>analyzeRecipeAI(r)} aria-label="تحليل بالذكاء الاصطناعي"><Icon name="sparkle" size={15}/></button>
             </div>
             {/* ── Recipe Production Stats ── */}
             {(()=>{
