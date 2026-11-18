@@ -1410,8 +1410,8 @@ const P_ALL=(()=>{
 })();
 
 // ── صور المنتجات الحقيقية (بوسترات الحملة) ──────────────────────────
-// posters from the older template carry their title at the bottom — anchor the card crop there
-const PRODUCT_IMG_POS={d_cambodi:'center 92%',d_black:'center 92%',d_suyufi:'center 92%',d_muattaq:'center 92%',r_bormi:'center 92%',r_muattaq:'center 92%',r_suyufi:'center 92%',r_khalifa:'center 92%'};
+// per-image crop anchor override (unused now that every poster shares one layout)
+const PRODUCT_IMG_POS={}; // all posters now share the top-title layout
 const PRODUCT_IMG={
   r_malaki:'media/products/r_malaki.jpg',
   r_hindi_soul:'media/products/r_hindi_soul.jpg',
