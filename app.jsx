@@ -1045,7 +1045,7 @@ const RECIPE_IMG={
   r_diyaa:"media/products/r_diyaa.jpg",
   r_dukhan_naqa:"media/products/r_dukhan_naqa.jpg",
   r_exclusif_cambodi:"media/products/r_exclusif_cambodi.jpg",
-  r_exclusif_jamr:"media/products/r_exclusif_jamr.jpg",
+  r_exclusif_jamr:"media/products/r_exclusif_jamr.jpg",r_asal_anbar:"media/products/r_asal_anbar.jpg",
   r_exclusif_sultan:"media/products/r_exclusif_sultan.jpg",
   r_exclusif_suyufi:"media/products/r_exclusif_suyufi.jpg",
   r_ghaliya:"media/products/r_ghaliya.jpg",
