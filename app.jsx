@@ -25,7 +25,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_91";
+const PENDING_RECIPES_VERSION="rec_92";
 const PENDING_RECIPES=[
   {id:"r_fix50",name:"جدول التثبيت — لكل 50مل دهن",icon:"⚖️",season:"مناسبات",gender:"للجنسين",stability:"مرجع دائم",
    desc:"كم أُضيف من المثبّتات على 50مل من أي دهن: صندل 3 · لبدانوم 1.3 · عنبرمور 1.2 · كشميران 1.2 · جالاكسولايد 1.8 · آيسو 1.5 · هيديون 1.5 | إضافات 19٪ بتكلفة 9.49 ر | ⚠️ بطاقة مرجعية لا وصفة إنتاج",
@@ -846,6 +846,10 @@ const PENDING_RECIPES=[
    desc:"طابع عسل+عنبر+توت+عود (كلمات-style): لبدانوم 7٪ · بنزوين 10٪ · فانيلا · تونكيتون · كمبودي + Dahnal Tarat 19٪ · لمسة Oud Maracuja فاكهية | قاعدة 55٪ · قلب 35٪ · قمة 10٪ | 🚀 فوّاح",
    ing:[["cardamom",0.3],["safraleine",0.2],["wild_petal",2.5],["lux_cambodi",5],["uae_dahnal_tarat",3],["maracuja",1.5],["labdanum",3],["benzoin_b",4],["vanilla",2],["tonquitone",0.6],["ambermor",2],["cashmeran",1.3],["sandal_indi",5],["musk_ruman",2],["galaxolide",3],["hedione",2.5],["ambroxan",0.6],["iso_e",3],["jojoba",3]],
    steps:["⚡ تزويج المسك أولاً (24 ساعة): Cambodi 5 + Dahnal Tarat 3 + مسك رمان 2 + كشميري 1.3","أذِب لبدانوم 3 + بنزوين 4 + Ambermor 2 على 55° ← برّد 40° (قلب العسل)","بيكر بارد: جوجوبا 3 + خليط العود والمسك ← الراتنجات المبرّدة ← فانيلا 2 + تونكيتون 0.6","الصندل 5 ← Oud Maracuja 1.5 (الفاكهة الداكنة) ← Wild Petal 2.5 ← ISO E 3","سرنجة: هيل 0.3 + سافرالين 0.2 (محلول 10٪)","🚀 بارد أخيراً: Hedione 2.5 + Galaxolide 3 + Ambroxan 0.6","عتّق 3 أسابيع بارد مظلم"]},
+
+  // ===== rec_92: موازنة هرم الوردتين — تقليل القمة ورفع الصندل/المسك/المثبّت =====
+  {"id":"r_ward_istanbul","name":"وردة إسطنبول","icon":"🌹","season":"ربيع","gender":"نسائي","stability":"30 ساعة","published":true,"hero":true,"perfumer":"ضاوي","price_sar":200,"story":"وردةٌ إسطنبوليةٌ تتفتّح عند الغروب على ضفاف البوسفور، يعانقها صندلٌ كريميٌّ وفانيلا خفيفة. أنوثةٌ شرقيةٌ راقيةٌ تجمع دفء الشرق برقّة الوردة — لمن تحبّ أن تُذكَر برائحتها.","desc":"قمة: بتلات + ورد طائفي | قلب: ورد إسطنبولي فاخر | قاعدة: صندل مضاعف + فانيلا + مسك رمان | 🚀 فوّاح — نسائي ربيعي | ⚖️ متوازن (rec_92): قمة 34٪ / قاعدة 47٪","ing":[["rose_istanbul",5.5],["rose_taif",2],["wild_petal",3.2],["pea",0.8],["sandal_indi",6],["benzoin_b",3],["vanilla",1.5],["musk_ruman",2.5],["cashmeran",1.2],["iso_e",2],["hedione",3],["galaxolide",2.5],["ambroxan",0.4],["jojoba",6]],"steps":["⚡ رابط الورد (20 دق): Wild Petal 3.2مل + Benzoin B 1مل في كوب مغلق","في بيكر بارد: Jojoba 6مل + Rose Istanbul 5.5مل + ورد طائفي 2مل","أذِب Benzoin B 2مل المتبقي على 50° ← برّد 40° ← أضِف + Sandalwood 6مل (الصندل المضاعف هو ما يُمسك الوردة 30 ساعة)","أضِف خليط الورد ← ثم PEA 0.8مل فقط ⚠️ (لا تزد — تعطي معدنية)","سرنجة: Vanilla 1.5مل + مسك رمان 2.5مل + Cashmeran 1.2مل + ISO E 2مل","🚀 محرّك الفوحان (بارد أخيراً): Hedione 3مل + Galaxolide 2.5مل + Ambroxan 0.4جم مذاب","عتّق أسبوعين — الورد يتفتّح من اليوم الخامس"]},
+  {"id":"r_wahj_ward","name":"وهج الورد","icon":"🌹","season":"ربيع","gender":"نسائي","stability":"20-24 ساعة","perfumer":"ضاوي","story":"وردةٌ دمشقية تتوهّج على شاطئ عند الغروب — ملحُ البحر ونفحةُ فلفلٍ وردي يفتحان الطريق، ثم يستقر الورد على عنبرٍ معدني وطحلبٍ أخضر. مقاربٌ لـ Gucci Rosa Incandescente بروح دار ضاوي: أنوثةٌ منعشة لا تُشبه الشرقيات الثقيلة — خفيفة، مالحة، مشرقة كوردةٍ تحت الشمس.","desc":"قمة: افتتاحية بحرية مالحة + فلفل وردي (هيل) | قلب: ورد دمشقي (بتلات) | قاعدة: عنبر معدني + طحلب (باتشولي+فيتيفير) | مقارب Gucci Rosa Incandescente | نسائي | ⚖️ متوازن (rec_92): قمة 31٪","ing":[["lux_afternoon",4],["wild_petal",6.4],["pea",0.6],["cardamom",0.3],["ambermor",2],["patchouli",1.5],["vetiver",0.8],["labdanum",1],["benzoin_b",2.5],["cashmeran",1.06],["lux_fixative",2.5],["iso_e",0.8],["jojoba",4],["dpg",4]],"steps":["⚡ تزويج المسك أولاً (تقنية العطّارين): اخلط دهن العود الرئيسي مع الكشميري/المسك في زجاجة محكمة واتركهما 24 ساعة ليتزاوجا قبل أي إضافة","⚡ رابط الورد (20 دق): Wild Petal 6.4مل + Benzoin B 2.5مل في كوب مغلق — 20 دقيقة | في كوب آخر: أذب Ambermor شمعي 2جم + لبدانوم 1جم في 50° ← اترك يبرد تماماً","في بيكر بارد: Jojoba 4مل + DPG 4مل — الحامل الخفيف المنعش","أضف Lux Afternoon Swim 4مل — الافتتاحية البحرية المالحة المنعشة (حمضيات + مائي) — هي روح «روزا إنكانديسنتي» البحرية","أضف خليط رابط الورد (Wild Petal + Benzoin) ← ثم PEA 0.6مل فقط ⚠️ (لا تزد — معدنية حادة) — الورد الدمشقي في القلب","أضف Cardamom 0.3مل بارداً ⚠️ (لا تزد — يقوم مقام الفلفل الوردي: نفحة حارّة منعشة في القمة)","أضف محلول العنبر-اللبدانوم المُبرَّد — العنبر المعدني يقوم مقام الآمبرغريس/أوركانوكس","أضف Patchouli 1.5مل + Vetiver 0.8مل — القاعدة الطحلبية الخضراء تقوم مقام طحلب البلوط والطحالب البحرية (روح الشيبر المائي) | ⚠️ ملاحظة: الفيتيفير هنا آمن — مع الورد لا مع العود الحلو","سرنجة: Cashmeran 1.07مل + Lux Fixative 2.5مل + ISO E Super 0.8مل — بارداً دائماً","سرنجة ثانوية (اختياري — درجة ثانية): ورد الطائف 2مل (شرفان) + مسك رمان 1مل (شرفان) — يُعمّقان الورد الدمشقي، والوصفة تعمل كاملة بدونها","⚠️ عتّق 3 أسابيع في بارد مظلم | 💡 خفيف بحري نهاري-مسائي — رشّة على الرسغ والعنق | 🎯 للمطابقة الأقرب: أضف Ambroxan (من سلة PerfumersWorld) 0.5مل بدل جزء من العنبرمور — يعطي الوهج المعدني-المالح الحقيقي لأوركانوكس","🔄 تعديل rec_85 — حدّ IFRA: الكشميران كان 4.7٪ والحدّ للفئة 4 (ما يُوضَع على الجلد ويبقى) هو 3.8٪. أُنقص إلى 3.4٪ — هامشٌ تحت الحدّ. المراجع تضع استعماله المعتاد في العطور الفاخرة عند 2٪ تقريباً، فالوصفة تبقى فوق المتوسط. ولن تشعر بفرق يُذكر: الكشميران قويٌّ جداً وهذا سبب تقييده أصلاً."]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -1640,22 +1644,26 @@ function ifraCheck(r){
 }
 
 const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','cmp121','uae_blue_talisman','citronellol','geraniol','nerol']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake','uae_dahnal_tarat','uae_dahnal_asami','uae_asami_agar','uae_carved_oud','uae_sublime_oud','oud_xx','lux_bormi','lux_suyufi','lux_muattaq','lux_hindi','lux_khalifa','lux_hindi_sweety','iso_e','hedione']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake','uae_dahnal_tarat','uae_dahnal_asami','uae_asami_agar','uae_carved_oud','uae_sublime_oud','lux_bormi','lux_suyufi','lux_muattaq','lux_hindi','lux_khalifa','lux_hindi_sweety','iso_e','hedione']);
 const NOTES_CARRIER=new Set(['dpg','jojoba','benzyl']); // diluents — excluded from layer ratio
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
 // ─── بنية الدهن الزيتي: لا كحول يرفع القمة، فالهرم الصحي للدهن ≈ قمة 5–20٪ · قلب 30–45٪ · قاعدة 40–60٪ ───
-// الأدهان العودية (عود/مستوحى) مواد قلب في الهرم لكنها مثبّتة بطبيعتها — تُحسب نصفها قاعدةً في هذا الفحص
-const OUD_LIKE=new Set([...RAW.filter(x=>x[3]==="عود"||x[3]==="مستوحى").map(x=>x[0]),...INVENTORY_ADD_ITEMS.filter(x=>x.cat==="عود"||x.cat==="مستوحى").map(x=>x.id)]);
+// الأدهان العودية والخلطات الكاملة مواد قلب في الهرم لكنها مثبّتة بطبيعتها — تُحسب نصفها قاعدةً في هذا الفحص
+const OUD_LIKE=new Set([...RAW.filter(x=>x[3]==="عود"||x[3]==="مستوحى").map(x=>x[0]),...INVENTORY_ADD_ITEMS.filter(x=>x.cat==="عود"||x.cat==="مستوحى").map(x=>x.id),"blend1","blend2","cmp90","cmp91"]);
+// الحوامل والمذيبات لا تدخل في حساب الهرم
+const CARRIER_IDS=new Set(["jojoba","dpg","benzyl","ipa","ethanol","oud_xx"]);
 function structureCheck(r){
   if(!r||!Array.isArray(r.ing)||/^(acc_|r_tech_ref|s_|sol_)/.test(r.id)||IFRA_SKIP.has(r.id))return [];
-  const tot=r.ing.reduce((a,[,q])=>a+q,0)||1;const pct={top:0,mid:0,base:0};let oudMid=0;
-  r.ing.forEach(([id,q])=>{const t=noteTier(id);pct[t]+=q/tot*100;if(t==="mid"&&OUD_LIKE.has(id))oudMid+=q/tot*100;});
+  const ing=r.ing.filter(([id])=>!CARRIER_IDS.has(id));
+  const tot=ing.reduce((a,[,q])=>a+q,0)||1;const pct={top:0,mid:0,base:0};let oudMid=0;
+  ing.forEach(([id,q])=>{const t=noteTier(id);pct[t]+=q/tot*100;if(t==="mid"&&OUD_LIKE.has(id))oudMid+=q/tot*100;});
   pct.base+=oudMid/2;pct.mid-=oudMid/2;
+  const pureDahn=/^d_/.test(r.id)||/صافٍ|صافي/.test(r.name||"");
   const out=[];
-  if(pct.top===0)out.push("بلا افتتاحية: الدهن الزيتي يفتقد «الرفعة» — أضف هيلاً أو سافرالين أو بتلات ورد بنسبة 0.3–1٪");
-  else if(pct.top>25)out.push(`قمة زائدة (${pct.top.toFixed(0)}٪): في الزيت تتبخر القمة سريعاً وتترك فجوة — اخفضها دون 20٪`);
+  if(pct.top===0&&!pureDahn)out.push("بلا افتتاحية: الدهن الزيتي يفتقد «الرفعة» — أضف هيلاً أو سافرالين أو بتلات ورد بنسبة 0.3–1٪");
+  else if(pct.top>35)out.push(`قمة عالية (${pct.top.toFixed(0)}٪): في الزيت تتبخر القمة أسرع — ثبّتها بصندل أو مسك إضافي حتى لا تترك فجوة`);
   if(pct.base<40)out.push(`قاعدة ضعيفة (${pct.base.toFixed(0)}٪): الثبات سيقصر — ارفع الراتنجات/المسك/الصندل إلى 40٪ فأكثر`);
-  else if(pct.base>75)out.push(`قاعدة ثقيلة (${pct.base.toFixed(0)}٪): الدهن لن يتطوّر على الجلد — أعطِ القلب 25٪ على الأقل`);
+  else if(pct.base>80)out.push(`قاعدة ثقيلة (${pct.base.toFixed(0)}٪): الدهن لن يتطوّر على الجلد — أعطِ القلب 20٪ على الأقل`);
   return out;
 }
 // scale a number and format it cleanly
