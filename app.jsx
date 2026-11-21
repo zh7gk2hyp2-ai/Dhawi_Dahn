@@ -25,7 +25,7 @@ const LOW_STOCK_THRESHOLD=0.2; // 20% of original qty
 
 const PENDING_PURCHASES_VERSION="blk_lux_03";
 const WHATSAPP_OWNER="966503716775"; // رقم واتساب ضاوي للطلبات
-const PENDING_RECIPES_VERSION="rec_90";
+const PENDING_RECIPES_VERSION="rec_91";
 const PENDING_RECIPES=[
   {id:"r_fix50",name:"جدول التثبيت — لكل 50مل دهن",icon:"⚖️",season:"مناسبات",gender:"للجنسين",stability:"مرجع دائم",
    desc:"كم أُضيف من المثبّتات على 50مل من أي دهن: صندل 3 · لبدانوم 1.3 · عنبرمور 1.2 · كشميران 1.2 · جالاكسولايد 1.8 · آيسو 1.5 · هيديون 1.5 | إضافات 19٪ بتكلفة 9.49 ر | ⚠️ بطاقة مرجعية لا وصفة إنتاج",
@@ -831,6 +831,21 @@ const PENDING_RECIPES=[
    desc:"هرم أعواد الأكابر: قمة زعفران+زيتون+أوسمانثوس+فريزيا | قلب عود تايلندي (Dahnal Tarat) + سيوفي + مرّ + ياسمين | قاعدة أكيغالاوود + مسك + صندل + باتشولي — بدائلنا: Safraleine · Hedione (ياسمين/فريزيا) · Wild Petal+ورد+تونكيتون (أوسمانثوس) · لبدانوم+بنزوين (مرّ) · باتشولي+CMP91+ISO E+Ambroxan (أكيغالاوود) | 🚀 فوّاح · بلا PEA",
    ing:[["uae_dahnal_tarat",9],["lux_suyufi",6],["safraleine",0.5],["cardamom",0.2],["wild_petal",4],["hedione",4],["rose_istanbul",0.8],["tonquitone",0.3],["labdanum",1.5],["benzoin_b",2.5],["patchouli",2],["cmp91",1],["iso_e",3],["ambroxan",0.6],["sandal_indi",6],["galaxolide",3],["musk_ruman",1.5],["cashmeran",1.25],["jojoba",3]],
    steps:["⚡ تزويج المسك أولاً (24 ساعة): Dahnal Tarat 9 + Suyufi 6 + مسك رمان 1.5 + كشميري 1.2 في زجاجة محكمة","أذِب لبدانوم 1.5 + بنزوين B 2.5 على 50° ← برّد 40° (بديل المرّ)","بيكر بارد: جوجوبا 3 + خليط العود والمسك ← الراتنجات المبرّدة ← حرّك","أكورد الأكيغالاوود: باتشولي 2 + CMP91 1 + ISO E 3 ← حرّك دقيقة","الصندل 6 ← أكورد الأوسمانثوس: Wild Petal 4 + ورد إسطنبولي 0.8 + تونكيتون 0.3","سرنجة: Safraleine 0.5 (محلول 10%) + هيل 0.2 (لمسة الزيتون الخضراء)","🚀 بارد أخيراً: Hedione 4 (ياسمين/فريزيا) + Galaxolide 3 + Ambroxan 0.6","عتّق 3 أسابيع بارد مظلم"]},
+
+  // ── rec_74: الجولة الثالثة — كيمياء العود · ورد الطائف · بنية الدهن · IFRA (P&F, PMC, Scentspiracy, ResearchGate) ──
+  {id:"r_tech_ref3",name:"📚 دستور التقنيات ٣ — كيمياء العود والورد والثبات",icon:"🧪",season:"مناسبات",gender:"للجنسين",stability:"مرجع",
+   desc:"⚠️ بطاقة مرجعية — ليست للإنتاج | ما تعلّمناه من الأبحاث والمراجع التقنية وطُبّق في rec_74: فحص «بنية الدهن» الآلي، حدّ IFRA للبنزيل بنزوات، تصحيح طبقات ISO E/هيديون، كحولات الورد على قائمة الشراء",
+   ing:[["dpg",1]],
+   steps:["1️⃣ كيمياء العود: الوجه الخشبي الجاف من السيسكويتربينات (أجاروسبيرول 5–20٪ · جينكوه-إيريمول 10–30٪ في الهندي)، والوجه البلسمي/البخوري من الكرومونات (2-فينيل إيثيل كرومون) — لذلك يحمل العود الهندي «خشباً جافاً» أكثر، والكمبودي «حلاوة راتنجية» أكثر","2️⃣ حلاوة الكمبودي ناتجة عن إصابة حشرية تُحفّز راتنجاً مختلفاً؛ وحيوانية الهندي من النقع/التخمير قبل التقطير — ليست عيباً بل أسلوب تقطير","3️⃣ العود على الجلد يتطوّر: دخاني-مرّ-تبغي أولاً ← بلسمي-جلدي بعد ساعات ← دافئ-حيواني-فاكهي بعد أيام. لا تحكم على دهن عودي قبل 48 ساعة على الجلد و3 أسابيع في الزجاجة","4️⃣ دور العود في الصيغة: «توقيع» ثم «مثبّت» — لا يحتاج أن يكون الأغلب؛ 25–45٪ تكفي والباقي بنية","5️⃣ ورد الطائف الحقيقي: سيترونيلول 23–28٪ · جيرانيول 14–20٪ · نيرول 6–11٪ · لينالول ~8٪ · PEA 2–4٪ فقط — أي أن PEA ليس «الورد»، بل مكوّن صغير؛ سقفنا 2٪ صحيح علمياً","6️⃣ لبناء ورد أصدق اشترِ: سيترونيلول + جيرانيول + نيرول (أُضيفت للمخزون بكمية صفر = على قائمة الشراء) واتبع نِسَب الطائف أعلاه","7️⃣ بنية الدهن الزيتي: لا كحول يرفع القمة، فالهرم ≈ قمة 5–20٪ · قلب 30–45٪ · قاعدة 40–60٪ — التطبيق الآن يفحص كل وصفة ويحذّر تلقائياً","8️⃣ الثبات (سلّم بوشر 1–100): القمة 1–14 · القلب 15–60 · القاعدة 61–100؛ الراتنجات والمسك والصندل والباتشولي والفيتيفير = 100؛ Ambroxan وISO E والمسكات الصناعية 12–24 ساعة على الجلد","9️⃣ تصحيح: ISO E Super وHedione مواد قلب ثابتة لا قمة (كانتا مصنّفتين قمة) — يغيّر ذلك قراءة الهرم في البطاقات","🔟 IFRA الفئة 4 (في المنتج النهائي — والدهن يُوضَع صافياً): بنزيل بنزوات 4.8٪ · كومارين 1.3٪ · جيرانيول 4.7٪ · سيترونيلول 12٪ · يوجينول 2.5٪ · سينامال 0.25٪ · كشميران 3.8٪ · ISO E 20٪. أُضيف البنزيل للفحص الآلي؛ الأكوردات المركّزة مستثناة لأنها تُستعمل بنسبة 5–15٪","1️⃣1️⃣ السوق: «كلمات» (عربيان عود) = عسل + عنبر + توت + عود — وصفة «عسل العنبر» الجديدة تبني هذا الطابع من مخزوننا؛ الطلب على العطور المشتركة (للجنسين) يرتفع، والعود+العنبر يتصدّران مبيعات السعودية","1️⃣2️⃣ واقعية التكلفة: 70 كغ خشب ← 20 مل دهن مقطّر؛ لذلك أدهان «النسخ» (وادي/Luxodor) هي أساس المنتج التجاري، والعود الطبيعي لمسة في النخبة فقط"]},
+  {id:"acc_taif_rose",name:"أكورد ورد الطائف (بناء كيميائي)",icon:"🌹",season:"ربيع",gender:"للجنسين",stability:"أكورد",published:false,hero:false,perfumer:"ضاوي",
+   desc:"🧱 أكورد على نِسَب ورد الطائف المنشورة (سيترونيلول:جيرانيول:نيرول ≈ 26:17:9 وPEA صغير) + ورد طائفي حقيقي وبتلات | ⚠️ يحتاج شراء سيترونيلول/جيرانيول/نيرول | يُستعمل 8–15٪ في وصفات الورد بدل PEA",
+   ing:[["citronellol",26],["geraniol",17],["nerol",9],["pea",3],["rose_taif",20],["wild_petal",10],["dpg",15]],
+   steps:["بيكر بارد: DPG 15 ← سيترونيلول 26 + جيرانيول 17 + نيرول 9 ← حرّك","أضِف PEA 3 (لا أكثر — في الورد الحقيقي 2–4٪ فقط)","أضِف ورد طائفي 20 + Wild Petal 10","زجاجة داكنة · عتّق أسبوعين قبل الاستعمال · استخدم 8–15٪ من الدهن"]},
+  {id:"r_asal_anbar",name:"عسل العنبر",icon:"🍯",season:"شتاء",gender:"للجنسين",stability:"36 ساعة",published:true,hero:false,perfumer:"ضاوي",price_sar:220,
+   story:"على طريقة أشهر عنبرٍ عسليٍّ في السوق: لبدانومٌ عسليّ وبنزوين وفانيلا تلتفّ حول كمبوديٍّ ناعمٍ وعودٍ تايلندي، مع لمسةِ فاكهةٍ داكنة. دافئٌ يُعانق — للمساء والشتاء وللجنسين.",
+   desc:"طابع عسل+عنبر+توت+عود (كلمات-style): لبدانوم 7٪ · بنزوين 10٪ · فانيلا · تونكيتون · كمبودي + Dahnal Tarat 19٪ · لمسة Oud Maracuja فاكهية | قاعدة 55٪ · قلب 35٪ · قمة 10٪ | 🚀 فوّاح",
+   ing:[["cardamom",0.3],["safraleine",0.2],["wild_petal",2.5],["lux_cambodi",5],["uae_dahnal_tarat",3],["maracuja",1.5],["labdanum",3],["benzoin_b",4],["vanilla",2],["tonquitone",0.6],["ambermor",2],["cashmeran",1.3],["sandal_indi",5],["musk_ruman",2],["galaxolide",3],["hedione",2.5],["ambroxan",0.6],["iso_e",3],["jojoba",3]],
+   steps:["⚡ تزويج المسك أولاً (24 ساعة): Cambodi 5 + Dahnal Tarat 3 + مسك رمان 2 + كشميري 1.3","أذِب لبدانوم 3 + بنزوين 4 + Ambermor 2 على 55° ← برّد 40° (قلب العسل)","بيكر بارد: جوجوبا 3 + خليط العود والمسك ← الراتنجات المبرّدة ← فانيلا 2 + تونكيتون 0.6","الصندل 5 ← Oud Maracuja 1.5 (الفاكهة الداكنة) ← Wild Petal 2.5 ← ISO E 3","سرنجة: هيل 0.3 + سافرالين 0.2 (محلول 10٪)","🚀 بارد أخيراً: Hedione 2.5 + Galaxolide 3 + Ambroxan 0.6","عتّق 3 أسابيع بارد مظلم"]},
 ];
 // costs in SAR (product + proportional shipping). Luxodor shipped free.
 const PENDING_PURCHASES=[
@@ -1184,7 +1199,7 @@ const INVENTORY_REMOVE_VERSION="ir_10";
 const INVENTORY_REMOVE=["oud_mayor","oud_earthy"];
 // oud_mayor مكرّر لـmaracuja | oud_earthy: عيّنة معطوبة من شرفان — نوتة برازية
 // lux_hindi_sweety أُعيد: المالك يملكه (100 مل) — rec_90
-const INVENTORY_ADD_VERSION="ia_10";
+const INVENTORY_ADD_VERSION="ia_11";
 const INVENTORY_ADD_ITEMS=[
   {id:"ipa",name:"Isopropyl Alcohol 99.9% (إيزوبروبيل — للتعقيم والتنظيف ⚠️ ليس كحول عطور)",brand:"محلي",cat:"حامل",price:30,qty:500,unit:"مل"},
   // كحول عطري (إيثانول) لبخاخات العطر النسائية — للبشرة (بديل IPA غير المناسب للجلد) | stock 0 = يُشترى قبل التصنيع
@@ -1228,6 +1243,10 @@ const INVENTORY_ADD_ITEMS=[
   // Wadi Al Mashreq — Order #WADI1158 (Aug 2026, AED→SAR ×1.02)
   {id:"ambroxan",name:"Ambroxan (أمبروكسان — شرائح شمعية بيضاء)",brand:"محلي",cat:"عنبر",price:100,qty:50,unit:"جم"},
   {id:"lux_hindi_sweety",name:"Oud Hindi Sweety (عود هندي حلو)",brand:"Luxodor",cat:"عود",price:300,qty:100,unit:"مل"},
+  // كحولات الورد — لبناء ورد طائفي حقيقي (ورد الطائف: سيترونيلول 23–28٪ · جيرانيول 14–20٪ · نيرول 6–11٪ · PEA 2–4٪ فقط) | stock 0 = يُشترى
+  {id:"citronellol",name:"Citronellol (سيترونيلول — جسم ورد الطائف)",brand:"محلي",cat:"زهري",price:0,qty:0,unit:"مل"},
+  {id:"geraniol",name:"Geraniol (جيرانيول — ورد أخضر عطري)",brand:"محلي",cat:"زهري",price:0,qty:0,unit:"مل"},
+  {id:"nerol",name:"Nerol (نيرول — ورد منعش خفيف)",brand:"محلي",cat:"زهري",price:0,qty:0,unit:"مل"},
 ];
 function applyInventoryAdd(inv){
   if(lsGet("dw_ia_ver","")===INVENTORY_ADD_VERSION)return inv;
@@ -1607,10 +1626,11 @@ function fmtDate(iso){
 const IFRA_CAT4={
   cashmeran:3.8,   // DPMI · CAS 33704-61-9 · تقييد (تحسّس جلدي + سميّة جهازية)
   iso_e:20,        // ISO E Super · CAS 54464-57-2 · تقييد
+  benzyl:4.8,      // Benzyl benzoate · CAS 120-51-4 · تحسّس جلدي + سميّة جهازية — شهادة مورّد IFRA 51 + Scentspiracy (المنتج النهائي)
 };
 const IFRA_SKIP=new Set(["r_fix50","r_sol_10","r_qtola_ref"]); // بطاقات مرجعية لا منتجات
 function ifraCheck(r){
-  if(!r||IFRA_SKIP.has(r.id)||!Array.isArray(r.ing))return [];
+  if(!r||IFRA_SKIP.has(r.id)||/^(acc_|r_tech_ref)/.test(r.id)||!Array.isArray(r.ing))return [];
   const tot=r.ing.reduce((s2,[,a])=>s2+a,0)||1;
   return r.ing.map(([id,a])=>{
     const lim=IFRA_CAT4[id]; if(!lim)return null;
@@ -1619,10 +1639,25 @@ function ifraCheck(r){
   }).filter(Boolean);
 }
 
-const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','cmp121','iso_e','hedione','uae_blue_talisman']);
-const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake','uae_dahnal_tarat','uae_dahnal_asami','uae_asami_agar','uae_carved_oud','uae_sublime_oud','oud_xx','lux_bormi','lux_suyufi','lux_muattaq','lux_hindi','lux_khalifa']);
+const NOTES_TOP=new Set(['cardamom','pea','wild_petal','rose_taif','rose_istanbul','safraleine','cmp173','cmp121','uae_blue_talisman','citronellol','geraniol','nerol']);
+const NOTES_MID=new Set(['artessence','lux_cambodi','lux_black','cambodi_fawah','maracuja','pretty_oud','white_oudh','amber_oud','cmp90','cmp91','oud_synth','black_agar','lux_greatness','lux_exclusif','lux_symphony','lux_afternoon','crimson','metal_made','sleek_oud','oud_royal','oud_earthy','blend1','blend2','cashmeran','tonquitone','lux_snake','uae_dahnal_tarat','uae_dahnal_asami','uae_asami_agar','uae_carved_oud','uae_sublime_oud','oud_xx','lux_bormi','lux_suyufi','lux_muattaq','lux_hindi','lux_khalifa','lux_hindi_sweety','iso_e','hedione']);
 const NOTES_CARRIER=new Set(['dpg','jojoba','benzyl']); // diluents — excluded from layer ratio
 function noteTier(id){return NOTES_TOP.has(id)?"top":NOTES_MID.has(id)?"mid":"base";}
+// ─── بنية الدهن الزيتي: لا كحول يرفع القمة، فالهرم الصحي للدهن ≈ قمة 5–20٪ · قلب 30–45٪ · قاعدة 40–60٪ ───
+// الأدهان العودية (عود/مستوحى) مواد قلب في الهرم لكنها مثبّتة بطبيعتها — تُحسب نصفها قاعدةً في هذا الفحص
+const OUD_LIKE=new Set([...RAW.filter(x=>x[3]==="عود"||x[3]==="مستوحى").map(x=>x[0]),...INVENTORY_ADD_ITEMS.filter(x=>x.cat==="عود"||x.cat==="مستوحى").map(x=>x.id)]);
+function structureCheck(r){
+  if(!r||!Array.isArray(r.ing)||/^(acc_|r_tech_ref|s_|sol_)/.test(r.id)||IFRA_SKIP.has(r.id))return [];
+  const tot=r.ing.reduce((a,[,q])=>a+q,0)||1;const pct={top:0,mid:0,base:0};let oudMid=0;
+  r.ing.forEach(([id,q])=>{const t=noteTier(id);pct[t]+=q/tot*100;if(t==="mid"&&OUD_LIKE.has(id))oudMid+=q/tot*100;});
+  pct.base+=oudMid/2;pct.mid-=oudMid/2;
+  const out=[];
+  if(pct.top===0)out.push("بلا افتتاحية: الدهن الزيتي يفتقد «الرفعة» — أضف هيلاً أو سافرالين أو بتلات ورد بنسبة 0.3–1٪");
+  else if(pct.top>25)out.push(`قمة زائدة (${pct.top.toFixed(0)}٪): في الزيت تتبخر القمة سريعاً وتترك فجوة — اخفضها دون 20٪`);
+  if(pct.base<40)out.push(`قاعدة ضعيفة (${pct.base.toFixed(0)}٪): الثبات سيقصر — ارفع الراتنجات/المسك/الصندل إلى 40٪ فأكثر`);
+  else if(pct.base>75)out.push(`قاعدة ثقيلة (${pct.base.toFixed(0)}٪): الدهن لن يتطوّر على الجلد — أعطِ القلب 25٪ على الأقل`);
+  return out;
+}
 // scale a number and format it cleanly
 const fmtAmt=v=>v>=10?Math.round(v)+"":+(v.toFixed(2))+"";
 // ─── حدّ دقّة القطّارة ────────────────────────────────────────────────────────
@@ -3874,6 +3909,14 @@ function App(){
                 <b>⛔ تتجاوز حدّ IFRA للفئة 4</b> (ما يُوضَع على الجلد ويبقى):
                 {bad.map(b=><div key={b.id}>• {getIng(b.id)?.name||b.id}: <b>{b.pct.toFixed(2)}٪</b> والحدّ <b>{b.lim}٪</b></div>)}
                 <div style={{marginTop:"4px",opacity:0.85}}>أنقص الكمية قبل الإنتاج. الحدّ نسبةٌ من المنتج النهائي، والدهن يُوضَع صافياً فالنسبة هي هي.</div>
+              </div>;
+            })()}
+            {(()=>{
+              const notes=structureCheck(r);
+              if(!notes.length)return null;
+              return <div style={{background:"rgba(138,106,30,0.08)",border:"1px solid rgba(138,106,30,0.30)",borderRadius:"11px",padding:"9px 11px",marginBottom:"8px",fontSize:"0.68rem",color:"#6B5218",lineHeight:"1.8"}}>
+                <b>🧭 بنية الدهن</b> — قراءة آلية من نِسَب القمة/القلب/القاعدة:
+                {notes.map((t,i)=><div key={i}>• {t}</div>)}
               </div>;
             })()}
             {(()=>{
