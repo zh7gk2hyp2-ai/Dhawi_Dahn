@@ -2567,7 +2567,7 @@ function App(){
             {/* ── Hero Revenue Card ── */}
             <div className="rev-hero" style={{marginBottom:"12px"}}>
               <video className="rev-hero-film" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" ref={el=>{if(el){el.muted=true;const p=el.play();p&&p.catch(()=>{});}}}>
-                <source src="media/hero_mabkhara.mp4" type="video/mp4"/>
+                <source src="media/hero_lab.mp4" type="video/mp4"/>
               </video>
               <div className="rev-hero-veil" aria-hidden="true"></div>
               <div style={{fontSize:"0.56rem",color:"rgba(201,168,76,0.50)",letterSpacing:"0.6em",textTransform:"uppercase",fontFamily:"'IBM Plex Mono',monospace",marginBottom:"10px"}}>DHAWI OUD · LAB DASHBOARD</div>
