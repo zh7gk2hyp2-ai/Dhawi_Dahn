@@ -1506,6 +1506,7 @@ const BACKUP_KEYS=[
   ["inv","dw_inv"],["recipes","dw_recipes"],["prodLog","dw_prodlog"],["purchases","dw_purchases"],
   ["customers","dw_customers"],["favoriteIds","dw_favorites"],["ratings","dw_ratings"],
   ["recipePrices","dw_rprices"],["batchCounter","dw_batchnum"],["agencyOrders","dw_agency_orders"],
+  ["evals","dw_evals"],["compliance","dw_compliance"],["seller","dw_seller"],["customMl","dw_customml"],
 ];
 // ─── ZATCA: فاتورة ضريبية مبسّطة ──────────────────────────────────────────────
 // كانت الفاتورة تُظهر ضريبة 15% بلا رقم تسجيل ولا اسم بائع ولا رمز QR — وهذه
@@ -1555,6 +1556,70 @@ function readBackup(raw){
   return {data:out,found};
 }
 function writeBackup(b){BACKUP_KEYS.forEach(([f,k])=>{if(b.data[f]!==undefined)lsSet(k,b.data[f]);});}
+
+// ─── المزامنة السحابية — Supabase REST (PostgREST) ────────────────────────────
+// البيانات تُرفع كنسخة احتياطية كاملة تحت معرّف = SHA-256(كود المزامنة). سياسة RLS
+// في SQL أدناه لا تسمح بقراءة/كتابة أي صف إلا إذا طابق ترويسة x-dhawi-id — فلا يمكن
+// تعداد الصفوف بمفتاح anon وحده.
+const SYNC_KEY="dw_sync_cfg";
+function getSyncCfg(){return lsGet(SYNC_KEY,{url:"",key:"",code:"",auto:true,last:0,lastErr:""});}
+async function syncCodeHash(code){const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("dhawi:"+String(code||"").trim()));return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");}
+function syncReady(cfg){return !!(cfg&&cfg.url&&cfg.key&&cfg.code&&String(cfg.code).trim().length>=6);}
+function syncBase(cfg){return String(cfg.url).trim().replace(/\/+$/,"")+"/rest/v1/dhawi_backups";}
+async function cloudUpload(cfg){
+  const id=await syncCodeHash(cfg.code);
+  const body={id,data:buildBackup(),updated_at:new Date().toISOString(),device:(navigator.userAgent||"").slice(0,80)};
+  const res=await fetch(syncBase(cfg)+"?on_conflict=id",{method:"POST",headers:{apikey:cfg.key,Authorization:"Bearer "+cfg.key,"Content-Type":"application/json","x-dhawi-id":id,Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(body)});
+  if(!res.ok)throw new Error("HTTP "+res.status+" — "+(await res.text()).slice(0,140));
+  return body.updated_at;
+}
+async function cloudDownload(cfg){
+  const id=await syncCodeHash(cfg.code);
+  const res=await fetch(syncBase(cfg)+"?id=eq."+id+"&select=data,updated_at,device",{headers:{apikey:cfg.key,Authorization:"Bearer "+cfg.key,"x-dhawi-id":id}});
+  if(!res.ok)throw new Error("HTTP "+res.status+" — "+(await res.text()).slice(0,140));
+  const rows=await res.json();return rows[0]||null;
+}
+const SYNC_SQL=`create table if not exists public.dhawi_backups (
+  id text primary key,
+  data jsonb not null,
+  updated_at timestamptz default now(),
+  device text
+);
+alter table public.dhawi_backups enable row level security;
+drop policy if exists "dhawi_by_code" on public.dhawi_backups;
+create policy "dhawi_by_code" on public.dhawi_backups for all to anon
+  using (id = (current_setting('request.headers', true)::json->>'x-dhawi-id'))
+  with check (id = (current_setting('request.headers', true)::json->>'x-dhawi-id'));`;
+
+// ─── توقّع الأداء (ثبات/فوحان) — تقديري، يُعاير من تقييماتك ───────────────────
+const FIXATIVE_IDS=new Set(["benzoin_b","benzoin_a","labdanum","ambermor","shamma","lux_fixative","musk_ruman","musk_climb","galaxolide","ambroxan","tonquitone","vanilla","sandal_indi","sandal_ham","sandal_ward","patchouli","vetiver","civettone","amber_2000","amber_700","amber_oud","cashmeran"]);
+const BOOSTER_IDS=new Set(["hedione","iso_e","galaxolide","ambroxan"]);
+const LON_HOURS={1:8,2:14,3:20,4:28,5:36};
+function predictPerf(r){
+  if(!r||!Array.isArray(r.ing)||!r.ing.length)return null;
+  const ing=r.ing.filter(([id])=>!CARRIER_IDS.has(id));const tot=ing.reduce((a,[,q])=>a+q,0)||1;
+  let top=0,base=0,oud=0,fix=0,boost=0;
+  ing.forEach(([id,q])=>{const p=q/tot*100;const t=noteTier(id);if(t==="top")top+=p;if(t==="base")base+=p;if(OUD_LIKE.has(id))oud+=p;if(FIXATIVE_IDS.has(id))fix+=p;if(BOOSTER_IDS.has(id))boost+=p;});
+  const hours=Math.max(6,Math.min(48,Math.round(6+base*0.25+oud*0.18+fix*0.10-top*0.08)));
+  const sillage=Math.max(1,Math.min(5,+(1+boost*0.16+top*0.03).toFixed(1)));
+  return {hours,sillage,top:Math.round(top),base:Math.round(base),oud:Math.round(oud),boost:Math.round(boost)};
+}
+const SILLAGE_LABEL=v=>v>=4.3?"فوّاح جداً":v>=3.4?"فوّاح":v>=2.4?"متوسط":v>=1.6?"قريب":"على الجلد";
+
+// ─── قائمة الامتثال (السوق السعودي) — إرشادية وليست استشارة قانونية ──────────
+const COMPLIANCE_ITEMS=[
+  ["sfda","إشعار المنتج في نظام eCosma (الهيئة العامة للغذاء والدواء)","مطلوب قبل التداول التجاري لأي مستحضر تجميل، والعطور منها"],
+  ["label_ar","بطاقة بيان عربية وفق اللائحة الخليجية GSO 1943","الاسم، الحجم الصافي، المكونات تنازلياً بأسماء INCI، رقم التشغيلة، بلد المنشأ، اسم المنشأة وعنوانها"],
+  ["allergens","الإفصاح عن مسببات الحساسية التي تتجاوز 0.001٪","المنتج يبقى على الجلد (leave-on) — القائمة التقديرية أدناه من مكونات الوصفة"],
+  ["pao","مدة الصلاحية بعد الفتح أو تاريخ الانتهاء","رمز العلبة المفتوحة (مثل 24M) أو تاريخ صريح"],
+  ["warnings","تحذيرات الاستخدام على العبوة","للاستعمال الخارجي فقط · يُحفظ بعيداً عن متناول الأطفال · تجنّب ملامسة العينين"],
+  ["patch","اختبار حساسية على الجلد","ثلاثة أشخاص على الأقل، 48 ساعة، بلا احمرار أو حكّة — وثّق النتيجة"],
+  ["ifra","ضمن حدود IFRA للفئة 4","يُحسب تلقائياً من المكونات"],
+  ["batch","رقم تشغيلة قابل للتتبع","يُولَّد تلقائياً عند إنتاج أول دفعة"],
+];
+const ALLERGEN_MAP={rose_taif:["Citronellol","Geraniol","Eugenol","Farnesol","Linalool"],rose_istanbul:["Citronellol","Geraniol","Eugenol","Farnesol","Linalool"],citronellol:["Citronellol"],geraniol:["Geraniol"],benzyl:["Benzyl Benzoate"],cardamom:["Linalool","Limonene","Eugenol"],acc_taif_rose:["Citronellol","Geraniol"],nerol:["Geraniol"]};
+function recipeAllergens(r){const out=new Set();(r?.ing||[]).forEach(([id])=>(ALLERGEN_MAP[id]||[]).forEach(a=>out.add(a)));return [...out];}
+
 
 
 // ضاوي عود — "Monolith": negative-space oud-smoke tile that inverts by mode (ink tile / paper smoke, and vice-versa)
@@ -1714,6 +1779,21 @@ function App(){
   const [batchUnit,setBatchUnit]=useState(()=>lsGet("dw_batchunit","quarter"));
   const [batchInspUnit,setBatchInspUnit]=useState(()=>lsGet("dw_batchinsp","ml30"));
   const [profitMult,setProfitMult]=useState(()=>lsGet("dw_margin",3));
+  const [customMl,setCustomMl]=useState(()=>lsGet("dw_customml",25));
+  const [evals,setEvals]=useState(()=>lsGet("dw_evals",{}));
+  const [evalEntry,setEvalEntry]=useState(null);
+  const [evalH,setEvalH]=useState(0);
+  const [evalVals,setEvalVals]=useState({sil:3,lon:3,met:1,bal:3});
+  const [evalNote,setEvalNote]=useState("");
+  const [compliance,setCompliance]=useState(()=>lsGet("dw_compliance",{}));
+  const [syncCfg,setSyncCfgState]=useState(()=>getSyncCfg());
+  const [syncBusy,setSyncBusy]=useState(false);
+  const [cloudNewer,setCloudNewer]=useState(null);
+  const [showSyncCfg,setShowSyncCfg]=useState(false);
+  const [solMotherId,setSolMotherId]=useState("");
+  const [solConc,setSolConc]=useState(10);
+  const [solVol,setSolVol]=useState(5);
+  const [solCarrierId,setSolCarrierId]=useState("");
   const [pkgCost,setPkgCost]=useState(()=>lsGet("dw_pkgcost",8)); // packaging (bottle+cap+box+label) per unit
   const [showAddIng,setShowAddIng]=useState(false);
   const [showAddRec,setShowAddRec]=useState(false);
@@ -1859,6 +1939,36 @@ function App(){
     return()=>{flush();window.removeEventListener("pagehide",flush);};
   },[]);
   useEffect(()=>lsSetSoon("dw_inv",inv),[inv]);
+  useEffect(()=>lsSet("dw_evals",evals),[evals]);
+  useEffect(()=>lsSet("dw_compliance",compliance),[compliance]);
+  useEffect(()=>lsSet("dw_customml",customMl),[customMl]);
+  // ☁️ مزامنة تلقائية: بعد 6 ثوانٍ من آخر تغيير (بعد أن يستقر localStorage)
+  const syncTimer=useRef(null);
+  const setSyncCfg=p=>setSyncCfgState(prev=>{const n={...prev,...p};lsSet(SYNC_KEY,n);return n;});
+  const syncNow=async(silent)=>{
+    const cfg=getSyncCfg();if(!syncReady(cfg)){if(!silent)show("⚠️ أكمل إعدادات المزامنة أولاً",true);return false;}
+    setSyncBusy(true);
+    try{const at=await cloudUpload(cfg);setSyncCfg({last:Date.now(),lastErr:""});try{localStorage.setItem("dw_last_backup",String(Date.now()));}catch(_){}if(!silent)show("☁️ رُفعت النسخة السحابية");return true;}
+    catch(e){setSyncCfg({lastErr:String(e.message||e).slice(0,160)});if(!silent)show("❌ فشلت المزامنة: "+String(e.message||e).slice(0,60),true);return false;}
+    finally{setSyncBusy(false);}
+  };
+  useEffect(()=>{
+    if(!logged)return;const cfg=getSyncCfg();if(!cfg.auto||!syncReady(cfg))return;
+    if(syncTimer.current)clearTimeout(syncTimer.current);
+    syncTimer.current=setTimeout(()=>{syncNow(true);},6000);
+    return ()=>{if(syncTimer.current)clearTimeout(syncTimer.current);};
+  },[inv,recipes,prodLog,purchases,customers,ratings,recipePrices,evals,compliance,logged]);
+  // عند الدخول: هل في السحابة نسخة أحدث من آخر رفع من هذا الجهاز؟
+  useEffect(()=>{
+    if(!logged)return;const cfg=getSyncCfg();if(!syncReady(cfg))return;
+    cloudDownload(cfg).then(row=>{if(!row)return;const t=new Date(row.updated_at).getTime();if(t>(cfg.last||0)+60000)setCloudNewer(row);}).catch(()=>{});
+  },[logged]);
+  const restoreFromCloud=row=>{
+    try{const b=readBackup(JSON.stringify(row.data));
+      if(!window.confirm("استعادة النسخة السحابية ("+new Date(row.updated_at).toLocaleString("ar-SA")+")؟\nستستبدل "+b.found.length+" قسماً من بيانات هذا الجهاز."))return;
+      writeBackup(b);setSyncCfg({last:new Date(row.updated_at).getTime()});show("☁️ استُعيدت النسخة السحابية");setTimeout(()=>window.location.reload(),1000);}
+    catch(e){show("❌ النسخة السحابية غير صالحة",true);}
+  };
   useEffect(()=>lsSetSoon("dw_recipes",recipes),[recipes]);
   useEffect(()=>lsSetSoon("dw_prodlog",prodLog),[prodLog]);
   useEffect(()=>lsSet("dw_purchases",purchases),[purchases]);
@@ -1914,8 +2024,87 @@ function App(){
 
   const show=(m,e=false)=>{setToast(m);setToastErr(e);setTimeout(()=>setToast(""),2800);};
   const getIng=id=>inv.find(i=>i.id===id);
-  const BATCH={quarter:2.9,half:5.8,tola:11.6,ml8:8,ml12:12,ml30:30,ml50:50,ml100:100};
-  const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",tola:"تولة",ml8:"8 مل",ml12:"12 مل",ml30:"30 مل",ml50:"50 مل",ml100:"100 مل"};
+  // ↔ محرك البدائل: نفس الفئة (أو عودي↔عودي) وكمية كافية، ويفضّل نفس الطبقة ثم الأكثر مخزوناً
+  const suggestSub=(id,need)=>{
+    const src=getIng(id);const tier=noteTier(id);const cat=src?.cat;
+    const cands=inv.filter(i=>i.id!==id&&i.stock>=need&&i.cat!=="حامل"&&i.cat!=="محلول"&&!CARRIER_IDS.has(i.id)&&((cat&&i.cat===cat)||(OUD_LIKE.has(id)&&OUD_LIKE.has(i.id))));
+    cands.sort((a,b)=>((noteTier(a.id)===tier?0:1)-(noteTier(b.id)===tier?0:1))||(b.stock-a.stock));
+    return cands[0]||null;
+  };
+  const cloneWithSubs=(r,subs)=>{
+    const map=new Map(subs.map(x=>[x.from,x.to]));
+    const ing=r.ing.map(([id,q])=>[map.get(id)||id,q]);
+    const names=subs.map(x=>(getIng(x.to)?.name||x.to).split(" (")[0]).join("، ");
+    const nr={...r,id:"r_"+Date.now(),name:r.name+" (بديل)",published:false,hero:false,userEdited:true,desc:(r.desc||"")+" | ↔ بديل: "+names,ing};
+    delete nr.price_sar;
+    setRecipes(p=>[...p,nr]);setSelectedRecipe(nr);show("↔ أُنشئت نسخة بالبدائل — راجع النِّسب قبل الإنتاج");
+  };
+  // 🧪 التقييم الشمّي
+  const openEval=(e,h)=>{const list=evals[e.id]||[];const ex=list.find(x=>x.h===h);setEvalEntry(e);setEvalH(h);setEvalVals(ex?{sil:ex.sil,lon:ex.lon,met:ex.met,bal:ex.bal}:{sil:3,lon:3,met:1,bal:3});setEvalNote(ex?.note||"");};
+  const saveEval=()=>{
+    if(!evalEntry)return;
+    setEvals(p=>{const list=(p[evalEntry.id]||[]).filter(x=>x.h!==evalH);return {...p,[evalEntry.id]:[...list,{h:evalH,...evalVals,note:evalNote.trim(),date:new Date().toISOString()}].sort((a,b)=>a.h-b.h)};});
+    setEvalEntry(null);show("🧪 حُفظ التقييم — ساعة "+evalH);
+  };
+  const recipeEvalStats=rid=>{
+    const ids=new Set(prodLog.filter(e=>e.recipeId===rid).map(e=>e.id));
+    const rows=[];Object.entries(evals).forEach(([pid,list])=>{if(ids.has(pid))rows.push(...list);});
+    if(!rows.length)return null;
+    const late=rows.filter(x=>x.h>=8);const pick=late.length?late:rows;
+    const avg=k=>pick.reduce((a,x)=>a+(+x[k]||0),0)/pick.length;
+    const st={n:rows.length,batches:new Set(Object.keys(evals).filter(k=>ids.has(k))).size,sil:avg("sil"),lon:avg("lon"),met:avg("met"),bal:avg("bal")};
+    const tips=[];
+    if(st.met>=2.5)tips.push("حدة معدنية متكررة: خفّض PEA/كحول الورد إلى ≤1٪ وزد الصندل والبنزوين، وامزجها في «رابط الورد» قبل الإضافة");
+    if(st.lon<=2.5)tips.push("ثبات قصير: ارفع المثبّتات (بنزوين، لبدانوم، مسك رمان، أمبروكسان) 3–5٪ وقلّل القمة");
+    if(st.sil<=2)tips.push("فوحان ضعيف: أضف Hedione 3–5٪ أو ISO E Super 3٪ بارداً في النهاية");
+    if(st.sil>=4.5&&st.bal<=2.5)tips.push("فوحان صاخب مع اختلال: خفّض ISO E/الجالاكسولايد وزد العود الحقيقي");
+    if(st.bal<=2.5&&st.met<2.5)tips.push("التوازن ضعيف: راجع «بنية الدهن» — غالباً القاعدة تحت 40٪ أو القمة فوق 35٪");
+    if(!tips.length)tips.push("النتائج جيدة — ثبّت هذه النسخة ووثّق رقم الدفعة كمرجع");
+    return {...st,tips};
+  };
+  const perfOf=r=>{const p=predictPerf(r);if(!p)return null;const st=recipeEvalStats(r.id);if(st){const obs=LON_HOURS[Math.round(st.lon)]||20;return {...p,hours:Math.round((p.hours+obs)/2),sillage:+((p.sillage+st.sil)/2).toFixed(1),calibrated:true};}return p;};
+  // ✅ الامتثال
+  const complianceOf=r=>{
+    const manual=compliance[r.id]||{};
+    const auto={ifra:ifraCheck(r).length===0,batch:prodLog.some(e=>e.recipeId===r.id)};
+    const items=COMPLIANCE_ITEMS.map(([k,label,hint])=>({k,label,hint,auto:k in auto,done:k in auto?auto[k]:!!manual[k]}));
+    return {items,done:items.filter(x=>x.done).length,total:items.length};
+  };
+  const toggleCompliance=(rid,k)=>setCompliance(p=>({...p,[rid]:{...(p[rid]||{}),[k]:!(p[rid]||{})[k]}}));
+  // ⚗️ مدير المحاليل: يخصم من الأم والحامل ويُنشئ/يحدّث صنف «محلول» في المخزون
+  const prepareSolution=()=>{
+    const m=getIng(solMotherId);const c=getIng(solCarrierId);
+    if(!m||!c){show("⚠️ اختر المادة الأم والحامل",true);return;}
+    const vol=Math.max(0.5,+solVol||0);const conc=Math.min(100,Math.max(1,+solConc||10));
+    const mAmt=+(vol*conc/100).toFixed(3);const cAmt=+(vol-mAmt).toFixed(3);
+    if(m.stock<mAmt){show("⚠️ مخزون "+m.name.split(" (")[0]+" لا يكفي ("+m.stock+")",true);return;}
+    if(c.stock<cAmt){show("⚠️ مخزون الحامل لا يكفي",true);return;}
+    const sid="sol_"+m.id+"_"+conc;const cost=(m.unitCost||0)*mAmt+(c.unitCost||0)*cAmt;
+    setInv(p=>{
+      let next=p.map(i=>i.id===m.id?{...i,stock:+(i.stock-mAmt).toFixed(3)}:i.id===c.id?{...i,stock:+(i.stock-cAmt).toFixed(3)}:i);
+      const ex=next.find(i=>i.id===sid);
+      if(ex){next=next.map(i=>i.id!==sid?i:{...i,qty:+(i.qty+vol).toFixed(2),stock:+(i.stock+vol).toFixed(2),price:+(i.price+cost).toFixed(2),unitCost:(i.price+cost)/(i.qty+vol)});}
+      else next=[{id:sid,name:"محلول "+conc+"٪ — "+m.name.split(" (")[0]+" في "+c.name.split(" (")[0],brand:"صناعتي",cat:"محلول",price:+cost.toFixed(2),qty:vol,unit:"مل",stock:vol,ship:0,unitCost:vol>0?cost/vol:0,parent:m.id,conc},...next];
+      return next;
+    });
+    show("⚗️ حُضّر "+vol+" مل محلول "+conc+"٪ وخُصم من المخزون");
+  };
+  // 🏷️ ورقة ملصقات (شبكة A4) لدفعة واحدة
+  const printLabelSheet=(e,count)=>{
+    const n=Math.max(1,Math.min(60,parseInt(count,10)||12));
+    const tmp=document.createElement("div");tmp.style.display="none";document.body.appendChild(tmp);
+    try{new window.QRCode(tmp,{text:`DHAWI|${e.batchNo}|${e.recipeName}|${(e.readyDate||"").slice(0,10)}`,width:120,height:120});}catch(_){}
+    setTimeout(()=>{
+      const img=tmp.querySelector("img");const cv=tmp.querySelector("canvas");const src=(img&&img.src)||(cv&&cv.toDataURL())||"";document.body.removeChild(tmp);
+      const w=window.open("","_blank","width=900,height=700");if(!w){show("⚠️ اسمح بالنوافذ المنبثقة لطباعة الملصقات");return;}
+      const ready=(e.readyDate||"").slice(0,10),made=(e.date||"").slice(0,10),sellerName=(seller.name||"ضاوي عود");
+      const one=`<div class="lb"><div class="t"><div class="nm">${esc(e.recipeName)}</div><div class="mt">${esc(e.vol)} مل · #${esc(e.batchNo)}</div><div class="mt">إنتاج ${made} · جاهز ${ready}</div><div class="br">${esc(sellerName)} · DHAWI OUD</div><div class="wr">للاستعمال الخارجي · يُحفظ بعيداً عن الأطفال</div></div>${src?`<img src="${src}"/>`:""}</div>`;
+      w.document.write(`<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>ملصقات ${esc(e.batchNo)}</title><style>@page{size:A4;margin:8mm}body{font-family:-apple-system,'Segoe UI',Arial,sans-serif;margin:0;color:#1a1208}.sheet{display:grid;grid-template-columns:repeat(3,62mm);gap:4mm 3mm;justify-content:center;padding:6mm 0}.lb{width:62mm;height:32mm;box-sizing:border-box;border:0.4mm solid #C9A84C;border-radius:3mm;padding:2.2mm 2.6mm;display:flex;justify-content:space-between;align-items:center;gap:2mm;page-break-inside:avoid;background:#fff}.t{flex:1;min-width:0}.nm{font-size:12.5pt;font-weight:800;line-height:1.15;margin-bottom:1mm}.mt{font-size:7pt;color:#5a4420;line-height:1.5;font-family:ui-monospace,Menlo,monospace}.br{font-size:6.8pt;color:#8A6A1E;letter-spacing:.06em;margin-top:1mm;font-weight:700}.wr{font-size:5.6pt;color:#7a6a50;margin-top:.6mm}img{width:22mm;height:22mm;flex-shrink:0}.tools{position:fixed;top:0;left:0;right:0;background:#1a1208;color:#E8C870;padding:8px 14px;font-size:13px;display:flex;gap:10px;align-items:center}@media print{.tools{display:none}}</style></head><body><div class="tools">ورقة ملصقات — ${n} ملصق · 62×32 مم · 3 أعمدة <button onclick="window.print()" style="margin-inline-start:auto;background:#C9A84C;border:0;border-radius:6px;padding:6px 14px;font-weight:700;cursor:pointer">🖨️ طباعة</button></div><div style="height:40px"></div><div class="sheet">${Array.from({length:n},()=>one).join("")}</div></body></html>`);
+      w.document.close();
+    },90);
+  };
+  const BATCH={quarter:2.9,half:5.8,tola:11.6,ml8:8,ml12:12,ml30:30,ml50:50,ml100:100,custom:Math.max(0.5,+customMl||25)};
+  const BATCH_NAME={quarter:"ربع تولة",half:"نص تولة",tola:"تولة",ml8:"8 مل",ml12:"12 مل",ml30:"30 مل",ml50:"50 مل",ml100:"100 مل",custom:(Math.max(0.5,+customMl||25))+" مل مخصص"};
   const INSP_SIZES=["ml8","ml12","ml30","ml50","ml100"];
   const OIL_SIZES=["quarter","half","tola","ml50","ml100"];
 
@@ -2183,7 +2372,9 @@ function App(){
     const newPub=!cur?.published;
     setRecipes(p=>p.map(r=>r.id!==id?r:{...r,published:newPub}));
     setSelectedRecipe(prev=>prev&&prev.id===id?{...prev,published:newPub}:prev);
-    if(newPub&&!hasActiveBatch(prodLog,id)){show("🌐 نُشر — يظهر في أداة البحث · سيُتاح في المتجر بعد الإنتاج");}
+    const cp=cur?complianceOf(cur):null;
+    if(newPub&&cp&&cp.done<cp.total){show("🌐 نُشر — ⚠️ قائمة الامتثال "+cp.done+"/"+cp.total+" — أكملها قبل البيع الفعلي",true);}
+    else if(newPub&&!hasActiveBatch(prodLog,id)){show("🌐 نُشر — يظهر في أداة البحث · سيُتاح في المتجر بعد الإنتاج");}
     else{show(newPub?"🌐 نُشر في المتجر":"🔒 أُخفي من المتجر");}
   };
   const saveStory=(id,txt)=>{setRecipes(p=>p.map(r=>r.id!==id?r:{...r,story:txt.trim()}));setEditingStory(null);show("✅ حُفظت القصة");};
@@ -2675,6 +2866,15 @@ function App(){
             </div>}
 
             {/* ── Backup Reminder ── */}
+            {cloudNewer&&<div className="glass" style={{border:"1px solid rgba(80,120,200,0.40)",background:"rgba(80,120,200,0.06)",display:"flex",alignItems:"center",gap:"11px",padding:"13px 14px",marginBottom:"12px"}}>
+              <span style={{fontSize:"1.3rem"}}>☁️</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:"0.79rem",fontWeight:800,color:"#2F4468"}}>نسخة سحابية أحدث من هذا الجهاز</div>
+                <div style={{fontSize:"0.60rem",color:"rgba(26,18,8,0.45)",marginTop:"2px"}}>{new Date(cloudNewer.updated_at).toLocaleString("ar-SA")} · {(cloudNewer.device||"").slice(0,40)}</div>
+              </div>
+              <button className="btn-gold" style={{padding:"9px 12px",fontSize:"0.70rem",flexShrink:0}} onClick={()=>restoreFromCloud(cloudNewer)}>استعادة</button>
+              <button className="btn-ghost" style={{padding:"9px 10px",fontSize:"0.70rem",flexShrink:0}} onClick={()=>setCloudNewer(null)}>تجاهل</button>
+            </div>}
             {(()=>{
               const lb=+(localStorage.getItem("dw_last_backup")||0);
               const days=(Date.now()-lb)/86400000;
@@ -3775,6 +3975,11 @@ function App(){
                 <div style={{display:"flex",justifyContent:"center",gap:"5px",flexWrap:"wrap",marginTop:"4px"}}>
                   <span style={{fontSize:"0.58rem",color:"rgba(26,18,8,0.20)",alignSelf:"center",padding:"0 2px"}}>إنتاج:</span>
                   {["ml50","ml100"].map(b=>(<button key={b} onClick={()=>setBatchUnit(b)} style={{background:batchUnit===b?"rgba(80,120,200,0.7)":"rgba(80,120,200,0.08)",border:`1px solid ${batchUnit===b?"rgba(80,120,200,0.8)":"rgba(80,120,200,0.25)"}`,color:batchUnit===b?"#fff":"rgba(120,160,230,0.65)",padding:"5px 10px",borderRadius:"20px",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600"}}>{BATCH_NAME[b]}</button>))}
+                  <span style={{display:"inline-flex",alignItems:"center",gap:"4px",background:batchUnit==="custom"?"rgba(80,120,200,0.7)":"rgba(80,120,200,0.08)",border:`1px solid ${batchUnit==="custom"?"rgba(80,120,200,0.8)":"rgba(80,120,200,0.25)"}`,borderRadius:"20px",padding:"2px 6px 2px 10px"}}>
+                    <button onClick={()=>setBatchUnit("custom")} style={{background:"none",border:"none",color:batchUnit==="custom"?"#fff":"rgba(120,160,230,0.75)",cursor:"pointer",fontSize:"0.75rem",fontWeight:"600",padding:"3px 0"}}>مخصص</button>
+                    <input type="number" inputMode="decimal" min="0.5" step="0.5" value={customMl} onFocus={()=>setBatchUnit("custom")} onChange={ev=>{setCustomMl(ev.target.value===""?"":+ev.target.value);setBatchUnit("custom");}} style={{width:"46px",textAlign:"center",fontSize:"0.75rem",padding:"3px 4px",borderRadius:"12px",border:"1px solid rgba(80,120,200,0.35)",background:"#FFFEFB",color:"#1A1208"}}/>
+                    <span style={{fontSize:"0.62rem",color:batchUnit==="custom"?"#fff":"rgba(120,160,230,0.75)"}}>مل</span>
+                  </span>
                 </div>
                 </>
               )}
@@ -3934,6 +4139,49 @@ function App(){
               </div>;
             })()}
             {(()=>{
+              const p=perfOf(r);if(!p)return null;
+              const pct=Math.min(100,Math.round(p.hours/48*100));
+              return <div style={{background:"rgba(74,103,65,0.07)",border:"1px solid rgba(74,103,65,0.28)",borderRadius:"11px",padding:"9px 11px",marginBottom:"8px",fontSize:"0.68rem",color:"#3F5A38",lineHeight:"1.8"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"8px"}}>
+                  <b>⏱ توقّع الأداء</b>
+                  <span style={{fontSize:"0.58rem",opacity:0.7}}>{p.calibrated?"مُعاير من تقييماتك":"تقديري من التركيبة"}</span>
+                </div>
+                <div style={{display:"flex",gap:"10px",alignItems:"center",marginTop:"4px"}}>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",justifyContent:"space-between"}}><span>الثبات</span><b className="mono">~{p.hours} ساعة</b></div>
+                    <div style={{height:"5px",borderRadius:"3px",background:"rgba(74,103,65,0.15)",overflow:"hidden"}}><div style={{width:pct+"%",height:"100%",background:"linear-gradient(90deg,#6AAA48,#3F7A30)"}}/></div>
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",justifyContent:"space-between"}}><span>الفوحان</span><b>{SILLAGE_LABEL(p.sillage)}</b></div>
+                    <div style={{height:"5px",borderRadius:"3px",background:"rgba(74,103,65,0.15)",overflow:"hidden"}}><div style={{width:Math.round(p.sillage/5*100)+"%",height:"100%",background:"linear-gradient(90deg,#C9A84C,#8A6A1E)"}}/></div>
+                  </div>
+                </div>
+                <div style={{fontSize:"0.58rem",opacity:0.75,marginTop:"3px"}}>قاعدة {p.base}٪ · عود {p.oud}٪ · قمة {p.top}٪ · معزّزات فوحان {p.boost}٪ — يتحسّن التوقّع كلما قيّمت دفعاتك من سجل الإنتاج</div>
+              </div>;
+            })()}
+            {(()=>{
+              const st=recipeEvalStats(r.id);if(!st)return null;
+              const row=(l,v,inv)=><div style={{flex:1,textAlign:"center",background:"rgba(0,0,0,0.04)",borderRadius:"8px",padding:"5px 2px"}}><div style={{fontSize:"0.56rem",opacity:0.7}}>{l}</div><div className="mono" style={{fontWeight:800,fontSize:"0.85rem",color:(inv?v<=2:v>=3.5)?"#4F7F3A":(inv?v>=3.5:v<=2)?"#A03030":"#8A6A1E"}}>{v.toFixed(1)}</div></div>;
+              return <div style={{background:"rgba(138,106,30,0.06)",border:"1px solid rgba(138,106,30,0.26)",borderRadius:"11px",padding:"9px 11px",marginBottom:"8px",fontSize:"0.68rem",color:"#5A4420",lineHeight:"1.8"}}>
+                <b>📊 تقييماتك الشمّية</b> <span style={{opacity:0.7}}>— {st.n} تقييم من {st.batches} دفعة (بعد 8 ساعات فأكثر)</span>
+                <div style={{display:"flex",gap:"5px",margin:"6px 0"}}>{row("الفوحان",st.sil)}{row("الثبات",st.lon)}{row("المعدنية",st.met,true)}{row("التوازن",st.bal)}</div>
+                {st.tips.map((t,i)=><div key={i}>• {t}</div>)}
+              </div>;
+            })()}
+            {(()=>{
+              const cp=complianceOf(r);const al=recipeAllergens(r);
+              return <details style={{background:"rgba(80,120,200,0.05)",border:"1px solid rgba(80,120,200,0.22)",borderRadius:"11px",padding:"8px 11px",marginBottom:"8px",fontSize:"0.68rem",color:"#2F4468",lineHeight:"1.8"}}>
+                <summary style={{cursor:"pointer",fontWeight:800,display:"flex",justifyContent:"space-between",alignItems:"center"}}><span>🇸🇦 قائمة الامتثال قبل البيع</span><span className="mono" style={{fontSize:"0.72rem",color:cp.done===cp.total?"#4F7F3A":"#8A6A1E"}}>{cp.done}/{cp.total}</span></summary>
+                <div style={{height:"4px",borderRadius:"2px",background:"rgba(80,120,200,0.15)",margin:"6px 0 8px",overflow:"hidden"}}><div style={{width:Math.round(cp.done/cp.total*100)+"%",height:"100%",background:cp.done===cp.total?"#6AAA48":"#7FA0D8"}}/></div>
+                {cp.items.map(it=><label key={it.k} style={{display:"flex",gap:"8px",alignItems:"flex-start",padding:"5px 0",borderBottom:"1px solid rgba(80,120,200,0.10)",cursor:it.auto?"default":"pointer"}}>
+                  <input type="checkbox" checked={it.done} disabled={it.auto} onChange={()=>toggleCompliance(r.id,it.k)} style={{marginTop:"3px",accentColor:"#4F7F3A",width:"16px",height:"16px",flexShrink:0}}/>
+                  <span style={{flex:1}}><span style={{fontWeight:700,color:it.done?"#4F7F3A":"#2F4468"}}>{it.label}</span>{it.auto&&<span style={{fontSize:"0.56rem",opacity:0.65}}> · تلقائي</span>}<div style={{fontSize:"0.6rem",opacity:0.75}}>{it.hint}</div></span>
+                </label>)}
+                <div style={{marginTop:"7px",fontSize:"0.62rem"}}><b>مسببات حساسية محتملة في هذه الوصفة (تقديري):</b> {al.length?al.join("، "):"لا شيء ظاهر من قائمة الـ26 — راجع ورقة بيانات المورّد (SDS) لكل مادة"}</div>
+                <div style={{marginTop:"4px",fontSize:"0.56rem",opacity:0.65}}>قائمة إرشادية مبنية على متطلبات الهيئة العامة للغذاء والدواء واللوائح الخليجية — ليست استشارة قانونية.</div>
+              </details>;
+            })()}
+            {(()=>{
               const tiny=r.ing.filter(([,a])=>needsSolution(a*sc));
               if(!tiny.length)return null;
               return <div style={{background:"rgba(184,134,11,0.10)",border:"1px solid rgba(184,134,11,0.35)",borderRadius:"11px",padding:"9px 11px",marginBottom:"8px",fontSize:"0.68rem",color:"#8A6A1E",lineHeight:"1.8"}}>
@@ -3946,7 +4194,7 @@ function App(){
             {[...r.ing].sort((x,y)=>{const o={top:0,mid:1,base:2};return o[noteTier(x[0])]-o[noteTier(y[0])];}).map(([id,a])=>{const ing=getIng(id);const need=a*sc;const ok=ing&&ing.stock>=need;const c=ing?ing.unitCost*need:0;const tier=noteTier(id);return(
               <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"7px 11px",marginBottom:"4px",borderRadius:"10px",background:ok?"rgba(80,160,80,0.08)":"rgba(200,60,60,0.08)",border:`1px solid ${ok?"rgba(80,160,80,0.25)":"rgba(200,60,60,0.25)"}`}}>
                 <div><div style={{fontSize:"0.82rem",fontWeight:"600"}}>{ing?.name||id} <span className={`tag tag-${tier}`} style={{fontSize:"0.58rem",padding:"1px 6px"}}>{NOTE_LABEL[tier]}</span></div><div style={{fontSize:"0.62rem",color:"#8A6A1E"}}>{ing?.brand} • {c.toFixed(2)}ر</div></div>
-                <div style={{textAlign:"left"}}><div style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.85rem"}}>{need.toFixed(2)} {ing?.unit}</div><div style={{fontSize:"0.6rem",color:ok?"#80c080":"#e08080"}}>متوفر: {ing?.stock||0}</div>{needsSolution(need)&&<div style={{fontSize:"0.58rem",color:"#b8860b",marginTop:"2px",whiteSpace:"nowrap",fontWeight:"700"}}>💧 محلول 10٪: {(need*10).toFixed(2)}مل</div>}</div>
+                <div style={{textAlign:"left"}}><div style={{color:"#D4AF37",fontWeight:"700",fontSize:"0.85rem"}}>{need.toFixed(2)} {ing?.unit}</div><div style={{fontSize:"0.6rem",color:ok?"#80c080":"#e08080"}}>متوفر: {ing?.stock||0}</div>{!ok&&(()=>{const sb=suggestSub(id,need);return sb?<div style={{fontSize:"0.56rem",color:"#8A6A1E",marginTop:"2px",whiteSpace:"nowrap"}}>↔ بديل: {sb.name.split(" (")[0]}</div>:null;})()}{needsSolution(need)&&<div style={{fontSize:"0.58rem",color:"#b8860b",marginTop:"2px",whiteSpace:"nowrap",fontWeight:"700"}}>💧 محلول 10٪: {(need*10).toFixed(2)}مل</div>}</div>
               </div>);})}
             <div style={{background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"10px",padding:"8px",textAlign:"center",color:"#D4AF37",fontSize:"0.85rem",margin:"6px 0 12px",fontWeight:"700"}}>إجمالي الحجم: {BATCH[activeBU]} مل • التكلفة: {cost.toFixed(1)} ريال</div>
 
@@ -3961,6 +4209,15 @@ function App(){
                 <div style={{fontSize:"0.72rem",color:"#e08080",fontWeight:"700",marginBottom:"6px"}}>⚠️ مكونات ناقصة ({missing.length})</div>
                 {missing.slice(0,3).map(([id,a])=>{const ing=getIng(id);const need=(a*sc2).toFixed(2);const have=ing?ing.stock:0;return <div key={id} style={{fontSize:"0.7rem",color:"#8A6A1E",marginBottom:"2px"}}>• {ing?.name||id}: متوفر {have} / يحتاج {need} {ing?.unit||""}</div>;})}
                 {missing.length>3&&<div style={{fontSize:"0.68rem",color:"#8A6A1E"}}>+ {missing.length-3} أخرى</div>}
+                {(()=>{
+                  const subs=missing.map(([id,a])=>{const sb=suggestSub(id,a*sc2);return sb?{from:id,to:sb.id}:null;}).filter(Boolean);
+                  if(!subs.length)return null;
+                  return <div style={{marginTop:"6px",background:"rgba(138,106,30,0.07)",border:"1px solid rgba(138,106,30,0.25)",borderRadius:"8px",padding:"7px 9px"}}>
+                    <div style={{fontSize:"0.66rem",color:"#6B5218",fontWeight:700,marginBottom:"3px"}}>↔ بدائل متاحة من مخزونك ({subs.length}/{missing.length})</div>
+                    {subs.map(x=><div key={x.from} style={{fontSize:"0.62rem",color:"#5A4420"}}>• {(getIng(x.from)?.name||x.from).split(" (")[0]} ← <b>{(getIng(x.to)?.name||x.to).split(" (")[0]}</b> <span style={{opacity:0.6}}>({getIng(x.to)?.stock} {getIng(x.to)?.unit})</span></div>)}
+                    {subs.length===missing.length&&<button onClick={()=>cloneWithSubs(r,subs)} style={{marginTop:"6px",width:"100%",background:"rgba(138,106,30,0.14)",border:"1px solid rgba(138,106,30,0.35)",color:"#6B5218",borderRadius:"8px",padding:"6px",cursor:"pointer",fontSize:"0.7rem",fontWeight:700}}>↔ أنشئ نسخة من الوصفة بالبدائل</button>}
+                  </div>;
+                })()}
                 <button onClick={()=>{
                   const newItems=missing.map(([id,a])=>{const ing=getIng(id);const need=(a*sc2).toFixed(2);return{id,name:ing?.name||id,need:parseFloat(need),unit:ing?.unit||"",brand:ing?.brand||"غير محدد",fromRecipe:r.name};});
                   setShopCart(prev=>{const existIds=new Set(prev.map(x=>x.id));const toAdd=newItems.filter(x=>!existIds.has(x.id));if(toAdd.length===0){show("⚠️ الناقص موجود بالفعل في قائمة التسوق",true);return prev;}show("🛒 أُضيف للتسوق: "+toAdd.map(x=>x.name).join("، "));return[...prev,...toAdd];});
@@ -4027,6 +4284,41 @@ function App(){
             </div>
             <p style={{fontSize:"0.65rem",color:"#8a6830",marginTop:"9px",lineHeight:"1.65",marginBottom:0}}>البيانات تُحفظ تلقائياً في المتصفح — صدّر نسخة احتياطية لحمايتها عند تحديث التطبيق أو تغيير الجهاز</p>
           </div>
+          {/* ── ☁️ cloud sync ── */}
+          <div className="glass" style={{marginBottom:"14px",padding:"14px",borderRadius:"16px",border:"1px solid rgba(80,120,200,0.25)",background:"rgba(80,120,200,0.04)"}}>
+            <button onClick={()=>setShowSyncCfg(p=>!p)} style={{width:"100%",background:"none",border:"none",padding:0,cursor:"pointer",display:"flex",alignItems:"center",gap:"8px",color:"inherit",textAlign:"start"}}>
+              <span style={{fontSize:"1.1rem"}}>☁️</span>
+              <span style={{color:"#D4AF37",fontSize:"0.88rem",fontWeight:"700",flex:1}}>المزامنة السحابية</span>
+              {syncReady(syncCfg)?<span style={{background:"rgba(106,170,72,0.15)",border:"1px solid rgba(106,170,72,0.3)",color:"#4F7F3A",fontSize:"0.58rem",padding:"2px 8px",borderRadius:"20px"}}>{syncCfg.lastErr?"خطأ":syncCfg.auto?"تلقائي":"يدوي"}</span>:<span style={{background:"rgba(160,48,48,0.10)",border:"1px solid rgba(160,48,48,0.3)",color:"#A03030",fontSize:"0.58rem",padding:"2px 8px",borderRadius:"20px"}}>غير مفعّلة</span>}
+              <span style={{fontSize:"0.8rem",opacity:0.6,transform:showSyncCfg?"rotate(180deg)":"none"}}>▾</span>
+            </button>
+            <div style={{fontSize:"0.62rem",color:"#6A4820",marginTop:"6px",lineHeight:1.7}}>
+              {syncReady(syncCfg)?(syncCfg.last?"آخر رفع: "+new Date(syncCfg.last).toLocaleString("ar-SA"):"لم يُرفع شيء بعد"):"نسخة كاملة من المعمل تُرفع تلقائياً إلى قاعدة بياناتك المجانية في Supabase بعد كل تغيير، وتُستعاد من أي جهاز بكود المزامنة."}
+              {syncCfg.lastErr&&<div style={{color:"#A03030"}}>⚠️ {syncCfg.lastErr}</div>}
+            </div>
+            {showSyncCfg&&<div style={{marginTop:"10px",animation:"fadeUp 0.25s ease both"}}>
+              <ol style={{fontSize:"0.64rem",color:"#5A4420",lineHeight:1.9,paddingInlineStart:"18px",margin:"0 0 10px"}}>
+                <li>أنشئ مشروعاً مجانياً في supabase.com ثم افتح <b>SQL Editor</b> والصق الكود (زر «نسخ SQL») ونفّذه مرة واحدة.</li>
+                <li>من <b>Project Settings → API</b> انسخ <b>Project URL</b> و<b>anon public key</b> هنا.</li>
+                <li>اختر <b>كود مزامنة</b> سرياً (6 أحرف فأكثر) — هو مفتاح نسختك؛ أدخله نفسه على جهازك الآخر.</li>
+              </ol>
+              <div style={{display:"grid",gap:"7px"}}>
+                <input className="inp" placeholder="https://xxxx.supabase.co" value={syncCfg.url} onChange={e=>setSyncCfg({url:e.target.value})} style={{fontSize:"0.76rem",direction:"ltr"}}/>
+                <input className="inp" type="password" placeholder="anon public key (eyJ…)" value={syncCfg.key} onChange={e=>setSyncCfg({key:e.target.value})} style={{fontSize:"0.76rem",direction:"ltr"}}/>
+                <input className="inp" type="password" placeholder="كود المزامنة السري" value={syncCfg.code} onChange={e=>setSyncCfg({code:e.target.value})} style={{fontSize:"0.76rem"}}/>
+              </div>
+              <label style={{display:"flex",alignItems:"center",gap:"8px",fontSize:"0.72rem",color:"#1A1208",margin:"10px 0"}}>
+                <input type="checkbox" checked={!!syncCfg.auto} onChange={e=>setSyncCfg({auto:e.target.checked})} style={{width:"16px",height:"16px",accentColor:"#4F7F3A"}}/> رفع تلقائي بعد كل تغيير
+              </label>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"6px"}}>
+                <button className="btn-gold" disabled={syncBusy||!syncReady(syncCfg)} onClick={()=>syncNow(false)} style={{padding:"10px 6px",fontSize:"0.72rem"}}>{syncBusy?"…":"⬆ رفع الآن"}</button>
+                <button className="btn-ghost" disabled={syncBusy||!syncReady(syncCfg)} onClick={async()=>{setSyncBusy(true);try{const row=await cloudDownload(getSyncCfg());if(!row){show("☁️ لا توجد نسخة سحابية بعد لهذا الكود",true);}else restoreFromCloud(row);}catch(e){show("❌ "+String(e.message||e).slice(0,70),true);}finally{setSyncBusy(false);}}} style={{padding:"10px 6px",fontSize:"0.72rem"}}>⬇ استعادة</button>
+                <button className="btn-ghost" onClick={()=>{try{navigator.clipboard.writeText(SYNC_SQL);show("📋 نُسخ كود SQL");}catch(_){window.prompt("انسخ:",SYNC_SQL);}}} style={{padding:"10px 6px",fontSize:"0.72rem"}}>📋 نسخ SQL</button>
+              </div>
+              <div style={{fontSize:"0.58rem",color:"#8A6A1E",marginTop:"8px",lineHeight:1.7}}>المفاتيح تُحفظ في متصفحك فقط ولا تدخل في النسخة الاحتياطية. مفتاح anon لا يكشف بياناتك: سياسة الأمان في SQL تشترط كود المزامنة لكل قراءة أو كتابة.</div>
+            </div>}
+          </div>
+
 
           {totalProduced===0&&<div className="glass-gold" style={{textAlign:"center",padding:"28px 20px",marginBottom:"16px",position:"relative",overflow:"hidden"}}>
             <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 80% 50% at 50% 0%,rgba(201,168,76,0.07) 0%,transparent 70%)",pointerEvents:"none"}}/>
@@ -4251,6 +4543,11 @@ function App(){
               </div>
               {!e.sold&&<SellEntry id={e.id} onSell={markSold}/>}
               {e.sold&&<span className="tag tag-green">✅ مباع</span>}
+              <div style={{display:"flex",gap:"5px",flexWrap:"wrap",alignItems:"center",marginTop:"6px"}}>
+                <span style={{fontSize:"0.6rem",color:"#8A6A1E"}}>🧪 تقييم:</span>
+                {[0,2,8,24].map(h=>{const ex=(evals[e.id]||[]).find(x=>x.h===h);return <button key={h} onClick={()=>openEval(e,h)} style={{background:ex?"rgba(74,103,65,0.16)":"rgba(26,18,8,0.05)",border:`1px solid ${ex?"rgba(74,103,65,0.40)":"rgba(26,18,8,0.12)"}`,color:ex?"#3F5A38":"#7a6a50",borderRadius:"14px",padding:"3px 9px",cursor:"pointer",fontSize:"0.62rem",fontWeight:700,minHeight:"28px"}}>{h===0?"فور الخلط":h+" س"}{ex&&<span style={{opacity:0.7}}> · {((ex.sil+ex.lon+ex.bal+(6-ex.met))/4).toFixed(1)}</span>}</button>;})}
+                <button onClick={()=>{const n=window.prompt("عدد الملصقات في الورقة (3 أعمدة × 62×32 مم):","12");if(n)printLabelSheet(e,n);}} style={{marginInlineStart:"auto",background:"rgba(201,168,76,0.10)",border:"1px solid rgba(201,168,76,0.35)",color:"#8A6A1E",borderRadius:"14px",padding:"3px 9px",cursor:"pointer",fontSize:"0.62rem",fontWeight:700,minHeight:"28px"}}>🏷️ ورقة ملصقات</button>
+              </div>
               <button onClick={()=>{const custName=e.customerId?customers.find(c=>c.id===e.customerId)?.name:"";const w=window.open('','_blank','width=400,height=320');w.document.write(`<html dir="rtl"><body style="font-family:Arial;margin:0;padding:16px;background:#1a0800;color:#D4AF37;border:2px solid #D4AF37;border-radius:12px;width:340px;box-sizing:border-box;"><div style="text-align:center;font-size:11px;letter-spacing:2px;color:#c8a46a;margin-bottom:4px">ضاوي عود</div><div style="text-align:center;font-size:22px;margin:4px 0">${esc(e.recipeIcon)}</div><div style="text-align:center;font-size:16px;font-weight:700;margin-bottom:8px">${esc(e.recipeName)}</div><hr style="border-color:#D4AF37;opacity:0.3"/>${custName?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">العميل</span><span style="color:#80c0ff;font-weight:700">${esc(custName)}</span></div>`:""}<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">رقم الدفعة</span><span>${esc(e.batchNo)}</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">الحجم</span><span>${+e.vol||0} مل</span></div><div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">تاريخ الصنع</span><span>${fmtDate(e.date)}</span></div>${e.readyDate?`<div style="display:flex;justify-content:space-between;font-size:12px;margin:4px 0"><span style="color:#c8a46a">جاهز في</span><span style="color:#80c080">${fmtDate(e.readyDate)}</span></div>`:""}${e.sold&&e.sellPrice?`<div style="display:flex;justify-content:space-between;font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid rgba(214,175,55,0.3)"><span style="color:#c8a46a">سعر البيع</span><span style="color:#80c080;font-weight:700">${+e.sellPrice||0} ريال</span></div>`:""}${e.note?`<div style="font-size:11px;color:#80a0e0;margin-top:6px;border-top:1px solid rgba(214,175,55,0.2);padding-top:6px">${esc(e.note)}</div>`:""}</body></html>`);w.document.close();w.print();}} style={{marginTop:"5px",background:"rgba(214,175,55,0.08)",border:"1px solid rgba(214,175,55,0.3)",color:"#D4AF37",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🏷️ طباعة ملصق</button>
               {!e.customerId&&customers.length>0&&<select value="" onChange={ev=>{if(ev.target.value)linkOrderToCustomer(e.id,ev.target.value);}} style={{marginTop:"6px",background:"rgba(26,18,8,0.85)",border:"1px solid rgba(214,175,55,0.3)",borderRadius:"8px",color:"#8A6A1E",fontSize:"0.72rem",padding:"4px 8px",fontFamily:"'Alexandria',sans-serif",width:"100%"}}><option value="">🔗 اربط بعميل...</option>{customers.map(c=><option key={c.id} value={c.id} style={{background:"#FAF8F3"}}>{c.name}</option>)}</select>}
               {!e.sold&&<button onClick={()=>deleteProdEntry(e.id)} style={{marginTop:"5px",background:"rgba(200,60,60,0.1)",border:"1px solid rgba(200,60,60,0.3)",color:"#e08080",borderRadius:"8px",padding:"4px 10px",cursor:"pointer",fontSize:"0.68rem",fontWeight:"600"}}>🗑️ حذف الدفعة</button>}
@@ -4518,6 +4815,34 @@ function App(){
             <option value="">اختر الحامل...</option>
             {inv.filter(i=>i.cat==="حامل").map(i=><option key={i.id} value={i.name}>{i.name} ({i.stock} {i.unit})</option>)}
           </select>
+          {/* ── ⚗️ solution manager: deducts mother + carrier, creates a stock item ── */}
+          <div style={{background:"rgba(138,106,30,0.06)",border:"1px solid rgba(138,106,30,0.26)",borderRadius:"14px",padding:"12px",marginBottom:"12px"}}>
+            <div style={{fontSize:"0.82rem",fontWeight:800,color:"#6B5218",marginBottom:"3px"}}>⚗️ تحضير محلول من المخزون</div>
+            <div style={{fontSize:"0.62rem",color:"#8A6A1E",marginBottom:"9px",lineHeight:1.7}}>للمواد القوية (سافرالين، هيل، سيفيتون، تونكيتون…): يُخصم من المادة الأم والحامل ويُضاف صنف «محلول» بتكلفته الحقيقية إلى المخزون.</div>
+            <select className="inp" value={solMotherId} onChange={e=>setSolMotherId(e.target.value)} style={{background:"#FAF8F3",marginBottom:"7px",fontSize:"0.78rem"}}>
+              <option value="">المادة الأم…</option>
+              {[...inv].filter(i=>i.cat!=="حامل"&&i.cat!=="محلول"&&!CARRIER_IDS.has(i.id)).sort((a,b)=>a.name.localeCompare(b.name,"ar")).map(i=><option key={i.id} value={i.id}>{i.name.split(" (")[0]} — {i.stock} {i.unit}</option>)}
+            </select>
+            <select className="inp" value={solCarrierId} onChange={e=>setSolCarrierId(e.target.value)} style={{background:"#FAF8F3",marginBottom:"7px",fontSize:"0.78rem"}}>
+              <option value="">الحامل/المذيب…</option>
+              {inv.filter(i=>i.cat==="حامل"||i.id==="benzyl").map(i=><option key={i.id} value={i.id}>{i.name.split(" (")[0]} — {i.stock} {i.unit}</option>)}
+            </select>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"7px",marginBottom:"8px"}}>
+              <div><label style={{fontSize:"0.62rem",color:"#8A6A1E",display:"block",marginBottom:"3px"}}>التركيز ٪</label><input type="number" className="inp" value={solConc} min="1" max="100" onChange={e=>setSolConc(+e.target.value)} style={{textAlign:"center"}}/></div>
+              <div><label style={{fontSize:"0.62rem",color:"#8A6A1E",display:"block",marginBottom:"3px"}}>حجم المحلول (مل)</label><input type="number" className="inp" value={solVol} min="0.5" step="0.5" onChange={e=>setSolVol(+e.target.value)} style={{textAlign:"center"}}/></div>
+            </div>
+            {(()=>{const m=getIng(solMotherId),c=getIng(solCarrierId);const vol=Math.max(0.5,+solVol||0);const conc=Math.min(100,Math.max(1,+solConc||10));const mA=vol*conc/100,cA=vol-mA;const cost=m&&c?(m.unitCost||0)*mA+(c.unitCost||0)*cA:0;
+              return <div style={{fontSize:"0.68rem",color:"#5A4420",background:"rgba(0,0,0,0.04)",borderRadius:"9px",padding:"7px 9px",marginBottom:"8px",lineHeight:1.8}}>
+                <div>• الأم: <b className="mono">{mA.toFixed(2)}</b> {m?.unit||""} {m&&m.stock<mA&&<span style={{color:"#A03030"}}>— لا يكفي</span>}</div>
+                <div>• الحامل: <b className="mono">{cA.toFixed(2)}</b> مل {c&&c.stock<cA&&<span style={{color:"#A03030"}}>— لا يكفي</span>}</div>
+                <div>• التكلفة: <b className="mono">{cost.toFixed(2)}</b> ر · <span style={{opacity:0.7}}>1 مل محلول = {(conc/100).toFixed(2)} {m?.unit||"وحدة"} من الأم</span></div>
+              </div>;})()}
+            <button className="btn-gold" style={{width:"100%"}} disabled={!solMotherId||!solCarrierId} onClick={prepareSolution}>⚗️ حضّر المحلول وخصم من المخزون</button>
+            {inv.filter(i=>i.cat==="محلول").length>0&&<div style={{marginTop:"9px"}}>
+              <div style={{fontSize:"0.62rem",color:"#8A6A1E",marginBottom:"4px"}}>محاليلك الجاهزة:</div>
+              {inv.filter(i=>i.cat==="محلول").map(i=><div key={i.id} style={{display:"flex",justifyContent:"space-between",fontSize:"0.7rem",padding:"4px 0",borderBottom:"1px solid rgba(26,18,8,0.08)"}}><span>{i.name}</span><b className="mono" style={{color:"#C9A84C"}}>{i.stock} مل</b></div>)}
+            </div>}
+          </div>
           <button className="btn-ghost" style={{width:"100%"}} onClick={()=>setShowDilution(false)}>إغلاق</button>
         </div>
       </div>}
@@ -4642,6 +4967,29 @@ function App(){
             {aiStudioMode==="campaign"&&<button className="btn-ghost" style={{width:"100%",marginTop:"12px",borderColor:"rgba(80,120,200,0.4)",color:"#90B8F0"}} onClick={()=>{if(navigator.clipboard)navigator.clipboard.writeText(aiStudioResult).then(()=>show("📋 نُسخ المحتوى")).catch(()=>show("تعذّر النسخ",true));else show("تعذّر النسخ",true);}}>📋 نسخ المحتوى</button>}
           </div>}
           <button className="btn-ghost" style={{width:"100%",marginTop:"10px"}} onClick={()=>setShowAIStudio(false)}>إغلاق</button>
+        </div>
+      </div>}
+
+      {evalEntry&&<div className="modal-overlay" onClick={e=>{if(e.target.className==="modal-overlay")setEvalEntry(null);}}>
+        <div className="modal-sheet">
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:"0.60rem",letterSpacing:"0.2em",color:"rgba(138,106,30,0.6)",marginBottom:"6px"}}>OLFACTIVE EVALUATION</div>
+          <h3 style={{color:"#D4AF37",fontSize:"1rem",fontWeight:"700",marginBottom:"2px"}}>🧪 تقييم شمّي — {evalEntry.recipeIcon} {evalEntry.recipeName}</h3>
+          <div style={{fontSize:"0.68rem",color:"#8A6A1E",marginBottom:"12px"}}>#{evalEntry.batchNo} · {evalEntry.vol} مل · ضع قطرة على المعصم وقيّم في الوقت المحدد</div>
+          <div style={{display:"flex",gap:"6px",marginBottom:"14px",flexWrap:"wrap"}}>
+            {[0,2,8,24].map(h=><button key={h} onClick={()=>openEval(evalEntry,h)} style={{flex:1,minWidth:"64px",background:evalH===h?"#D4AF37":"rgba(26,18,8,0.06)",border:`1px solid ${evalH===h?"#D4AF37":"rgba(214,175,55,0.3)"}`,color:evalH===h?"#1a0800":"#8A6A1E",padding:"8px 6px",borderRadius:"12px",cursor:"pointer",fontSize:"0.74rem",fontWeight:700}}>{h===0?"فور الخلط":"بعد "+h+" ساعة"}</button>)}
+          </div>
+          {[["sil","الفوحان (الإسقاط)","على الجلد فقط","يملأ الغرفة"],["lon","الثبات حتى الآن","تلاشى","قوي كما بدأ"],["met","الحدة المعدنية/الكحولية","لا شيء","حادّة واضحة"],["bal","التوازن (قمة/قلب/قاعدة)","مختلّ","متناغم"]].map(([k,label,lo,hi])=>(
+            <div key={k} style={{marginBottom:"10px",background:"rgba(0,0,0,0.04)",borderRadius:"12px",padding:"9px 11px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.74rem",fontWeight:700,color:"#1A1208"}}><span>{label}</span><span className="mono" style={{color:"#C9A84C"}}>{evalVals[k]}/5</span></div>
+              <input type="range" min="1" max="5" step="1" value={evalVals[k]} onChange={ev=>setEvalVals(p=>({...p,[k]:+ev.target.value}))} style={{width:"100%",accentColor:k==="met"?"#A03030":"#C9A84C"}}/>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",color:"#8A6A1E"}}><span>{lo}</span><span>{hi}</span></div>
+            </div>
+          ))}
+          <textarea className="inp" placeholder="ملاحظة: ما الذي يبرز الآن؟ ورد؟ دخان؟ حدة؟" value={evalNote} onChange={e=>setEvalNote(e.target.value)} rows={2} style={{textAlign:"right",resize:"none",fontSize:"0.78rem",marginBottom:"10px"}}/>
+          <div style={{display:"flex",gap:"8px"}}>
+            <button className="btn-gold" style={{flex:1}} onClick={saveEval}>💾 حفظ تقييم ساعة {evalH}</button>
+            <button className="btn-ghost" onClick={()=>setEvalEntry(null)}>إغلاق</button>
+          </div>
         </div>
       </div>}
 

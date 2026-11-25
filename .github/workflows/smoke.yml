@@ -1,0 +1,30 @@
+name: smoke
+
+# Opens the lab and the store in headless Chromium after every push and fails the run on
+# any runtime error, missing product image, or broken core screen — so a bad edit never
+# reaches visitors unnoticed. Add the repository secret DHAWI_SMOKE_PIN to also exercise
+# the logged-in lab screens (recipes, inventory, sync card).
+on:
+  push:
+    paths: ['index.html', 'agency.html', 'app.js', 'app.jsx', 'sw.js', 'media/**', 'scripts/**', '.github/workflows/smoke.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node scripts/check-build.mjs
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/smoke.mjs
+        env:
+          DHAWI_SMOKE_PIN: ${{ secrets.DHAWI_SMOKE_PIN }}

@@ -1,4 +1,4 @@
-const CACHE = 'dhawi-v7';
+const CACHE = 'dhawi-v8';
 const ASSETS = ['./', './index.html', './agency.html'];
 
 self.addEventListener('install', e => {
